@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Open Order Report — North American Laboratories | JIT4Labs</title>
+<link rel="icon" href="https://jit4you.myshopify.com/cdn/shop/files/JIT4LABS_Favicon.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Open Sans', sans-serif;
+    background: #f0f2f5;
+    color: rgba(16, 30, 62, 0.75);
+    min-height: 100vh;
+  }
+
+  /* Header — white bg, logo left, title right */
+  .header {
+    background: #ffffff;
+    color: #101E3E;
+    padding: 24px 40px;
+    border-bottom: 3px solid #008080;
+  }
+  .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .header .logo-img {
+    height: 52px;
+    width: auto;
+  }
+  .header-right {
+    text-align: right;
+  }
+  .header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: #101E3E;
+  }
+  .header .customer-name {
+    font-size: 15px;
+    color: rgba(16, 30, 62, 0.7);
+    margin-top: 4px;
+    font-weight: 400;
+  }
+  .header .customer-address {
+    font-size: 12px;
+    color: rgba(16, 30, 62, 0.45);
+    margin-top: 2px;
+    font-weight: 400;
+  }
+
+  /* Container */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 28px 24px;
+  }
+
+  /* Summary Cards */
+  .summary-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .summary-card {
+    background: white;
+    border-radius: 12px;
+    padding: 22px 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    text-align: center;
+    border-top: 3px solid #008080;
+  }
+  .summary-card .value {
+    font-size: 32px;
+    font-weight: 800;
+    color: #101E3E;
+    line-height: 1;
+  }
+  .summary-card .label {
+    font-size: 11px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 8px;
+    font-weight: 600;
+  }
+
+  /* Report info bar */
+  .info-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .report-date {
+    font-size: 13px;
+    color: #888;
+  }
+  .legend {
+    display: flex;
+    gap: 16px;
+    font-size: 12px;
+    color: #666;
+  }
+  .legend span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .legend .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .dot-ontrack { background: #008080; }
+  .dot-delayed { background: #101E3E; }
+
+  /* Table */
+  .table-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  thead th {
+    background: #101E3E;
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    border-bottom: 2px solid #008080;
+  }
+  tbody td {
+    padding: 13px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: top;
+  }
+  tbody tr:hover {
+    background: #f5fafa;
+  }
+  tr.first-in-group td {
+    border-top: 2px solid #e0e0e0;
+  }
+  tbody tr:first-child td {
+    border-top: none;
+  }
+
+  .so-number {
+    font-weight: 700;
+    color: #008080;
+    white-space: nowrap;
+  }
+  .web-order {
+    color: #555;
+    white-space: nowrap;
+    font-size: 13px;
+  }
+  .so-date {
+    color: #777;
+    white-space: nowrap;
+    font-size: 13px;
+  }
+  .item-name {
+    max-width: 340px;
+    color: #101E3E;
+  }
+  .qty {
+    text-align: center;
+    font-weight: 700;
+    color: #101E3E;
+    font-size: 15px;
+  }
+
+  /* ETA colors */
+  .eta-ontrack {
+    color: #008080;
+    font-weight: 400;
+  }
+  .eta-delayed {
+    color: #101E3E;
+    font-weight: 400;
+  }
+  .eta-passed {
+    display: block;
+    font-size: 11px;
+    color: #101E3E;
+    font-weight: 400;
+    font-style: italic;
+    margin-top: 2px;
+  }
+
+  /* Shop button */
+  .shop-btn-wrapper {
+    text-align: left;
+    margin-top: 28px;
+  }
+  .shop-btn {
+    display: inline-block;
+    background: #008080;
+    color: #ffffff;
+    padding: 14px 36px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .shop-btn:hover {
+    background: #006666;
+  }
+
+  /* Message section */
+  .message-section {
+    margin-top: 28px;
+    padding: 24px 28px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    font-size: 14px;
+    color: rgba(16, 30, 62, 0.75);
+    line-height: 1.7;
+  }
+  .message-section .contact-line {
+    margin-top: 12px;
+    font-size: 13px;
+    color: #101E3E;
+  }
+  .message-section a {
+    color: #008080;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  /* Footer — JIT4You navy */
+  .footer {
+    background: #101E3E;
+    text-align: center;
+    padding: 24px 20px;
+    color: rgba(255,255,255,0.6);
+    font-size: 12px;
+    margin-top: 32px;
+  }
+  .footer a {
+    color: #008080;
+    text-decoration: none;
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+  }
+  .empty-state h2 {
+    font-size: 20px;
+    color: #101E3E;
+    margin-bottom: 8px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header { padding: 20px; }
+    .header h1 { font-size: 20px; }
+    .header .logo-img { height: 36px; }
+    .container { padding: 16px; }
+    table { font-size: 13px; }
+    thead th, tbody td { padding: 10px 8px; }
+    .item-name { max-width: 180px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-content">
+    <img src="https://jit4labs1.github.io/customer-order-status/JIT4LABS-Logo.jpg" alt="JIT4Labs" class="logo-img">
+    <div class="header-right">
+      <h1>Open Order Report</h1>
+      <div class="customer-name">North American Laboratories</div>
+      <div class="customer-address">32270 Telegraph Rd. Suite 110, Bingham Farms, Michigan, 48025</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="summary-row">
+    <div class="summary-card">
+      <div class="value">1</div>
+      <div class="label">Open Sales Orders</div>
+    </div>
+    <div class="summary-card">
+      <div class="value">1</div>
+      <div class="label">Open Line Items</div>
+    </div>
+    <div class="summary-card">
+      <div class="value">1</div>
+      <div class="label">Items with ETA</div>
+    </div>
+  </div>
+
+  <div class="info-bar">
+    <div class="report-date">Report generated: June 14, 2026 at 05:11 PM</div>
+    <div class="legend">
+      <span><span class="dot dot-ontrack"></span> On track (5-10 days)</span>
+      <span><span class="dot dot-delayed"></span> Delayed (10+ days)</span>
+    </div>
+  </div>
+
+  <div class="table-card">
+    
+    <table><thead><tr><th>Sales Order</th><th>Order ID</th><th>Date</th><th>Item</th><th>Open Qty</th><th>ETA</th></tr></thead><tbody>
+            <tr class="first-in-group">
+                <td class="so-number">SO52</td>
+                <td class="web-order"></td>
+                <td class="so-date">May 21, 2025</td>
+                <td class="item-name">Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)</td>
+                <td class="qty">1</td>
+                <td class="eta-delayed">May 29, 2025<span class="eta-passed">ETA passed &ndash; follow-up in progress.</span></td>
+            </tr></tbody></table>
+  </div>
+
+  <!-- shop button disabled -->
+
+
+  <div class="message-section">
+    <p>We are working diligently to provide you with full transparency and visibility into the shipping and delivery process, so you can better plan your operations.</p>
+    <p>For any questions, don't hesitate to contact us:</p>
+    <p class="contact-line"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#008080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 6px;"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><a href="mailto:CustomerSupport@jit4you.com">CustomerSupport@jit4you.com</a></p>
+    <p class="contact-line"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#008080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 6px;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><a href="tel:+19493969194">(949) 396-9194</a></p>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>&copy; 2026 JIT4You Inc. &mdash; All rights reserved.</p>
+</div>
+
+</body>
+</html>
