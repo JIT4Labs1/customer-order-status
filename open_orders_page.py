@@ -71,6 +71,19 @@ def _xor_b64(text, key):
 # ─────────────────────────────────────────────
 # Shape the extracted open_items into a per-customer structure for the page
 # ─────────────────────────────────────────────
+def _pacific_now_str():
+    """Current time as a Pacific-time string with tz label (PST/PDT), e.g.
+    '2026-06-16 02:45:10 PM PDT'. Used as the page's 'last refreshed' stamp."""
+    try:
+        from zoneinfo import ZoneInfo
+        dt = datetime.now(ZoneInfo("America/Los_Angeles"))
+        return dt.strftime("%Y-%m-%d %I:%M:%S %p %Z")
+    except Exception:
+        from datetime import timezone, timedelta
+        dt = datetime.now(timezone.utc) - timedelta(hours=8)
+        return dt.strftime("%Y-%m-%d %I:%M:%S %p") + " PST"
+
+
 def build_page_data(open_items):
     """Group the flat open_items list into a per-customer payload for the page."""
     by_customer = defaultdict(list)
@@ -139,7 +152,7 @@ def build_page_data(open_items):
         "open_items": len(open_items),
     }
     return {
-        "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "generated_at": _pacific_now_str(),
         "totals": totals,
         "customers": customers,
         "po_emails": po_emails,
@@ -392,7 +405,7 @@ function renderPanel(){
 }
 
 function renderAsOf(){
-  document.getElementById('asof').textContent = 'As of '+(DATA.generated_at||'—');
+  document.getElementById('asof').textContent = 'Last refreshed: '+(DATA.generated_at||'—');
 }
 function selectTab(i){ active=i; renderTabs(); renderPanel(); }
 function renderAll(){ renderKpis(); renderTabs(); renderPanel(); renderAsOf(); }
