@@ -34,7 +34,7 @@ from collections import defaultdict
 # ── Reuse the EXACT extraction logic from the original report (unmodified) ──
 # Importing is safe: open_orders_report.py guards execution behind
 # `if __name__ == "__main__"`, so nothing runs on import.
-from open_orders_report import VtigerAPI, extract_open_orders, CONFIG, log
+from open_orders_report import VtigerAPI, extract_open_orders, CONFIG, log, build_po_email_url
 
 # ─────────────────────────────────────────────
 # GitHub Pages publishing (same host/repo as the customer-order-status reports)
@@ -106,6 +106,33 @@ def build_page_data(open_items):
             "rows": rows,
         })
 
+    # ── Per-PO "Email vendor" mailto drafts (identical to the open-orders report) ──
+    # Group every open item by its pending PO across all customers, then build the
+    # same mailto: draft the report uses (subject "PO### ETA?", vendor greeting,
+    # open-item bullet list, PMA→debbie override already applied in vendor_email).
+    po_groups = defaultdict(lambda: {"vendor": "", "vendor_email": "", "items": []})
+    for it in open_items:
+        pend = it.get("pending_pos", "") or ""
+        for po in [p.strip() for p in pend.split(",") if p.strip()]:
+            g = po_groups[po]
+            if not g["vendor"]:
+                g["vendor"] = it.get("vendor", "")
+            if not g["vendor_email"]:
+                g["vendor_email"] = it.get("vendor_email", "")
+            g["items"].append({
+                "product": it.get("product", ""),
+                "open_qty": it.get("open_qty", 0),
+                "eta": it.get("eta", ""),
+                "customer": it.get("customer", ""),
+                "so_num": it.get("so_num", ""),
+            })
+    bcc = CONFIG.get("vendor_followup_bcc", "")
+    po_emails = {}
+    for po, info in po_groups.items():
+        url = build_po_email_url(po, info, bcc)
+        if url:
+            po_emails[po] = url
+
     totals = {
         "customers": len(customers),
         "open_sos": len(set((i["customer"], i["so_num"]) for i in open_items)),
@@ -115,6 +142,7 @@ def build_page_data(open_items):
         "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "totals": totals,
         "customers": customers,
+        "po_emails": po_emails,
     }
 
 
@@ -198,6 +226,10 @@ def build_html(page_data):
   .open { font-weight:700; color:#c0392b; }
   .po { color:#e67e22; white-space:nowrap; }
   .po-none { color:#999; }
+  .po-wrap { white-space:nowrap; display:inline-block; margin:1px 0; }
+  .po-email-btn { margin-left:6px; padding:1px 8px; font-size:10px; line-height:14px; border:1px solid #1F4E79;
+    background:#1F4E79; color:#fff !important; border-radius:3px; text-decoration:none; vertical-align:middle; display:inline-block; }
+  .po-email-btn:hover { background:#143352; }
   .empty { padding:40px; text-align:center; color:#999; }
   .footer { text-align:center; font-size:11px; color:#888; padding:18px; }
   @media (max-width:760px){ .layout{flex-direction:column;} .tabs{flex-basis:auto;width:100%;max-height:none;}
@@ -289,6 +321,17 @@ function renderTabs(){
   document.getElementById('tabs').innerHTML=h;
 }
 
+function poCell(pending){
+  if(!pending) return '<span class="po-none">None</span>';
+  var parts=String(pending).split(','), out=[];
+  for(var i=0;i<parts.length;i++){
+    var po=parts[i].replace(/^\s+|\s+$/g,''); if(!po) continue;
+    var url=(DATA.po_emails||{})[po];
+    var btn = url ? '<a class="po-email-btn" href="'+escapeHtml(url)+'" title="Email vendor about '+escapeHtml(po)+'">Email vendor</a>' : '';
+    out.push('<span class="po-wrap"><span class="po">&#9679; '+escapeHtml(po)+'</span>'+btn+'</span>');
+  }
+  return out.length ? out.join('<br>') : '<span class="po-none">None</span>';
+}
 function renderHead(){
   var h='';
   for(var i=0;i<COLS.length;i++){
@@ -305,7 +348,7 @@ function renderPanel(){
   var rows='';
   for(var i=0;i<data.length;i++){
     var r=data[i]; var sc=statusColors(r.so_status);
-    var po = r.pending_pos ? '<span class="po">&#9679; '+escapeHtml(r.pending_pos)+'</span>' : '<span class="po-none">None</span>';
+    var po = poCell(r.pending_pos);
     rows+='<tr>'+
       '<td class="so">'+escapeHtml(r.so_num)+'</td>'+
       '<td><span class="status" style="background:'+sc[0]+';color:'+sc[1]+'">'+escapeHtml(r.so_status)+'</span></td>'+
