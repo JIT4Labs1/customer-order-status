@@ -187,6 +187,9 @@ def build_html(page_data):
   table { width:100%; border-collapse:collapse; font-size:12px; }
   thead th { background:#0D2B45; color:#fff; text-align:left; padding:9px 10px; font-weight:700; font-size:11px; white-space:nowrap; }
   thead th.c { text-align:center; }
+  thead th.sortable { cursor:pointer; user-select:none; }
+  thead th.sortable:hover { background:#143352; }
+  thead th .arr { color:#7fd4d4; font-size:10px; margin-left:3px; }
   tbody td { padding:8px 10px; border-bottom:1px solid #eef2f6; vertical-align:top; }
   tbody td.c { text-align:center; }
   tbody tr:nth-child(even) { background:#f8fafc; }
@@ -232,6 +235,34 @@ function _deobf(s,key){ if(!s) return ''; var raw=atob(s), out=''; for(var i=0;i
 BTN.token = _deobf(BTN.token_obf, BTN.k || '');
 var active = 0;
 
+// Sortable columns. Click a header to sort by it; click again to reverse.
+var COLS = [
+  {key:'so_num',     label:'SO #',       type:'str'},
+  {key:'so_status',  label:'Status',     type:'str'},
+  {key:'order_date', label:'Order Date', type:'date'},
+  {key:'product',    label:'Product',    type:'str'},
+  {key:'vendor',     label:'Vendor',     type:'str'},
+  {key:'ordered_qty',label:'Ord',        type:'num',  c:true},
+  {key:'delivered_qty',label:'Del',      type:'num',  c:true},
+  {key:'open_qty',   label:'Open',       type:'num',  c:true},
+  {key:'pending_pos',label:'Pending PO', type:'str'},
+  {key:'eta',        label:'ETA',        type:'date', c:true}
+];
+var sortState = {key:null, dir:1};  // null = default order (Order Date, then Product)
+function colByKey(k){ for(var i=0;i<COLS.length;i++){ if(COLS[i].key===k) return COLS[i]; } return null; }
+function cmp(a,b,type){
+  if(type==='num'){ return (parseFloat(a)||0)-(parseFloat(b)||0); }
+  if(type==='date'){ var da=a?Date.parse(a):0, db=b?Date.parse(b):0; da=isNaN(da)?0:da; db=isNaN(db)?0:db; return da-db; }
+  return String(a==null?'':a).toLowerCase().localeCompare(String(b==null?'':b).toLowerCase());
+}
+function sortBy(key){ if(sortState.key===key){ sortState.dir=-sortState.dir; } else { sortState.key=key; sortState.dir=1; } renderPanel(); }
+function sortedRows(c){
+  var rows=(c.rows||[]).slice();
+  if(sortState.key){ var col=colByKey(sortState.key);
+    rows.sort(function(p,q){ return sortState.dir*cmp(p[sortState.key],q[sortState.key],col?col.type:'str'); }); }
+  return rows;
+}
+
 function fmtQty(q){ q=Number(q)||0; return Number.isInteger(q)?String(q):q.toFixed(2).replace(/\\.?0+$/,''); }
 function fmtDate(s){ if(!s) return '—'; var d=new Date(s+'T00:00:00'); if(isNaN(d)) return s;
   return d.toLocaleDateString('en-US',{month:'short',day:'2-digit',year:'numeric'}); }
@@ -257,12 +288,22 @@ function renderTabs(){
   document.getElementById('tabs').innerHTML=h;
 }
 
+function renderHead(){
+  var h='';
+  for(var i=0;i<COLS.length;i++){
+    var col=COLS[i];
+    var arr = sortState.key===col.key ? '<span class="arr">'+(sortState.dir>0?'▲':'▼')+'</span>' : '';
+    h+='<th class="'+(col.c?'c ':'')+'sortable" onclick="sortBy(\''+col.key+'\')" title="Sort by '+escapeHtml(col.label)+'">'+escapeHtml(col.label)+arr+'</th>';
+  }
+  return h;
+}
 function renderPanel(){
   var c=(DATA.customers||[])[active];
   if(!c){ document.getElementById('panel').innerHTML='<div class="empty">No open orders.</div>'; return; }
+  var data=sortedRows(c);
   var rows='';
-  for(var i=0;i<c.rows.length;i++){
-    var r=c.rows[i]; var sc=statusColors(r.so_status);
+  for(var i=0;i<data.length;i++){
+    var r=data[i]; var sc=statusColors(r.so_status);
     var po = r.pending_pos ? '<span class="po">&#9679; '+escapeHtml(r.pending_pos)+'</span>' : '<span class="po-none">None</span>';
     rows+='<tr>'+
       '<td class="so">'+escapeHtml(r.so_num)+'</td>'+
@@ -277,14 +318,12 @@ function renderPanel(){
       '<td class="c" style="font-weight:600;color:'+etaColor(r.eta)+'">'+fmtDate(r.eta)+'</td>'+
       '</tr>';
   }
+  var sortNote = sortState.key ? ' &middot; sorted by '+escapeHtml(colByKey(sortState.key).label)+(sortState.dir>0?' ▲':' ▼') : '';
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><h2>'+escapeHtml(c.name)+'</h2>'+
     '<div class="sub">'+c.open_sos+' open SO(s) &middot; '+c.open_items+' open item(s) &middot; '+
-    (c.vendors||[]).length+' vendor(s)</div></div>'+
-    '<table><thead><tr>'+
-    '<th>SO #</th><th>Status</th><th>Order Date</th><th>Product</th><th>Vendor</th>'+
-    '<th class="c">Ord</th><th class="c">Del</th><th class="c">Open</th><th>Pending PO</th><th class="c">ETA</th>'+
-    '</tr></thead><tbody>'+rows+'</tbody></table>';
+    (c.vendors||[]).length+' vendor(s)'+sortNote+'</div></div>'+
+    '<table><thead><tr>'+renderHead()+'</tr></thead><tbody>'+rows+'</tbody></table>';
 }
 
 function renderAsOf(){
