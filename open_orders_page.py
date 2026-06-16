@@ -256,6 +256,7 @@ function cmp(a,b,type){
   return String(a==null?'':a).toLowerCase().localeCompare(String(b==null?'':b).toLowerCase());
 }
 function sortBy(key){ if(sortState.key===key){ sortState.dir=-sortState.dir; } else { sortState.key=key; sortState.dir=1; } renderPanel(); }
+function sortByIdx(i){ if(COLS[i]) sortBy(COLS[i].key); }
 function sortedRows(c){
   var rows=(c.rows||[]).slice();
   if(sortState.key){ var col=colByKey(sortState.key);
@@ -293,7 +294,7 @@ function renderHead(){
   for(var i=0;i<COLS.length;i++){
     var col=COLS[i];
     var arr = sortState.key===col.key ? '<span class="arr">'+(sortState.dir>0?'▲':'▼')+'</span>' : '';
-    h+='<th class="'+(col.c?'c ':'')+'sortable" onclick="sortBy(\''+col.key+'\')" title="Sort by '+escapeHtml(col.label)+'">'+escapeHtml(col.label)+arr+'</th>';
+    h+='<th class="'+(col.c?'c ':'')+'sortable" onclick="sortByIdx('+i+')" title="Sort by '+escapeHtml(col.label)+'">'+escapeHtml(col.label)+arr+'</th>';
   }
   return h;
 }
