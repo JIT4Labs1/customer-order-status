@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-06-16 03:37:09 PM PDT",
+  "generated_at": "2026-06-16 04:18:32 PM PDT",
   "totals": {
-    "customers": 7,
-    "open_sos": 12,
-    "open_items": 28,
+    "customers": 6,
+    "open_sos": 10,
+    "open_items": 26,
     "vendors": 4,
-    "high_demand_skus": 7
+    "high_demand_skus": 6
   },
   "customers": [
     {
@@ -39,28 +39,6 @@
           "open_qty": 1.0,
           "pending_pos": "PO625",
           "eta": ""
-        }
-      ]
-    },
-    {
-      "name": "Chicago Lab",
-      "open_sos": 1,
-      "open_items": 1,
-      "vendors": [
-        "PMA Services"
-      ],
-      "rows": [
-        {
-          "so_num": "SO390",
-          "so_status": "Partially delivered",
-          "order_date": "2026-04-30",
-          "product": "Beckman Coulter 33020 Access 2 Ferritin Reagent 2x50 Count 100/Kt",
-          "vendor": "PMA Services",
-          "ordered_qty": 4.0,
-          "delivered_qty": 0,
-          "open_qty": 4.0,
-          "pending_pos": "PO615",
-          "eta": "2026-05-06"
         }
       ]
     },
@@ -134,26 +112,14 @@
     },
     {
       "name": "Mercedes Scientific",
-      "open_sos": 4,
-      "open_items": 12,
+      "open_sos": 3,
+      "open_items": 11,
       "vendors": [
         "ALDX HOLDING CORPORATION",
         "ClearChem Diagnostics, Inc",
         "PMA Services"
       ],
       "rows": [
-        {
-          "so_num": "SO314",
-          "so_status": "Partially delivered",
-          "order_date": "2026-03-13",
-          "product": "Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations",
-          "vendor": "PMA Services",
-          "ordered_qty": 27.0,
-          "delivered_qty": 0,
-          "open_qty": 27.0,
-          "pending_pos": "",
-          "eta": ""
-        },
         {
           "so_num": "SO408",
           "so_status": "Partially delivered",
@@ -565,17 +531,16 @@
     },
     {
       "name": "PMA Services",
-      "open_items": 19,
+      "open_items": 17,
       "customers": [
         "3 Alpha Labs, LLC",
-        "Chicago Lab",
         "Doctors General Laboratory",
         "LabX Diagnostic Systems",
         "Mercedes Scientific",
         "OM Diagnostic Laboratories",
         "Radiance Diagnostics"
       ],
-      "pos": 10,
+      "pos": 9,
       "rows": [
         {
           "customer": "3 Alpha Labs, LLC",
@@ -600,18 +565,6 @@
           "open_qty": 1.0,
           "pending_pos": "PO625",
           "eta": ""
-        },
-        {
-          "customer": "Chicago Lab",
-          "so_num": "SO390",
-          "so_status": "Partially delivered",
-          "order_date": "2026-04-30",
-          "product": "Beckman Coulter 33020 Access 2 Ferritin Reagent 2x50 Count 100/Kt",
-          "ordered_qty": 4.0,
-          "delivered_qty": 0,
-          "open_qty": 4.0,
-          "pending_pos": "PO615",
-          "eta": "2026-05-06"
         },
         {
           "customer": "Doctors General Laboratory",
@@ -659,18 +612,6 @@
           "delivered_qty": 0,
           "open_qty": 1.0,
           "pending_pos": "PO632",
-          "eta": ""
-        },
-        {
-          "customer": "Mercedes Scientific",
-          "so_num": "SO314",
-          "so_status": "Partially delivered",
-          "order_date": "2026-03-13",
-          "product": "Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations",
-          "ordered_qty": 27.0,
-          "delivered_qty": 0,
-          "open_qty": 27.0,
-          "pending_pos": "",
           "eta": ""
         },
         {
@@ -811,8 +752,6 @@
   "high_demand": {
     "customers": [
       "3 Alpha Labs, LLC",
-      "Chicago Lab",
-      "Doctors General Laboratory",
       "LabX Diagnostic Systems",
       "Mercedes Scientific",
       "OM Diagnostic Laboratories",
@@ -820,36 +759,37 @@
     ],
     "items": [
       {
-        "product": "Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations",
-        "vendor": "PMA Services",
-        "total": 34.0,
-        "cust_count": 2,
-        "order_count": 2,
-        "qty": {
-          "Mercedes Scientific": 27.0,
-          "Doctors General Laboratory": 7.0
-        }
-      },
-      {
         "product": "Beckman Coulter A98032 Access Folate Reagent, 100 Determinations",
         "vendor": "PMA Services",
         "total": 21.0,
         "cust_count": 2,
         "order_count": 2,
+        "po_count": 2,
+        "pos": [
+          "PO645",
+          "PO679"
+        ],
         "qty": {
           "Mercedes Scientific": 20.0,
           "OM Diagnostic Laboratories": 1.0
-        }
-      },
-      {
-        "product": "Beckman Coulter 33020 Access 2 Ferritin Reagent 2x50 Count 100/Kt",
-        "vendor": "PMA Services",
-        "total": 10.0,
-        "cust_count": 2,
-        "order_count": 2,
-        "qty": {
-          "Chicago Lab": 4.0,
-          "Mercedes Scientific": 6.0
+        },
+        "detail": {
+          "Mercedes Scientific": [
+            {
+              "po": "PO645",
+              "date": "2026-05-19",
+              "so": "SO408",
+              "qty": 20.0
+            }
+          ],
+          "OM Diagnostic Laboratories": [
+            {
+              "po": "PO679",
+              "date": "2026-06-10",
+              "so": "SO428",
+              "qty": 1.0
+            }
+          ]
         }
       },
       {
@@ -858,9 +798,32 @@
         "total": 5.0,
         "cust_count": 2,
         "order_count": 2,
+        "po_count": 2,
+        "pos": [
+          "PO653",
+          "PO665"
+        ],
         "qty": {
           "Radiance Diagnostics": 2.0,
           "Mercedes Scientific": 3.0
+        },
+        "detail": {
+          "Radiance Diagnostics": [
+            {
+              "po": "PO653",
+              "date": "2026-05-27",
+              "so": "SO412",
+              "qty": 2.0
+            }
+          ],
+          "Mercedes Scientific": [
+            {
+              "po": "PO665",
+              "date": "2026-06-03",
+              "so": "SO419",
+              "qty": 3.0
+            }
+          ]
         }
       },
       {
@@ -869,9 +832,32 @@
         "total": 2.0,
         "cust_count": 2,
         "order_count": 2,
+        "po_count": 2,
+        "pos": [
+          "PO625",
+          "PO632"
+        ],
         "qty": {
           "3 Alpha Labs, LLC": 1.0,
           "LabX Diagnostic Systems": 1.0
+        },
+        "detail": {
+          "3 Alpha Labs, LLC": [
+            {
+              "po": "PO625",
+              "date": "2026-05-04",
+              "so": "SO396",
+              "qty": 1.0
+            }
+          ],
+          "LabX Diagnostic Systems": [
+            {
+              "po": "PO632",
+              "date": "2026-05-06",
+              "so": "SO400",
+              "qty": 1.0
+            }
+          ]
         }
       },
       {
@@ -880,8 +866,29 @@
         "total": 40.0,
         "cust_count": 1,
         "order_count": 2,
+        "po_count": 2,
+        "pos": [
+          "PO646",
+          "PO666"
+        ],
         "qty": {
           "Mercedes Scientific": 40.0
+        },
+        "detail": {
+          "Mercedes Scientific": [
+            {
+              "po": "PO646",
+              "date": "2026-05-19",
+              "so": "SO408",
+              "qty": 20.0
+            },
+            {
+              "po": "PO666",
+              "date": "2026-06-03",
+              "so": "SO419",
+              "qty": 20.0
+            }
+          ]
         }
       },
       {
@@ -890,15 +897,60 @@
         "total": 16.0,
         "cust_count": 1,
         "order_count": 2,
+        "po_count": 2,
+        "pos": [
+          "PO645",
+          "PO665"
+        ],
         "qty": {
           "Mercedes Scientific": 16.0
+        },
+        "detail": {
+          "Mercedes Scientific": [
+            {
+              "po": "PO645",
+              "date": "2026-05-19",
+              "so": "SO408",
+              "qty": 8.0
+            },
+            {
+              "po": "PO665",
+              "date": "2026-06-03",
+              "so": "SO419",
+              "qty": 8.0
+            }
+          ]
+        }
+      },
+      {
+        "product": "Beckman Coulter 33830 Access Total T3, 100 Determinations",
+        "vendor": "ClearChem Diagnostics, Inc",
+        "total": 2.0,
+        "cust_count": 1,
+        "order_count": 1,
+        "po_count": 2,
+        "pos": [
+          "PO665",
+          "PO666"
+        ],
+        "qty": {
+          "Mercedes Scientific": 2.0
+        },
+        "detail": {
+          "Mercedes Scientific": [
+            {
+              "po": "PO665, PO666",
+              "date": "2026-06-03",
+              "so": "SO419",
+              "qty": 2.0
+            }
+          ]
         }
       }
     ]
   },
   "po_emails": {
     "PO579": "mailto:debbie@pmaservices.com?subject=PO579%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO579.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%2033810%20Access%20Thyroid%20Uptake%20Reagent%2C%20100%20Determinations%20%E2%80%94%201%20open%2C%20ETA%3A%20Jul%2020%2C%202026%0A%0AThank%20you%2C%0AAmir",
-    "PO615": "mailto:debbie@pmaservices.com?subject=PO615%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO615.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%2033020%20Access%202%20Ferritin%20Reagent%202x50%20Count%20100%2FKt%20%E2%80%94%204%20open%2C%20ETA%3A%20May%2006%2C%202026%0A%0AThank%20you%2C%0AAmir",
     "PO625": "mailto:debbie@pmaservices.com?subject=PO625%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO625.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20A13430%20Access%20Free%20T3%20Calibrator%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO632": "mailto:debbie@pmaservices.com?subject=PO632%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO632.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20A13430%20Access%20Free%20T3%20Calibrator%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO645": "mailto:debbie@pmaservices.com?subject=PO645%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO645.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20A98032%20Access%20Folate%20Reagent%2C%20100%20Determinations%20%E2%80%94%2020%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%2033020%20Access%202%20Ferritin%20Reagent%202x50%20Count%20100%2FKt%20%E2%80%94%206%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%2033520%20Follicle%20Stimulating%20Hormone%20%28FSH%29%20100%20Tests%20%E2%80%94%208%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
