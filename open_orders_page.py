@@ -146,15 +146,51 @@ def build_page_data(open_items):
         if url:
             po_emails[po] = url
 
+    # ── Vendor view: same open items, grouped by vendor (then by customer in UI) ──
+    by_vendor = defaultdict(list)
+    for it in open_items:
+        by_vendor[it.get("vendor", "") or "Unspecified"].append(it)
+    vendors = []
+    for vname in sorted(by_vendor.keys(), key=str.lower):
+        vitems = sorted(by_vendor[vname], key=lambda r: (r.get("customer", "").lower(),
+                                                          r.get("order_date", ""), r.get("product", "")))
+        vcusts = sorted(set(i["customer"] for i in vitems), key=str.lower)
+        vpos = set()
+        vrows = []
+        for it in vitems:
+            for po in [p.strip() for p in (it.get("pending_pos", "") or "").split(",") if p.strip()]:
+                vpos.add(po)
+            vrows.append({
+                "customer": it.get("customer", ""),
+                "so_num": it.get("so_num", ""),
+                "so_status": it.get("so_status", ""),
+                "order_date": it.get("order_date", ""),
+                "product": it.get("product", ""),
+                "ordered_qty": it.get("ordered_qty", 0),
+                "delivered_qty": it.get("delivered_qty", 0),
+                "open_qty": it.get("open_qty", 0),
+                "pending_pos": it.get("pending_pos", ""),
+                "eta": (it.get("eta", "") or "").split(" ")[0],
+            })
+        vendors.append({
+            "name": vname,
+            "open_items": len(vitems),
+            "customers": vcusts,
+            "pos": len(vpos),
+            "rows": vrows,
+        })
+
     totals = {
         "customers": len(customers),
         "open_sos": len(set((i["customer"], i["so_num"]) for i in open_items)),
         "open_items": len(open_items),
+        "vendors": len(vendors),
     }
     return {
         "generated_at": _pacific_now_str(),
         "totals": totals,
         "customers": customers,
+        "vendors": vendors,
         "po_emails": po_emails,
     }
 
@@ -210,6 +246,12 @@ def build_html(page_data):
   .kpi { background:#fff; border:1px solid #d0dbe6; border-radius:8px; padding:12px 22px; text-align:center; min-width:120px; }
   .kpi .v { font-size:26px; font-weight:700; color:#1F4E79; }
   .kpi .l { font-size:11px; color:#666; font-weight:600; text-transform:uppercase; letter-spacing:.5px; margin-top:2px; }
+
+  .modebar { display:flex; gap:8px; padding:16px 28px 0; flex-wrap:wrap; border-bottom:1px solid #dee5ec; }
+  .mode-btn { background:#fff; border:1px solid #cdd9e6; border-bottom:none; padding:10px 20px; border-radius:8px 8px 0 0;
+    font-size:13px; font-weight:700; color:#1F4E79; cursor:pointer; font-family:inherit; margin-bottom:-1px; }
+  .mode-btn:hover { background:#f5f8fb; }
+  .mode-btn.active { background:#0D2B45; color:#fff; border-color:#0D2B45; }
 
   .layout { display:flex; gap:0; padding:18px 28px 40px; align-items:flex-start; }
   .tabs { flex:0 0 270px; background:#fff; border:1px solid #dee5ec; border-radius:10px; overflow:hidden; max-height:78vh; overflow-y:auto; }
@@ -269,6 +311,11 @@ def build_html(page_data):
 
 <div class="kpis" id="kpis"></div>
 
+<div class="modebar">
+  <button class="mode-btn active" data-mode="cust" onclick="setMode('cust')">Customer Open SO's</button>
+  <button class="mode-btn" data-mode="vendor" onclick="setMode('vendor')">Open Vendor POs</button>
+</div>
+
 <div class="layout">
   <div class="tabs" id="tabs"></div>
   <div class="panel-wrap"><div class="panel" id="panel"></div></div>
@@ -282,12 +329,13 @@ var DATA_URL = "__DATA_URL__";
 var BTN = __BTN_CFG__;
 function _deobf(s,key){ if(!s) return ''; var raw=atob(s), out=''; for(var i=0;i<raw.length;i++){ out+=String.fromCharCode(raw.charCodeAt(i) ^ key.charCodeAt(i%key.length)); } return out; }
 BTN.token = _deobf(BTN.token_obf, BTN.k || '');
-var active = 0;
+var active = 0;     // selected customer index (Customer Open SO's view)
+var vactive = 0;    // selected vendor index (Open Vendor POs view)
+var mode = 'cust';  // 'cust' = Customer Open SO's · 'vendor' = Open Vendor POs
 
-// Sortable columns. Click a header to sort by it; click again to reverse.
-// Table is grouped by SO number; these item-level columns are sortable WITHIN
-// each SO group. (SO #, Status, Order Date appear in each group's header row.)
-var COLS = [
+// Click a header to sort by it; click again to reverse. Each view has its own columns.
+// Customer view: table grouped by SO (SO #, Status, Date appear in group headers).
+var COLS_CUST = [
   {key:'product',    label:'Product',    type:'str'},
   {key:'vendor',     label:'Vendor',     type:'str'},
   {key:'ordered_qty',label:'Ord',        type:'num',  c:true},
@@ -296,15 +344,27 @@ var COLS = [
   {key:'pending_pos',label:'Pending PO', type:'str'},
   {key:'eta',        label:'ETA',        type:'date', c:true}
 ];
-var sortState = {key:null, dir:1};  // null = default order (Order Date, then Product)
-function colByKey(k){ for(var i=0;i<COLS.length;i++){ if(COLS[i].key===k) return COLS[i]; } return null; }
+// Vendor view: table grouped by customer (Customer appears in group headers).
+var COLS_VENDOR = [
+  {key:'so_num',     label:'SO #',       type:'str'},
+  {key:'order_date', label:'Order Date', type:'date'},
+  {key:'product',    label:'Product',    type:'str'},
+  {key:'ordered_qty',label:'Ord',        type:'num',  c:true},
+  {key:'delivered_qty',label:'Del',      type:'num',  c:true},
+  {key:'open_qty',   label:'Open',       type:'num',  c:true},
+  {key:'pending_pos',label:'Pending PO', type:'str'},
+  {key:'eta',        label:'ETA',        type:'date', c:true}
+];
+function curCols(){ return mode==='vendor' ? COLS_VENDOR : COLS_CUST; }
+var sortState = {key:null, dir:1};
+function colByKey(k){ var cols=curCols(); for(var i=0;i<cols.length;i++){ if(cols[i].key===k) return cols[i]; } return null; }
 function cmp(a,b,type){
   if(type==='num'){ return (parseFloat(a)||0)-(parseFloat(b)||0); }
   if(type==='date'){ var da=a?Date.parse(a):0, db=b?Date.parse(b):0; da=isNaN(da)?0:da; db=isNaN(db)?0:db; return da-db; }
   return String(a==null?'':a).toLowerCase().localeCompare(String(b==null?'':b).toLowerCase());
 }
 function sortBy(key){ if(sortState.key===key){ sortState.dir=-sortState.dir; } else { sortState.key=key; sortState.dir=1; } renderPanel(); }
-function sortByIdx(i){ if(COLS[i]) sortBy(COLS[i].key); }
+function sortByIdx(i){ var cols=curCols(); if(cols[i]) sortBy(cols[i].key); }
 function sortedRows(c){
   var rows=(c.rows||[]).slice();
   if(sortState.key){ var col=colByKey(sortState.key);
@@ -323,16 +383,18 @@ function etaColor(s){ if(!s) return '#999'; var d=new Date(s+'T00:00:00'); if(is
 function renderKpis(){
   var t=DATA.totals||{};
   document.getElementById('kpis').innerHTML =
-    kpi(t.customers,'Customers')+kpi(t.open_sos,'Open SOs')+kpi(t.open_items,'Open Items');
+    kpi(t.customers,'Customers')+kpi(t.vendors,'Vendors')+kpi(t.open_sos,'Open SOs')+kpi(t.open_items,'Open Items');
 }
 function kpi(v,l){ return '<div class="kpi"><div class="v">'+(v==null?'0':v)+'</div><div class="l">'+l+'</div></div>'; }
 
 function renderTabs(){
-  var c=DATA.customers||[]; var h='';
-  if(!c.length){ document.getElementById('tabs').innerHTML='<div class="empty">No open orders.</div>'; return; }
-  for(var i=0;i<c.length;i++){
-    h+='<button class="tab'+(i===active?' active':'')+'" onclick="selectTab('+i+')">'+
-       escapeHtml(c[i].name)+'<span class="cnt">'+c[i].open_items+'</span></button>';
+  var list = mode==='vendor' ? (DATA.vendors||[]) : (DATA.customers||[]);
+  var cur = mode==='vendor' ? vactive : active;
+  var h='';
+  if(!list.length){ document.getElementById('tabs').innerHTML='<div class="empty">No open orders.</div>'; return; }
+  for(var i=0;i<list.length;i++){
+    h+='<button class="tab'+(i===cur?' active':'')+'" onclick="selectTab('+i+')">'+
+       escapeHtml(list[i].name)+'<span class="cnt">'+list[i].open_items+'</span></button>';
   }
   document.getElementById('tabs').innerHTML=h;
 }
@@ -349,15 +411,17 @@ function poCell(pending){
   return out.length ? out.join('<br>') : '<span class="po-none">None</span>';
 }
 function renderHead(){
-  var h='';
-  for(var i=0;i<COLS.length;i++){
-    var col=COLS[i];
+  var cols=curCols(), h='';
+  for(var i=0;i<cols.length;i++){
+    var col=cols[i];
     var arr = sortState.key===col.key ? '<span class="arr">'+(sortState.dir>0?'▲':'▼')+'</span>' : '';
     h+='<th class="'+(col.c?'c ':'')+'sortable" onclick="sortByIdx('+i+')" title="Sort by '+escapeHtml(col.label)+'">'+escapeHtml(col.label)+arr+'</th>';
   }
   return h;
 }
-function renderPanel(){
+function renderPanel(){ if(mode==='vendor') renderVendorPanel(); else renderCustPanel(); }
+
+function renderCustPanel(){
   var c=(DATA.customers||[])[active];
   if(!c){ document.getElementById('panel').innerHTML='<div class="empty">No open orders.</div>'; return; }
   // Group this customer's rows by SO number.
@@ -370,7 +434,7 @@ function renderPanel(){
   }
   // Order SO groups by order date (oldest first), then SO number.
   order.sort(function(a,b){ var d=cmp(groups[a].date,groups[b].date,'date'); return d!==0?d:cmp(groups[a].so,groups[b].so,'str'); });
-  var ncol=COLS.length, body='';
+  var ncol=COLS_CUST.length, body='';
   for(var gi=0;gi<order.length;gi++){
     var grp=groups[order[gi]];
     var its=grp.items.slice();
@@ -404,10 +468,61 @@ function renderPanel(){
     '<table><thead><tr>'+renderHead()+'</tr></thead><tbody>'+body+'</tbody></table>';
 }
 
+function renderVendorPanel(){
+  var v=(DATA.vendors||[])[vactive];
+  if(!v){ document.getElementById('panel').innerHTML='<div class="empty">No open vendor orders.</div>'; return; }
+  // Group this vendor's rows by customer.
+  var groups={}, order=[], rows=(v.rows||[]);
+  for(var i=0;i<rows.length;i++){
+    var r=rows[i], cu=r.customer||'(no customer)';
+    if(!groups[cu]){ groups[cu]={cust:cu, items:[]}; order.push(cu); }
+    groups[cu].items.push(r);
+  }
+  order.sort(function(a,b){ return cmp(a,b,'str'); });  // customers A→Z
+  var ncol=COLS_VENDOR.length, body='';
+  for(var gi=0;gi<order.length;gi++){
+    var grp=groups[order[gi]];
+    var its=grp.items.slice();
+    if(sortState.key){ var col=colByKey(sortState.key);
+      its.sort(function(p,q){ return sortState.dir*cmp(p[sortState.key],q[sortState.key],col?col.type:'str'); }); }
+    else { its.sort(function(p,q){ var d=cmp(p.order_date,q.order_date,'date'); return d!==0?d:cmp(p.product,q.product,'str'); }); }
+    body+='<tr class="so-group"><td colspan="'+ncol+'">'+
+      '<span class="so-h">'+escapeHtml(grp.cust)+'</span>'+
+      '<span class="so-cnt">'+grp.items.length+' open item(s)</span></td></tr>';
+    for(var j=0;j<its.length;j++){
+      var r2=its[j]; var sc=statusColors(r2.so_status);
+      body+='<tr>'+
+        '<td class="so">'+escapeHtml(r2.so_num)+'</td>'+
+        '<td>'+fmtDate(r2.order_date)+'</td>'+
+        '<td>'+escapeHtml(r2.product)+'</td>'+
+        '<td class="c">'+fmtQty(r2.ordered_qty)+'</td>'+
+        '<td class="c">'+fmtQty(r2.delivered_qty)+'</td>'+
+        '<td class="c open">'+fmtQty(r2.open_qty)+'</td>'+
+        '<td>'+poCell(r2.pending_pos)+'</td>'+
+        '<td class="c" style="font-weight:600;color:'+etaColor(r2.eta)+'">'+fmtDate(r2.eta)+'</td>'+
+        '</tr>';
+    }
+  }
+  var sortNote = sortState.key ? ' &middot; sorted by '+escapeHtml(colByKey(sortState.key).label)+(sortState.dir>0?' ▲':' ▼') : '';
+  document.getElementById('panel').innerHTML =
+    '<div class="panel-head"><h2>'+escapeHtml(v.name)+'</h2>'+
+    '<div class="sub">'+v.pos+' open PO(s) &middot; '+v.open_items+' open item(s) &middot; '+
+    (v.customers||[]).length+' customer(s) &middot; grouped by customer'+sortNote+'</div></div>'+
+    '<table><thead><tr>'+renderHead()+'</tr></thead><tbody>'+body+'</tbody></table>';
+}
+
+function setMode(m){
+  if(mode===m) return;
+  mode=m; sortState={key:null, dir:1};
+  var btns=document.querySelectorAll('.mode-btn');
+  for(var i=0;i<btns.length;i++){ btns[i].className = (btns[i].getAttribute('data-mode')===m) ? 'mode-btn active' : 'mode-btn'; }
+  renderTabs(); renderPanel();
+}
+
 function renderAsOf(){
   document.getElementById('asof').textContent = 'Last refreshed: '+(DATA.generated_at||'—');
 }
-function selectTab(i){ active=i; renderTabs(); renderPanel(); }
+function selectTab(i){ if(mode==='vendor') vactive=i; else active=i; renderTabs(); renderPanel(); }
 function renderAll(){ renderKpis(); renderTabs(); renderPanel(); renderAsOf(); }
 
 function fetchData(){ return fetch(DATA_URL+'?cb='+Date.now(),{cache:'no-store'})
@@ -423,7 +538,7 @@ function btnBusy(on,label){
 // Snapshot-only refresh: just reload the latest published JSON.
 function reloadSnapshot(){
   btnBusy(true,'Loading…');
-  fetchData().then(function(d){ DATA=d; if(active>=(DATA.customers||[]).length) active=0; renderAll(); })
+  fetchData().then(function(d){ DATA=d; if(active>=(DATA.customers||[]).length) active=0; if(vactive>=(DATA.vendors||[]).length) vactive=0; renderAll(); })
     .catch(function(e){ alert('Could not refresh data: '+e.message); })
     .finally(function(){ btnBusy(false); });
 }
@@ -453,7 +568,7 @@ function pollForUpdate(prevStamp,tries){
   setTimeout(function(){
     fetchData().then(function(d){
       if(d && d.generated_at && d.generated_at!==prevStamp){
-        DATA=d; if(active>=(DATA.customers||[]).length) active=0; renderAll(); btnBusy(false);
+        DATA=d; if(active>=(DATA.customers||[]).length) active=0; if(vactive>=(DATA.vendors||[]).length) vactive=0; renderAll(); btnBusy(false);
       } else { pollForUpdate(prevStamp,tries+1); }
     }).catch(function(){ pollForUpdate(prevStamp,tries+1); });
   },15000);
