@@ -230,6 +230,10 @@ def build_html(page_data):
   .po-email-btn { margin-left:6px; padding:1px 8px; font-size:10px; line-height:14px; border:1px solid #1F4E79;
     background:#1F4E79; color:#fff !important; border-radius:3px; text-decoration:none; vertical-align:middle; display:inline-block; }
   .po-email-btn:hover { background:#143352; }
+  .so-group td { background:#eef3f8; border-top:2px solid #cdd9e6; padding:8px 12px; }
+  .so-group .so-h { font-weight:700; color:#0D2B45; font-size:13px; margin-right:10px; }
+  .so-group .so-date { color:#666; font-size:11px; margin-left:10px; }
+  .so-group .so-cnt { color:#888; font-size:11px; margin-left:10px; }
   .empty { padding:40px; text-align:center; color:#999; }
   .footer { text-align:center; font-size:11px; color:#888; padding:18px; }
   @media (max-width:760px){ .layout{flex-direction:column;} .tabs{flex-basis:auto;width:100%;max-height:none;}
@@ -268,10 +272,9 @@ BTN.token = _deobf(BTN.token_obf, BTN.k || '');
 var active = 0;
 
 // Sortable columns. Click a header to sort by it; click again to reverse.
+// Table is grouped by SO number; these item-level columns are sortable WITHIN
+// each SO group. (SO #, Status, Order Date appear in each group's header row.)
 var COLS = [
-  {key:'so_num',     label:'SO #',       type:'str'},
-  {key:'so_status',  label:'Status',     type:'str'},
-  {key:'order_date', label:'Order Date', type:'date'},
   {key:'product',    label:'Product',    type:'str'},
   {key:'vendor',     label:'Vendor',     type:'str'},
   {key:'ordered_qty',label:'Ord',        type:'num',  c:true},
@@ -344,30 +347,48 @@ function renderHead(){
 function renderPanel(){
   var c=(DATA.customers||[])[active];
   if(!c){ document.getElementById('panel').innerHTML='<div class="empty">No open orders.</div>'; return; }
-  var data=sortedRows(c);
-  var rows='';
-  for(var i=0;i<data.length;i++){
-    var r=data[i]; var sc=statusColors(r.so_status);
-    var po = poCell(r.pending_pos);
-    rows+='<tr>'+
-      '<td class="so">'+escapeHtml(r.so_num)+'</td>'+
-      '<td><span class="status" style="background:'+sc[0]+';color:'+sc[1]+'">'+escapeHtml(r.so_status)+'</span></td>'+
-      '<td>'+fmtDate(r.order_date)+'</td>'+
-      '<td>'+escapeHtml(r.product)+'</td>'+
-      '<td>'+escapeHtml(r.vendor)+'</td>'+
-      '<td class="c">'+fmtQty(r.ordered_qty)+'</td>'+
-      '<td class="c">'+fmtQty(r.delivered_qty)+'</td>'+
-      '<td class="c open">'+fmtQty(r.open_qty)+'</td>'+
-      '<td>'+po+'</td>'+
-      '<td class="c" style="font-weight:600;color:'+etaColor(r.eta)+'">'+fmtDate(r.eta)+'</td>'+
-      '</tr>';
+  // Group this customer's rows by SO number.
+  var groups={}, order=[], rows=(c.rows||[]);
+  for(var i=0;i<rows.length;i++){
+    var r=rows[i], so=r.so_num||'(no SO)';
+    if(!groups[so]){ groups[so]={so:so, status:r.so_status, date:r.order_date, items:[]}; order.push(so); }
+    var g=groups[so]; g.items.push(r);
+    if(r.order_date && (!g.date || r.order_date<g.date)) g.date=r.order_date;
+  }
+  // Order SO groups by order date (oldest first), then SO number.
+  order.sort(function(a,b){ var d=cmp(groups[a].date,groups[b].date,'date'); return d!==0?d:cmp(groups[a].so,groups[b].so,'str'); });
+  var ncol=COLS.length, body='';
+  for(var gi=0;gi<order.length;gi++){
+    var grp=groups[order[gi]];
+    var its=grp.items.slice();
+    if(sortState.key){ var col=colByKey(sortState.key);
+      its.sort(function(p,q){ return sortState.dir*cmp(p[sortState.key],q[sortState.key],col?col.type:'str'); }); }
+    else { its.sort(function(p,q){ return cmp(p.product,q.product,'str'); }); }
+    var sc=statusColors(grp.status);
+    body+='<tr class="so-group"><td colspan="'+ncol+'">'+
+      '<span class="so-h">'+escapeHtml(grp.so)+'</span>'+
+      '<span class="status" style="background:'+sc[0]+';color:'+sc[1]+'">'+escapeHtml(grp.status)+'</span>'+
+      '<span class="so-date">'+fmtDate(grp.date)+'</span>'+
+      '<span class="so-cnt">'+grp.items.length+' open item(s)</span></td></tr>';
+    for(var j=0;j<its.length;j++){
+      var r2=its[j];
+      body+='<tr>'+
+        '<td>'+escapeHtml(r2.product)+'</td>'+
+        '<td>'+escapeHtml(r2.vendor)+'</td>'+
+        '<td class="c">'+fmtQty(r2.ordered_qty)+'</td>'+
+        '<td class="c">'+fmtQty(r2.delivered_qty)+'</td>'+
+        '<td class="c open">'+fmtQty(r2.open_qty)+'</td>'+
+        '<td>'+poCell(r2.pending_pos)+'</td>'+
+        '<td class="c" style="font-weight:600;color:'+etaColor(r2.eta)+'">'+fmtDate(r2.eta)+'</td>'+
+        '</tr>';
+    }
   }
   var sortNote = sortState.key ? ' &middot; sorted by '+escapeHtml(colByKey(sortState.key).label)+(sortState.dir>0?' ▲':' ▼') : '';
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><h2>'+escapeHtml(c.name)+'</h2>'+
     '<div class="sub">'+c.open_sos+' open SO(s) &middot; '+c.open_items+' open item(s) &middot; '+
-    (c.vendors||[]).length+' vendor(s)'+sortNote+'</div></div>'+
-    '<table><thead><tr>'+renderHead()+'</tr></thead><tbody>'+rows+'</tbody></table>';
+    (c.vendors||[]).length+' vendor(s) &middot; grouped by SO'+sortNote+'</div></div>'+
+    '<table><thead><tr>'+renderHead()+'</tr></thead><tbody>'+body+'</tbody></table>';
 }
 
 function renderAsOf(){
