@@ -68,5 +68,11 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "Refresh open orders page — $(date -u '+%Y-%m-%d %H:%M UTC')"
-            git push
+            # Rebase onto any commits that landed while this run was pulling, then
+            # push with a few retries to avoid non-fast-forward failures.
+            for attempt in 1 2 3; do
+              git pull --rebase origin main && git push && break
+              echo "push attempt $attempt failed; retrying..."
+              sleep 5
+            done
           fi
