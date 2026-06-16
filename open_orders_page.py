@@ -35,6 +35,7 @@ from collections import defaultdict
 # Importing is safe: open_orders_report.py guards execution behind
 # `if __name__ == "__main__"`, so nothing runs on import.
 from open_orders_report import VtigerAPI, extract_open_orders, CONFIG, log, build_po_email_url
+from pnl_report import build_pnl
 
 # ─────────────────────────────────────────────
 # GitHub Pages publishing (same host/repo as the customer-order-status reports)
@@ -312,6 +313,11 @@ def build_html(page_data):
     font-size:13px; font-weight:700; color:#1F4E79; cursor:pointer; font-family:inherit; margin-bottom:-1px; }
   .mode-btn:hover { background:#f5f8fb; }
   .mode-btn.active { background:#0D2B45; color:#fff; border-color:#0D2B45; }
+  .mode-btn.mode-pnl { color:#1b7a3d; border-color:#bfe3c9; }
+  .mode-btn.mode-pnl:hover { background:#eef8f0; }
+  .mode-btn.mode-pnl.active { background:#2e7d32; color:#fff; border-color:#2e7d32; }
+  .pnl-wrap { overflow-x:auto; padding:20px 22px; }
+  .pnl-wrap h2, .pnl-wrap h3 { color:#2c3e50; }
 
   .layout { display:flex; gap:0; padding:18px 28px 40px; align-items:flex-start; }
   .tabs { flex:0 0 270px; background:#fff; border:1px solid #dee5ec; border-radius:10px; overflow:hidden; max-height:78vh; overflow-y:auto; }
@@ -392,7 +398,8 @@ def build_html(page_data):
 <div class="kpis" id="kpis"></div>
 
 <div class="modebar">
-  <button class="mode-btn active" data-mode="cust" onclick="setMode('cust')">Customer Open SO's</button>
+  <button class="mode-btn mode-pnl active" data-mode="pnl" onclick="setMode('pnl')">P&amp;L Report</button>
+  <button class="mode-btn" data-mode="cust" onclick="setMode('cust')">Customer Open SO's</button>
   <button class="mode-btn" data-mode="vendor" onclick="setMode('vendor')">Open Vendor POs</button>
   <button class="mode-btn" data-mode="sku" onclick="setMode('sku')">High Demand SKUs</button>
 </div>
@@ -412,7 +419,7 @@ function _deobf(s,key){ if(!s) return ''; var raw=atob(s), out=''; for(var i=0;i
 BTN.token = _deobf(BTN.token_obf, BTN.k || '');
 var active = 0;     // selected customer index (Customer Open SO's view)
 var vactive = 0;    // selected vendor index (Open Vendor POs view)
-var mode = 'cust';  // 'cust' = Customer Open SO's · 'vendor' = Open Vendor POs
+var mode = 'pnl';   // 'pnl' = P&L Report (default first tab) · 'cust' · 'vendor' · 'sku'
 
 // Click a header to sort by it; click again to reverse. Each view has its own columns.
 // Customer view: table grouped by SO (SO #, Status, Date appear in group headers).
@@ -472,7 +479,7 @@ function kpi(v,l){ return '<div class="kpi"><div class="v">'+(v==null?'0':v)+'</
 
 function renderTabs(){
   var tabsEl=document.getElementById('tabs');
-  if(mode==='sku'){ tabsEl.style.display='none'; tabsEl.innerHTML=''; return; }  // matrix is full-width, no per-entity tabs
+  if(mode==='sku' || mode==='pnl'){ tabsEl.style.display='none'; tabsEl.innerHTML=''; return; }  // full-width views, no per-entity tabs
   tabsEl.style.display='';
   var list = mode==='vendor' ? (DATA.vendors||[]) : (DATA.customers||[]);
   var cur = mode==='vendor' ? vactive : active;
@@ -505,7 +512,18 @@ function renderHead(){
   }
   return h;
 }
-function renderPanel(){ if(mode==='vendor') renderVendorPanel(); else if(mode==='sku') renderSkuPanel(); else renderCustPanel(); }
+function renderPanel(){
+  if(mode==='pnl') renderPnlPanel();
+  else if(mode==='vendor') renderVendorPanel();
+  else if(mode==='sku') renderSkuPanel();
+  else renderCustPanel();
+}
+function renderPnlPanel(){
+  var html=DATA.pnl_html||'';
+  document.getElementById('panel').innerHTML = html
+    ? '<div class="pnl-wrap">'+html+'</div>'
+    : '<div class="empty">P&amp;L report will appear after the next refresh.</div>';
+}
 
 function renderCustPanel(){
   var c=(DATA.customers||[])[active];
@@ -869,6 +887,11 @@ def main():
     page_data = build_page_data(open_items)
     log(f"Built page data: {page_data['totals']['customers']} customers, "
         f"{page_data['totals']['open_items']} open items")
+
+    # P&L report (same data pipeline, fresh from Vtiger) embedded as the first tab.
+    log("Building P&L report...")
+    page_data["pnl_html"] = build_pnl(vt)
+    log(f"  P&L HTML: {len(page_data['pnl_html'])} bytes")
 
     out_dir = CONFIG["output_dir"]
     data_path = os.path.join(out_dir, DATA_FILENAME)
