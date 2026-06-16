@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JIT4You — Open Orders by Customer</title>
+<link rel="icon" href="https://jit4you.myshopify.com/cdn/shop/files/JIT4LABS_Favicon.png" type="image/png">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',Arial,Helvetica,sans-serif; background:#f0f2f5; color:#2c3e50; }
+  .header { background:#0D2B45; color:#fff; padding:18px 28px; display:flex; align-items:center;
+            justify-content:space-between; flex-wrap:wrap; gap:12px; }
+  .header .brand { font-size:22px; font-weight:700; letter-spacing:1px; }
+  .header .brand small { display:block; font-size:13px; font-weight:600; color:#cdd9e6; letter-spacing:0; margin-top:2px; }
+  .header .meta { text-align:right; font-size:12px; color:#cdd9e6; }
+  .refresh-btn { background:#1F4E79; color:#fff; border:none; padding:9px 18px; border-radius:6px;
+                 font-size:13px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:8px; }
+  .refresh-btn:hover { background:#2a5f92; }
+  .refresh-btn:disabled { opacity:.6; cursor:default; }
+  .spin { width:13px; height:13px; border:2px solid rgba(255,255,255,.4); border-top-color:#fff;
+          border-radius:50%; display:none; animation:spin .7s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .loading .spin { display:inline-block; }
+
+  .kpis { display:flex; gap:12px; padding:16px 28px 0; flex-wrap:wrap; }
+  .kpi { background:#fff; border:1px solid #d0dbe6; border-radius:8px; padding:12px 22px; text-align:center; min-width:120px; }
+  .kpi .v { font-size:26px; font-weight:700; color:#1F4E79; }
+  .kpi .l { font-size:11px; color:#666; font-weight:600; text-transform:uppercase; letter-spacing:.5px; margin-top:2px; }
+
+  .layout { display:flex; gap:0; padding:18px 28px 40px; align-items:flex-start; }
+  .tabs { flex:0 0 270px; background:#fff; border:1px solid #dee5ec; border-radius:10px; overflow:hidden; max-height:78vh; overflow-y:auto; }
+  .tab { display:block; width:100%; text-align:left; background:none; border:none; border-bottom:1px solid #eef2f6;
+         padding:12px 16px; cursor:pointer; font-size:13px; color:#2c3e50; font-family:inherit; }
+  .tab:hover { background:#f5f8fb; }
+  .tab.active { background:#1F4E79; color:#fff; }
+  .tab .cnt { float:right; font-size:11px; opacity:.8; }
+  .tab.active .cnt { color:#cfe0f0; }
+
+  .panel-wrap { flex:1 1 auto; margin-left:18px; min-width:0; }
+  .panel { background:#fff; border:1px solid #dee5ec; border-radius:10px; overflow:hidden; }
+  .panel-head { background:#f0f4f8; border-bottom:1px solid #dee5ec; padding:16px 20px; }
+  .panel-head h2 { font-size:18px; color:#0D2B45; }
+  .panel-head .sub { font-size:12px; color:#666; margin-top:4px; }
+  table { width:100%; border-collapse:collapse; font-size:12px; }
+  thead th { background:#0D2B45; color:#fff; text-align:left; padding:9px 10px; font-weight:700; font-size:11px; white-space:nowrap; }
+  thead th.c { text-align:center; }
+  tbody td { padding:8px 10px; border-bottom:1px solid #eef2f6; vertical-align:top; }
+  tbody td.c { text-align:center; }
+  tbody tr:nth-child(even) { background:#f8fafc; }
+  .so { font-weight:700; color:#1F4E79; white-space:nowrap; }
+  .status { padding:2px 8px; border-radius:10px; font-size:10px; white-space:nowrap; }
+  .open { font-weight:700; color:#c0392b; }
+  .po { color:#e67e22; white-space:nowrap; }
+  .po-none { color:#999; }
+  .empty { padding:40px; text-align:center; color:#999; }
+  .footer { text-align:center; font-size:11px; color:#888; padding:18px; }
+  @media (max-width:760px){ .layout{flex-direction:column;} .tabs{flex-basis:auto;width:100%;max-height:none;}
+    .panel-wrap{margin-left:0;margin-top:14px;} }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand">JIT4You<small>Open Orders by Customer</small></div>
+  <div style="display:flex;align-items:center;gap:18px;">
+    <div class="meta">
+      <div id="asof">&nbsp;</div>
+      <div>2026 Sales Orders &middot; Excl. ConMed</div>
+    </div>
+    <button id="refresh" class="refresh-btn" onclick="refreshData()">
+      <span class="spin"></span><span class="lbl">Refresh</span>
+    </button>
+  </div>
+</div>
+
+<div class="kpis" id="kpis"></div>
+
+<div class="layout">
+  <div class="tabs" id="tabs"></div>
+  <div class="panel-wrap"><div class="panel" id="panel"></div></div>
+</div>
+
+<div class="footer">JIT4You Inc. &middot; Open Orders &middot; data refreshes from Vtiger on each scheduled run</div>
+
+<script>
+var DATA = {"generated_at": "2026-06-16 00:55:05", "totals": {"customers": 6, "open_sos": 11, "open_items": 30}, "customers": [{"name": "3 Alpha Labs, LLC", "open_sos": 2, "open_items": 2, "vendors": ["PMA Services"], "rows": [{"so_num": "SO348", "so_status": "Partially delivered", "order_date": "2026-04-08", "product": "Beckman Coulter 33810 Access Thyroid Uptake Reagent, 100 Determinations", "vendor": "PMA Services", "ordered_qty": 1.0, "delivered_qty": 0, "open_qty": 1.0, "pending_pos": "PO579", "eta": "2026-07-20"}, {"so_num": "SO396", "so_status": "Approved", "order_date": "2026-05-04", "product": "Beckman Coulter A13430 Access Free T3 Calibrator", "vendor": "PMA Services", "ordered_qty": 1.0, "delivered_qty": 0, "open_qty": 1.0, "pending_pos": "PO625", "eta": ""}]}, {"name": "Chicago Lab", "open_sos": 1, "open_items": 1, "vendors": ["PMA Services"], "rows": [{"so_num": "SO390", "so_status": "Partially delivered", "order_date": "2026-04-30", "product": "Beckman Coulter 33020 Access 2 Ferritin Reagent 2x50 Count 100/Kt", "vendor": "PMA Services", "ordered_qty": 4.0, "delivered_qty": 0, "open_qty": 4.0, "pending_pos": "PO615", "eta": "2026-05-06"}]}, {"name": "LabX Diagnostic Systems", "open_sos": 1, "open_items": 2, "vendors": ["PMA Services"], "rows": [{"so_num": "SO400", "so_status": "Partially delivered", "order_date": "2026-05-06", "product": "Beckman Coulter A13430 Access Free T3 Calibrator", "vendor": "PMA Services", "ordered_qty": 1.0, "delivered_qty": 0, "open_qty": 1.0, "pending_pos": "PO632", "eta": ""}, {"so_num": "SO400", "so_status": "Partially delivered", "order_date": "2026-05-06", "product": "Beckman Coulter OSR6195 Olympus HDL Cholesterol Reagent", "vendor": "PMA Services", "ordered_qty": 1.0, "delivered_qty": 0, "open_qty": 1.0, "pending_pos": "PO632", "eta": ""}]}, {"name": "Mercedes Scientific", "open_sos": 4, "open_items": 13, "vendors": ["ALDX HOLDING CORPORATION", "Allora Biotech LLC", "ClearChem Diagnostics, Inc", "PMA Services"], "rows": [{"so_num": "SO314", "so_status": "Partially delivered", "order_date": "2026-03-13", "product": "Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations", "vendor": "PMA Services", "ordered_qty": 27.0, "delivered_qty": 0, "open_qty": 27.0, "pending_pos": "", "eta": ""}, {"so_num": "SO408", "so_status": "Partially delivered", "order_date": "2026-05-19", "product": "Beckman Coulter 33020 Access 2 Ferritin Reagent 2x50 Count 100/Kt", "vendor": "PMA Services", "ordered_qty": 10.0, "delivered_qty": 4.0, "open_qty": 6.0, "pending_pos": "PO645", "eta": ""}, {"so_num": "SO408", "so_status": "Partially delivered", "order_date": "2026-05-19", "product": "Beckman Coulter 33520 Follicle Stimulating Hormone (FSH) 100 Tests", "vendor": "PMA Services", "ordered_qty": 8.0, "delivered_qty": 0, "open_qty": 8.0, "pending_pos": "PO645", "eta": ""}, {"so_num": "SO408", "so_status": "Partially delivered", "order_date": "2026-05-19", "product": "Beckman Coulter 81906 Access Substrate", "vendor": "ClearChem Diagnostics, Inc", "ordered_qty": 20.0, "delivered_qty": 0, "open_qty": 20.0, "pending_pos": "PO646", "eta": ""}, {"so_num": "SO408", "so_status": "Partially delivered", "order_date": "2026-05-19", "product": "Beckman Coulter A98032 Access Folate Reagent, 100 Determinations", "vendor": "PMA Services", "ordered_qty": 20.0, "delivered_qty": 0, "open_qty": 20.0, "pending_pos": "PO645", "eta": ""}, {"so_num": "SO408", "so_status": "Partially delivered", "order_date": "2026-05-19", "product": "Beckman coulter 33580 Reagent, Access hGH Ultrasensitive (REF)", "vendor": "Allora Biotech LLC", "ordered_qty": 4.0, "delivered_qty": 0, "open_qty": 4.0, "pending_pos": "PO647", "eta": ""}, {"so_num": "SO419", "so_status": "Partially delivered", "order_date": "2026-06-03", "product": "Beckman Coulter 33510 Access hLH Reagent, 100 Determinations", "vendor": "PMA Services", "ordered_qty": 3.0, "delivered_qty": 0, "open_qty": 3.0, "pending_pos": "PO665", "eta": ""}, {"so_num": "SO419", "so_status": "Partially delivered", "order_date": "2026-06-03", "product": "Beckman Coulter 33520 Follicle Stimulating Hormone (FSH) 100 Tests", "vendor": "PMA Services", "ordered_qty": 8.0, "delivered_qty": 0, "open_qty": 8.0, "pending_pos": "PO665", "eta": ""}, {"so_num": "SO419", "so_status": "Partially delivered", "order_date": "2026-06-03", "product": "Beckman Coulter 33830 Access Total T3, 100 Determinations", "vendor": "ClearChem Diagnostics, Inc", "ordered_qty": 5.0, "delivered_qty": 3.0, "open_qty": 2.0, "pending_pos": "PO665, PO666", "eta": ""}, {"so_num": "SO419", "so_status": "Partially delivered", "order_date": "2026-06-03", "product": "Beckman Coulter 81906 Access Substrate", "vendor": "ClearChem Diagnostics, Inc", "ordered_qty": 20.0, "delivered_qty": 0, "open_qty": 20.0, "pending_pos": "PO666", "eta": ""}, {"so_num": "SO419", "so_status": "Partially delivered", "order_date": "2026-06-03", "product": "Beckman Coulter AUH1011 Buffer 4 X 2000 mL", "vendor": "ALDX HOLDING CORPORATION", "ordered_qty": 3.0, "delivered_qty": 0, "open_qty": 3.0, "pending_pos": "PO668", "eta": ""}, {"so_num": "SO419", "so_status": "Partially delivered", "order_date": "2026-06-03", "product": "Beckman Coulter B63284 Access TSH Stimulating Hormone (3rd IS) 2 x 100 Determinations", "vendor": "PMA Services", "ordered_qty": 25.0, "delivered_qty": 14.0, "open_qty": 11.0, "pending_pos": "PO665", "eta": ""}, {"so_num": "SO425", "so_status": "Approved", "order_date": "2026-06-09", "product": "Beckman Coulter MU919400 Electrode, Olympus, NA+", "vendor": "ALDX HOLDING CORPORATION", "ordered_qty": 2.0, "delivered_qty": 0, "open_qty": 2.0, "pending_pos": "PO676", "eta": ""}]}, {"name": "OM Diagnostic Laboratories", "open_sos": 2, "open_items": 6, "vendors": ["ALDX HOLDING CORPORATION", "Allora Biotech LLC", "PMA Services"], "rows": [{"so_num": "SO417", "so_status": "Partially delivered", "order_date": "2026-06-02", "product": "Beckman Coulter 98201 Access BNP OC", "vendor": "Allora Biotech LLC", "ordered_qty": 1.0, "delivered_qty": 0, "open_qty": 1.0, "pending_pos": "PO663", "eta": ""}, {"so_num": "SO417", "so_status": "Partially delivered", "order_date": "2026-06-02", "product": "Beckman Coulter B24839 Access 25OH Vitamin D Calibrators", "vendor": "ALDX HOLDING CORPORATION", "ordered_qty": 1.0, "delivered_qty": 0, "open_qty": 1.0, "pending_pos": "PO662", "eta": ""}, {"so_num": "SO428", "so_status": "Partially delivered", "order_date": "2026-06-10", "product": "Beckman Coulter 33020 Access 2 Ferritin Reagent 2x50 Count 100/Kt", "vendor": "Allora Biotech LLC", "ordered_qty": 1.0, "delivered_qty": 0, "open_qty": 1.0, "pending_pos": "PO681", "eta": ""}, {"so_num": "SO428", "so_status": "Partially delivered", "order_date": "2026-06-10", "product": "Beckman Coulter 33880 Access Free T4 Reagent, 100 Determinations", "vendor": "PMA Services", "ordered_qty": 1.0, "delivered_qty": 0, "open_qty": 1.0, "pending_pos": "PO679", "eta": ""}, {"so_num": "SO428", "so_status": "Partially delivered", "order_date": "2026-06-10", "product": "Beckman Coulter A13422 Access Free T3 Reagent, 100 Determinations", "vendor": "Allora Biotech LLC", "ordered_qty": 1.0, "delivered_qty": 0, "open_qty": 1.0, "pending_pos": "PO681", "eta": ""}, {"so_num": "SO428", "so_status": "Partially delivered", "order_date": "2026-06-10", "product": "Beckman Coulter A98032 Access Folate Reagent, 100 Determinations", "vendor": "PMA Services", "ordered_qty": 1.0, "delivered_qty": 0, "open_qty": 1.0, "pending_pos": "PO679", "eta": ""}]}, {"name": "Radiance Diagnostics", "open_sos": 1, "open_items": 6, "vendors": ["ALDX HOLDING CORPORATION", "Allora Biotech LLC", "ClearChem Diagnostics, Inc", "PMA Services"], "rows": [{"so_num": "SO412", "so_status": "Partially delivered", "order_date": "2026-05-27", "product": "Beckman Coulter 33005 Access Vitamin B12 Calibrator (S0-S5)", "vendor": "ClearChem Diagnostics, Inc", "ordered_qty": 1.0, "delivered_qty": 0, "open_qty": 1.0, "pending_pos": "PO652", "eta": ""}, {"so_num": "SO412", "so_status": "Partially delivered", "order_date": "2026-05-27", "product": "Beckman Coulter 33510 Access hLH Reagent, 100 Determinations", "vendor": "PMA Services", "ordered_qty": 2.0, "delivered_qty": 0, "open_qty": 2.0, "pending_pos": "PO653", "eta": ""}, {"so_num": "SO412", "so_status": "Partially delivered", "order_date": "2026-05-27", "product": "Beckman Coulter 33555 Access Progesterone Calibrator (S0-S5)", "vendor": "ALDX HOLDING CORPORATION", "ordered_qty": 1.0, "delivered_qty": 0, "open_qty": 1.0, "pending_pos": "PO654", "eta": ""}, {"so_num": "SO412", "so_status": "Partially delivered", "order_date": "2026-05-27", "product": "Beckman Coulter A48618 Access SHBG Sex Hormone-Binding Globulin", "vendor": "ALDX HOLDING CORPORATION", "ordered_qty": 1.0, "delivered_qty": 0, "open_qty": 1.0, "pending_pos": "PO654", "eta": ""}, {"so_num": "SO412", "so_status": "Partially delivered", "order_date": "2026-05-27", "product": "Beckman Coulter A98033 Access Folate Calibrator", "vendor": "PMA Services", "ordered_qty": 1.0, "delivered_qty": 0, "open_qty": 1.0, "pending_pos": "PO653", "eta": ""}, {"so_num": "SO412", "so_status": "Partially delivered", "order_date": "2026-05-27", "product": "Beckman coulter A14206 Reagent, Access 2, RBC Folate Lysing", "vendor": "Allora Biotech LLC", "ordered_qty": 2.0, "delivered_qty": 0, "open_qty": 2.0, "pending_pos": "PO651", "eta": ""}]}]};
+var DATA_URL = "open-orders-data.json";
+var active = 0;
+
+function fmtQty(q){ q=Number(q)||0; return Number.isInteger(q)?String(q):q.toFixed(2).replace(/\.?0+$/,''); }
+function fmtDate(s){ if(!s) return '—'; var d=new Date(s+'T00:00:00'); if(isNaN(d)) return s;
+  return d.toLocaleDateString('en-US',{month:'short',day:'2-digit',year:'numeric'}); }
+function statusColors(st){ if(/Partial/.test(st)) return ['#fff3cd','#856404'];
+  if(st==='Approved') return ['#d4edda','#155724']; return ['#cce5ff','#004085']; }
+function etaColor(s){ if(!s) return '#999'; var d=new Date(s+'T00:00:00'); if(isNaN(d)) return '#2c3e50';
+  var days=Math.floor((d-new Date())/86400000); return days<0?'#c0392b':(days<=7?'#e67e22':'#27ae60'); }
+
+function renderKpis(){
+  var t=DATA.totals||{};
+  document.getElementById('kpis').innerHTML =
+    kpi(t.customers,'Customers')+kpi(t.open_sos,'Open SOs')+kpi(t.open_items,'Open Items');
+}
+function kpi(v,l){ return '<div class="kpi"><div class="v">'+(v==null?'0':v)+'</div><div class="l">'+l+'</div></div>'; }
+
+function renderTabs(){
+  var c=DATA.customers||[]; var h='';
+  if(!c.length){ document.getElementById('tabs').innerHTML='<div class="empty">No open orders.</div>'; return; }
+  for(var i=0;i<c.length;i++){
+    h+='<button class="tab'+(i===active?' active':'')+'" onclick="selectTab('+i+')">'+
+       escapeHtml(c[i].name)+'<span class="cnt">'+c[i].open_items+'</span></button>';
+  }
+  document.getElementById('tabs').innerHTML=h;
+}
+
+function renderPanel(){
+  var c=(DATA.customers||[])[active];
+  if(!c){ document.getElementById('panel').innerHTML='<div class="empty">No open orders.</div>'; return; }
+  var rows='';
+  for(var i=0;i<c.rows.length;i++){
+    var r=c.rows[i]; var sc=statusColors(r.so_status);
+    var po = r.pending_pos ? '<span class="po">&#9679; '+escapeHtml(r.pending_pos)+'</span>' : '<span class="po-none">None</span>';
+    rows+='<tr>'+
+      '<td class="so">'+escapeHtml(r.so_num)+'</td>'+
+      '<td><span class="status" style="background:'+sc[0]+';color:'+sc[1]+'">'+escapeHtml(r.so_status)+'</span></td>'+
+      '<td>'+fmtDate(r.order_date)+'</td>'+
+      '<td>'+escapeHtml(r.product)+'</td>'+
+      '<td>'+escapeHtml(r.vendor)+'</td>'+
+      '<td class="c">'+fmtQty(r.ordered_qty)+'</td>'+
+      '<td class="c">'+fmtQty(r.delivered_qty)+'</td>'+
+      '<td class="c open">'+fmtQty(r.open_qty)+'</td>'+
+      '<td>'+po+'</td>'+
+      '<td class="c" style="font-weight:600;color:'+etaColor(r.eta)+'">'+fmtDate(r.eta)+'</td>'+
+      '</tr>';
+  }
+  document.getElementById('panel').innerHTML =
+    '<div class="panel-head"><h2>'+escapeHtml(c.name)+'</h2>'+
+    '<div class="sub">'+c.open_sos+' open SO(s) &middot; '+c.open_items+' open item(s) &middot; '+
+    (c.vendors||[]).length+' vendor(s)</div></div>'+
+    '<table><thead><tr>'+
+    '<th>SO #</th><th>Status</th><th>Order Date</th><th>Product</th><th>Vendor</th>'+
+    '<th class="c">Ord</th><th class="c">Del</th><th class="c">Open</th><th>Pending PO</th><th class="c">ETA</th>'+
+    '</tr></thead><tbody>'+rows+'</tbody></table>';
+}
+
+function renderAsOf(){
+  document.getElementById('asof').textContent = 'As of '+(DATA.generated_at||'—');
+}
+function selectTab(i){ active=i; renderTabs(); renderPanel(); }
+function renderAll(){ renderKpis(); renderTabs(); renderPanel(); renderAsOf(); }
+
+function refreshData(){
+  var btn=document.getElementById('refresh');
+  btn.classList.add('loading'); btn.disabled=true;
+  btn.querySelector('.lbl').textContent='Refreshing…';
+  fetch(DATA_URL+'?cb='+Date.now(),{cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(d){ DATA=d; if(active>=(DATA.customers||[]).length) active=0; renderAll(); })
+    .catch(function(e){ alert('Could not refresh data: '+e.message); })
+    .finally(function(){ btn.classList.remove('loading'); btn.disabled=false;
+      btn.querySelector('.lbl').textContent='Refresh'; });
+}
+
+function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(m){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
+
+renderAll();
+</script>
+</body>
+</html>
