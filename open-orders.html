@@ -338,7 +338,10 @@ function setMode(m){
   if(mode===m) return;
   mode=m; sortState={key:null, dir:1};
   var btns=document.querySelectorAll('.mode-btn');
-  for(var i=0;i<btns.length;i++){ btns[i].className = (btns[i].getAttribute('data-mode')===m) ? 'mode-btn active' : 'mode-btn'; }
+  for(var i=0;i<btns.length;i++){
+    var dm=btns[i].getAttribute('data-mode');
+    btns[i].className = 'mode-btn'+(dm==='pnl'?' mode-pnl':'')+(dm===m?' active':'');  // keep P&L green always
+  }
   renderTabs(); renderPanel();
 }
 
