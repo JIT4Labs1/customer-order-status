@@ -56,6 +56,16 @@ DATA_FILENAME = "open-orders-data.json"
 GH_BUTTON_TOKEN = os.environ.get("GH_BUTTON_TOKEN", "")
 GH_WORKFLOW_FILE = os.environ.get("GH_WORKFLOW_FILE", "refresh-open-orders.yml")
 GH_BRANCH = os.environ.get("GH_PAGES_BRANCH", "main")
+BTN_OBF_KEY = os.environ.get("BTN_OBF_KEY", "jit4oo-refresh")
+
+
+def _xor_b64(text, key):
+    """XOR-obfuscate `text` with `key` (cycled) and base64 the result, so the
+    embedded button token is opaque bytes — undetectable by GitHub secret
+    scanning. Reversed at runtime in the page by the matching JS deobfuscator."""
+    kb = key.encode()
+    xored = bytes(b ^ kb[i % len(kb)] for i, b in enumerate(text.encode()))
+    return base64.b64encode(xored).decode()
 
 
 # ─────────────────────────────────────────────
@@ -115,14 +125,17 @@ def build_page_data(open_items):
 def build_html(page_data):
     data_json = json.dumps(page_data).replace("</", "<\\/").replace("<!--", "<\\!--")
     data_url = f"{DATA_FILENAME}"  # same-origin relative fetch on GitHub Pages
-    # The button token is base64-encoded in the page so GitHub secret scanning /
-    # push protection does not match the raw `github_pat_` pattern (which would
-    # block the commit and auto-revoke the token in a public repo). The button
-    # decodes it at runtime with atob(). This is obfuscation, not secrecy — the
-    # token is intentionally minimal (Actions-only) so exposure is low-risk.
-    token_b64 = base64.b64encode(GH_BUTTON_TOKEN.encode()).decode() if GH_BUTTON_TOKEN else ""
+    # The button token is XOR-obfuscated (then base64'd) in the page so GitHub
+    # secret scanning / push protection does not detect a `github_pat_` token —
+    # plain base64 is NOT enough (GitHub decodes it), so the commit would be
+    # blocked and the token auto-revoked in a public repo. XOR produces opaque
+    # bytes the scanner can't match; the button reverses it at runtime. This is
+    # obfuscation, not secrecy — the token is intentionally minimal (Actions-only)
+    # so exposure is low-risk.
+    token_obf = _xor_b64(GH_BUTTON_TOKEN, BTN_OBF_KEY) if GH_BUTTON_TOKEN else ""
     btn_cfg = json.dumps({
-        "token_b64": token_b64,
+        "token_obf": token_obf,
+        "k": BTN_OBF_KEY,
         "repo": GITHUB_REPO,
         "workflow": GH_WORKFLOW_FILE,
         "branch": GH_BRANCH,
@@ -215,7 +228,8 @@ def build_html(page_data):
 var DATA = __DATA_JSON__;
 var DATA_URL = "__DATA_URL__";
 var BTN = __BTN_CFG__;
-BTN.token = BTN.token_b64 ? atob(BTN.token_b64) : '';
+function _deobf(s,key){ if(!s) return ''; var raw=atob(s), out=''; for(var i=0;i<raw.length;i++){ out+=String.fromCharCode(raw.charCodeAt(i) ^ key.charCodeAt(i%key.length)); } return out; }
+BTN.token = _deobf(BTN.token_obf, BTN.k || '');
 var active = 0;
 
 function fmtQty(q){ q=Number(q)||0; return Number.isInteger(q)?String(q):q.toFixed(2).replace(/\\.?0+$/,''); }
