@@ -1,10 +1,11 @@
 {
-  "generated_at": "2026-06-16 01:56:53 PM PDT",
+  "generated_at": "2026-06-16 03:37:09 PM PDT",
   "totals": {
     "customers": 7,
     "open_sos": 12,
-    "open_items": 33,
-    "vendors": 4
+    "open_items": 28,
+    "vendors": 4,
+    "high_demand_skus": 7
   },
   "customers": [
     {
@@ -66,104 +67,44 @@
     {
       "name": "Doctors General Laboratory",
       "open_sos": 1,
-      "open_items": 8,
+      "open_items": 3,
       "vendors": [
         "PMA Services"
       ],
       "rows": [
         {
           "so_num": "SO434",
-          "so_status": "Approved",
+          "so_status": "Partially delivered",
           "order_date": "2026-06-15",
           "product": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
           "vendor": "PMA Services",
           "ordered_qty": 5.0,
-          "delivered_qty": 0,
-          "open_qty": 5.0,
+          "delivered_qty": 2.0,
+          "open_qty": 3.0,
           "pending_pos": "PO689",
           "eta": ""
         },
         {
           "so_num": "SO434",
-          "so_status": "Approved",
-          "order_date": "2026-06-15",
-          "product": "Beckman Coulter A12985 Reagent Access, TPO Antibody",
-          "vendor": "PMA Services",
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "pending_pos": "PO689",
-          "eta": ""
-        },
-        {
-          "so_num": "SO434",
-          "so_status": "Approved",
+          "so_status": "Partially delivered",
           "order_date": "2026-06-15",
           "product": "Beckman Coulter A16972 Access Intact PTH Reagent, 100 determinations",
           "vendor": "PMA Services",
           "ordered_qty": 2.0,
-          "delivered_qty": 0,
-          "open_qty": 2.0,
-          "pending_pos": "PO689",
-          "eta": ""
-        },
-        {
-          "so_num": "SO434",
-          "so_status": "Approved",
-          "order_date": "2026-06-15",
-          "product": "Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations",
-          "vendor": "PMA Services",
-          "ordered_qty": 10.0,
-          "delivered_qty": 0,
-          "open_qty": 10.0,
-          "pending_pos": "PO689",
-          "eta": ""
-        },
-        {
-          "so_num": "SO434",
-          "so_status": "Approved",
-          "order_date": "2026-06-15",
-          "product": "Beckman Coulter B38858 Olympus UALB Urine CSF Albumin Reagent R1",
-          "vendor": "PMA Services",
-          "ordered_qty": 2.0,
-          "delivered_qty": 0,
-          "open_qty": 2.0,
-          "pending_pos": "PO689",
-          "eta": ""
-        },
-        {
-          "so_num": "SO434",
-          "so_status": "Approved",
-          "order_date": "2026-06-15",
-          "product": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
-          "vendor": "PMA Services",
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
+          "delivered_qty": 1.0,
           "open_qty": 1.0,
           "pending_pos": "PO689",
           "eta": ""
         },
         {
           "so_num": "SO434",
-          "so_status": "Approved",
+          "so_status": "Partially delivered",
           "order_date": "2026-06-15",
-          "product": "Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)",
+          "product": "Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations",
           "vendor": "PMA Services",
-          "ordered_qty": 2.0,
-          "delivered_qty": 0,
-          "open_qty": 2.0,
-          "pending_pos": "PO689",
-          "eta": ""
-        },
-        {
-          "so_num": "SO434",
-          "so_status": "Approved",
-          "order_date": "2026-06-15",
-          "product": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
-          "vendor": "PMA Services",
-          "ordered_qty": 2.0,
-          "delivered_qty": 0,
-          "open_qty": 2.0,
+          "ordered_qty": 10.0,
+          "delivered_qty": 3.0,
+          "open_qty": 7.0,
           "pending_pos": "PO689",
           "eta": ""
         }
@@ -624,7 +565,7 @@
     },
     {
       "name": "PMA Services",
-      "open_items": 24,
+      "open_items": 19,
       "customers": [
         "3 Alpha Labs, LLC",
         "Chicago Lab",
@@ -675,71 +616,23 @@
         {
           "customer": "Doctors General Laboratory",
           "so_num": "SO434",
-          "so_status": "Approved",
+          "so_status": "Partially delivered",
           "order_date": "2026-06-15",
           "product": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
           "ordered_qty": 5.0,
-          "delivered_qty": 0,
-          "open_qty": 5.0,
+          "delivered_qty": 2.0,
+          "open_qty": 3.0,
           "pending_pos": "PO689",
           "eta": ""
         },
         {
           "customer": "Doctors General Laboratory",
           "so_num": "SO434",
-          "so_status": "Approved",
-          "order_date": "2026-06-15",
-          "product": "Beckman Coulter A12985 Reagent Access, TPO Antibody",
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "pending_pos": "PO689",
-          "eta": ""
-        },
-        {
-          "customer": "Doctors General Laboratory",
-          "so_num": "SO434",
-          "so_status": "Approved",
+          "so_status": "Partially delivered",
           "order_date": "2026-06-15",
           "product": "Beckman Coulter A16972 Access Intact PTH Reagent, 100 determinations",
           "ordered_qty": 2.0,
-          "delivered_qty": 0,
-          "open_qty": 2.0,
-          "pending_pos": "PO689",
-          "eta": ""
-        },
-        {
-          "customer": "Doctors General Laboratory",
-          "so_num": "SO434",
-          "so_status": "Approved",
-          "order_date": "2026-06-15",
-          "product": "Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations",
-          "ordered_qty": 10.0,
-          "delivered_qty": 0,
-          "open_qty": 10.0,
-          "pending_pos": "PO689",
-          "eta": ""
-        },
-        {
-          "customer": "Doctors General Laboratory",
-          "so_num": "SO434",
-          "so_status": "Approved",
-          "order_date": "2026-06-15",
-          "product": "Beckman Coulter B38858 Olympus UALB Urine CSF Albumin Reagent R1",
-          "ordered_qty": 2.0,
-          "delivered_qty": 0,
-          "open_qty": 2.0,
-          "pending_pos": "PO689",
-          "eta": ""
-        },
-        {
-          "customer": "Doctors General Laboratory",
-          "so_num": "SO434",
-          "so_status": "Approved",
-          "order_date": "2026-06-15",
-          "product": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
+          "delivered_qty": 1.0,
           "open_qty": 1.0,
           "pending_pos": "PO689",
           "eta": ""
@@ -747,24 +640,12 @@
         {
           "customer": "Doctors General Laboratory",
           "so_num": "SO434",
-          "so_status": "Approved",
+          "so_status": "Partially delivered",
           "order_date": "2026-06-15",
-          "product": "Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)",
-          "ordered_qty": 2.0,
-          "delivered_qty": 0,
-          "open_qty": 2.0,
-          "pending_pos": "PO689",
-          "eta": ""
-        },
-        {
-          "customer": "Doctors General Laboratory",
-          "so_num": "SO434",
-          "so_status": "Approved",
-          "order_date": "2026-06-15",
-          "product": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
-          "ordered_qty": 2.0,
-          "delivered_qty": 0,
-          "open_qty": 2.0,
+          "product": "Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations",
+          "ordered_qty": 10.0,
+          "delivered_qty": 3.0,
+          "open_qty": 7.0,
           "pending_pos": "PO689",
           "eta": ""
         },
@@ -927,6 +808,94 @@
       ]
     }
   ],
+  "high_demand": {
+    "customers": [
+      "3 Alpha Labs, LLC",
+      "Chicago Lab",
+      "Doctors General Laboratory",
+      "LabX Diagnostic Systems",
+      "Mercedes Scientific",
+      "OM Diagnostic Laboratories",
+      "Radiance Diagnostics"
+    ],
+    "items": [
+      {
+        "product": "Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations",
+        "vendor": "PMA Services",
+        "total": 34.0,
+        "cust_count": 2,
+        "order_count": 2,
+        "qty": {
+          "Mercedes Scientific": 27.0,
+          "Doctors General Laboratory": 7.0
+        }
+      },
+      {
+        "product": "Beckman Coulter A98032 Access Folate Reagent, 100 Determinations",
+        "vendor": "PMA Services",
+        "total": 21.0,
+        "cust_count": 2,
+        "order_count": 2,
+        "qty": {
+          "Mercedes Scientific": 20.0,
+          "OM Diagnostic Laboratories": 1.0
+        }
+      },
+      {
+        "product": "Beckman Coulter 33020 Access 2 Ferritin Reagent 2x50 Count 100/Kt",
+        "vendor": "PMA Services",
+        "total": 10.0,
+        "cust_count": 2,
+        "order_count": 2,
+        "qty": {
+          "Chicago Lab": 4.0,
+          "Mercedes Scientific": 6.0
+        }
+      },
+      {
+        "product": "Beckman Coulter 33510 Access hLH Reagent, 100 Determinations",
+        "vendor": "PMA Services",
+        "total": 5.0,
+        "cust_count": 2,
+        "order_count": 2,
+        "qty": {
+          "Radiance Diagnostics": 2.0,
+          "Mercedes Scientific": 3.0
+        }
+      },
+      {
+        "product": "Beckman Coulter A13430 Access Free T3 Calibrator",
+        "vendor": "PMA Services",
+        "total": 2.0,
+        "cust_count": 2,
+        "order_count": 2,
+        "qty": {
+          "3 Alpha Labs, LLC": 1.0,
+          "LabX Diagnostic Systems": 1.0
+        }
+      },
+      {
+        "product": "Beckman Coulter 81906 Access Substrate",
+        "vendor": "ClearChem Diagnostics, Inc",
+        "total": 40.0,
+        "cust_count": 1,
+        "order_count": 2,
+        "qty": {
+          "Mercedes Scientific": 40.0
+        }
+      },
+      {
+        "product": "Beckman Coulter 33520 Follicle Stimulating Hormone (FSH) 100 Tests",
+        "vendor": "PMA Services",
+        "total": 16.0,
+        "cust_count": 1,
+        "order_count": 2,
+        "qty": {
+          "Mercedes Scientific": 16.0
+        }
+      }
+    ]
+  },
   "po_emails": {
     "PO579": "mailto:debbie@pmaservices.com?subject=PO579%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO579.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%2033810%20Access%20Thyroid%20Uptake%20Reagent%2C%20100%20Determinations%20%E2%80%94%201%20open%2C%20ETA%3A%20Jul%2020%2C%202026%0A%0AThank%20you%2C%0AAmir",
     "PO615": "mailto:debbie@pmaservices.com?subject=PO615%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO615.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%2033020%20Access%202%20Ferritin%20Reagent%202x50%20Count%20100%2FKt%20%E2%80%94%204%20open%2C%20ETA%3A%20May%2006%2C%202026%0A%0AThank%20you%2C%0AAmir",
@@ -945,6 +914,6 @@
     "PO668": "mailto:Riad@aldxholding.com?subject=PO668%20ETA%3F&body=Hi%20Karen%2C%0A%0AFollowing%20up%20on%20PO%20PO668.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20AUH1011%20Buffer%204%20X%202000%20mL%20%E2%80%94%203%20open%2C%20ETA%3A%20Jun%2026%2C%202026%0A%0AThank%20you%2C%0AAmir",
     "PO676": "mailto:Riad@aldxholding.com?subject=PO676%20ETA%3F&body=Hi%20Karen%2C%0A%0AFollowing%20up%20on%20PO%20PO676.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20MU919400%20Electrode%2C%20Olympus%2C%20NA%2B%20%E2%80%94%202%20open%2C%20ETA%3A%20Jun%2026%2C%202026%0A%0AThank%20you%2C%0AAmir",
     "PO679": "mailto:debbie@pmaservices.com?subject=PO679%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO679.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%2033880%20Access%20Free%20T4%20Reagent%2C%20100%20Determinations%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20A98032%20Access%20Folate%20Reagent%2C%20100%20Determinations%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
-    "PO689": "mailto:debbie@pmaservices.com?subject=PO689%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO689.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20A98856%20Access%2025OH%20Vitamin%20D%20Reagent%2C%20100%20Determinations%20%E2%80%94%2010%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%2037200%20Access%20Hybritech%20PSA%20Reagent%20Kit%2C%20100%20Determinations%20%E2%80%94%205%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20OSR6134%20Olympus%20BUN%20Reagent%20%284x620%20tests%29%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20A16972%20Access%20Intact%20PTH%20Reagent%2C%20100%20determinations%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20OSR6178%20Olympus%20Creatinine%20Reagent%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20B38858%20Olympus%20UALB%20Urine%20CSF%20Albumin%20Reagent%20R1%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20A12985%20Reagent%20Access%2C%20TPO%20Antibody%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20OSR60118%20Reagent%2C%20Olympus%2C%20Triglycerides%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir"
+    "PO689": "mailto:debbie@pmaservices.com?subject=PO689%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO689.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20A98856%20Access%2025OH%20Vitamin%20D%20Reagent%2C%20100%20Determinations%20%E2%80%94%207%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%2037200%20Access%20Hybritech%20PSA%20Reagent%20Kit%2C%20100%20Determinations%20%E2%80%94%203%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20A16972%20Access%20Intact%20PTH%20Reagent%2C%20100%20determinations%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir"
   }
 }
