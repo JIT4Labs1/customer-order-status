@@ -46,6 +46,15 @@ GITHUB_PAGES_URL = os.environ.get("GH_PAGES_URL", "https://jit4labs1.github.io/c
 PAGE_FILENAME = "open-orders.html"
 DATA_FILENAME = "open-orders-data.json"
 
+# Sales Orders to exclude from the report entirely (matched case-insensitively,
+# with or without the "SO" prefix). These never appear in any tab.
+EXCLUDED_SOS = {"SO314", "SO390"}
+
+
+def _is_excluded_so(so_num):
+    s = str(so_num or "").strip().upper()
+    return s in EXCLUDED_SOS or ("SO" + s.lstrip("SO")) in EXCLUDED_SOS
+
 # ── Refresh button → GitHub Actions workflow_dispatch ──────────────────────────
 # The page's Refresh button triggers this workflow to re-pull Vtiger live, then
 # polls the data snapshot until it updates. GH_BUTTON_TOKEN is a DEDICATED,
@@ -86,6 +95,8 @@ def _pacific_now_str():
 
 def build_page_data(open_items):
     """Group the flat open_items list into a per-customer payload for the page."""
+    # Drop excluded Sales Orders (e.g. SO314, SO390) from every view.
+    open_items = [it for it in open_items if not _is_excluded_so(it.get("so_num", ""))]
     by_customer = defaultdict(list)
     for it in open_items:
         by_customer[it["customer"]].append(it)
@@ -180,24 +191,36 @@ def build_page_data(open_items):
             "rows": vrows,
         })
 
-    # ── High-demand SKUs: items open across 2+ orders, as a Product × Customer matrix ──
-    prod_agg = {}  # product -> {vendor, cust qty map, set of distinct SOs}
+    # ── High-demand SKUs: items that appear on MORE THAN ONE PO, as a Product × Customer matrix ──
+    prod_agg = {}  # product -> {vendor, cust qty map, distinct SOs, distinct POs}
     for it in open_items:
         prod = it.get("product", "")
         if not prod:
             continue
         e = prod_agg.setdefault(prod, {"vendor": it.get("vendor", ""),
-                                       "cust": defaultdict(float), "sos": set()})
+                                       "cust": defaultdict(float), "sos": set(), "pos": set(),
+                                       "detail": defaultdict(list)})
         if not e["vendor"] and it.get("vendor"):
             e["vendor"] = it.get("vendor")
-        e["cust"][it.get("customer", "")] += float(it.get("open_qty", 0) or 0)
+        cust = it.get("customer", "")
+        e["cust"][cust] += float(it.get("open_qty", 0) or 0)
         e["sos"].add(it.get("so_num", ""))
+        for po in [p.strip() for p in (it.get("pending_pos", "") or "").split(",") if p.strip()]:
+            e["pos"].add(po)
+        # Per-customer breakdown line: which PO + SO date this open qty came from.
+        e["detail"][cust].append({
+            "po": it.get("pending_pos", "") or "",
+            "date": (it.get("order_date", "") or "").split(" ")[0],
+            "so": it.get("so_num", ""),
+            "qty": float(it.get("open_qty", 0) or 0),
+        })
     hd_items, hd_custset = [], set()
     for prod, e in prod_agg.items():
-        order_count = len(e["sos"])
-        if order_count < 2:           # "high demand" = open on 2+ distinct orders
+        po_count = len(e["pos"])
+        if po_count < 2:              # high demand = the SKU appears on more than one PO
             continue
         cust_count = len(e["cust"])
+        order_count = len(e["sos"])
         total = sum(e["cust"].values())
         hd_items.append({
             "product": prod,
@@ -205,12 +228,14 @@ def build_page_data(open_items):
             "total": total,
             "cust_count": cust_count,
             "order_count": order_count,
+            "po_count": po_count,
+            "pos": sorted(e["pos"]),
             "qty": {c: e["cust"][c] for c in e["cust"]},
+            "detail": {c: e["detail"][c] for c in e["cust"]},
         })
         hd_custset.update(e["cust"].keys())
-    # Sort so the items most worth prioritizing (most customers, then most orders,
-    # then highest total open qty) come first.
-    hd_items.sort(key=lambda x: (-x["cust_count"], -x["order_count"], -x["total"], x["product"].lower()))
+    # Most worth prioritizing first: most POs, then most customers, then highest total open qty.
+    hd_items.sort(key=lambda x: (-x["po_count"], -x["cust_count"], -x["total"], x["product"].lower()))
     high_demand = {"customers": sorted(hd_custset, key=str.lower), "items": hd_items}
 
     totals = {
@@ -327,12 +352,24 @@ def build_html(page_data):
   .empty { padding:40px; text-align:center; color:#999; }
   .matrix-wrap { overflow-x:auto; }
   table.matrix td.item-name { max-width:300px; color:#101E3E; font-weight:600; }
-  table.matrix th.cust-col { white-space:nowrap; max-width:120px; }
+  /* Column dividers on the demand matrix */
+  table.matrix th, table.matrix td { border-right:1px solid #e3e9f0; }
+  table.matrix th:last-child, table.matrix td:last-child { border-right:none; }
+  table.matrix th.cust-col { white-space:normal; word-break:break-word; max-width:110px; vertical-align:bottom; }
+  table.matrix td.hd-cell { vertical-align:top; }
+  .hd-sub { font-size:10px; color:#6b7886; font-weight:600; margin-top:2px; white-space:nowrap; }
   .hd-q { font-weight:700; color:#0D2B45; }
+  tr.aging-so td { background:#f6f9fc; padding:6px 12px 6px 24px; border-top:1px solid #eef2f6; }
+  .so-h2 { font-weight:700; color:#1F4E79; margin-right:10px; }
   .hd-badge { display:inline-block; min-width:20px; padding:1px 8px; background:#1F4E79; color:#fff; border-radius:10px; font-size:11px; font-weight:700; }
   tr.hd-hot td { background:#fff4f0 !important; }
   tr.hd-hot td.item-name { box-shadow:inset 4px 0 0 #c0392b; }
   tr.hd-warm td.item-name { box-shadow:inset 4px 0 0 #e67e22; }
+  .age-pill { display:inline-block; padding:2px 9px; border-radius:10px; font-size:11px; font-weight:700; }
+  .age-green { background:#d4edda; color:#155724; }
+  .age-orange { background:#ffe8cc; color:#9a5a16; }
+  .age-red { background:#f8d7da; color:#a11d2a; }
+  .age-na { background:#eee; color:#888; }
   .footer { text-align:center; font-size:11px; color:#888; padding:18px; }
   @media (max-width:760px){ .layout{flex-direction:column;} .tabs{flex-basis:auto;width:100%;max-height:none;}
     .panel-wrap{margin-left:0;margin-top:14px;} }
@@ -419,6 +456,8 @@ function sortedRows(c){
 function fmtQty(q){ q=Number(q)||0; return Number.isInteger(q)?String(q):q.toFixed(2).replace(/\\.?0+$/,''); }
 function fmtDate(s){ if(!s) return '—'; var d=new Date(s+'T00:00:00'); if(isNaN(d)) return s;
   return d.toLocaleDateString('en-US',{month:'short',day:'2-digit',year:'numeric'}); }
+function fmtDateShort(s){ if(!s) return ''; var d=new Date(s+'T00:00:00'); if(isNaN(d)) return s;
+  return d.toLocaleDateString('en-US',{month:'short',day:'2-digit'}); }
 function statusColors(st){ if(/Partial/.test(st)) return ['#fff3cd','#856404'];
   if(st==='Approved') return ['#d4edda','#155724']; return ['#cce5ff','#004085']; }
 function etaColor(s){ if(!s) return '#999'; var d=new Date(s+'T00:00:00'); if(isNaN(d)) return '#2c3e50';
@@ -575,53 +614,118 @@ function skuSortByIdx(i){
   else { skuSort.key=c.k; skuSort.dir = (c.k==='product'||c.k==='vendor') ? 1 : -1; }
   renderSkuPanel();
 }
+function ageInfo(dateStr){
+  if(!dateStr) return {cls:'age-na', label:'—'};
+  var d=new Date(dateStr+'T00:00:00'); if(isNaN(d)) return {cls:'age-na', label:dateStr};
+  var days=Math.floor((Date.now()-d.getTime())/86400000);
+  // < 2 weeks green · 2–3 weeks orange · > 3 weeks red
+  var cls = days<14 ? 'age-green' : (days<=21 ? 'age-orange' : 'age-red');
+  return {cls:cls, label:days+'d'};
+}
+function agingHtml(){
+  // Flatten open lines, then group by customer → SO (oldest SO first).
+  var vs=DATA.vendors||[], byCust={}, custOrder=[];
+  for(var i=0;i<vs.length;i++){ var rows=vs[i].rows||[];
+    for(var j=0;j<rows.length;j++){ var r=rows[j], cu=r.customer||'(no customer)', so=r.so_num||'(no SO)';
+      if(!byCust[cu]){ byCust[cu]={}; custOrder.push(cu); }
+      if(!byCust[cu][so]){ byCust[cu][so]={so:so, date:r.order_date, items:[]}; }
+      var g=byCust[cu][so];
+      if(r.order_date && (!g.date || r.order_date<g.date)) g.date=r.order_date;
+      g.items.push({vendor:vs[i].name, product:r.product, open_qty:r.open_qty, pending_pos:r.pending_pos, eta:r.eta});
+    } }
+  custOrder.sort(function(a,b){ return cmp(a,b,'str'); });   // customers A→Z
+  var NCOL=5, body='';
+  for(var ci=0;ci<custOrder.length;ci++){
+    var cu=custOrder[ci], sos=byCust[cu], soKeys=[];
+    for(var key in sos){ if(sos.hasOwnProperty(key)) soKeys.push(key); }
+    soKeys.sort(function(a,b){ var d=cmp(sos[a].date,sos[b].date,'date'); return d!==0?d:cmp(a,b,'str'); });  // oldest→newest
+    body+='<tr class="so-group"><td colspan="'+NCOL+'"><span class="so-h">'+escapeHtml(cu)+'</span></td></tr>';
+    for(var si=0;si<soKeys.length;si++){
+      var g=sos[soKeys[si]], ai=ageInfo(g.date);
+      body+='<tr class="aging-so"><td colspan="'+NCOL+'">'+
+        '<span class="so-h2">'+escapeHtml(g.so)+'</span>'+
+        '<span class="so-date">'+fmtDate(g.date)+'</span>'+
+        '<span class="age-pill '+ai.cls+'" style="margin-left:8px;">'+ai.label+' open</span></td></tr>';
+      g.items.sort(function(a,b){ return cmp(a.product,b.product,'str'); });
+      for(var k=0;k<g.items.length;k++){ var it=g.items[k];
+        var po = it.pending_pos ? escapeHtml(it.pending_pos) : '<span class="po-none">—</span>';
+        body+='<tr>'+
+          '<td>'+escapeHtml(it.product)+'</td>'+
+          '<td>'+escapeHtml(it.vendor)+'</td>'+
+          '<td class="c open">'+fmtQty(it.open_qty)+'</td>'+
+          '<td>'+po+'</td>'+
+          '<td class="c" style="font-weight:600;color:'+etaColor(it.eta)+'">'+fmtDate(it.eta)+'</td></tr>';
+      }
+    }
+  }
+  return '<div class="panel-head" style="margin-top:24px;border-top:1px solid #dee5ec;"><h2>Open SO Aging</h2>'+
+    '<div class="sub">Grouped by customer, then SO (oldest first) &middot; how long each order has been open: '+
+    '<span class="age-pill age-green">&lt; 2 weeks</span> '+
+    '<span class="age-pill age-orange">2–3 weeks</span> '+
+    '<span class="age-pill age-red">&gt; 3 weeks</span></div></div>'+
+    '<div class="matrix-wrap"><table><thead><tr>'+
+    '<th>Product</th><th>Vendor</th><th class="c">Open</th><th>Pending PO</th><th class="c">ETA</th>'+
+    '</tr></thead><tbody>'+body+'</tbody></table></div>';
+}
+
 function renderSkuPanel(){
   var hd=DATA.high_demand||{customers:[],items:[]};
   var custs=hd.customers||[], items=(hd.items||[]).slice();
   var head='<div class="panel-head"><h2>High-Demand SKUs</h2>'+
-    '<div class="sub">SKUs open across 2+ orders &middot; open quantity each customer has &middot; prioritize the highlighted rows</div></div>';
-  if(!items.length){ document.getElementById('panel').innerHTML=head+'<div class="empty">No SKU is currently open across multiple orders.</div>'; return; }
-  // Build dynamic column descriptors (Product, Vendor, [each customer], Total, #Cust, #Orders).
-  skuCols=[{k:'product',label:'Product',cls:''},{k:'vendor',label:'Vendor',cls:''}];
-  for(var ci=0;ci<custs.length;ci++) skuCols.push({k:'cust::'+custs[ci],label:custs[ci],cls:'c cust-col'});
-  skuCols.push({k:'total',label:'Total',cls:'c'},{k:'cust_count',label:'#Cust',cls:'c'},{k:'order_count',label:'#Orders',cls:'c'});
-  // Sort rows.
-  items.sort(function(a,b){
-    var k=skuSort.key, d=skuSort.dir;
-    if(k==='__demand__') return (b.cust_count-a.cust_count)||(b.order_count-a.order_count)||(b.total-a.total)||cmp(a.product,b.product,'str');
-    if(k==='product') return d*cmp(a.product,b.product,'str');
-    if(k==='vendor')  return d*cmp(a.vendor,b.vendor,'str');
-    if(k==='total')   return d*((a.total||0)-(b.total||0));
-    if(k==='cust_count')  return d*((a.cust_count||0)-(b.cust_count||0));
-    if(k==='order_count') return d*((a.order_count||0)-(b.order_count||0));
-    if(k.indexOf('cust::')===0){ var c=k.slice(6); return d*(((a.qty||{})[c]||0)-((b.qty||{})[c]||0)); }
-    return 0;
-  });
-  // Header.
-  var th='';
-  for(var i=0;i<skuCols.length;i++){
-    var col=skuCols[i];
-    var isActive = (skuSort.key===col.k);
-    var arr = isActive ? '<span class="arr">'+(skuSort.dir>0?'▲':'▼')+'</span>' : '';
-    th+='<th class="'+(col.cls?col.cls+' ':'')+'sortable" onclick="skuSortByIdx('+i+')" title="Sort by '+escapeHtml(col.label)+'">'+escapeHtml(col.label)+arr+'</th>';
-  }
-  // Rows.
-  var body='';
-  for(var r=0;r<items.length;r++){
-    var it=items[r];
-    var hot = it.cust_count>=3 ? ' hd-hot' : (it.cust_count>=2 ? ' hd-warm' : '');
-    var row='<tr class="'+hot+'"><td class="item-name">'+escapeHtml(it.product)+'</td><td>'+escapeHtml(it.vendor)+'</td>';
-    for(var ci=0;ci<custs.length;ci++){
-      var q=(it.qty||{})[custs[ci]];
-      row+='<td class="c">'+(q?('<span class="hd-q">'+fmtQty(q)+'</span>'):'<span class="po-none">·</span>')+'</td>';
+    '<div class="sub">SKUs that appear on more than one PO &middot; open quantity each customer has &middot; prioritize the highlighted rows</div></div>';
+  var matrixHtml;
+  if(!items.length){
+    matrixHtml='<div class="empty">No SKU is currently open on more than one PO.</div>';
+  } else {
+    // Dynamic columns: Product, Vendor, [each customer], Total, #POs, #Cust, #Orders.
+    skuCols=[{k:'product',label:'Product',cls:''},{k:'vendor',label:'Vendor',cls:''}];
+    for(var ci=0;ci<custs.length;ci++) skuCols.push({k:'cust::'+custs[ci],label:custs[ci],cls:'c cust-col'});
+    skuCols.push({k:'total',label:'Total',cls:'c'},{k:'po_count',label:'#POs',cls:'c'},{k:'cust_count',label:'#Cust',cls:'c'},{k:'order_count',label:'#Orders',cls:'c'});
+    items.sort(function(a,b){
+      var k=skuSort.key, d=skuSort.dir;
+      if(k==='__demand__') return (b.po_count-a.po_count)||(b.cust_count-a.cust_count)||(b.total-a.total)||cmp(a.product,b.product,'str');
+      if(k==='product') return d*cmp(a.product,b.product,'str');
+      if(k==='vendor')  return d*cmp(a.vendor,b.vendor,'str');
+      if(k==='total')   return d*((a.total||0)-(b.total||0));
+      if(k==='po_count')    return d*((a.po_count||0)-(b.po_count||0));
+      if(k==='cust_count')  return d*((a.cust_count||0)-(b.cust_count||0));
+      if(k==='order_count') return d*((a.order_count||0)-(b.order_count||0));
+      if(k.indexOf('cust::')===0){ var c=k.slice(6); return d*(((a.qty||{})[c]||0)-((b.qty||{})[c]||0)); }
+      return 0;
+    });
+    var th='';
+    for(var i=0;i<skuCols.length;i++){
+      var col=skuCols[i];
+      var arr = (skuSort.key===col.k) ? '<span class="arr">'+(skuSort.dir>0?'▲':'▼')+'</span>' : '';
+      th+='<th class="'+(col.cls?col.cls+' ':'')+'sortable" onclick="skuSortByIdx('+i+')" title="Sort by '+escapeHtml(col.label)+'">'+escapeHtml(col.label)+arr+'</th>';
     }
-    row+='<td class="c open">'+fmtQty(it.total)+'</td>'+
-         '<td class="c"><span class="hd-badge">'+it.cust_count+'</span></td>'+
-         '<td class="c">'+it.order_count+'</td></tr>';
-    body+=row;
+    var body='';
+    for(var r=0;r<items.length;r++){
+      var it=items[r];
+      var hot = it.po_count>=3 ? ' hd-hot' : (it.po_count>=2 ? ' hd-warm' : '');
+      var row='<tr class="'+hot+'"><td class="item-name">'+escapeHtml(it.product)+'</td><td>'+escapeHtml(it.vendor)+'</td>';
+      for(var ci2=0;ci2<custs.length;ci2++){
+        var cu=custs[ci2], q=(it.qty||{})[cu];
+        if(q){
+          var sub='', dets=(it.detail||{})[cu]||[];
+          for(var di=0;di<dets.length;di++){
+            var dd=dets[di], po=(dd.po||'—'), dt=fmtDateShort(dd.date);
+            sub+='<div class="hd-sub">'+escapeHtml(po)+(dt?(' &middot; '+dt):'')+'</div>';
+          }
+          row+='<td class="c hd-cell"><span class="hd-q">'+fmtQty(q)+'</span>'+sub+'</td>';
+        } else {
+          row+='<td class="c"><span class="po-none">·</span></td>';
+        }
+      }
+      row+='<td class="c open">'+fmtQty(it.total)+'</td>'+
+           '<td class="c"><span class="hd-badge">'+it.po_count+'</span></td>'+
+           '<td class="c">'+it.cust_count+'</td>'+
+           '<td class="c">'+it.order_count+'</td></tr>';
+      body+=row;
+    }
+    matrixHtml='<div class="matrix-wrap"><table class="matrix"><thead><tr>'+th+'</tr></thead><tbody>'+body+'</tbody></table></div>';
   }
-  document.getElementById('panel').innerHTML =
-    head+'<div class="matrix-wrap"><table class="matrix"><thead><tr>'+th+'</tr></thead><tbody>'+body+'</tbody></table></div>';
+  document.getElementById('panel').innerHTML = head + matrixHtml + agingHtml();
 }
 
 function renderAsOf(){
