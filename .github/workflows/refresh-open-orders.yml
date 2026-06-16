@@ -37,6 +37,10 @@ jobs:
           GH_BUTTON_TOKEN: ${{ secrets.GH_BUTTON_TOKEN }}
         run: |
           set +e
+          # Guarantee a COMPLETELY FRESH pull every refresh: remove any cache so
+          # no prior snapshot or cached record is reused. (CI checkouts don't carry
+          # the cache anyway, but this makes it explicit and bulletproof.)
+          rm -f retrieve_cache_*.json
           code=1
           for i in $(seq 1 12); do
             echo "::group::Pass $i"
