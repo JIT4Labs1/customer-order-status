@@ -1,0 +1,68 @@
+name: Refresh Open Orders Page
+
+# Triggered on demand by the Refresh button on the published page (via the GitHub
+# API workflow_dispatch). Re-pulls fresh data from Vtiger using the SAME pipeline
+# as the open-orders report, rebuilds the per-customer tabbed page + JSON snapshot,
+# and commits them back so GitHub Pages serves the updated data.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-open-orders
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Generate page (retry until a clean, complete Vtiger pass)
+        env:
+          # Vtiger credentials come from encrypted repo secrets — never committed.
+          VTIGER_USER: ${{ secrets.VTIGER_USER }}
+          VTIGER_ACCESS_KEY: ${{ secrets.VTIGER_ACCESS_KEY }}
+          # The button token is embedded into the rebuilt page so the button keeps
+          # working after each refresh. Stored as an encrypted secret.
+          GH_BUTTON_TOKEN: ${{ secrets.GH_BUTTON_TOKEN }}
+        run: |
+          set +e
+          code=1
+          for i in $(seq 1 12); do
+            echo "::group::Pass $i"
+            python open_orders_page.py --no-push
+            code=$?
+            echo "::endgroup::"
+            if [ $code -eq 0 ]; then
+              echo "Clean pass on attempt $i"
+              break
+            fi
+            echo "Incomplete (exit $code) — Vtiger rate-limited; cache warmed, retrying..."
+            sleep 5
+          done
+          if [ $code -ne 0 ]; then
+            echo "Failed to complete a clean Vtiger pass after retries"
+            exit 1
+          fi
+
+      - name: Commit & push updated page
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add open-orders.html open-orders-data.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Refresh open orders page — $(date -u '+%Y-%m-%d %H:%M UTC')"
+            git push
+          fi
