@@ -275,8 +275,10 @@ def _build_email_html(name, Y, recs, overall, products, total_spend):
         '<a href="mailto:CustomerSupport@jit4you.com" style="color:#008080;text-decoration:none;">CustomerSupport@jit4you.com</a> '
         '&nbsp;&middot;&nbsp; (949) 396-9194</p>'
         '</div>'
-        '<div style="background:#101E3E;color:rgba(255,255,255,.65);text-align:center;padding:16px;font-size:11px;">'
-        '&copy; ' + str(Y) + ' JIT4You Inc. — All rights reserved.</div>'
+        '<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;"><tr>'
+        '<td bgcolor="#101E3E" align="center" style="background:#101E3E;padding:22px 16px;font-size:12px;'
+        'color:#dbe4f0;font-family:\'Open Sans\',Arial,sans-serif;">'
+        '&copy; ' + str(Y) + ' JIT4You Inc. &mdash; All rights reserved.</td></tr></table>'
         '</div>'
     )
 
