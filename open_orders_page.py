@@ -34,8 +34,10 @@ from collections import defaultdict
 # ── Reuse the EXACT extraction logic from the original report (unmodified) ──
 # Importing is safe: open_orders_report.py guards execution behind
 # `if __name__ == "__main__"`, so nothing runs on import.
-from open_orders_report import VtigerAPI, extract_open_orders, CONFIG, log, build_po_email_url
+from open_orders_report import VtigerAPI, extract_open_orders, CONFIG, log, build_po_email_url, _vendor_greeting
 from pnl_report import build_pnl
+from customer_analysis import (build_customer_analysis, _build_email_doc as _email_draft_doc,
+                               _wordmark, _esc, _qstr)
 
 # ─────────────────────────────────────────────
 # GitHub Pages publishing (same host/repo as the customer-order-status reports)
@@ -92,6 +94,68 @@ def _pacific_now_str():
         from datetime import timezone, timedelta
         dt = datetime.now(timezone.utc) - timedelta(hours=8)
         return dt.strftime("%Y-%m-%d %I:%M:%S %p") + " PST"
+
+
+def build_vendor_po_email(vname, vitems):
+    """Branded, image-free vendor email listing their open POs (grouped by PO) so they
+    know what to deliver, with the previously provided ETA per line."""
+    greeting = _vendor_greeting(vname)
+    by_po, no_po = defaultdict(list), []
+    for it in vitems:
+        pos = [p.strip() for p in (it.get("pending_pos", "") or "").split(",") if p.strip()]
+        if pos:
+            for p in pos:
+                by_po[p].append(it)
+        else:
+            no_po.append(it)
+    td = "padding:7px 10px;border:1px solid #d8dee4;font-size:12px;"
+    th = "padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;"
+    pohdr = "padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;"
+
+    def row(it):
+        eta = (it.get("eta", "") or "").split(" ")[0]
+        return ("<tr>"
+                '<td style="' + td + 'white-space:nowrap;">' + _esc(it.get("order_date", "")) + "</td>"
+                '<td style="' + td + '">' + _esc(it.get("product", "")) + "</td>"
+                '<td style="' + td + '">' + _esc(it.get("customer", "")) + "</td>"
+                '<td style="' + td + 'text-align:center;">' + _qstr(it.get("ordered_qty", 0)) + "</td>"
+                '<td style="' + td + 'text-align:center;">' + _qstr(it.get("delivered_qty", 0)) + "</td>"
+                '<td style="' + td + 'text-align:center;font-weight:700;color:#c0392b;">' + _qstr(it.get("open_qty", 0)) + "</td>"
+                '<td style="' + td + 'text-align:center;white-space:nowrap;">' + (_esc(eta) if eta else "&mdash;") + "</td>"
+                "</tr>")
+
+    def mindate(its):
+        ds = [i.get("order_date", "") for i in its if i.get("order_date")]
+        return min(ds) if ds else "9999"
+    groups = sorted(((po, by_po[po]) for po in by_po.keys()), key=lambda g: mindate(g[1]))
+    if no_po:
+        groups.append(("No PO assigned", no_po))
+    body_rows = ""
+    for po, its in groups:
+        its = sorted(its, key=lambda i: (i.get("order_date", ""), i.get("product", "")))
+        label = ("PO " + po) if po != "No PO assigned" else po
+        body_rows += '<tr><td colspan="7" style="' + pohdr + '">' + _esc(label) + "</td></tr>"
+        for it in its:
+            body_rows += row(it)
+    table = ('<table cellspacing="0" cellpadding="0" style="border-collapse:collapse;width:100%;max-width:800px;'
+             'background:#fff;font-family:Arial,sans-serif;"><thead><tr style="background:#0D2B45;">'
+             '<th style="' + th + '">Order Date</th><th style="' + th + '">Product</th>'
+             '<th style="' + th + '">Customer</th><th style="' + th + 'text-align:center;">Ordered</th>'
+             '<th style="' + th + 'text-align:center;">Delivered</th><th style="' + th + 'text-align:center;">Open</th>'
+             '<th style="' + th + 'text-align:center;">ETA</th></tr></thead><tbody>' + body_rows + "</tbody></table>")
+    return (
+        '<div style="font-family:Arial,Helvetica,sans-serif;color:#101E3E;max-width:840px;margin:0 auto;background:#fff;">'
+        '<div style="background:#fff;padding:18px 24px;border-bottom:3px solid #008080;">' + _wordmark(24) + "</div>"
+        '<div style="padding:22px 24px;font-size:14px;line-height:1.6;">'
+        "<p>Hi " + _esc(greeting) + ",</p>"
+        "<p>Find enclosed the list of open POs with previously provided ETA.</p>"
+        + table +
+        '<p style="margin-top:18px;">Thank you,<br>JIT4You</p>'
+        '<p style="font-size:12px;color:#008080;">'
+        '<a href="mailto:CustomerSupport@jit4you.com" style="color:#008080;text-decoration:none;">CustomerSupport@jit4you.com</a> '
+        '&nbsp;&middot;&nbsp; (949) 396-9194</p>'
+        "</div></div>"
+    )
 
 
 def build_page_data(open_items):
@@ -184,12 +248,24 @@ def build_page_data(open_items):
                 "pending_pos": it.get("pending_pos", ""),
                 "eta": (it.get("eta", "") or "").split(" ")[0],
             })
+        # Vendor email draft — the report's exact open-PO table, wrapped for rich copy.
+        vemail = ""
+        for it in vitems:
+            if it.get("vendor_email"):
+                vemail = it["vendor_email"]; break
+        v_subject = "JIT4You — Your Open Purchase Orders (%d open item%s) — please advise delivery" % (
+            len(vitems), "" if len(vitems) == 1 else "s")
+        v_body = build_vendor_po_email(vname, vitems)
+        v_email_doc = _email_draft_doc(vname, vemail, v_subject, v_body)
         vendors.append({
             "name": vname,
             "open_items": len(vitems),
             "customers": vcusts,
             "pos": len(vpos),
             "rows": vrows,
+            "email": vemail,
+            "email_subject": v_subject,
+            "email_doc": v_email_doc,
         })
 
     # ── High-demand SKUs: items that appear on MORE THAN ONE PO, as a Product × Customer matrix ──
@@ -376,6 +452,12 @@ def build_html(page_data):
   .age-orange { background:#ffe8cc; color:#9a5a16; }
   .age-red { background:#f8d7da; color:#a11d2a; }
   .age-na { background:#eee; color:#888; }
+  .ca-email-btn { background:#008080; color:#fff; border:none; padding:9px 16px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; white-space:nowrap; }
+  .ca-email-btn:hover { background:#006666; }
+  .ca-h { font-size:13px; font-weight:700; color:#1F4E79; margin:18px 0 8px 16px; }
+  .ca-overall { margin:0 0 12px 32px; font-size:13px; color:#2c3e50; }
+  .ca-overall li { margin:4px 0; }
+  .ca-visuals { display:flex; gap:34px; flex-wrap:wrap; padding:0 16px; align-items:flex-start; }
   .footer { text-align:center; font-size:11px; color:#888; padding:18px; }
   @media (max-width:760px){ .layout{flex-direction:column;} .tabs{flex-basis:auto;width:100%;max-height:none;}
     .panel-wrap{margin-left:0;margin-top:14px;} }
@@ -402,6 +484,7 @@ def build_html(page_data):
   <button class="mode-btn" data-mode="cust" onclick="setMode('cust')">Customer Open SO's</button>
   <button class="mode-btn" data-mode="vendor" onclick="setMode('vendor')">Open Vendor POs</button>
   <button class="mode-btn" data-mode="sku" onclick="setMode('sku')">High Demand SKUs</button>
+  <button class="mode-btn" data-mode="ca" onclick="setMode('ca')">Customer Analysis</button>
 </div>
 
 <div class="layout">
@@ -419,7 +502,8 @@ function _deobf(s,key){ if(!s) return ''; var raw=atob(s), out=''; for(var i=0;i
 BTN.token = _deobf(BTN.token_obf, BTN.k || '');
 var active = 0;     // selected customer index (Customer Open SO's view)
 var vactive = 0;    // selected vendor index (Open Vendor POs view)
-var mode = 'pnl';   // 'pnl' = P&L Report (default first tab) · 'cust' · 'vendor' · 'sku'
+var caactive = 0;   // selected IDL customer index (Customer Analysis view)
+var mode = 'pnl';   // 'pnl' · 'cust' · 'vendor' · 'sku' · 'ca'
 
 // Click a header to sort by it; click again to reverse. Each view has its own columns.
 // Customer view: table grouped by SO (SO #, Status, Date appear in group headers).
@@ -481,27 +565,34 @@ function renderTabs(){
   var tabsEl=document.getElementById('tabs');
   if(mode==='sku' || mode==='pnl'){ tabsEl.style.display='none'; tabsEl.innerHTML=''; return; }  // full-width views, no per-entity tabs
   tabsEl.style.display='';
-  var list = mode==='vendor' ? (DATA.vendors||[]) : (DATA.customers||[]);
-  var cur = mode==='vendor' ? vactive : active;
+  var list = mode==='vendor' ? (DATA.vendors||[]) : (mode==='ca' ? ((DATA.customer_analysis||{}).customers||[]) : (DATA.customers||[]));
+  var cur = mode==='vendor' ? vactive : (mode==='ca' ? caactive : active);
   var h='';
   if(!list.length){ document.getElementById('tabs').innerHTML='<div class="empty">No open orders.</div>'; return; }
   for(var i=0;i<list.length;i++){
+    var cnt = mode==='ca' ? (list[i].products||[]).length : list[i].open_items;
     h+='<button class="tab'+(i===cur?' active':'')+'" onclick="selectTab('+i+')">'+
-       escapeHtml(list[i].name)+'<span class="cnt">'+list[i].open_items+'</span></button>';
+       escapeHtml(list[i].name)+'<span class="cnt">'+cnt+'</span></button>';
   }
   document.getElementById('tabs').innerHTML=h;
 }
 
-function poCell(pending){
+function poCell(pending, noBtn){
   if(!pending) return '<span class="po-none">None</span>';
   var parts=String(pending).split(','), out=[];
   for(var i=0;i<parts.length;i++){
     var po=parts[i].replace(/^\s+|\s+$/g,''); if(!po) continue;
     var url=(DATA.po_emails||{})[po];
-    var btn = url ? '<a class="po-email-btn" href="'+escapeHtml(url)+'" title="Email vendor about '+escapeHtml(po)+'">Email vendor</a>' : '';
+    var btn = (url && !noBtn) ? '<a class="po-email-btn" href="'+escapeHtml(url)+'" title="Email vendor about '+escapeHtml(po)+'">Email vendor</a>' : '';
     out.push('<span class="po-wrap"><span class="po">&#9679; '+escapeHtml(po)+'</span>'+btn+'</span>');
   }
   return out.length ? out.join('<br>') : '<span class="po-none">None</span>';
+}
+function vendorEmail(i){
+  var v=(DATA.vendors||[])[i]; if(!v) return;
+  var w=window.open('','_blank');
+  if(!w){ alert('Please allow pop-ups for this site to create the email draft.'); return; }
+  w.document.open(); w.document.write(v.email_doc||''); w.document.close();
 }
 function renderHead(){
   var cols=curCols(), h='';
@@ -516,7 +607,90 @@ function renderPanel(){
   if(mode==='pnl') renderPnlPanel();
   else if(mode==='vendor') renderVendorPanel();
   else if(mode==='sku') renderSkuPanel();
+  else if(mode==='ca') renderCaPanel();
   else renderCustPanel();
+}
+function caTrend(t){
+  if(t==='up')   return '<span style="color:#2e7d32;font-weight:700;">▲ up</span>';
+  if(t==='down') return '<span style="color:#c62828;font-weight:700;">▼ down</span>';
+  if(t==='due')  return '<span style="color:#e67e22;font-weight:700;">● due</span>';
+  return '<span style="color:#888;">– steady</span>';
+}
+function caEmail(i){
+  var c=((DATA.customer_analysis||{}).customers||[])[i]; if(!c) return;
+  var w=window.open('','_blank');
+  if(!w){ alert('Please allow pop-ups for this site to create the email draft.'); return; }
+  w.document.open(); w.document.write(c.email_doc||''); w.document.close();
+}
+function renderCaPanel(){
+  var ca=DATA.customer_analysis||{customers:[],months:[]};
+  var c=(ca.customers||[])[caactive];
+  if(!c){ document.getElementById('panel').innerHTML='<div class="empty">No Independent Diagnostic Lab or Online Reseller customers with orders this year.</div>'; return; }
+  var months=ca.months||c.months||[];
+  // ── Header + Create email button ──
+  var hasEmail = c.email && c.email.indexOf('@')>-1;
+  var head='<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">'+
+    '<div><h2>'+escapeHtml(c.name)+'</h2>'+
+    '<div class="sub">'+(c.industry?escapeHtml(c.industry)+' &middot; ':'')+(c.products||[]).length+' product(s) &middot; '+
+    fmtQty(c.total_units)+' units YTD &middot; '+(c.total_spend!=null?('$'+Number(c.total_spend).toLocaleString()+' YTD &middot; '):'')+
+    c.active_months+' active month(s) &middot; '+(hasEmail?escapeHtml(c.email):'<span style="color:#c62828;">no email on file</span>')+'</div></div>'+
+    '<button class="ca-email-btn" onclick="caEmail('+caactive+')">✉ Create email draft</button>'+
+    '</div></div>';
+
+  // ── Matrix: Product × Month (+ Total) ──
+  var prods=c.products||[];
+  var mh=''; for(var m=0;m<months.length;m++) mh+='<th class="c">'+escapeHtml(months[m])+'</th>';
+  var mrows='';
+  for(var p=0;p<prods.length;p++){
+    var pr=prods[p], cells='';
+    for(var m2=0;m2<months.length;m2++){ var q=pr.by_month[m2]; cells+='<td class="c">'+(q?('<span class="hd-q">'+fmtQty(q)+'</span>'):'<span class="po-none">·</span>')+'</td>'; }
+    mrows+='<tr><td class="item-name">'+escapeHtml(pr.name)+'</td>'+cells+'<td class="c open">'+fmtQty(pr.total)+'</td></tr>';
+  }
+  // monthly totals footer
+  var foot=''; for(var m3=0;m3<months.length;m3++) foot+='<td class="c" style="font-weight:700;">'+fmtQty((c.monthly_units||[])[m3]||0)+'</td>';
+  var matrix='<div class="ca-h">Monthly Ordering Matrix — units per product</div>'+
+    '<div class="matrix-wrap"><table class="matrix"><thead><tr><th>Product</th>'+mh+'<th class="c">Total</th></tr></thead>'+
+    '<tbody>'+mrows+'</tbody><tfoot><tr class="so-group"><td>Total units</td>'+foot+'<td class="c open">'+fmtQty(c.total_units)+'</td></tr></tfoot></table></div>';
+
+  // ── Visual: monthly units trend bars + top products bars ──
+  var mu=c.monthly_units||[]; var muMax=Math.max.apply(null, mu.concat([1]));
+  var bars=''; var labs='';
+  for(var i=0;i<mu.length;i++){
+    var hgt=mu[i]>0?Math.max(3,Math.round(mu[i]/muMax*70)):1;
+    bars+='<td style="vertical-align:bottom;text-align:center;padding:0 4px;"><div title="'+fmtQty(mu[i])+' units" style="width:26px;height:'+hgt+'px;background:#008080;margin:0 auto;border-radius:3px 3px 0 0;"></div></td>';
+    labs+='<td style="text-align:center;font-size:10px;color:#666;padding:3px 4px 0;">'+escapeHtml(months[i])+'<br><b style="color:#101E3E;">'+fmtQty(mu[i])+'</b></td>';
+  }
+  var trend='<div class="ca-h">Units ordered per month</div>'+
+    '<div class="matrix-wrap"><table style="border-collapse:collapse;height:90px;"><tr>'+bars+'</tr><tr>'+labs+'</tr></table></div>';
+  // top products horizontal bars
+  var topN=prods.slice(0,8); var topMax=topN.length?topN[0].total:1;
+  var tp='<div class="ca-h">Top products (YTD units)</div><div style="max-width:680px;">';
+  for(var t=0;t<topN.length;t++){
+    var w=Math.max(2,Math.round(topN[t].total/topMax*100));
+    tp+='<div style="display:flex;align-items:center;gap:8px;margin:3px 0;font-size:12px;">'+
+      '<div style="flex:0 0 230px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="'+escapeHtml(topN[t].name)+'">'+escapeHtml(topN[t].name)+'</div>'+
+      '<div style="flex:1 1 auto;background:#eef2f6;border-radius:4px;"><div style="width:'+w+'%;background:#1F4E79;height:14px;border-radius:4px;"></div></div>'+
+      '<div style="flex:0 0 40px;text-align:right;font-weight:700;">'+fmtQty(topN[t].total)+'</div></div>';
+  }
+  tp+='</div>';
+
+  // ── Recommendations table ──
+  var recs=c.recommendations||[]; var rr='';
+  for(var r=0;r<recs.length;r++){ var rc=recs[r];
+    rr+='<tr><td class="item-name">'+escapeHtml(rc.product)+'</td>'+
+      '<td class="c">'+rc.months_ordered+'</td><td class="c">'+fmtQty(rc.total)+'</td>'+
+      '<td class="c">'+fmtQty(rc.avg)+'</td><td class="c"><span class="hd-badge">'+rc.par+'</span></td>'+
+      '<td class="c">'+caTrend(rc.trend)+'</td><td>'+escapeHtml(rc.suggestion)+'</td></tr>';
+  }
+  var ovl=''; var ov=c.overall||[]; for(var o=0;o<ov.length;o++) ovl+='<li>'+escapeHtml(ov[o])+'</li>';
+  var recHtml='<div class="ca-h">Procurement Recommendations</div>'+
+    '<ul class="ca-overall">'+ovl+'</ul>'+
+    '<div class="matrix-wrap"><table class="matrix"><thead><tr><th>Product</th><th class="c">Mo. Ordered</th>'+
+    '<th class="c">Total</th><th class="c">Avg/Mo (YTD)</th><th class="c">Suggested Par</th><th class="c">Trend</th><th>Recommendation</th>'+
+    '</tr></thead><tbody>'+rr+'</tbody></table></div>';
+
+  document.getElementById('panel').innerHTML = head + matrix +
+    '<div class="ca-visuals">'+trend+tp+'</div>' + recHtml;
 }
 function renderPnlPanel(){
   var html=DATA.pnl_html||'';
@@ -602,16 +776,21 @@ function renderVendorPanel(){
         '<td class="c">'+fmtQty(r2.ordered_qty)+'</td>'+
         '<td class="c">'+fmtQty(r2.delivered_qty)+'</td>'+
         '<td class="c open">'+fmtQty(r2.open_qty)+'</td>'+
-        '<td>'+poCell(r2.pending_pos)+'</td>'+
+        '<td>'+poCell(r2.pending_pos, true)+'</td>'+
         '<td class="c" style="font-weight:600;color:'+etaColor(r2.eta)+'">'+fmtDate(r2.eta)+'</td>'+
         '</tr>';
     }
   }
   var sortNote = sortState.key ? ' &middot; sorted by '+escapeHtml(colByKey(sortState.key).label)+(sortState.dir>0?' ▲':' ▼') : '';
+  var hasEmail = v.email && v.email.indexOf('@')>-1;
   document.getElementById('panel').innerHTML =
-    '<div class="panel-head"><h2>'+escapeHtml(v.name)+'</h2>'+
+    '<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">'+
+    '<div><h2>'+escapeHtml(v.name)+'</h2>'+
     '<div class="sub">'+v.pos+' open PO(s) &middot; '+v.open_items+' open item(s) &middot; '+
-    (v.customers||[]).length+' customer(s) &middot; grouped by customer'+sortNote+'</div></div>'+
+    (v.customers||[]).length+' customer(s) &middot; '+(hasEmail?escapeHtml(v.email):'<span style="color:#c62828;">no email on file</span>')+
+    ' &middot; grouped by customer'+sortNote+'</div></div>'+
+    '<button class="ca-email-btn" onclick="vendorEmail('+vactive+')">✉ Create email draft</button>'+
+    '</div></div>'+
     '<table><thead><tr>'+renderHead()+'</tr></thead><tbody>'+body+'</tbody></table>';
 }
 
@@ -752,7 +931,7 @@ function renderSkuPanel(){
 function renderAsOf(){
   document.getElementById('asof').textContent = 'Last refreshed: '+(DATA.generated_at||'—');
 }
-function selectTab(i){ if(mode==='vendor') vactive=i; else active=i; renderTabs(); renderPanel(); }
+function selectTab(i){ if(mode==='vendor') vactive=i; else if(mode==='ca') caactive=i; else active=i; renderTabs(); renderPanel(); }
 function renderAll(){ renderKpis(); renderTabs(); renderPanel(); renderAsOf(); }
 
 function fetchData(){ return fetch(DATA_URL+'?cb='+Date.now(),{cache:'no-store'})
@@ -768,7 +947,7 @@ function btnBusy(on,label){
 // Snapshot-only refresh: just reload the latest published JSON.
 function reloadSnapshot(){
   btnBusy(true,'Loading…');
-  fetchData().then(function(d){ DATA=d; if(active>=(DATA.customers||[]).length) active=0; if(vactive>=(DATA.vendors||[]).length) vactive=0; renderAll(); })
+  fetchData().then(function(d){ DATA=d; if(active>=(DATA.customers||[]).length) active=0; if(vactive>=(DATA.vendors||[]).length) vactive=0; if(caactive>=(((DATA.customer_analysis||{}).customers)||[]).length) caactive=0; renderAll(); })
     .catch(function(e){ alert('Could not refresh data: '+e.message); })
     .finally(function(){ btnBusy(false); });
 }
@@ -798,7 +977,7 @@ function pollForUpdate(prevStamp,tries){
   setTimeout(function(){
     fetchData().then(function(d){
       if(d && d.generated_at && d.generated_at!==prevStamp){
-        DATA=d; if(active>=(DATA.customers||[]).length) active=0; if(vactive>=(DATA.vendors||[]).length) vactive=0; renderAll(); btnBusy(false);
+        DATA=d; if(active>=(DATA.customers||[]).length) active=0; if(vactive>=(DATA.vendors||[]).length) vactive=0; if(caactive>=(((DATA.customer_analysis||{}).customers)||[]).length) caactive=0; renderAll(); btnBusy(false);
       } else { pollForUpdate(prevStamp,tries+1); }
     }).catch(function(){ pollForUpdate(prevStamp,tries+1); });
   },15000);
@@ -895,6 +1074,11 @@ def main():
     log("Building P&L report...")
     page_data["pnl_html"] = build_pnl(vt)
     log(f"  P&L HTML: {len(page_data['pnl_html'])} bytes")
+
+    # Customer Analysis (IDL customers) — ordering matrix, recommendations, email drafts.
+    log("Building Customer Analysis...")
+    page_data["customer_analysis"] = build_customer_analysis(vt)
+    log(f"  Customer Analysis: {len(page_data['customer_analysis']['customers'])} IDL customers")
 
     out_dir = CONFIG["output_dir"]
     data_path = os.path.join(out_dir, DATA_FILENAME)
