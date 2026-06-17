@@ -203,23 +203,29 @@ def _spend_visual(products, total_spend, Y):
     bar = ''
     for name, sp, col in segs:
         w = max(1, int(round(sp / total * 100)))
-        bar += ('<td bgcolor="%s" style="background:%s;width:%d%%;font-size:1px;line-height:1px;">&nbsp;</td>'
+        bar += ('<td bgcolor="%s" style="background:%s;width:%d%%;height:40px;font-size:1px;line-height:1px;">&nbsp;</td>'
                 % (col, col, w))
     legend = ''
     for name, sp, col in segs:
         pct = (sp / total * 100) if total else 0
         # Swatch is a real <td bgcolor> cell (Outlook keeps cell bgcolor; it drops
         # background on empty <span>s, which made the colored bullets disappear on paste).
+        # Swatch = a small fixed square (nested bgcolor cell) with vertical padding on the
+        # outer cell so the squares read as separate bullets, not a continuous color strip.
         legend += ('<tr>'
-                   '<td width="16" bgcolor="%s" style="background:%s;width:16px;font-size:1px;line-height:1px;border-radius:2px;">&nbsp;</td>'
-                   '<td style="padding:4px 4px 4px 8px;font-size:12px;color:#101E3E;">%s</td>'
-                   '<td style="padding:4px 8px;font-size:12px;text-align:right;font-weight:700;color:#101E3E;">%s</td>'
-                   '<td style="padding:4px 8px;font-size:12px;text-align:right;color:#666;">%.0f%%</td>'
+                   '<td style="padding:5px 8px 5px 0;width:16px;line-height:0;">'
+                   '<table cellpadding="0" cellspacing="0" style="border-collapse:collapse;"><tr>'
+                   '<td width="13" height="13" bgcolor="%s" style="background:%s;width:13px;height:13px;font-size:1px;line-height:1px;border-radius:2px;">&nbsp;</td>'
+                   '</tr></table></td>'
+                   '<td style="padding:5px 8px 5px 0;font-size:12px;color:#101E3E;">%s</td>'
+                   '<td style="padding:5px 8px;font-size:12px;text-align:right;font-weight:700;color:#101E3E;">%s</td>'
+                   '<td style="padding:5px 8px;font-size:12px;text-align:right;color:#666;">%.0f%%</td>'
                    '</tr>' % (col, col, _esc(name), _money(sp), pct))
     return (
         '<p style="margin:6px 0 4px 0;font-weight:700;color:#101E3E;">Your %d spend with JIT4Labs &amp; how it breaks down</p>'
         '<p style="margin:0 0 10px 0;font-size:22px;font-weight:800;color:#008080;">%s</p>'
-        '<table width="100%%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;height:26px;margin-bottom:8px;"><tr>%s</tr></table>'
+        '<table width="100%%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;height:40px;"><tr>%s</tr></table>'
+        '<div style="height:14px;line-height:14px;font-size:1px;">&nbsp;</div>'
         '<table cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:4px;">%s</table>'
         % (Y, _money(total_spend), bar, legend)
     )
