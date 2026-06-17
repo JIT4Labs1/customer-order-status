@@ -208,12 +208,14 @@ def _spend_visual(products, total_spend, Y):
     legend = ''
     for name, sp, col in segs:
         pct = (sp / total * 100) if total else 0
+        # Swatch is a real <td bgcolor> cell (Outlook keeps cell bgcolor; it drops
+        # background on empty <span>s, which made the colored bullets disappear on paste).
         legend += ('<tr>'
-                   '<td style="padding:4px 8px;width:14px;"><span style="display:inline-block;width:12px;height:12px;background:%s;border-radius:2px;"></span></td>'
-                   '<td style="padding:4px 8px;font-size:12px;color:#101E3E;">%s</td>'
+                   '<td width="16" bgcolor="%s" style="background:%s;width:16px;font-size:1px;line-height:1px;border-radius:2px;">&nbsp;</td>'
+                   '<td style="padding:4px 4px 4px 8px;font-size:12px;color:#101E3E;">%s</td>'
                    '<td style="padding:4px 8px;font-size:12px;text-align:right;font-weight:700;color:#101E3E;">%s</td>'
                    '<td style="padding:4px 8px;font-size:12px;text-align:right;color:#666;">%.0f%%</td>'
-                   '</tr>' % (col, _esc(name), _money(sp), pct))
+                   '</tr>' % (col, col, _esc(name), _money(sp), pct))
     return (
         '<p style="margin:6px 0 4px 0;font-weight:700;color:#101E3E;">Your %d spend with JIT4Labs &amp; how it breaks down</p>'
         '<p style="margin:0 0 10px 0;font-size:22px;font-weight:800;color:#008080;">%s</p>'
