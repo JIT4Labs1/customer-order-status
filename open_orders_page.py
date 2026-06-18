@@ -624,6 +624,7 @@ function loadGads(){
     .catch(function(e){ gadsLoading=false; if(mode==='gads') document.getElementById('panel').innerHTML='<div class="empty">Could not load Google Ads data: '+escapeHtml(e.message)+'</div>'; });
 }
 function gadsSetInterval(v){ gadsInterval=v; renderGadsPanel(); }
+function gadsRefresh(){ GADS=null; gadsLoading=false; document.getElementById('panel').innerHTML='<div class="empty">Refreshing Google Ads &amp; GA4 data…</div>'; loadGads(); }
 function money0(n){ return '$'+Number(n||0).toLocaleString(undefined,{maximumFractionDigits:0}); }
 function money2(n){ return '$'+Number(n||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}); }
 function renderGadsPanel(){
@@ -657,16 +658,54 @@ function renderGadsPanel(){
     '<td class="c">'+tc.toLocaleString()+'</td><td class="c">'+ti.toLocaleString()+'</td><td class="c">'+tctr+'</td>'+
     '<td class="c">'+tcpc+'</td><td class="c open">'+money2(tcost)+'</td><td class="c">'+fmtQty(tconv)+'</td>'+
     '<td class="c">'+money0(tval)+'</td><td class="c">'+troas+'</td></tr>';
-  var note='<div style="margin:16px;padding:12px 16px;background:#fff8e1;border-left:4px solid #ffc107;font-size:13px;border-radius:6px;line-height:1.5;">'+
-    '<b>Click trails / user journey:</b> '+escapeHtml(GADS.note_click_trails||'')+'</div>';
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">'+
     '<div><h2>Google Ads — Campaign Performance</h2><div class="sub">Account: '+escapeHtml(GADS.account||'')+' &middot; data pulled '+escapeHtml(GADS.pulled_at||'')+' &middot; '+escapeHtml(GADS.currency||'USD')+'</div></div>'+
-    '<div style="font-size:13px;">Time interval: '+sel+'</div></div></div>'+
+    '<div style="font-size:13px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">Time interval: '+sel+
+    '<button class="refresh-btn" onclick="gadsRefresh()" title="Reload the latest Google Ads / GA4 snapshot (separate from the Vtiger Refresh)"><span class="lbl">↻ Refresh Google Ads</span></button></div></div></div>'+
     '<div class="matrix-wrap"><table class="matrix"><thead><tr>'+
     '<th>Campaign</th><th>Status</th><th>Type</th><th class="c">Clicks</th><th class="c">Impr.</th><th class="c">CTR</th>'+
     '<th class="c">Avg CPC</th><th class="c">Spend</th><th class="c">Conv.</th><th class="c">Conv. value</th><th class="c">ROAS</th>'+
-    '</tr></thead><tbody>'+body+'</tbody></table></div>'+note;
+    '</tr></thead><tbody>'+body+'</tbody></table></div>'+ gadsJourneyHtml();
+}
+function gadsJourneyHtml(){
+  var J=GADS.journey;
+  if(!J){ return '<div style="margin:16px;padding:12px 16px;background:#fff8e1;border-left:4px solid #ffc107;font-size:13px;border-radius:6px;line-height:1.5;"><b>Click trails / user journey:</b> '+escapeHtml(GADS.note_click_trails||'')+'</div>'; }
+  var ytd = (gadsInterval==='this_year');
+  var jiv = ytd ? J.this_year : J.last_30_days, jlabel = ytd ? '2026 YTD' : 'Last 30 days';
+  if(!jiv){ return ''; }
+  var s=jiv.summary||{};
+  var cards='<div class="kpis" style="padding:6px 0 0;">'+
+    kpi(Number(s.sessions||0).toLocaleString(),'Paid sessions')+
+    kpi(Math.round((s.engagement_rate||0)*100)+'%','Engaged')+
+    kpi((s.pages_per_session||0),'Pages / session')+
+    kpi(Math.round((s.bounce||0)*100)+'%','Bounce')+
+    kpi(s.conversions||0,'GA4 conversions')+'</div>';
+  var lps=jiv.landing_pages||[], lpb='';
+  for(var i=0;i<lps.length;i++){ var r=lps[i];
+    lpb+='<tr><td class="item-name" style="max-width:340px;">'+escapeHtml(r.path)+'</td>'+
+      '<td class="c">'+Number(r.sessions).toLocaleString()+'</td>'+
+      '<td class="c">'+Number(r.engaged).toLocaleString()+'</td>'+
+      '<td class="c">'+r.pages_per_session+'</td>'+
+      '<td class="c">'+Math.round((r.bounce||0)*100)+'%</td>'+
+      '<td class="c '+(r.conversions>0?'open':'')+'">'+(r.conversions||0)+'</td></tr>';
+  }
+  var tps=jiv.top_pages||[], tpb='';
+  for(var j=0;j<tps.length;j++){ var p=tps[j];
+    tpb+='<tr><td class="item-name" style="max-width:360px;">'+escapeHtml(p.path)+'</td>'+
+      '<td class="c">'+Number(p.views).toLocaleString()+'</td><td class="c">'+Number(p.sessions).toLocaleString()+'</td></tr>';
+  }
+  return '<div class="ca-h" style="margin-top:24px;border-top:1px solid #dee5ec;padding-top:14px;">User Journey (GA4) — paid Google Ads traffic &middot; '+jlabel+
+    ' &middot; <span style="font-weight:400;color:#888;">'+escapeHtml(GADS.ga4_property||'')+' (switch interval above: YTD or Last 30 days)</span></div>'+
+    cards+
+    '<div class="ca-visuals">'+
+      '<div style="flex:1 1 460px;min-width:320px;"><div class="ca-h">Landing pages — where ad clicks enter</div>'+
+      '<div class="matrix-wrap"><table class="matrix"><thead><tr><th>Landing page</th><th class="c">Sessions</th><th class="c">Engaged</th><th class="c">Pages/sess</th><th class="c">Bounce</th><th class="c">Conv.</th></tr></thead><tbody>'+lpb+'</tbody></table></div></div>'+
+      '<div style="flex:1 1 360px;min-width:300px;"><div class="ca-h">Top pages visited (after the click)</div>'+
+      '<div class="matrix-wrap"><table class="matrix"><thead><tr><th>Page</th><th class="c">Views</th><th class="c">Sessions</th></tr></thead><tbody>'+tpb+'</tbody></table></div></div>'+
+    '</div>'+
+    '<div style="margin:14px 16px;padding:10px 14px;background:#eef8f0;border-left:4px solid #2e7d32;font-size:12px;border-radius:6px;color:#2c3e50;">'+
+    'Aggregate journey from GA4 (sessions where source/medium contains <b>cpc</b>). GA4 gives landing pages and the pages those visitors view; individual click-by-click trails per user aren’t exposed by the reporting API.</div>';
 }
 function caTrend(t){
   if(t==='up')   return '<span style="color:#2e7d32;font-weight:700;">▲ up</span>';
