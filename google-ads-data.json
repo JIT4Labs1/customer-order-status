@@ -1,9 +1,71 @@
 {
   "account": "Jit 4 You (1852255530)",
-  "pulled_at": "2026-06-18",
+  "pulled_at": "2026-06-18 (intraday)",
   "currency": "USD",
   "note_click_trails": "Google Ads exposes only the landing page (the first page a click lands on). For these Shopping campaigns the Final URL comes back empty, so the page-to-page user journey is not available from Google Ads. The full click trail lives in Google Analytics (GA4) \u2014 connect GA4 to add a real user-journey view.",
   "intervals": [
+    {
+      "id": "today",
+      "label": "Today",
+      "campaigns": [
+        {
+          "name": "ViroVac Shopping",
+          "status": "paused",
+          "type": "Shopping",
+          "clicks": 0,
+          "impressions": 0,
+          "ctr": 0,
+          "cpc": 0,
+          "cost": 0,
+          "conversions": 0,
+          "conv_value": 0,
+          "roas": 0,
+          "start_date": "2025-08-07"
+        },
+        {
+          "name": "ViroVac Shopping_Shopify",
+          "status": "enabled",
+          "type": "Shopping",
+          "clicks": 0,
+          "impressions": 139,
+          "ctr": 0,
+          "cpc": 0,
+          "cost": 0,
+          "conversions": 0,
+          "conv_value": 0,
+          "roas": 0,
+          "start_date": "2026-05-13"
+        },
+        {
+          "name": "BeckmanCoulter_Shopping_Test",
+          "status": "enabled",
+          "type": "Shopping",
+          "clicks": 0,
+          "impressions": 91,
+          "ctr": 0,
+          "cpc": 0,
+          "cost": 0,
+          "conversions": 0,
+          "conv_value": 0,
+          "roas": 0,
+          "start_date": "2026-06-10"
+        },
+        {
+          "name": "BeckmanCoulter_Sales_Search",
+          "status": "enabled",
+          "type": "Search",
+          "clicks": 0,
+          "impressions": 0,
+          "ctr": 0,
+          "cpc": 0,
+          "cost": 0,
+          "conversions": 0,
+          "conv_value": 0,
+          "roas": 0,
+          "start_date": "2026-06-17"
+        }
+      ]
+    },
     {
       "id": "last_7_days",
       "label": "Last 7 days",
@@ -1101,6 +1163,18 @@
           "is_key": false
         }
       ]
+    },
+    "today": {
+      "summary": {
+        "sessions": 0,
+        "engaged": 0,
+        "conversions": 0,
+        "bounce": 0,
+        "pages_per_session": 0,
+        "engagement_rate": 0
+      },
+      "campaigns": [],
+      "events": []
     }
   },
   "ga4_property": "JIT4You.com - GA4 (433514600)",
