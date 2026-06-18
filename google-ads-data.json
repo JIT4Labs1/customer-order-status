@@ -1,6 +1,6 @@
 {
   "account": "Jit 4 You (1852255530)",
-  "pulled_at": "2026-06-18 09:43 AM PT",
+  "pulled_at": "2026-06-18 12:51 PM PT",
   "currency": "USD",
   "note_click_trails": "Google Ads exposes only the landing page (the first page a click lands on). For these Shopping campaigns the Final URL comes back empty, so the page-to-page user journey is not available from Google Ads. The full click trail lives in Google Analytics (GA4) \u2014 connect GA4 to add a real user-journey view.",
   "intervals": [
@@ -12,11 +12,11 @@
           "name": "ViroVac Shopping_Shopify",
           "status": "enabled",
           "type": "Shopping",
-          "clicks": 1,
-          "impressions": 331,
-          "ctr": 0.003,
-          "cpc": 2.84,
-          "cost": 2.84,
+          "clicks": 2,
+          "impressions": 533,
+          "ctr": 0.0038,
+          "cpc": 2.06,
+          "cost": 4.12,
           "conversions": 0,
           "conv_value": 0,
           "roas": 0,
@@ -41,7 +41,7 @@
           "status": "enabled",
           "type": "Shopping",
           "clicks": 0,
-          "impressions": 171,
+          "impressions": 250,
           "ctr": 0,
           "cpc": 0,
           "cost": 0,
@@ -280,11 +280,11 @@
           "name": "ViroVac Shopping_Shopify",
           "status": "enabled",
           "type": "Shopping",
-          "clicks": 167,
-          "impressions": 19996,
-          "ctr": 0.0084,
-          "cpc": 4.892,
-          "cost": 816.97,
+          "clicks": 168,
+          "impressions": 20198,
+          "ctr": 0.0083,
+          "cpc": 4.8705,
+          "cost": 818.25,
           "conversions": 0,
           "conv_value": 0,
           "roas": 0,
@@ -295,8 +295,8 @@
           "status": "enabled",
           "type": "Shopping",
           "clicks": 43,
-          "impressions": 4601,
-          "ctr": 0.0093,
+          "impressions": 4680,
+          "ctr": 0.0092,
           "cpc": 1.2063,
           "cost": 51.87,
           "conversions": 0,
@@ -324,15 +324,41 @@
   "journey": {
     "today": {
       "summary": {
-        "sessions": 0,
-        "engaged": 0,
+        "sessions": 2,
+        "engaged": 1,
         "conversions": 0,
-        "bounce": 0,
-        "pages_per_session": 0,
-        "engagement_rate": 0
+        "bounce": 0.5,
+        "pages_per_session": 1.5,
+        "engagement_rate": 0.5
       },
-      "campaigns": [],
-      "events": []
+      "campaigns": [
+        {
+          "campaign": "ViroVac Shopping_Shopify",
+          "landing_pages": [
+            {
+              "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-startup-package",
+              "sessions": 2,
+              "engaged": 1,
+              "pages_per_session": 1.5,
+              "bounce": 0.5,
+              "conversions": 0
+            }
+          ],
+          "totals": {
+            "sessions": 2,
+            "engaged": 1,
+            "conversions": 0
+          }
+        }
+      ],
+      "events": [
+        {
+          "event": "view_item",
+          "count": 2,
+          "conversions": 0,
+          "is_key": false
+        }
+      ]
     },
     "last_7_days": {
       "summary": {
@@ -481,32 +507,6 @@
           "totals": {
             "sessions": 57,
             "engaged": 24,
-            "conversions": 0
-          }
-        },
-        {
-          "campaign": "(not set)",
-          "landing_pages": [
-            {
-              "path": "/",
-              "sessions": 2,
-              "engaged": 0,
-              "pages_per_session": 1.0,
-              "bounce": 1.0,
-              "conversions": 0
-            },
-            {
-              "path": "/collections/vendor-beckman-coulter",
-              "sessions": 2,
-              "engaged": 0,
-              "pages_per_session": 2.0,
-              "bounce": 1.0,
-              "conversions": 0
-            }
-          ],
-          "totals": {
-            "sessions": 4,
-            "engaged": 0,
             "conversions": 0
           }
         }
@@ -667,32 +667,6 @@
           "totals": {
             "sessions": 60,
             "engaged": 25,
-            "conversions": 0
-          }
-        },
-        {
-          "campaign": "(not set)",
-          "landing_pages": [
-            {
-              "path": "/",
-              "sessions": 3,
-              "engaged": 0,
-              "pages_per_session": 1.0,
-              "bounce": 1.0,
-              "conversions": 0
-            },
-            {
-              "path": "/collections/vendor-beckman-coulter",
-              "sessions": 2,
-              "engaged": 0,
-              "pages_per_session": 2.0,
-              "bounce": 1.0,
-              "conversions": 0
-            }
-          ],
-          "totals": {
-            "sessions": 5,
-            "engaged": 0,
             "conversions": 0
           }
         },
@@ -885,32 +859,6 @@
             "engaged": 25,
             "conversions": 0
           }
-        },
-        {
-          "campaign": "(not set)",
-          "landing_pages": [
-            {
-              "path": "/",
-              "sessions": 3,
-              "engaged": 0,
-              "pages_per_session": 1.0,
-              "bounce": 1.0,
-              "conversions": 0
-            },
-            {
-              "path": "/collections/vendor-beckman-coulter",
-              "sessions": 2,
-              "engaged": 0,
-              "pages_per_session": 2.0,
-              "bounce": 1.0,
-              "conversions": 0
-            }
-          ],
-          "totals": {
-            "sessions": 5,
-            "engaged": 0,
-            "conversions": 0
-          }
         }
       ],
       "events": [
@@ -962,7 +910,7 @@
               "sessions": 13,
               "engaged": 6,
               "pages_per_session": 1.0,
-              "bounce": 0.538,
+              "bounce": 0.539,
               "conversions": 0
             },
             {
@@ -1045,24 +993,6 @@
             "engaged": 21,
             "conversions": 0
           }
-        },
-        {
-          "campaign": "(not set)",
-          "landing_pages": [
-            {
-              "path": "/",
-              "sessions": 2,
-              "engaged": 0,
-              "pages_per_session": 1.0,
-              "bounce": 1.0,
-              "conversions": 0
-            }
-          ],
-          "totals": {
-            "sessions": 2,
-            "engaged": 0,
-            "conversions": 0
-          }
         }
       ],
       "events": [
@@ -1088,8 +1018,8 @@
     },
     "this_year": {
       "summary": {
-        "sessions": 1974,
-        "engaged": 877,
+        "sessions": 1976,
+        "engaged": 878,
         "conversions": 16,
         "bounce": 0.556,
         "pages_per_session": 1.45,
@@ -1175,10 +1105,10 @@
           "landing_pages": [
             {
               "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-startup-package",
-              "sessions": 100,
-              "engaged": 43,
+              "sessions": 102,
+              "engaged": 44,
               "pages_per_session": 1.69,
-              "bounce": 0.57,
+              "bounce": 0.569,
               "conversions": 8
             },
             {
@@ -1231,8 +1161,8 @@
             }
           ],
           "totals": {
-            "sessions": 226,
-            "engaged": 77,
+            "sessions": 228,
+            "engaged": 78,
             "conversions": 16
           }
         },
@@ -1311,48 +1241,6 @@
           }
         },
         {
-          "campaign": "(not set)",
-          "landing_pages": [
-            {
-              "path": "/",
-              "sessions": 5,
-              "engaged": 0,
-              "pages_per_session": 1.0,
-              "bounce": 1.0,
-              "conversions": 0
-            },
-            {
-              "path": "/collections/vendor-beckman-coulter",
-              "sessions": 2,
-              "engaged": 0,
-              "pages_per_session": 2.0,
-              "bounce": 1.0,
-              "conversions": 0
-            },
-            {
-              "path": "/product/virovac-surgical-smoke-evacuation-tubing-24-case",
-              "sessions": 2,
-              "engaged": 0,
-              "pages_per_session": 1.0,
-              "bounce": 1.0,
-              "conversions": 0
-            },
-            {
-              "path": "/virovac-surgical-smoke-evacuator",
-              "sessions": 1,
-              "engaged": 0,
-              "pages_per_session": 1.0,
-              "bounce": 1.0,
-              "conversions": 0
-            }
-          ],
-          "totals": {
-            "sessions": 10,
-            "engaged": 0,
-            "conversions": 0
-          }
-        },
-        {
           "campaign": "Search-Shopping-Siemens",
           "landing_pages": [
             {
@@ -1374,7 +1262,7 @@
       "events": [
         {
           "event": "view_item",
-          "count": 346,
+          "count": 348,
           "conversions": 0,
           "is_key": false
         },
