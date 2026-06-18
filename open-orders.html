@@ -319,7 +319,8 @@ function liGa4Html(){
 }
 
 // ── Website Traffic tab (GA4 daily visitors by source + sales by source) ──────
-var WT=null, wtLoading=false, wtWin='last_30_days';
+var WT=null, wtLoading=false, wtWin='last_30_days', wtLabels=true, wtTrend=true;
+var WT_WIN_ORDER=['today','last_7_days','last_30_days','this_month','last_month','this_quarter','last_quarter','this_year'];
 var WT_COLORS={ 'Direct':'#6b7a8f','Google Ads':'#1a73e8','Organic Search':'#34a853','Email':'#f59e0b','LinkedIn':'#0a66c2','Other':'#aab4bf' };
 function loadWT(){
   if(wtLoading) return; wtLoading=true;
@@ -330,6 +331,8 @@ function loadWT(){
 }
 function wtRefresh(){ WT=null; wtLoading=false; document.getElementById('panel').innerHTML='<div class="empty">Reloading website-traffic snapshot…</div>'; loadWT(); }
 function wtSetWin(v){ wtWin=v; renderWtPanel(); }
+function wtToggleLabels(c){ wtLabels=!!c; renderWtPanel(); }
+function wtToggleTrend(c){ wtTrend=!!c; renderWtPanel(); }
 function wtLabel(t,gran){
   // t is YYYY-MM-DD (day) or week-Monday date (week)
   var p=(t||'').split('-'); if(p.length<3) return t;
@@ -339,36 +342,50 @@ function wtLabel(t,gran){
 function wtBarSvg(win){
   var buckets=WT.buckets||[], pts=win.points||[], n=pts.length;
   if(!n) return '<div class="empty">No visitors in this window.</div>';
-  var maxT=0; for(var i=0;i<n;i++){ var s=0; for(var b=0;b<buckets.length;b++) s+=pts[i][buckets[b]]||0; if(s>maxT) maxT=s; }
+  var totals=[], maxT=0;
+  for(var i=0;i<n;i++){ var s=0; for(var b=0;b<buckets.length;b++) s+=pts[i][buckets[b]]||0; totals.push(s); if(s>maxT) maxT=s; }
   if(maxT<=0) maxT=1;
-  // scale max up to a "nice" round number
   function niceMax(m){ var pow=Math.pow(10,Math.floor(Math.log(m)/Math.LN10)); var f=m/pow; var nf=f<=1?1:f<=2?2:f<=5?5:10; return nf*pow; }
-  var yMax=niceMax(maxT);
-  var padL=46,padR=14,padT=14,padB=52, plotH=250;
+  var yMax=niceMax(maxT*1.08);
+  var padL=46,padR=14,padT=18,padB=52, plotH=250;
   var minStep=26, plotW=Math.max(660-padL-padR, n*minStep);
   var W=padL+plotW+padR, H=padT+plotH+padB;
   var bw=Math.min(34, plotW/n*0.66), step=plotW/n;
+  function yOf(v){ return padT+plotH-(plotH*v/yMax); }
+  function cx(i){ return padL+step*i+step/2; }
   var svg='<svg viewBox="0 0 '+W+' '+H+'" width="100%" preserveAspectRatio="xMinYMin meet" style="max-width:'+W+'px;font-family:inherit;">';
-  // y gridlines + labels
   var gl=4;
   for(var g=0;g<=gl;g++){ var yv=yMax*g/gl, yy=padT+plotH-(plotH*g/gl);
     svg+='<line x1="'+padL+'" y1="'+yy.toFixed(1)+'" x2="'+(padL+plotW)+'" y2="'+yy.toFixed(1)+'" stroke="#e6ecf2" stroke-width="1"/>';
     svg+='<text x="'+(padL-6)+'" y="'+(yy+3.5).toFixed(1)+'" text-anchor="end" font-size="10" fill="#7a8a99">'+Math.round(yv).toLocaleString()+'</text>';
   }
-  var labEvery=Math.ceil(n/12);
+  var labEvery=Math.ceil(n/12), lblEvery=(n>26?2:1);
   for(var i=0;i<n;i++){
-    var x=padL+step*i+(step-bw)/2, yCur=padT+plotH, dayTot=0;
+    var x=padL+step*i+(step-bw)/2, yCur=padT+plotH;
     for(var b=0;b<buckets.length;b++){
-      var bk=buckets[b], v=pts[i][bk]||0; if(v<=0) continue; dayTot+=v;
+      var bk=buckets[b], v=pts[i][bk]||0; if(v<=0) continue;
       var h=plotH*v/yMax; yCur-=h;
       svg+='<rect x="'+x.toFixed(1)+'" y="'+yCur.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+h.toFixed(1)+'" fill="'+WT_COLORS[bk]+'"><title>'+escapeHtml(wtLabel(pts[i].t,win.granularity))+' · '+escapeHtml(bk)+': '+v+'</title></rect>';
     }
+    // data label (total atop bar)
+    if(wtLabels && totals[i]>0 && (i%lblEvery===0)){
+      svg+='<text x="'+(x+bw/2).toFixed(1)+'" y="'+(yOf(totals[i])-3).toFixed(1)+'" text-anchor="middle" font-size="9" font-weight="600" fill="#2c3e50">'+totals[i].toLocaleString()+'</text>';
+    }
+    // x label
     if(i%labEvery===0){
       var lx=x+bw/2, ly=padT+plotH+14;
       svg+='<text x="'+lx.toFixed(1)+'" y="'+ly+'" text-anchor="end" font-size="9.5" fill="#5a6b7a" transform="rotate(-45 '+lx.toFixed(1)+' '+ly+')">'+escapeHtml(wtLabel(pts[i].t,win.granularity))+'</text>';
     }
   }
-  // axis line
+  // linear regression trend line over per-period totals
+  if(wtTrend && n>=2){
+    var sx=0,sy=0,sxy=0,sxx=0;
+    for(var k=0;k<n;k++){ sx+=k; sy+=totals[k]; sxy+=k*totals[k]; sxx+=k*k; }
+    var den=(n*sxx - sx*sx)||1, m=(n*sxy - sx*sy)/den, c=(sy - m*sx)/n;
+    var y0=Math.max(0,Math.min(yMax, c)), y1=Math.max(0,Math.min(yMax, m*(n-1)+c));
+    svg+='<line x1="'+cx(0).toFixed(1)+'" y1="'+yOf(y0).toFixed(1)+'" x2="'+cx(n-1).toFixed(1)+'" y2="'+yOf(y1).toFixed(1)+'" stroke="#d6336c" stroke-width="2.5" stroke-dasharray="6 4" stroke-linecap="round"/>';
+    svg+='<circle cx="'+cx(n-1).toFixed(1)+'" cy="'+yOf(y1).toFixed(1)+'" r="3" fill="#d6336c"/>';
+  }
   svg+='<line x1="'+padL+'" y1="'+(padT+plotH)+'" x2="'+(padL+plotW)+'" y2="'+(padT+plotH)+'" stroke="#cdd9e6" stroke-width="1"/>';
   svg+='</svg>';
   return '<div style="overflow-x:auto;padding:4px 0;">'+svg+'</div>';
@@ -378,11 +395,12 @@ function wtLegend(){
   for(var b=0;b<buckets.length;b++){ var bk=buckets[b];
     h+='<span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:2px;background:'+WT_COLORS[bk]+';display:inline-block;"></span>'+escapeHtml(bk)+'</span>';
   }
+  if(wtTrend){ h+='<span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:18px;height:0;border-top:2.5px dashed #d6336c;display:inline-block;"></span>Trend (visitors)</span>'; }
   return h+'</div>';
 }
 function renderWtPanel(){
   if(!WT){ document.getElementById('panel').innerHTML='<div class="empty">Loading website-traffic data…</div>'; loadWT(); return; }
-  var wins=WT.windows||{}, ids=['today','last_7_days','last_30_days','this_year'];
+  var wins=WT.windows||{}, ids=WT_WIN_ORDER;
   var win=wins[wtWin]||wins['last_30_days']||wins[ids[0]];
   var sel='<select onchange="wtSetWin(this.value)" style="padding:7px 10px;border:1px solid #cdd9e6;border-radius:6px;font-size:13px;font-family:inherit;">';
   for(var i=0;i<ids.length;i++){ var w=wins[ids[i]]; if(!w) continue; sel+='<option value="'+ids[i]+'"'+(ids[i]===wtWin?' selected':'')+'>'+escapeHtml(w.label)+'</option>'; }
@@ -416,7 +434,12 @@ function renderWtPanel(){
     '<div style="font-size:13px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">Time window: '+sel+
     '<button class="refresh-btn" onclick="wtRefresh()" title="Reload the latest website-traffic snapshot"><span class="lbl">↻ Reload</span></button></div></div></div>'+
     kpis+
-    '<div class="ca-h">'+escapeHtml(win.label)+' &mdash; daily visitors by source</div>'+
+    '<div class="ca-h" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">'+
+      '<span>'+escapeHtml(win.label)+' &mdash; visitors by source</span>'+
+      '<span style="font-weight:400;font-size:12px;color:#34495e;display:inline-flex;gap:16px;align-items:center;">'+
+        '<label style="cursor:pointer;display:inline-flex;gap:5px;align-items:center;"><input type="checkbox" onchange="wtToggleLabels(this.checked)"'+(wtLabels?' checked':'')+'> Data labels</label>'+
+        '<label style="cursor:pointer;display:inline-flex;gap:5px;align-items:center;"><input type="checkbox" onchange="wtToggleTrend(this.checked)"'+(wtTrend?' checked':'')+'> Trend line</label>'+
+      '</span></div>'+
     wtLegend()+ wtBarSvg(win)+
     '<div class="ca-h" style="margin-top:18px;">Does it convert? Sales by source ('+escapeHtml(win.label)+')</div>'+
     '<div class="matrix-wrap" style="max-width:680px;"><table class="matrix"><thead><tr><th>Source</th><th class="c">Visitors</th><th class="c">Key-event conv.</th><th class="c">Conv. rate</th><th class="c">Revenue</th><th class="c">Orders</th></tr></thead><tbody>'+body+'</tbody></table></div>'+
