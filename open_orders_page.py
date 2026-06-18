@@ -643,7 +643,7 @@ function renderLiPanel(){
     body+='<tr>'+
       '<td><span class="status" style="background:'+srcColor[0]+';color:'+srcColor[1]+'">'+escapeHtml(r.source)+'</span></td>'+
       '<td class="so">'+fmtDate(r.date)+'</td>'+
-      '<td class="item-name" style="max-width:460px;">'+escapeHtml(r.text)+'</td>'+
+      '<td class="item-name" style="max-width:460px;">'+(r.link?'<a href="'+escapeHtml(r.link)+'" target="_blank" rel="noopener" style="color:#1F4E79;text-decoration:none;">'+escapeHtml(r.text)+' <span style="color:#008080;">↗</span></a>':escapeHtml(r.text))+'</td>'+
       '<td class="c">'+Number(r.impressions||0).toLocaleString()+'</td>'+
       '<td class="c">'+(r.reactions||0)+'</td>'+
       '<td class="c">'+(r.comments||0)+'</td>'+
@@ -660,8 +660,17 @@ function renderLiPanel(){
     '<div class="matrix-wrap"><table class="matrix"><thead><tr>'+
     '<th>Source</th><th>Date</th><th>Post</th><th class="c">Impr.</th><th class="c">Reactions</th><th class="c">Comments</th><th class="c">Shares</th><th class="c">Engagements</th><th class="c">Eng %</th><th class="c">Clicks</th>'+
     '</tr></thead><tbody>'+body+'</tbody></table></div>'+
+    liGa4Html()+
     '<div style="margin:14px 16px;padding:12px 16px;background:#fff8e1;border-left:4px solid #ffc107;font-size:12px;border-radius:6px;line-height:1.55;color:#2c3e50;">'+
     escapeHtml(LI.note||'')+'</div>';
+}
+function liGa4Html(){
+  var g=(LI.ga4_landing_pages||[]); if(!g.length) return '';
+  var tot=0; for(var i=0;i<g.length;i++) tot+=g[i].sessions||0;
+  var rows='';
+  for(var j=0;j<g.length;j++){ rows+='<tr><td class="item-name">'+escapeHtml(g[j].path)+'</td><td class="c open">'+(g[j].sessions||0)+'</td></tr>'; }
+  return '<div class="ca-h">Website clicks from LinkedIn (GA4) — '+tot+' YTD, by landing page</div>'+
+    '<div class="matrix-wrap" style="max-width:580px;"><table class="matrix"><thead><tr><th>Landing page on jit4you.com</th><th class="c">Sessions</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
 }
 
 // ── Google Ads tab (data loaded from a separate google-ads-data.json file so the
