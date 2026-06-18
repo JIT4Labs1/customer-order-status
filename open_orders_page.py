@@ -681,31 +681,31 @@ function gadsJourneyHtml(){
     kpi((s.pages_per_session||0),'Pages / session')+
     kpi(Math.round((s.bounce||0)*100)+'%','Bounce')+
     kpi(s.conversions||0,'GA4 conversions')+'</div>';
-  var lps=jiv.landing_pages||[], lpb='';
-  for(var i=0;i<lps.length;i++){ var r=lps[i];
-    lpb+='<tr><td class="item-name" style="max-width:340px;">'+escapeHtml(r.path)+'</td>'+
-      '<td class="c">'+Number(r.sessions).toLocaleString()+'</td>'+
-      '<td class="c">'+Number(r.engaged).toLocaleString()+'</td>'+
-      '<td class="c">'+r.pages_per_session+'</td>'+
-      '<td class="c">'+Math.round((r.bounce||0)*100)+'%</td>'+
-      '<td class="c '+(r.conversions>0?'open':'')+'">'+(r.conversions||0)+'</td></tr>';
-  }
-  var tps=jiv.top_pages||[], tpb='';
-  for(var j=0;j<tps.length;j++){ var p=tps[j];
-    tpb+='<tr><td class="item-name" style="max-width:360px;">'+escapeHtml(p.path)+'</td>'+
-      '<td class="c">'+Number(p.views).toLocaleString()+'</td><td class="c">'+Number(p.sessions).toLocaleString()+'</td></tr>';
+  var camps=jiv.campaigns||[], body='';
+  for(var ci=0;ci<camps.length;ci++){
+    var cmp=camps[ci], t=cmp.totals||{};
+    body+='<tr class="so-group"><td><span class="so-h">'+escapeHtml(cmp.campaign)+'</span></td>'+
+      '<td class="c">'+Number(t.sessions||0).toLocaleString()+'</td>'+
+      '<td class="c">'+Number(t.engaged||0).toLocaleString()+'</td>'+
+      '<td class="c"></td><td class="c"></td>'+
+      '<td class="c '+((t.conversions||0)>0?'open':'')+'">'+(t.conversions||0)+'</td></tr>';
+    var lps=cmp.landing_pages||[];
+    for(var i=0;i<lps.length;i++){ var r=lps[i];
+      body+='<tr><td class="item-name" style="max-width:420px;padding-left:24px;">'+escapeHtml(r.path)+'</td>'+
+        '<td class="c">'+Number(r.sessions).toLocaleString()+'</td>'+
+        '<td class="c">'+Number(r.engaged).toLocaleString()+'</td>'+
+        '<td class="c">'+r.pages_per_session+'</td>'+
+        '<td class="c">'+Math.round((r.bounce||0)*100)+'%</td>'+
+        '<td class="c '+(r.conversions>0?'open':'')+'">'+(r.conversions||0)+'</td></tr>';
+    }
   }
   return '<div class="ca-h" style="margin-top:24px;border-top:1px solid #dee5ec;padding-top:14px;">User Journey (GA4) — paid Google Ads traffic &middot; '+jlabel+
     ' &middot; <span style="font-weight:400;color:#888;">'+escapeHtml(GADS.ga4_property||'')+' (switch interval above: YTD or Last 30 days)</span></div>'+
     cards+
-    '<div class="ca-visuals">'+
-      '<div style="flex:1 1 460px;min-width:320px;"><div class="ca-h">Landing pages — where ad clicks enter</div>'+
-      '<div class="matrix-wrap"><table class="matrix"><thead><tr><th>Landing page</th><th class="c">Sessions</th><th class="c">Engaged</th><th class="c">Pages/sess</th><th class="c">Bounce</th><th class="c">Conv.</th></tr></thead><tbody>'+lpb+'</tbody></table></div></div>'+
-      '<div style="flex:1 1 360px;min-width:300px;"><div class="ca-h">Top pages visited (after the click)</div>'+
-      '<div class="matrix-wrap"><table class="matrix"><thead><tr><th>Page</th><th class="c">Views</th><th class="c">Sessions</th></tr></thead><tbody>'+tpb+'</tbody></table></div></div>'+
-    '</div>'+
+    '<div class="ca-h">Landing pages — where ad clicks enter, grouped by campaign</div>'+
+    '<div class="matrix-wrap"><table class="matrix"><thead><tr><th>Campaign / Landing page</th><th class="c">Sessions</th><th class="c">Engaged</th><th class="c">Pages/sess</th><th class="c">Bounce</th><th class="c">Conv.</th></tr></thead><tbody>'+body+'</tbody></table></div>'+
     '<div style="margin:14px 16px;padding:10px 14px;background:#eef8f0;border-left:4px solid #2e7d32;font-size:12px;border-radius:6px;color:#2c3e50;">'+
-    'Aggregate journey from GA4 (sessions where source/medium contains <b>cpc</b>). GA4 gives landing pages and the pages those visitors view; individual click-by-click trails per user aren’t exposed by the reporting API.</div>';
+    'Aggregate journey from GA4 (sessions where source/medium contains <b>cpc</b>), landing pages grouped by the Google Ads campaign that drove the session. <b>Bounce</b> = share of sessions that were not engaged (left without 10s+ on site, a 2nd page view, or a conversion event).</div>';
 }
 function caTrend(t){
   if(t==='up')   return '<span style="color:#2e7d32;font-weight:700;">▲ up</span>';
