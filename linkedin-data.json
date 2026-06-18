@@ -4,11 +4,77 @@
   "profile": "Amir Malka",
   "since": "2026-05-25",
   "website_clicks_ga4_ytd": 7,
-  "note": "Company-page posts report link clicks (via LinkedIn Pages API). Personal-profile posts do NOT expose link clicks anywhere in LinkedIn, so profile 'Clicks' show n/a — the LinkedIn→website total comes from GA4 (linkedin.com referral sessions: 7 YTD). Profile post analytics are read from your logged-in LinkedIn session via the browser.",
+  "note": "Company-page posts report link clicks (LinkedIn Pages API). Personal-profile posts do NOT expose per-post link clicks anywhere, and LinkedIn passes only a site-level 'linkedin.com' referrer (post blog links also go off-domain), so per-post profile clicks can't be attributed. Instead, the table below shows total website visits from LinkedIn measured in GA4 (7 YTD) and which pages they landed on.",
   "posts": [
-    {"source": "Profile", "date": "2026-06-15", "text": "Most labs don't track the cost of partial shipments. They should. When a supplier ships 80% of your order, here's what actually happens...", "impressions": 198, "reactions": 2, "comments": 0, "shares": 0, "engagements": 2, "eng_rate": 1.01, "clicks": null},
-    {"source": "Profile", "date": "2026-06-12", "text": "After years of building JIT4YOU, we're relaunching as JIT4LABS. Same team. Sharper focus. The name change isn't cosmetic...", "impressions": 195, "reactions": 3, "comments": 0, "shares": 0, "engagements": 3, "eng_rate": 1.54, "clicks": null},
-    {"source": "Company page", "date": "2026-06-12", "text": "Most labs think they have two ways to buy reagents: straight from the manufacturer, or from an authorized distributor. The part nobody mentions... (link: blog)", "impressions": 55, "reactions": 0, "comments": 0, "shares": 0, "engagements": 1, "eng_rate": 1.82, "clicks": 1},
-    {"source": "Company page", "date": "2026-06-12", "text": "If you run AU480, AU680, or AU5800 systems, this covers which reagent families work across each platform, lot management, key SKU mapping... (link: blog)", "impressions": 27, "reactions": 0, "comments": 0, "shares": 0, "engagements": 0, "eng_rate": 0, "clicks": 0}
+    {
+      "source": "Profile",
+      "date": "2026-06-15",
+      "text": "Most labs don't track the cost of partial shipments. They should. When a supplier ships 80% of your order, here's what actually happens...",
+      "impressions": 198,
+      "reactions": 2,
+      "comments": 0,
+      "shares": 0,
+      "engagements": 2,
+      "eng_rate": 1.01,
+      "clicks": null,
+      "link": "https://www.linkedin.com/feed/update/urn:li:activity:7472301990702759936/"
+    },
+    {
+      "source": "Profile",
+      "date": "2026-06-12",
+      "text": "After years of building JIT4YOU, we're relaunching as JIT4LABS. Same team. Sharper focus. The name change isn't cosmetic...",
+      "impressions": 195,
+      "reactions": 3,
+      "comments": 0,
+      "shares": 0,
+      "engagements": 3,
+      "eng_rate": 1.54,
+      "clicks": null,
+      "link": "https://www.linkedin.com/feed/update/urn:li:activity:7471214804733558784/"
+    },
+    {
+      "source": "Company page",
+      "date": "2026-06-12",
+      "text": "Most labs think they have two ways to buy reagents: straight from the manufacturer, or from an authorized distributor. The part nobody mentions... (link: blog)",
+      "impressions": 55,
+      "reactions": 0,
+      "comments": 0,
+      "shares": 0,
+      "engagements": 1,
+      "eng_rate": 1.82,
+      "clicks": 1,
+      "link": "https://www.linkedin.com/feed/update/urn:li:share:7471135551522226176/"
+    },
+    {
+      "source": "Company page",
+      "date": "2026-06-12",
+      "text": "If you run AU480, AU680, or AU5800 systems, this covers which reagent families work across each platform, lot management, key SKU mapping... (link: blog)",
+      "impressions": 27,
+      "reactions": 0,
+      "comments": 0,
+      "shares": 0,
+      "engagements": 0,
+      "eng_rate": 0,
+      "clicks": 0,
+      "link": "https://www.linkedin.com/feed/update/urn:li:share:7471136182337171456/"
+    }
+  ],
+  "ga4_landing_pages": [
+    {
+      "path": "/",
+      "sessions": 4
+    },
+    {
+      "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-startup-package",
+      "sessions": 1
+    },
+    {
+      "path": "/collections/vendor-beckman-coulter",
+      "sessions": 1
+    },
+    {
+      "path": "(not set)",
+      "sessions": 1
+    }
   ]
 }
