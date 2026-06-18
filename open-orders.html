@@ -129,6 +129,7 @@
   <button class="mode-btn" data-mode="sku" onclick="setMode('sku')">High Demand SKUs</button>
   <button class="mode-btn" data-mode="ca" onclick="setMode('ca')">Customer Analysis</button>
   <button class="mode-btn" data-mode="gads" onclick="setMode('gads')">Google Ads</button>
+  <button class="mode-btn" data-mode="li" onclick="setMode('li')">LinkedIn</button>
 </div>
 
 <div class="layout">
@@ -207,7 +208,7 @@ function kpi(v,l){ return '<div class="kpi"><div class="v">'+(v==null?'0':v)+'</
 
 function renderTabs(){
   var tabsEl=document.getElementById('tabs');
-  if(mode==='sku' || mode==='pnl' || mode==='gads'){ tabsEl.style.display='none'; tabsEl.innerHTML=''; return; }  // full-width views, no per-entity tabs
+  if(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li'){ tabsEl.style.display='none'; tabsEl.innerHTML=''; return; }  // full-width views, no per-entity tabs
   tabsEl.style.display='';
   var list = mode==='vendor' ? (DATA.vendors||[]) : (mode==='ca' ? ((DATA.customer_analysis||{}).customers||[]) : (DATA.customers||[]));
   var cur = mode==='vendor' ? vactive : (mode==='ca' ? caactive : active);
@@ -253,7 +254,57 @@ function renderPanel(){
   else if(mode==='sku') renderSkuPanel();
   else if(mode==='ca') renderCaPanel();
   else if(mode==='gads') renderGadsPanel();
+  else if(mode==='li') renderLiPanel();
   else renderCustPanel();
+}
+
+// ── LinkedIn tab (own data file; profile posts via browser, company page via Supermetrics) ──
+var LI=null, liLoading=false;
+function loadLI(){
+  if(liLoading) return; liLoading=true;
+  fetch('linkedin-data.json?cb='+Date.now(),{cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(d){ LI=d; liLoading=false; if(mode==='li') renderLiPanel(); })
+    .catch(function(e){ liLoading=false; if(mode==='li') document.getElementById('panel').innerHTML='<div class="empty">Could not load LinkedIn data: '+escapeHtml(e.message)+'</div>'; });
+}
+function liRefresh(){ LI=null; liLoading=false; document.getElementById('panel').innerHTML='<div class="empty">Reloading LinkedIn data…</div>'; loadLI(); }
+function renderLiPanel(){
+  if(!LI){ document.getElementById('panel').innerHTML='<div class="empty">Loading LinkedIn data…</div>'; loadLI(); return; }
+  var posts=(LI.posts||[]).slice().sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); });
+  var tImp=0,tEng=0,tClk=0;
+  for(var i=0;i<posts.length;i++){ tImp+=posts[i].impressions||0; tEng+=posts[i].engagements||0; tClk+=(posts[i].clicks||0); }
+  var cards='<div class="kpis" style="padding:6px 0 0;">'+
+    kpi(posts.length,'Posts (since '+escapeHtml((LI.since||'').slice(5))+')')+
+    kpi(Number(tImp).toLocaleString(),'Impressions')+
+    kpi(Number(tEng).toLocaleString(),'Engagements')+
+    kpi(tClk,'Company link clicks')+
+    kpi(LI.website_clicks_ga4_ytd!=null?LI.website_clicks_ga4_ytd:'—','LinkedIn→site (GA4 YTD)')+'</div>';
+  var body='';
+  for(var p=0;p<posts.length;p++){ var r=posts[p];
+    var srcColor = r.source==='Company page' ? ['#cce5ff','#004085'] : ['#e2d9f3','#5a3e8e'];
+    var clk = (r.clicks==null) ? '<span class="po-none" title="LinkedIn does not expose link clicks on personal posts">n/a</span>' : (r.clicks>0?'<span class="open">'+r.clicks+'</span>':'0');
+    body+='<tr>'+
+      '<td><span class="status" style="background:'+srcColor[0]+';color:'+srcColor[1]+'">'+escapeHtml(r.source)+'</span></td>'+
+      '<td class="so">'+fmtDate(r.date)+'</td>'+
+      '<td class="item-name" style="max-width:460px;">'+escapeHtml(r.text)+'</td>'+
+      '<td class="c">'+Number(r.impressions||0).toLocaleString()+'</td>'+
+      '<td class="c">'+(r.reactions||0)+'</td>'+
+      '<td class="c">'+(r.comments||0)+'</td>'+
+      '<td class="c">'+(r.shares||0)+'</td>'+
+      '<td class="c open">'+(r.engagements||0)+'</td>'+
+      '<td class="c">'+(r.eng_rate!=null?Number(r.eng_rate).toFixed(2)+'%':'—')+'</td>'+
+      '<td class="c">'+clk+'</td></tr>';
+  }
+  document.getElementById('panel').innerHTML =
+    '<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">'+
+    '<div><h2>LinkedIn — Posts &amp; Engagement</h2><div class="sub">Profile: '+escapeHtml(LI.profile||'')+' &middot; Company page: '+escapeHtml(LI.company_page||'')+' &middot; since '+escapeHtml(LI.since||'')+' &middot; pulled '+escapeHtml(LI.pulled_at||'')+'</div></div>'+
+    '<button class="refresh-btn" onclick="liRefresh()" title="Reload the latest LinkedIn snapshot"><span class="lbl">↻ Reload</span></button></div></div>'+
+    cards+
+    '<div class="matrix-wrap"><table class="matrix"><thead><tr>'+
+    '<th>Source</th><th>Date</th><th>Post</th><th class="c">Impr.</th><th class="c">Reactions</th><th class="c">Comments</th><th class="c">Shares</th><th class="c">Engagements</th><th class="c">Eng %</th><th class="c">Clicks</th>'+
+    '</tr></thead><tbody>'+body+'</tbody></table></div>'+
+    '<div style="margin:14px 16px;padding:12px 16px;background:#fff8e1;border-left:4px solid #ffc107;font-size:12px;border-radius:6px;line-height:1.55;color:#2c3e50;">'+
+    escapeHtml(LI.note||'')+'</div>';
 }
 
 // ── Google Ads tab (data loaded from a separate google-ads-data.json file so the
