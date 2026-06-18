@@ -359,7 +359,7 @@ function wtBarSvg(win){
     svg+='<line x1="'+padL+'" y1="'+yy.toFixed(1)+'" x2="'+(padL+plotW)+'" y2="'+yy.toFixed(1)+'" stroke="#e6ecf2" stroke-width="1"/>';
     svg+='<text x="'+(padL-6)+'" y="'+(yy+3.5).toFixed(1)+'" text-anchor="end" font-size="10" fill="#7a8a99">'+Math.round(yv).toLocaleString()+'</text>';
   }
-  var labEvery=Math.ceil(n/12), lblEvery=(n>26?2:1);
+  var labEvery=Math.ceil(n/12), lblEvery=1, lblFont=(n>22?7:(n>14?8:9.5));
   for(var i=0;i<n;i++){
     var x=padL+step*i+(step-bw)/2, yCur=padT+plotH;
     for(var b=0;b<buckets.length;b++){
@@ -369,7 +369,7 @@ function wtBarSvg(win){
     }
     // data label (total atop bar)
     if(wtLabels && totals[i]>0 && (i%lblEvery===0)){
-      svg+='<text x="'+(x+bw/2).toFixed(1)+'" y="'+(yOf(totals[i])-3).toFixed(1)+'" text-anchor="middle" font-size="9" font-weight="600" fill="#2c3e50">'+totals[i].toLocaleString()+'</text>';
+      svg+='<text x="'+(x+bw/2).toFixed(1)+'" y="'+(yOf(totals[i])-3).toFixed(1)+'" text-anchor="middle" font-size="'+lblFont+'" font-weight="600" fill="#2c3e50">'+totals[i].toLocaleString()+'</text>';
     }
     // x label
     if(i%labEvery===0){
