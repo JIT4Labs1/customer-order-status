@@ -35,6 +35,9 @@
   .mode-btn.mode-pnl { color:#1b7a3d; border-color:#bfe3c9; }
   .mode-btn.mode-pnl:hover { background:#eef8f0; }
   .mode-btn.mode-pnl.active { background:#2e7d32; color:#fff; border-color:#2e7d32; }
+  .mode-btn.mode-mkt { color:#c2410c; border-color:#fed7aa; background:#fff7ed; }
+  .mode-btn.mode-mkt:hover { background:#ffedd5; }
+  .mode-btn.mode-mkt.active { background:#ea580c; color:#fff; border-color:#ea580c; }
   .pnl-wrap { overflow-x:auto; padding:20px 22px; }
   .pnl-wrap h2, .pnl-wrap h3 { color:#2c3e50; }
 
@@ -128,9 +131,9 @@
   <button class="mode-btn" data-mode="vendor" onclick="setMode('vendor')">Open Vendor POs</button>
   <button class="mode-btn" data-mode="sku" onclick="setMode('sku')">High Demand SKUs</button>
   <button class="mode-btn" data-mode="ca" onclick="setMode('ca')">Customer Analysis</button>
-  <button class="mode-btn" data-mode="wt" onclick="setMode('wt')">Website Traffic</button>
-  <button class="mode-btn" data-mode="gads" onclick="setMode('gads')">Google Ads</button>
-  <button class="mode-btn" data-mode="li" onclick="setMode('li')">LinkedIn</button>
+  <button class="mode-btn mode-mkt" data-mode="wt" onclick="setMode('wt')">Website Traffic</button>
+  <button class="mode-btn mode-mkt" data-mode="gads" onclick="setMode('gads')">Google Ads</button>
+  <button class="mode-btn mode-mkt" data-mode="li" onclick="setMode('li')">LinkedIn</button>
 </div>
 
 <div class="layout">
@@ -781,7 +784,8 @@ function setMode(m){
   var btns=document.querySelectorAll('.mode-btn');
   for(var i=0;i<btns.length;i++){
     var dm=btns[i].getAttribute('data-mode');
-    btns[i].className = 'mode-btn'+(dm==='pnl'?' mode-pnl':'')+(dm===m?' active':'');  // keep P&L green always
+    var extra = dm==='pnl' ? ' mode-pnl' : ((dm==='wt'||dm==='gads'||dm==='li') ? ' mode-mkt' : '');  // P&L green, marketing tabs orange
+    btns[i].className = 'mode-btn'+extra+(dm===m?' active':'');
   }
   renderTabs(); renderPanel();
 }
