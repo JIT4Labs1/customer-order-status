@@ -319,7 +319,7 @@ function liGa4Html(){
 }
 
 // ── Website Traffic tab (GA4 daily visitors by source + sales by source) ──────
-var WT=null, wtLoading=false, wtWin='last_30_days', wtLabels=true, wtTrend=true;
+var WT=null, wtLoading=false, wtWin='last_30_days', wtLabels=true, wtTrend=true, wtVisible={};
 var WT_WIN_ORDER=['today','last_7_days','last_30_days','this_month','last_month','this_quarter','last_quarter','this_year'];
 var WT_COLORS={ 'Direct':'#6b7a8f','Google Ads':'#1a73e8','Organic Search':'#34a853','Email':'#f59e0b','LinkedIn':'#0a66c2','Other':'#aab4bf' };
 function loadWT(){
@@ -333,6 +333,9 @@ function wtRefresh(){ WT=null; wtLoading=false; document.getElementById('panel')
 function wtSetWin(v){ wtWin=v; renderWtPanel(); }
 function wtToggleLabels(c){ wtLabels=!!c; renderWtPanel(); }
 function wtToggleTrend(c){ wtTrend=!!c; renderWtPanel(); }
+function wtToggleSource(bk,c){ wtVisible[bk]=!!c; renderWtPanel(); }
+function wtAllSources(c){ var bs=(WT&&WT.buckets)||[]; for(var i=0;i<bs.length;i++) wtVisible[bs[i]]=!!c; renderWtPanel(); }
+function wtVisBuckets(){ var bs=(WT&&WT.buckets)||[], v=[]; for(var i=0;i<bs.length;i++) if(wtVisible[bs[i]]) v.push(bs[i]); return v; }
 function wtLabel(t,gran){
   // t is YYYY-MM-DD (day) or week-Monday date (week)
   var p=(t||'').split('-'); if(p.length<3) return t;
@@ -340,7 +343,8 @@ function wtLabel(t,gran){
   return mo+' '+parseInt(p[2],10);
 }
 function wtBarSvg(win){
-  var buckets=WT.buckets||[], pts=win.points||[], n=pts.length;
+  var buckets=wtVisBuckets(), pts=win.points||[], n=pts.length;
+  if(!buckets.length) return '<div class="empty">Select at least one source above to show the chart.</div>';
   if(!n) return '<div class="empty">No visitors in this window.</div>';
   var totals=[], maxT=0;
   for(var i=0;i<n;i++){ var s=0; for(var b=0;b<buckets.length;b++) s+=pts[i][buckets[b]]||0; totals.push(s); if(s>maxT) maxT=s; }
@@ -391,15 +395,20 @@ function wtBarSvg(win){
   return '<div style="overflow-x:auto;padding:4px 0;">'+svg+'</div>';
 }
 function wtLegend(){
-  var buckets=WT.buckets||[], h='<div style="display:flex;flex-wrap:wrap;gap:6px 16px;margin:4px 2px 10px;font-size:12px;color:#2c3e50;">';
+  var buckets=WT.buckets||[], allOn=true;
+  for(var a=0;a<buckets.length;a++){ if(!wtVisible[buckets[a]]) allOn=false; }
+  var h='<div style="display:flex;flex-wrap:wrap;gap:6px 14px;margin:4px 2px 10px;font-size:12px;color:#2c3e50;align-items:center;">';
+  h+='<span style="color:#7a8a99;">Show:</span>';
+  h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-weight:600;"><input type="checkbox" onchange="wtAllSources(this.checked)"'+(allOn?' checked':'')+'> All</label>';
   for(var b=0;b<buckets.length;b++){ var bk=buckets[b];
-    h+='<span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:2px;background:'+WT_COLORS[bk]+';display:inline-block;"></span>'+escapeHtml(bk)+'</span>';
+    h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;"><input type="checkbox" onchange="wtToggleSource(''+bk+'',this.checked)"'+(wtVisible[bk]?' checked':'')+'><span style="width:12px;height:12px;border-radius:2px;background:'+WT_COLORS[bk]+';display:inline-block;"></span>'+escapeHtml(bk)+'</label>';
   }
-  if(wtTrend){ h+='<span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:18px;height:0;border-top:2.5px dashed #d6336c;display:inline-block;"></span>Trend (visitors)</span>'; }
+  if(wtTrend){ h+='<span style="display:inline-flex;align-items:center;gap:6px;color:#7a8a99;"><span style="width:18px;height:0;border-top:2.5px dashed #d6336c;display:inline-block;"></span>Trend</span>'; }
   return h+'</div>';
 }
 function renderWtPanel(){
   if(!WT){ document.getElementById('panel').innerHTML='<div class="empty">Loading website-traffic data…</div>'; loadWT(); return; }
+  var allb=WT.buckets||[]; for(var z=0;z<allb.length;z++){ if(!(allb[z] in wtVisible)) wtVisible[allb[z]]=true; }
   var wins=WT.windows||{}, ids=WT_WIN_ORDER;
   var win=wins[wtWin]||wins['last_30_days']||wins[ids[0]];
   var sel='<select onchange="wtSetWin(this.value)" style="padding:7px 10px;border:1px solid #cdd9e6;border-radius:6px;font-size:13px;font-family:inherit;">';
