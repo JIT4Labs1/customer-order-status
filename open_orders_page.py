@@ -485,6 +485,7 @@ def build_html(page_data):
   <button class="mode-btn" data-mode="vendor" onclick="setMode('vendor')">Open Vendor POs</button>
   <button class="mode-btn" data-mode="sku" onclick="setMode('sku')">High Demand SKUs</button>
   <button class="mode-btn" data-mode="ca" onclick="setMode('ca')">Customer Analysis</button>
+  <button class="mode-btn" data-mode="gads" onclick="setMode('gads')">Google Ads</button>
 </div>
 
 <div class="layout">
@@ -563,7 +564,7 @@ function kpi(v,l){ return '<div class="kpi"><div class="v">'+(v==null?'0':v)+'</
 
 function renderTabs(){
   var tabsEl=document.getElementById('tabs');
-  if(mode==='sku' || mode==='pnl'){ tabsEl.style.display='none'; tabsEl.innerHTML=''; return; }  // full-width views, no per-entity tabs
+  if(mode==='sku' || mode==='pnl' || mode==='gads'){ tabsEl.style.display='none'; tabsEl.innerHTML=''; return; }  // full-width views, no per-entity tabs
   tabsEl.style.display='';
   var list = mode==='vendor' ? (DATA.vendors||[]) : (mode==='ca' ? ((DATA.customer_analysis||{}).customers||[]) : (DATA.customers||[]));
   var cur = mode==='vendor' ? vactive : (mode==='ca' ? caactive : active);
@@ -608,7 +609,64 @@ function renderPanel(){
   else if(mode==='vendor') renderVendorPanel();
   else if(mode==='sku') renderSkuPanel();
   else if(mode==='ca') renderCaPanel();
+  else if(mode==='gads') renderGadsPanel();
   else renderCustPanel();
+}
+
+// ── Google Ads tab (data loaded from a separate google-ads-data.json file so the
+// Vtiger Refresh never overwrites it) ────────────────────────────────────────
+var GADS=null, gadsInterval='this_year', gadsLoading=false;
+function loadGads(){
+  if(gadsLoading) return; gadsLoading=true;
+  fetch('google-ads-data.json?cb='+Date.now(),{cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(d){ GADS=d; gadsLoading=false; if(mode==='gads') renderGadsPanel(); })
+    .catch(function(e){ gadsLoading=false; if(mode==='gads') document.getElementById('panel').innerHTML='<div class="empty">Could not load Google Ads data: '+escapeHtml(e.message)+'</div>'; });
+}
+function gadsSetInterval(v){ gadsInterval=v; renderGadsPanel(); }
+function money0(n){ return '$'+Number(n||0).toLocaleString(undefined,{maximumFractionDigits:0}); }
+function money2(n){ return '$'+Number(n||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function renderGadsPanel(){
+  if(!GADS){ document.getElementById('panel').innerHTML='<div class="empty">Loading Google Ads data…</div>'; loadGads(); return; }
+  var ivs=GADS.intervals||[], cur=null;
+  for(var i=0;i<ivs.length;i++){ if(ivs[i].id===gadsInterval){ cur=ivs[i]; break; } }
+  if(!cur && ivs.length){ cur=ivs[0]; gadsInterval=cur.id; }
+  var sel='<select onchange="gadsSetInterval(this.value)" style="padding:7px 10px;border:1px solid #cdd9e6;border-radius:6px;font-size:13px;font-family:inherit;">';
+  for(var j=0;j<ivs.length;j++){ sel+='<option value="'+escapeHtml(ivs[j].id)+'"'+(ivs[j].id===gadsInterval?' selected':'')+'>'+escapeHtml(ivs[j].label)+'</option>'; }
+  sel+='</select>';
+  var rows=(cur?cur.campaigns:[]), tc=0,ti=0,tcost=0,tconv=0,tval=0, body='';
+  for(var k=0;k<rows.length;k++){ var r=rows[k];
+    tc+=r.clicks; ti+=r.impressions; tcost+=r.cost; tconv+=r.conversions; tval+=r.conv_value;
+    var st=r.status, sc = st==='enabled'?['#d4edda','#155724']:(st==='paused'?['#fff3cd','#856404']:['#eee','#666']);
+    body+='<tr>'+
+      '<td class="item-name">'+escapeHtml(r.name)+'</td>'+
+      '<td><span class="status" style="background:'+sc[0]+';color:'+sc[1]+'">'+escapeHtml(st)+'</span></td>'+
+      '<td>'+escapeHtml(r.type)+'</td>'+
+      '<td class="c">'+Number(r.clicks).toLocaleString()+'</td>'+
+      '<td class="c">'+Number(r.impressions).toLocaleString()+'</td>'+
+      '<td class="c">'+(r.ctr*100).toFixed(2)+'%</td>'+
+      '<td class="c">'+money2(r.cpc)+'</td>'+
+      '<td class="c open">'+money2(r.cost)+'</td>'+
+      '<td class="c">'+fmtQty(r.conversions)+'</td>'+
+      '<td class="c">'+money0(r.conv_value)+'</td>'+
+      '<td class="c">'+(r.roas?Number(r.roas).toFixed(1)+'x':'—')+'</td>'+
+      '</tr>';
+  }
+  var tctr=ti?(tc/ti*100).toFixed(2)+'%':'—', tcpc=tc?money2(tcost/tc):'—', troas=tcost?(tval/tcost).toFixed(1)+'x':'—';
+  body+='<tr class="so-group"><td>Total ('+escapeHtml(cur?cur.label:'')+')</td><td></td><td></td>'+
+    '<td class="c">'+tc.toLocaleString()+'</td><td class="c">'+ti.toLocaleString()+'</td><td class="c">'+tctr+'</td>'+
+    '<td class="c">'+tcpc+'</td><td class="c open">'+money2(tcost)+'</td><td class="c">'+fmtQty(tconv)+'</td>'+
+    '<td class="c">'+money0(tval)+'</td><td class="c">'+troas+'</td></tr>';
+  var note='<div style="margin:16px;padding:12px 16px;background:#fff8e1;border-left:4px solid #ffc107;font-size:13px;border-radius:6px;line-height:1.5;">'+
+    '<b>Click trails / user journey:</b> '+escapeHtml(GADS.note_click_trails||'')+'</div>';
+  document.getElementById('panel').innerHTML =
+    '<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">'+
+    '<div><h2>Google Ads — Campaign Performance</h2><div class="sub">Account: '+escapeHtml(GADS.account||'')+' &middot; data pulled '+escapeHtml(GADS.pulled_at||'')+' &middot; '+escapeHtml(GADS.currency||'USD')+'</div></div>'+
+    '<div style="font-size:13px;">Time interval: '+sel+'</div></div></div>'+
+    '<div class="matrix-wrap"><table class="matrix"><thead><tr>'+
+    '<th>Campaign</th><th>Status</th><th>Type</th><th class="c">Clicks</th><th class="c">Impr.</th><th class="c">CTR</th>'+
+    '<th class="c">Avg CPC</th><th class="c">Spend</th><th class="c">Conv.</th><th class="c">Conv. value</th><th class="c">ROAS</th>'+
+    '</tr></thead><tbody>'+body+'</tbody></table></div>'+note;
 }
 function caTrend(t){
   if(t==='up')   return '<span style="color:#2e7d32;font-weight:700;">▲ up</span>';
