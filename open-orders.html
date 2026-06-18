@@ -334,6 +334,7 @@ function wtSetWin(v){ wtWin=v; renderWtPanel(); }
 function wtToggleLabels(c){ wtLabels=!!c; renderWtPanel(); }
 function wtToggleTrend(c){ wtTrend=!!c; renderWtPanel(); }
 function wtToggleSource(bk,c){ wtVisible[bk]=!!c; renderWtPanel(); }
+function wtToggleSourceIdx(i,c){ var bk=((WT&&WT.buckets)||[])[i]; if(bk!=null){ wtVisible[bk]=!!c; renderWtPanel(); } }
 function wtAllSources(c){ var bs=(WT&&WT.buckets)||[]; for(var i=0;i<bs.length;i++) wtVisible[bs[i]]=!!c; renderWtPanel(); }
 function wtVisBuckets(){ var bs=(WT&&WT.buckets)||[], v=[]; for(var i=0;i<bs.length;i++) if(wtVisible[bs[i]]) v.push(bs[i]); return v; }
 function wtLabel(t,gran){
@@ -401,7 +402,7 @@ function wtLegend(){
   h+='<span style="color:#7a8a99;">Show:</span>';
   h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-weight:600;"><input type="checkbox" onchange="wtAllSources(this.checked)"'+(allOn?' checked':'')+'> All</label>';
   for(var b=0;b<buckets.length;b++){ var bk=buckets[b];
-    h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;"><input type="checkbox" onchange="wtToggleSource(''+bk+'',this.checked)"'+(wtVisible[bk]?' checked':'')+'><span style="width:12px;height:12px;border-radius:2px;background:'+WT_COLORS[bk]+';display:inline-block;"></span>'+escapeHtml(bk)+'</label>';
+    h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;"><input type="checkbox" onchange="wtToggleSourceIdx('+b+',this.checked)"'+(wtVisible[bk]?' checked':'')+'><span style="width:12px;height:12px;border-radius:2px;background:'+WT_COLORS[bk]+';display:inline-block;"></span>'+escapeHtml(bk)+'</label>';
   }
   if(wtTrend){ h+='<span style="display:inline-flex;align-items:center;gap:6px;color:#7a8a99;"><span style="width:18px;height:0;border-top:2.5px dashed #d6336c;display:inline-block;"></span>Trend</span>'; }
   return h+'</div>';
