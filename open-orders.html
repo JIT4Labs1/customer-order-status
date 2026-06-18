@@ -324,10 +324,13 @@ function gadsJourneyHtml(){
     kpi((s.pages_per_session||0),'Pages / session')+
     kpi(Math.round((s.bounce||0)*100)+'%','Bounce')+
     kpi(s.conversions||0,'GA4 conversions')+'</div>';
-  var camps=jiv.campaigns||[], body='';
+  // Only show landing pages for ENABLED campaigns (per the Google Ads status above).
+  var enabled={}; var civId = ytd ? 'this_year' : 'last_30_days';
+  var ivs=GADS.intervals||[]; for(var z=0;z<ivs.length;z++){ if(ivs[z].id===civId){ var cl=ivs[z].campaigns||[]; for(var y=0;y<cl.length;y++){ if((cl[y].status||'')==='enabled') enabled[cl[y].name]=1; } } }
+  var camps=(jiv.campaigns||[]).filter(function(c){ return enabled[c.campaign]; }), body='';
   for(var ci=0;ci<camps.length;ci++){
     var cmp=camps[ci], t=cmp.totals||{};
-    body+='<tr class="so-group"><td><span class="so-h">'+escapeHtml(cmp.campaign)+'</span></td>'+
+    body+='<tr class="so-group"><td><span class="so-h">'+escapeHtml(cmp.campaign)+'</span> <span style="font-size:10px;color:#2e7d32;font-weight:700;">enabled</span></td>'+
       '<td class="c">'+Number(t.sessions||0).toLocaleString()+'</td>'+
       '<td class="c">'+Number(t.engaged||0).toLocaleString()+'</td>'+
       '<td class="c"></td><td class="c"></td>'+
@@ -342,13 +345,26 @@ function gadsJourneyHtml(){
         '<td class="c '+(r.conversions>0?'open':'')+'">'+(r.conversions||0)+'</td></tr>';
     }
   }
+  if(!body){ body='<tr><td colspan="6" class="empty">No enabled campaigns with paid traffic in this period.</td></tr>'; }
+  // Events / conversions by key event
+  var evs=jiv.events||[], evb='';
+  for(var e=0;e<evs.length;e++){ var ev=evs[e];
+    evb+='<tr'+(ev.is_key?' style="background:#eef8f0;"':'')+'><td class="item-name">'+escapeHtml(ev.event)+(ev.is_key?' <span style="font-size:10px;color:#2e7d32;font-weight:700;">★ key event</span>':'')+'</td>'+
+      '<td class="c">'+Number(ev.count||0).toLocaleString()+'</td>'+
+      '<td class="c '+((ev.conversions||0)>0?'open':'')+'">'+(ev.conversions||0)+'</td></tr>';
+  }
+  var defs=GADS.defs||{};
+  var evTable = evs.length ? ('<div class="ca-h">Conversions by key event</div>'+
+    '<div class="matrix-wrap" style="max-width:520px;"><table class="matrix"><thead><tr><th>Event</th><th class="c">Event count</th><th class="c">Conversions</th></tr></thead><tbody>'+evb+'</tbody></table></div>') : '';
   return '<div class="ca-h" style="margin-top:24px;border-top:1px solid #dee5ec;padding-top:14px;">User Journey (GA4) — paid Google Ads traffic &middot; '+jlabel+
     ' &middot; <span style="font-weight:400;color:#888;">'+escapeHtml(GADS.ga4_property||'')+' (switch interval above: YTD or Last 30 days)</span></div>'+
     cards+
-    '<div class="ca-h">Landing pages — where ad clicks enter, grouped by campaign</div>'+
+    '<div class="ca-h">Landing pages — enabled campaigns only, where ad clicks enter</div>'+
     '<div class="matrix-wrap"><table class="matrix"><thead><tr><th>Campaign / Landing page</th><th class="c">Sessions</th><th class="c">Engaged</th><th class="c">Pages/sess</th><th class="c">Bounce</th><th class="c">Conv.</th></tr></thead><tbody>'+body+'</tbody></table></div>'+
-    '<div style="margin:14px 16px;padding:10px 14px;background:#eef8f0;border-left:4px solid #2e7d32;font-size:12px;border-radius:6px;color:#2c3e50;">'+
-    'Aggregate journey from GA4 (sessions where source/medium contains <b>cpc</b>), landing pages grouped by the Google Ads campaign that drove the session. <b>Bounce</b> = share of sessions that were not engaged (left without 10s+ on site, a 2nd page view, or a conversion event).</div>';
+    evTable+
+    '<div style="margin:14px 16px;padding:12px 16px;background:#eef8f0;border-left:4px solid #2e7d32;font-size:12px;border-radius:6px;color:#2c3e50;line-height:1.55;">'+
+    '<b>What "Conversions" means:</b> '+escapeHtml(defs.conversion||'')+'<br><br>'+
+    '<b>What "Bounce" means:</b> '+escapeHtml(defs.bounce||'')+'</div>';
 }
 function caTrend(t){
   if(t==='up')   return '<span style="color:#2e7d32;font-weight:700;">▲ up</span>';
