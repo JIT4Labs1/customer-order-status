@@ -674,7 +674,7 @@ function renderGadsPanel(){
 function gadsJourneyHtml(){
   var J=GADS.journey;
   if(!J){ return '<div style="margin:16px;padding:12px 16px;background:#fff8e1;border-left:4px solid #ffc107;font-size:13px;border-radius:6px;line-height:1.5;"><b>Click trails / user journey:</b> '+escapeHtml(GADS.note_click_trails||'')+'</div>'; }
-  var order=['last_7_days','last_30_days','this_month','last_month','this_year'];
+  var order=['today','last_7_days','last_30_days','this_month','last_month','this_year'];
   var labelMap={}; var ivs=GADS.intervals||[]; for(var z=0;z<ivs.length;z++){ labelMap[ivs[z].id]=ivs[z].label; }
   if(!J[gadsJWindow]){ gadsJWindow = J.last_30_days ? 'last_30_days' : Object.keys(J)[0]; }
   var jiv=J[gadsJWindow], jlabel=labelMap[gadsJWindow]||gadsJWindow;
