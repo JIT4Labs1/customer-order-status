@@ -339,6 +339,26 @@
             "conversions": 0
           }
         }
+      ],
+      "events": [
+        {
+          "event": "view_item",
+          "count": 337,
+          "conversions": 0,
+          "is_key": false
+        },
+        {
+          "event": "add_to_cart",
+          "count": 16,
+          "conversions": 16,
+          "is_key": true
+        },
+        {
+          "event": "begin_checkout",
+          "count": 4,
+          "conversions": 0,
+          "is_key": false
+        }
       ]
     },
     "this_year": {
@@ -593,8 +613,32 @@
             "conversions": 0
           }
         }
+      ],
+      "events": [
+        {
+          "event": "view_item",
+          "count": 340,
+          "conversions": 0,
+          "is_key": false
+        },
+        {
+          "event": "add_to_cart",
+          "count": 16,
+          "conversions": 16,
+          "is_key": true
+        },
+        {
+          "event": "begin_checkout",
+          "count": 4,
+          "conversions": 0,
+          "is_key": false
+        }
       ]
     }
   },
-  "ga4_property": "JIT4You.com - GA4 (433514600)"
+  "ga4_property": "JIT4You.com - GA4 (433514600)",
+  "defs": {
+    "conversion": "A GA4 conversion is a count of your designated key events. In this property the only key event firing on paid (cpc) traffic is add_to_cart, so 'Conversions' = number of add-to-cart events. (Google Ads 'Conversions' in the campaign table is counted separately by Google Ads click attribution and won't match.)",
+    "bounce": "Bounce rate = share of sessions that were NOT engaged. A session is 'engaged' if it lasts 10+ seconds, has 2+ page views, or triggers a key event. High bounce = visitors arrive from the ad and leave quickly."
+  }
 }
