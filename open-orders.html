@@ -426,6 +426,19 @@ function renderWtPanel(){
       '<td class="c">'+cr+'</td>'+
       '<td class="c open">'+money0(r.revenue)+'</td>'+
       '<td class="c">'+r.transactions+'</td></tr>';
+    // sub-rows: which specific email drove the Email-bucket traffic
+    if(order[b]==='Email'){ var ed=win.email_detail||[];
+      for(var e=0;e<ed.length;e++){ var d=ed[e], dcr=d.sessions?(d.conversions/d.sessions*100).toFixed(1)+'%':'—';
+        body+='<tr style="background:#fcfdfe;">'+
+          '<td style="padding-left:30px;color:#5a6b7a;font-size:12px;">↳ '+escapeHtml(d.name)+(d.campaign?' <span style="color:#9aa7b4;">('+escapeHtml(d.campaign)+')</span>':'')+'</td>'+
+          '<td class="c" style="font-size:12px;color:#5a6b7a;">'+Number(d.sessions).toLocaleString()+'</td>'+
+          '<td class="c" style="font-size:12px;color:#5a6b7a;">'+d.conversions+'</td>'+
+          '<td class="c" style="font-size:12px;color:#5a6b7a;">'+dcr+'</td>'+
+          '<td class="c" style="font-size:12px;color:#5a6b7a;">'+money0(d.revenue)+'</td>'+
+          '<td class="c" style="font-size:12px;color:#5a6b7a;">'+(d.transactions||0)+'</td></tr>';
+      }
+      if(!ed.length && r.sessions>0){ body+='<tr style="background:#fcfdfe;"><td style="padding-left:30px;color:#9aa7b4;font-size:12px;" colspan="6">↳ no per-email tagging available for this window</td></tr>'; }
+    }
   }
   body+='<tr class="so-group"><td>Total</td><td class="c">'+Number(tot.sessions).toLocaleString()+'</td><td class="c">'+tot.conversions+'</td><td class="c">'+(tot.sessions?(tot.conversions/tot.sessions*100).toFixed(1)+'%':'—')+'</td><td class="c open">'+money0(tot.revenue)+'</td><td class="c">'+tot.transactions+'</td></tr>';
   document.getElementById('panel').innerHTML =
