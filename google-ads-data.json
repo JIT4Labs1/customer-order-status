@@ -1,6 +1,6 @@
 {
   "account": "Jit 4 You (1852255530)",
-  "pulled_at": "2026-06-18 12:51 PM PT",
+  "pulled_at": "2026-06-18 04:40 PM PT",
   "currency": "USD",
   "note_click_trails": "Google Ads exposes only the landing page (the first page a click lands on). For these Shopping campaigns the Final URL comes back empty, so the page-to-page user journey is not available from Google Ads. The full click trail lives in Google Analytics (GA4) \u2014 connect GA4 to add a real user-journey view.",
   "intervals": [
@@ -324,8 +324,8 @@
   "journey": {
     "today": {
       "summary": {
-        "sessions": 2,
-        "engaged": 1,
+        "sessions": 4,
+        "engaged": 2,
         "conversions": 0,
         "bounce": 0.5,
         "pages_per_session": 1.5,
@@ -337,16 +337,34 @@
           "landing_pages": [
             {
               "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-startup-package",
-              "sessions": 2,
-              "engaged": 1,
-              "pages_per_session": 1.5,
-              "bounce": 0.5,
+              "sessions": 3,
+              "engaged": 2,
+              "pages_per_session": 1.67,
+              "bounce": 0.333,
               "conversions": 0
             }
           ],
           "totals": {
-            "sessions": 2,
-            "engaged": 1,
+            "sessions": 3,
+            "engaged": 2,
+            "conversions": 0
+          }
+        },
+        {
+          "campaign": "BeckmanCoulter_Shopping_Test",
+          "landing_pages": [
+            {
+              "path": "/a/search/all",
+              "sessions": 1,
+              "engaged": 0,
+              "pages_per_session": 1.0,
+              "bounce": 1.0,
+              "conversions": 0
+            }
+          ],
+          "totals": {
+            "sessions": 1,
+            "engaged": 0,
             "conversions": 0
           }
         }
@@ -362,12 +380,12 @@
     },
     "last_7_days": {
       "summary": {
-        "sessions": 121,
-        "engaged": 39,
+        "sessions": 122,
+        "engaged": 40,
         "conversions": 0,
-        "bounce": 0.678,
-        "pages_per_session": 1.73,
-        "engagement_rate": 0.322
+        "bounce": 0.672,
+        "pages_per_session": 1.72,
+        "engagement_rate": 0.328
       },
       "campaigns": [
         {
@@ -399,7 +417,7 @@
             },
             {
               "path": "(not set)",
-              "sessions": 2,
+              "sessions": 3,
               "engaged": 0,
               "pages_per_session": 0.0,
               "bounce": 1.0,
@@ -410,14 +428,6 @@
               "sessions": 2,
               "engaged": 0,
               "pages_per_session": 2.0,
-              "bounce": 1.0,
-              "conversions": 0
-            },
-            {
-              "path": "",
-              "sessions": 1,
-              "engaged": 0,
-              "pages_per_session": 0.0,
               "bounce": 1.0,
               "conversions": 0
             },
@@ -505,8 +515,8 @@
             }
           ],
           "totals": {
-            "sessions": 57,
-            "engaged": 24,
+            "sessions": 58,
+            "engaged": 25,
             "conversions": 0
           }
         }
@@ -514,7 +524,7 @@
       "events": [
         {
           "event": "view_item",
-          "count": 168,
+          "count": 169,
           "conversions": 0,
           "is_key": false
         }
@@ -522,12 +532,12 @@
     },
     "last_30_days": {
       "summary": {
-        "sessions": 286,
-        "engaged": 99,
+        "sessions": 287,
+        "engaged": 100,
         "conversions": 16,
-        "bounce": 0.654,
-        "pages_per_session": 1.47,
-        "engagement_rate": 0.346
+        "bounce": 0.652,
+        "pages_per_session": 1.46,
+        "engagement_rate": 0.348
       },
       "campaigns": [
         {
@@ -543,10 +553,10 @@
             },
             {
               "path": "(not set)",
-              "sessions": 52,
+              "sessions": 53,
               "engaged": 7,
               "pages_per_session": 0.0,
-              "bounce": 0.865,
+              "bounce": 0.868,
               "conversions": 0
             },
             {
@@ -578,14 +588,6 @@
               "sessions": 8,
               "engaged": 0,
               "pages_per_session": 1.38,
-              "bounce": 1.0,
-              "conversions": 0
-            },
-            {
-              "path": "",
-              "sessions": 1,
-              "engaged": 0,
-              "pages_per_session": 0.0,
               "bounce": 1.0,
               "conversions": 0
             }
@@ -665,8 +667,8 @@
             }
           ],
           "totals": {
-            "sessions": 60,
-            "engaged": 25,
+            "sessions": 61,
+            "engaged": 26,
             "conversions": 0
           }
         },
@@ -692,7 +694,7 @@
       "events": [
         {
           "event": "view_item",
-          "count": 343,
+          "count": 344,
           "conversions": 0,
           "is_key": false
         },
@@ -712,12 +714,12 @@
     },
     "this_month": {
       "summary": {
-        "sessions": 195,
-        "engaged": 61,
+        "sessions": 196,
+        "engaged": 62,
         "conversions": 10,
-        "bounce": 0.687,
-        "pages_per_session": 1.85,
-        "engagement_rate": 0.313
+        "bounce": 0.684,
+        "pages_per_session": 1.84,
+        "engagement_rate": 0.316
       },
       "campaigns": [
         {
@@ -741,10 +743,10 @@
             },
             {
               "path": "(not set)",
-              "sessions": 13,
+              "sessions": 14,
               "engaged": 1,
               "pages_per_session": 0.0,
-              "bounce": 0.923,
+              "bounce": 0.929,
               "conversions": 0
             },
             {
@@ -769,14 +771,6 @@
               "engaged": 3,
               "pages_per_session": 2.0,
               "bounce": 0.5,
-              "conversions": 0
-            },
-            {
-              "path": "",
-              "sessions": 1,
-              "engaged": 0,
-              "pages_per_session": 0.0,
-              "bounce": 1.0,
               "conversions": 0
             }
           ],
@@ -855,8 +849,8 @@
             }
           ],
           "totals": {
-            "sessions": 60,
-            "engaged": 25,
+            "sessions": 61,
+            "engaged": 26,
             "conversions": 0
           }
         }
@@ -864,7 +858,7 @@
       "events": [
         {
           "event": "view_item",
-          "count": 289,
+          "count": 290,
           "conversions": 0,
           "is_key": false
         },
@@ -1018,12 +1012,12 @@
     },
     "this_year": {
       "summary": {
-        "sessions": 1976,
-        "engaged": 878,
+        "sessions": 1979,
+        "engaged": 880,
         "conversions": 16,
-        "bounce": 0.556,
+        "bounce": 0.555,
         "pages_per_session": 1.45,
-        "engagement_rate": 0.444
+        "engagement_rate": 0.445
       },
       "campaigns": [
         {
@@ -1105,18 +1099,18 @@
           "landing_pages": [
             {
               "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-startup-package",
-              "sessions": 102,
-              "engaged": 44,
+              "sessions": 103,
+              "engaged": 45,
               "pages_per_session": 1.69,
-              "bounce": 0.569,
+              "bounce": 0.563,
               "conversions": 8
             },
             {
               "path": "(not set)",
-              "sessions": 55,
+              "sessions": 56,
               "engaged": 7,
               "pages_per_session": 0.0,
-              "bounce": 0.873,
+              "bounce": 0.875,
               "conversions": 0
             },
             {
@@ -1150,19 +1144,11 @@
               "pages_per_session": 1.38,
               "bounce": 1.0,
               "conversions": 0
-            },
-            {
-              "path": "",
-              "sessions": 1,
-              "engaged": 0,
-              "pages_per_session": 0.0,
-              "bounce": 1.0,
-              "conversions": 0
             }
           ],
           "totals": {
-            "sessions": 228,
-            "engaged": 78,
+            "sessions": 229,
+            "engaged": 79,
             "conversions": 16
           }
         },
@@ -1235,8 +1221,8 @@
             }
           ],
           "totals": {
-            "sessions": 60,
-            "engaged": 25,
+            "sessions": 62,
+            "engaged": 26,
             "conversions": 0
           }
         },
@@ -1262,7 +1248,7 @@
       "events": [
         {
           "event": "view_item",
-          "count": 348,
+          "count": 351,
           "conversions": 0,
           "is_key": false
         },
