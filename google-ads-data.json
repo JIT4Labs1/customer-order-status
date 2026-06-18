@@ -19,7 +19,8 @@
           "cost": 132.05,
           "conversions": 0,
           "conv_value": 0,
-          "roas": 0
+          "roas": 0,
+          "start_date": "2026-05-13"
         },
         {
           "name": "BeckmanCoulter_Shopping_Test",
@@ -32,7 +33,8 @@
           "cost": 48.55,
           "conversions": 0,
           "conv_value": 0,
-          "roas": 0
+          "roas": 0,
+          "start_date": "2026-06-10"
         }
       ]
     },
@@ -51,7 +53,8 @@
           "cost": 807.22,
           "conversions": 0,
           "conv_value": 0,
-          "roas": 0
+          "roas": 0,
+          "start_date": "2026-05-13"
         },
         {
           "name": "BeckmanCoulter_Shopping_Test",
@@ -64,7 +67,8 @@
           "cost": 51.56,
           "conversions": 0,
           "conv_value": 0,
-          "roas": 0
+          "roas": 0,
+          "start_date": "2026-06-10"
         }
       ]
     },
@@ -83,7 +87,8 @@
           "cost": 432.32,
           "conversions": 0,
           "conv_value": 0,
-          "roas": 0
+          "roas": 0,
+          "start_date": "2026-05-13"
         },
         {
           "name": "BeckmanCoulter_Shopping_Test",
@@ -96,7 +101,8 @@
           "cost": 51.56,
           "conversions": 0,
           "conv_value": 0,
-          "roas": 0
+          "roas": 0,
+          "start_date": "2026-06-10"
         }
       ]
     },
@@ -115,7 +121,8 @@
           "cost": 356.59,
           "conversions": 7.5,
           "conv_value": 14257.5,
-          "roas": 39.9829
+          "roas": 39.9829,
+          "start_date": "2025-08-07"
         },
         {
           "name": "ViroVac Shopping_Shopify",
@@ -128,7 +135,8 @@
           "cost": 381.81,
           "conversions": 0,
           "conv_value": 0,
-          "roas": 0
+          "roas": 0,
+          "start_date": "2026-05-13"
         }
       ]
     },
@@ -147,7 +155,8 @@
           "cost": 3920.95,
           "conversions": 40,
           "conv_value": 49821.11,
-          "roas": 12.7064
+          "roas": 12.7064,
+          "start_date": "2025-08-07"
         },
         {
           "name": "ViroVac Shopping_Shopify",
@@ -160,7 +169,8 @@
           "cost": 814.13,
           "conversions": 0,
           "conv_value": 0,
-          "roas": 0
+          "roas": 0,
+          "start_date": "2026-05-13"
         },
         {
           "name": "BeckmanCoulter_Shopping_Test",
@@ -173,7 +183,8 @@
           "cost": 51.56,
           "conversions": 0,
           "conv_value": 0,
-          "roas": 0
+          "roas": 0,
+          "start_date": "2026-06-10"
         }
       ]
     }
@@ -625,6 +636,392 @@
           "event": "add_to_cart",
           "count": 16,
           "conversions": 16,
+          "is_key": true
+        },
+        {
+          "event": "begin_checkout",
+          "count": 4,
+          "conversions": 0,
+          "is_key": false
+        }
+      ]
+    },
+    "last_7_days": {
+      "summary": {
+        "sessions": 96,
+        "engaged": 35,
+        "conversions": 0,
+        "bounce": 0.635,
+        "pages_per_session": 1.83,
+        "engagement_rate": 0.365
+      },
+      "campaigns": [
+        {
+          "campaign": "ViroVac Shopping_Shopify",
+          "landing_pages": [
+            {
+              "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-startup-package",
+              "sessions": 41,
+              "engaged": 13,
+              "pages_per_session": 1.85,
+              "bounce": 0.683,
+              "conversions": 0
+            },
+            {
+              "path": "/products/conmed-virovac-vt10524-surgical-smoke-evacuation-tubing-24-box",
+              "sessions": 7,
+              "engaged": 2,
+              "pages_per_session": 1.71,
+              "bounce": 0.714,
+              "conversions": 0
+            },
+            {
+              "path": "/products/conmed-virovac-armstand",
+              "sessions": 4,
+              "engaged": 0,
+              "pages_per_session": 1.5,
+              "bounce": 1,
+              "conversions": 0
+            },
+            {
+              "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-device-only",
+              "sessions": 2,
+              "engaged": 0,
+              "pages_per_session": 2,
+              "bounce": 1,
+              "conversions": 0
+            }
+          ],
+          "totals": {
+            "sessions": 54,
+            "engaged": 15,
+            "conversions": 0
+          }
+        },
+        {
+          "campaign": "BeckmanCoulter_Shopping_Test",
+          "landing_pages": [
+            {
+              "path": "/products/used-refurbished-au-instruments",
+              "sessions": 11,
+              "engaged": 7,
+              "pages_per_session": 2,
+              "bounce": 0.364,
+              "conversions": 0
+            },
+            {
+              "path": "/products/beckman-coulter-73627-reagent-urine-strips-100-btl",
+              "sessions": 7,
+              "engaged": 2,
+              "pages_per_session": 1.71,
+              "bounce": 0.714,
+              "conversions": 0
+            },
+            {
+              "path": "/products/beckman-coulter-osr6296-direct-low-density-lipoprotein-ldl-cholesterol-4-x-25",
+              "sessions": 6,
+              "engaged": 2,
+              "pages_per_session": 1.67,
+              "bounce": 0.667,
+              "conversions": 0
+            },
+            {
+              "path": "/products/beckman-coulter-a98264-cardiac-troponin-i-2x50-tests",
+              "sessions": 4,
+              "engaged": 3,
+              "pages_per_session": 1.5,
+              "bounce": 0.25,
+              "conversions": 0
+            },
+            {
+              "path": "/products/beckman-coulter-b93009-access-hemoglobin-hba1c-reagent-kit",
+              "sessions": 4,
+              "engaged": 4,
+              "pages_per_session": 3,
+              "bounce": 0,
+              "conversions": 0
+            },
+            {
+              "path": "/products/beckman-coulter-osr6098-olympus-uric-acid-reagent-4x250-tests-r1",
+              "sessions": 4,
+              "engaged": 2,
+              "pages_per_session": 2,
+              "bounce": 0.5,
+              "conversions": 0
+            },
+            {
+              "path": "/products/beckman-coulter-33000-access-vitamin-b12-reagent-100-determinations",
+              "sessions": 3,
+              "engaged": 0,
+              "pages_per_session": 1.33,
+              "bounce": 1,
+              "conversions": 0
+            },
+            {
+              "path": "/products/beckman-coulter-a48618-access-shbg-sex-hormone-binding-globulin",
+              "sessions": 3,
+              "engaged": 0,
+              "pages_per_session": 1.33,
+              "bounce": 1,
+              "conversions": 0
+            }
+          ],
+          "totals": {
+            "sessions": 42,
+            "engaged": 20,
+            "conversions": 0
+          }
+        }
+      ],
+      "events": [
+        {
+          "event": "view_item",
+          "count": 162,
+          "conversions": 0,
+          "is_key": false
+        }
+      ]
+    },
+    "this_month": {
+      "summary": {
+        "sessions": 153,
+        "engaged": 56,
+        "conversions": 10,
+        "bounce": 0.634,
+        "pages_per_session": 2.09,
+        "engagement_rate": 0.366
+      },
+      "campaigns": [
+        {
+          "campaign": "ViroVac Shopping_Shopify",
+          "landing_pages": [
+            {
+              "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-startup-package",
+              "sessions": 72,
+              "engaged": 24,
+              "pages_per_session": 1.89,
+              "bounce": 0.667,
+              "conversions": 2
+            },
+            {
+              "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-device-only",
+              "sessions": 15,
+              "engaged": 3,
+              "pages_per_session": 4.2,
+              "bounce": 0.8,
+              "conversions": 8
+            },
+            {
+              "path": "/products/conmed-virovac-vt10524-surgical-smoke-evacuation-tubing-24-box",
+              "sessions": 13,
+              "engaged": 5,
+              "pages_per_session": 1.69,
+              "bounce": 0.615,
+              "conversions": 0
+            },
+            {
+              "path": "/products/conmed-virovac-armstand",
+              "sessions": 8,
+              "engaged": 0,
+              "pages_per_session": 1.38,
+              "bounce": 1,
+              "conversions": 0
+            },
+            {
+              "path": "/products/conmed-virovac-vs35302-surgical-smoke-evacuator-filter-2-box",
+              "sessions": 6,
+              "engaged": 3,
+              "pages_per_session": 2,
+              "bounce": 0.5,
+              "conversions": 0
+            }
+          ],
+          "totals": {
+            "sessions": 114,
+            "engaged": 35,
+            "conversions": 10
+          }
+        },
+        {
+          "campaign": "BeckmanCoulter_Shopping_Test",
+          "landing_pages": [
+            {
+              "path": "/products/used-refurbished-au-instruments",
+              "sessions": 12,
+              "engaged": 8,
+              "pages_per_session": 2,
+              "bounce": 0.333,
+              "conversions": 0
+            },
+            {
+              "path": "/products/beckman-coulter-73627-reagent-urine-strips-100-btl",
+              "sessions": 8,
+              "engaged": 2,
+              "pages_per_session": 1.75,
+              "bounce": 0.75,
+              "conversions": 0
+            },
+            {
+              "path": "/products/beckman-coulter-osr6296-direct-low-density-lipoprotein-ldl-cholesterol-4-x-25",
+              "sessions": 6,
+              "engaged": 2,
+              "pages_per_session": 1.67,
+              "bounce": 0.667,
+              "conversions": 0
+            },
+            {
+              "path": "/products/beckman-coulter-osr6098-olympus-uric-acid-reagent-4x250-tests-r1",
+              "sessions": 5,
+              "engaged": 2,
+              "pages_per_session": 2,
+              "bounce": 0.6,
+              "conversions": 0
+            },
+            {
+              "path": "/products/beckman-coulter-a98264-cardiac-troponin-i-2x50-tests",
+              "sessions": 4,
+              "engaged": 3,
+              "pages_per_session": 1.5,
+              "bounce": 0.25,
+              "conversions": 0
+            },
+            {
+              "path": "/products/beckman-coulter-b93009-access-hemoglobin-hba1c-reagent-kit",
+              "sessions": 4,
+              "engaged": 4,
+              "pages_per_session": 3,
+              "bounce": 0,
+              "conversions": 0
+            }
+          ],
+          "totals": {
+            "sessions": 39,
+            "engaged": 21,
+            "conversions": 0
+          }
+        }
+      ],
+      "events": [
+        {
+          "event": "view_item",
+          "count": 283,
+          "conversions": 0,
+          "is_key": false
+        },
+        {
+          "event": "add_to_cart",
+          "count": 10,
+          "conversions": 10,
+          "is_key": true
+        }
+      ]
+    },
+    "last_month": {
+      "summary": {
+        "sessions": 106,
+        "engaged": 56,
+        "conversions": 6,
+        "bounce": 0.472,
+        "pages_per_session": 1.36,
+        "engagement_rate": 0.528
+      },
+      "campaigns": [
+        {
+          "campaign": "ViroVac Shopping_Shopify",
+          "landing_pages": [
+            {
+              "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-startup-package",
+              "sessions": 26,
+              "engaged": 19,
+              "pages_per_session": 1.12,
+              "bounce": 0.269,
+              "conversions": 6
+            },
+            {
+              "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-device-only",
+              "sessions": 13,
+              "engaged": 6,
+              "pages_per_session": 1,
+              "bounce": 0.538,
+              "conversions": 0
+            },
+            {
+              "path": "/products/conmed-virovac-vs35302-surgical-smoke-evacuator-filter-2-box",
+              "sessions": 11,
+              "engaged": 6,
+              "pages_per_session": 1.18,
+              "bounce": 0.455,
+              "conversions": 0
+            },
+            {
+              "path": "/products/conmed-virovac-vt10524-surgical-smoke-evacuation-tubing-24-box",
+              "sessions": 4,
+              "engaged": 4,
+              "pages_per_session": 1.5,
+              "bounce": 0,
+              "conversions": 0
+            }
+          ],
+          "totals": {
+            "sessions": 54,
+            "engaged": 35,
+            "conversions": 6
+          }
+        },
+        {
+          "campaign": "ViroVac Shopping",
+          "landing_pages": [
+            {
+              "path": "/product/virovac-surgical-smoke-evacuation-tubing-24-case",
+              "sessions": 27,
+              "engaged": 9,
+              "pages_per_session": 1.22,
+              "bounce": 0.667,
+              "conversions": 0
+            },
+            {
+              "path": "/virovac-surgical-smoke-evacuator",
+              "sessions": 14,
+              "engaged": 7,
+              "pages_per_session": 1.71,
+              "bounce": 0.5,
+              "conversions": 0
+            },
+            {
+              "path": "/product/virovac-vv120-surgical-smoke-evacuator-filters-18-case",
+              "sessions": 9,
+              "engaged": 3,
+              "pages_per_session": 1.44,
+              "bounce": 0.667,
+              "conversions": 0
+            },
+            {
+              "path": "/",
+              "sessions": 2,
+              "engaged": 2,
+              "pages_per_session": 6.5,
+              "bounce": 0,
+              "conversions": 0
+            }
+          ],
+          "totals": {
+            "sessions": 52,
+            "engaged": 21,
+            "conversions": 0
+          }
+        }
+      ],
+      "events": [
+        {
+          "event": "view_item",
+          "count": 57,
+          "conversions": 0,
+          "is_key": false
+        },
+        {
+          "event": "add_to_cart",
+          "count": 6,
+          "conversions": 6,
           "is_key": true
         },
         {
