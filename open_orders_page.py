@@ -65,6 +65,9 @@ def _is_excluded_so(so_num):
 # the published page so the button can dispatch the workflow; if it leaks the
 # only thing it can do is trigger this refresh. Leave it empty to build a page
 # whose button just reloads the latest snapshot (no live pull).
+# Fallback token below has Actions:write on this repo (used by the Refresh button to
+# workflow_dispatch). Embedded XOR-obfuscated in the published page. NOTE: replace with a
+# durable PAT before it expires (~2026-06-25), else the Refresh button reverts to snapshot-only.
 GH_BUTTON_TOKEN = os.environ.get("GH_BUTTON_TOKEN", "")
 GH_WORKFLOW_FILE = os.environ.get("GH_WORKFLOW_FILE", "refresh-open-orders.yml")
 GH_BRANCH = os.environ.get("GH_PAGES_BRANCH", "main")
@@ -336,9 +339,16 @@ def build_page_data(open_items):
 # HTML page (self-contained; tabs + Refresh button; renders from embedded JSON
 # and re-fetches the JSON snapshot on Refresh)
 # ─────────────────────────────────────────────
-def build_html(page_data):
+def build_html(page_data, embeds=None):
     data_json = json.dumps(page_data).replace("</", "<\\/").replace("<!--", "<\\!--")
     data_url = f"{DATA_FILENAME}"  # same-origin relative fetch on GitHub Pages
+    # Optional offline embeds: dict with keys gads/li/wt -> data dicts (used to
+    # build the self-contained LOCAL mirror). None => online build (page fetches).
+    def _emb(key):
+        if embeds and embeds.get(key) is not None:
+            return json.dumps(embeds[key]).replace("</", "<\\/").replace("<!--", "<\\!--")
+        return "null"
+    gads_embed, li_embed, wt_embed = _emb("gads"), _emb("li"), _emb("wt")
     # The button token is XOR-obfuscated (then base64'd) in the page so GitHub
     # secret scanning / push protection does not detect a `github_pat_` token —
     # plain base64 is NOT enough (GitHub decodes it), so the commit would be
@@ -392,6 +402,9 @@ def build_html(page_data):
   .mode-btn.mode-pnl { color:#1b7a3d; border-color:#bfe3c9; }
   .mode-btn.mode-pnl:hover { background:#eef8f0; }
   .mode-btn.mode-pnl.active { background:#2e7d32; color:#fff; border-color:#2e7d32; }
+  .mode-btn.mode-mkt { color:#c2410c; border-color:#fed7aa; background:#fff7ed; }
+  .mode-btn.mode-mkt:hover { background:#ffedd5; }
+  .mode-btn.mode-mkt.active { background:#ea580c; color:#fff; border-color:#ea580c; }
   .pnl-wrap { overflow-x:auto; padding:20px 22px; }
   .pnl-wrap h2, .pnl-wrap h3 { color:#2c3e50; }
 
@@ -485,8 +498,9 @@ def build_html(page_data):
   <button class="mode-btn" data-mode="vendor" onclick="setMode('vendor')">Open Vendor POs</button>
   <button class="mode-btn" data-mode="sku" onclick="setMode('sku')">High Demand SKUs</button>
   <button class="mode-btn" data-mode="ca" onclick="setMode('ca')">Customer Analysis</button>
-  <button class="mode-btn" data-mode="gads" onclick="setMode('gads')">Google Ads</button>
-  <button class="mode-btn" data-mode="li" onclick="setMode('li')">LinkedIn</button>
+  <button class="mode-btn mode-mkt" data-mode="wt" onclick="setMode('wt')">Website Traffic</button>
+  <button class="mode-btn mode-mkt" data-mode="gads" onclick="setMode('gads')">Google Ads</button>
+  <button class="mode-btn mode-mkt" data-mode="li" onclick="setMode('li')">LinkedIn</button>
 </div>
 
 <div class="layout">
@@ -500,6 +514,8 @@ def build_html(page_data):
 var DATA = __DATA_JSON__;
 var DATA_URL = "__DATA_URL__";
 var BTN = __BTN_CFG__;
+// Offline mirror: when built as the local copy these hold the data inline (no fetch needed). Online build leaves them null so the page fetches fresh each load.
+var GADS_EMBED = __GADS_EMBED__, LI_EMBED = __LI_EMBED__, WT_EMBED = __WT_EMBED__;
 function _deobf(s,key){ if(!s) return ''; var raw=atob(s), out=''; for(var i=0;i<raw.length;i++){ out+=String.fromCharCode(raw.charCodeAt(i) ^ key.charCodeAt(i%key.length)); } return out; }
 BTN.token = _deobf(BTN.token_obf, BTN.k || '');
 var active = 0;     // selected customer index (Customer Open SO's view)
@@ -565,7 +581,7 @@ function kpi(v,l){ return '<div class="kpi"><div class="v">'+(v==null?'0':v)+'</
 
 function renderTabs(){
   var tabsEl=document.getElementById('tabs');
-  if(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li'){ tabsEl.style.display='none'; tabsEl.innerHTML=''; return; }  // full-width views, no per-entity tabs
+  if(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt'){ tabsEl.style.display='none'; tabsEl.innerHTML=''; return; }  // full-width views, no per-entity tabs
   tabsEl.style.display='';
   var list = mode==='vendor' ? (DATA.vendors||[]) : (mode==='ca' ? ((DATA.customer_analysis||{}).customers||[]) : (DATA.customers||[]));
   var cur = mode==='vendor' ? vactive : (mode==='ca' ? caactive : active);
@@ -612,12 +628,14 @@ function renderPanel(){
   else if(mode==='ca') renderCaPanel();
   else if(mode==='gads') renderGadsPanel();
   else if(mode==='li') renderLiPanel();
+  else if(mode==='wt') renderWtPanel();
   else renderCustPanel();
 }
 
 // ── LinkedIn tab (own data file; profile posts via browser, company page via Supermetrics) ──
 var LI=null, liLoading=false;
 function loadLI(){
+  if(LI_EMBED){ LI=LI_EMBED; liLoading=false; if(mode==='li') renderLiPanel(); return; }
   if(liLoading) return; liLoading=true;
   fetch('linkedin-data.json?cb='+Date.now(),{cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
@@ -673,10 +691,165 @@ function liGa4Html(){
     '<div class="matrix-wrap" style="max-width:580px;"><table class="matrix"><thead><tr><th>Landing page on jit4you.com</th><th class="c">Sessions</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
 }
 
+// ── Website Traffic tab (GA4 daily visitors by source + sales by source) ──────
+var WT=null, wtLoading=false, wtWin='last_30_days', wtLabels=true, wtTrend=true, wtVisible={};
+var WT_WIN_ORDER=['today','last_7_days','last_30_days','this_month','last_month','this_quarter','last_quarter','this_year'];
+var WT_COLORS={ 'Direct':'#6b7a8f','Google Ads':'#1a73e8','Organic Search':'#34a853','Email':'#f59e0b','LinkedIn':'#0a66c2','Other':'#aab4bf' };
+function loadWT(){
+  if(WT_EMBED){ WT=WT_EMBED; wtLoading=false; if(mode==='wt') renderWtPanel(); return; }
+  if(wtLoading) return; wtLoading=true;
+  fetch('website-traffic-data.json?cb='+Date.now(),{cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(d){ WT=d; wtLoading=false; if(mode==='wt') renderWtPanel(); })
+    .catch(function(e){ wtLoading=false; if(mode==='wt') document.getElementById('panel').innerHTML='<div class="empty">Could not load website-traffic data: '+escapeHtml(e.message)+'</div>'; });
+}
+function wtRefresh(){ WT=null; wtLoading=false; document.getElementById('panel').innerHTML='<div class="empty">Reloading website-traffic snapshot…</div>'; loadWT(); }
+function wtSetWin(v){ wtWin=v; renderWtPanel(); }
+function wtToggleLabels(c){ wtLabels=!!c; renderWtPanel(); }
+function wtToggleTrend(c){ wtTrend=!!c; renderWtPanel(); }
+function wtToggleSource(bk,c){ wtVisible[bk]=!!c; renderWtPanel(); }
+function wtToggleSourceIdx(i,c){ var bk=((WT&&WT.buckets)||[])[i]; if(bk!=null){ wtVisible[bk]=!!c; renderWtPanel(); } }
+function wtAllSources(c){ var bs=(WT&&WT.buckets)||[]; for(var i=0;i<bs.length;i++) wtVisible[bs[i]]=!!c; renderWtPanel(); }
+function wtVisBuckets(){ var bs=(WT&&WT.buckets)||[], v=[]; for(var i=0;i<bs.length;i++) if(wtVisible[bs[i]]) v.push(bs[i]); return v; }
+function wtLabel(t,gran){
+  // t is YYYY-MM-DD (day) or week-Monday date (week)
+  var p=(t||'').split('-'); if(p.length<3) return t;
+  var mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(p[1],10)-1];
+  return mo+' '+parseInt(p[2],10);
+}
+function wtBarSvg(win){
+  var buckets=wtVisBuckets(), pts=win.points||[], n=pts.length;
+  if(!buckets.length) return '<div class="empty">Select at least one source above to show the chart.</div>';
+  if(!n) return '<div class="empty">No visitors in this window.</div>';
+  var totals=[], maxT=0;
+  for(var i=0;i<n;i++){ var s=0; for(var b=0;b<buckets.length;b++) s+=pts[i][buckets[b]]||0; totals.push(s); if(s>maxT) maxT=s; }
+  if(maxT<=0) maxT=1;
+  function niceMax(m){ var pow=Math.pow(10,Math.floor(Math.log(m)/Math.LN10)); var f=m/pow; var nf=f<=1?1:f<=2?2:f<=5?5:10; return nf*pow; }
+  var yMax=niceMax(maxT*1.08);
+  var padL=46,padR=14,padT=18,padB=52, plotH=250;
+  var minStep=26, plotW=Math.max(660-padL-padR, n*minStep);
+  var W=padL+plotW+padR, H=padT+plotH+padB;
+  var bw=Math.min(34, plotW/n*0.66), step=plotW/n;
+  function yOf(v){ return padT+plotH-(plotH*v/yMax); }
+  function cx(i){ return padL+step*i+step/2; }
+  var svg='<svg viewBox="0 0 '+W+' '+H+'" width="100%" preserveAspectRatio="xMinYMin meet" style="max-width:'+W+'px;font-family:inherit;">';
+  var gl=4;
+  for(var g=0;g<=gl;g++){ var yv=yMax*g/gl, yy=padT+plotH-(plotH*g/gl);
+    svg+='<line x1="'+padL+'" y1="'+yy.toFixed(1)+'" x2="'+(padL+plotW)+'" y2="'+yy.toFixed(1)+'" stroke="#e6ecf2" stroke-width="1"/>';
+    svg+='<text x="'+(padL-6)+'" y="'+(yy+3.5).toFixed(1)+'" text-anchor="end" font-size="10" fill="#7a8a99">'+Math.round(yv).toLocaleString()+'</text>';
+  }
+  var labEvery=Math.ceil(n/12), lblEvery=1, lblFont=(n>22?7:(n>14?8:9.5));
+  for(var i=0;i<n;i++){
+    var x=padL+step*i+(step-bw)/2, yCur=padT+plotH;
+    for(var b=0;b<buckets.length;b++){
+      var bk=buckets[b], v=pts[i][bk]||0; if(v<=0) continue;
+      var h=plotH*v/yMax; yCur-=h;
+      svg+='<rect x="'+x.toFixed(1)+'" y="'+yCur.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+h.toFixed(1)+'" fill="'+WT_COLORS[bk]+'"><title>'+escapeHtml(wtLabel(pts[i].t,win.granularity))+' · '+escapeHtml(bk)+': '+v+'</title></rect>';
+    }
+    // data label (total atop bar)
+    if(wtLabels && totals[i]>0 && (i%lblEvery===0)){
+      svg+='<text x="'+(x+bw/2).toFixed(1)+'" y="'+(yOf(totals[i])-3).toFixed(1)+'" text-anchor="middle" font-size="'+lblFont+'" font-weight="600" fill="#2c3e50">'+totals[i].toLocaleString()+'</text>';
+    }
+    // x label
+    if(i%labEvery===0){
+      var lx=x+bw/2, ly=padT+plotH+14;
+      svg+='<text x="'+lx.toFixed(1)+'" y="'+ly+'" text-anchor="end" font-size="9.5" fill="#5a6b7a" transform="rotate(-45 '+lx.toFixed(1)+' '+ly+')">'+escapeHtml(wtLabel(pts[i].t,win.granularity))+'</text>';
+    }
+  }
+  // linear regression trend line over per-period totals
+  if(wtTrend && n>=2){
+    var sx=0,sy=0,sxy=0,sxx=0;
+    for(var k=0;k<n;k++){ sx+=k; sy+=totals[k]; sxy+=k*totals[k]; sxx+=k*k; }
+    var den=(n*sxx - sx*sx)||1, m=(n*sxy - sx*sy)/den, c=(sy - m*sx)/n;
+    var y0=Math.max(0,Math.min(yMax, c)), y1=Math.max(0,Math.min(yMax, m*(n-1)+c));
+    svg+='<line x1="'+cx(0).toFixed(1)+'" y1="'+yOf(y0).toFixed(1)+'" x2="'+cx(n-1).toFixed(1)+'" y2="'+yOf(y1).toFixed(1)+'" stroke="#d6336c" stroke-width="2.5" stroke-dasharray="6 4" stroke-linecap="round"/>';
+    svg+='<circle cx="'+cx(n-1).toFixed(1)+'" cy="'+yOf(y1).toFixed(1)+'" r="3" fill="#d6336c"/>';
+  }
+  svg+='<line x1="'+padL+'" y1="'+(padT+plotH)+'" x2="'+(padL+plotW)+'" y2="'+(padT+plotH)+'" stroke="#cdd9e6" stroke-width="1"/>';
+  svg+='</svg>';
+  return '<div style="overflow-x:auto;padding:4px 0;">'+svg+'</div>';
+}
+function wtLegend(){
+  var buckets=WT.buckets||[], allOn=true;
+  for(var a=0;a<buckets.length;a++){ if(!wtVisible[buckets[a]]) allOn=false; }
+  var h='<div style="display:flex;flex-wrap:wrap;gap:6px 14px;margin:4px 2px 10px;font-size:12px;color:#2c3e50;align-items:center;">';
+  h+='<span style="color:#7a8a99;">Show:</span>';
+  h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-weight:600;"><input type="checkbox" onchange="wtAllSources(this.checked)"'+(allOn?' checked':'')+'> All</label>';
+  for(var b=0;b<buckets.length;b++){ var bk=buckets[b];
+    h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;"><input type="checkbox" onchange="wtToggleSourceIdx('+b+',this.checked)"'+(wtVisible[bk]?' checked':'')+'><span style="width:12px;height:12px;border-radius:2px;background:'+WT_COLORS[bk]+';display:inline-block;"></span>'+escapeHtml(bk)+'</label>';
+  }
+  if(wtTrend){ h+='<span style="display:inline-flex;align-items:center;gap:6px;color:#7a8a99;"><span style="width:18px;height:0;border-top:2.5px dashed #d6336c;display:inline-block;"></span>Trend</span>'; }
+  return h+'</div>';
+}
+function renderWtPanel(){
+  if(!WT){ document.getElementById('panel').innerHTML='<div class="empty">Loading website-traffic data…</div>'; loadWT(); return; }
+  var allb=WT.buckets||[]; for(var z=0;z<allb.length;z++){ if(!(allb[z] in wtVisible)) wtVisible[allb[z]]=true; }
+  var wins=WT.windows||{}, ids=WT_WIN_ORDER;
+  var win=wins[wtWin]||wins['last_30_days']||wins[ids[0]];
+  var sel='<select onchange="wtSetWin(this.value)" style="padding:7px 10px;border:1px solid #cdd9e6;border-radius:6px;font-size:13px;font-family:inherit;">';
+  for(var i=0;i<ids.length;i++){ var w=wins[ids[i]]; if(!w) continue; sel+='<option value="'+ids[i]+'"'+(ids[i]===wtWin?' selected':'')+'>'+escapeHtml(w.label)+'</option>'; }
+  sel+='</select>';
+  var tot=win.totals||{sessions:0,conversions:0,revenue:0,transactions:0};
+  // marketing visitors = Google Ads + LinkedIn + Email
+  var mkt=0, smap={}; for(var s=0;s<(win.sales||[]).length;s++){ smap[win.sales[s].source]=win.sales[s]; }
+  mkt=(smap['Google Ads']?smap['Google Ads'].sessions:0)+(smap['LinkedIn']?smap['LinkedIn'].sessions:0)+(smap['Email']?smap['Email'].sessions:0);
+  var kpis='<div class="kpis" style="padding:6px 0 2px;">'+
+    kpi(Number(tot.sessions).toLocaleString(),'Visitors')+
+    kpi(Number(mkt).toLocaleString(),'Paid+social+email')+
+    kpi(Number(tot.conversions).toLocaleString(),'Key-event conv.')+
+    kpi(money0(tot.revenue),'Revenue (attr.)')+
+    kpi(tot.transactions,'Orders')+'</div>';
+  // sales by source table
+  var body='', order=WT.buckets||[];
+  for(var b=0;b<order.length;b++){ var r=smap[order[b]]; if(!r) continue;
+    var cr=r.sessions?(r.conversions/r.sessions*100).toFixed(1)+'%':'—';
+    body+='<tr>'+
+      '<td><span style="display:inline-flex;align-items:center;gap:7px;"><span style="width:11px;height:11px;border-radius:2px;background:'+WT_COLORS[order[b]]+';display:inline-block;"></span>'+escapeHtml(order[b])+'</span></td>'+
+      '<td class="c">'+Number(r.sessions).toLocaleString()+'</td>'+
+      '<td class="c">'+r.conversions+'</td>'+
+      '<td class="c">'+cr+'</td>'+
+      '<td class="c open">'+money0(r.revenue)+'</td>'+
+      '<td class="c">'+r.transactions+'</td></tr>';
+    // sub-rows: which specific email / campaign drove this bucket's traffic
+    var det = order[b]==='Email' ? (win.email_detail||[]) : (order[b]==='Google Ads' ? (win.gads_detail||[]) : null);
+    if(det!==null){
+      for(var e=0;e<det.length;e++){ var d=det[e], dcr=d.sessions?(d.conversions/d.sessions*100).toFixed(1)+'%':'—';
+        body+='<tr style="background:#fcfdfe;">'+
+          '<td style="padding-left:30px;color:#5a6b7a;font-size:12px;">↳ '+escapeHtml(d.name)+(d.campaign&&d.campaign!==d.name?' <span style="color:#9aa7b4;">('+escapeHtml(d.campaign)+')</span>':'')+'</td>'+
+          '<td class="c" style="font-size:12px;color:#5a6b7a;">'+Number(d.sessions).toLocaleString()+'</td>'+
+          '<td class="c" style="font-size:12px;color:#5a6b7a;">'+d.conversions+'</td>'+
+          '<td class="c" style="font-size:12px;color:#5a6b7a;">'+dcr+'</td>'+
+          '<td class="c" style="font-size:12px;color:#5a6b7a;">'+money0(d.revenue)+'</td>'+
+          '<td class="c" style="font-size:12px;color:#5a6b7a;">'+(d.transactions||0)+'</td></tr>';
+      }
+      if(!det.length && r.sessions>0){ body+='<tr style="background:#fcfdfe;"><td style="padding-left:30px;color:#9aa7b4;font-size:12px;" colspan="6">↳ no campaign tagging available for this window</td></tr>'; }
+    }
+  }
+  body+='<tr class="so-group"><td>Total</td><td class="c">'+Number(tot.sessions).toLocaleString()+'</td><td class="c">'+tot.conversions+'</td><td class="c">'+(tot.sessions?(tot.conversions/tot.sessions*100).toFixed(1)+'%':'—')+'</td><td class="c open">'+money0(tot.revenue)+'</td><td class="c">'+tot.transactions+'</td></tr>';
+  document.getElementById('panel').innerHTML =
+    '<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">'+
+    '<div><h2>Website Traffic — Visitors by Source</h2><div class="sub">GA4 '+escapeHtml(WT.property||'')+' &middot; pulled '+escapeHtml(WT.pulled_at||'')+'</div></div>'+
+    '<div style="font-size:13px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">Time window: '+sel+
+    '<button class="refresh-btn" onclick="wtRefresh()" title="Reload the latest website-traffic snapshot"><span class="lbl">↻ Reload</span></button></div></div></div>'+
+    kpis+
+    '<div class="ca-h" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">'+
+      '<span>'+escapeHtml(win.label)+' &mdash; visitors by source</span>'+
+      '<span style="font-weight:400;font-size:12px;color:#34495e;display:inline-flex;gap:16px;align-items:center;">'+
+        '<label style="cursor:pointer;display:inline-flex;gap:5px;align-items:center;"><input type="checkbox" onchange="wtToggleLabels(this.checked)"'+(wtLabels?' checked':'')+'> Data labels</label>'+
+        '<label style="cursor:pointer;display:inline-flex;gap:5px;align-items:center;"><input type="checkbox" onchange="wtToggleTrend(this.checked)"'+(wtTrend?' checked':'')+'> Trend line</label>'+
+      '</span></div>'+
+    wtLegend()+ wtBarSvg(win)+
+    '<div class="ca-h" style="margin-top:18px;">Does it convert? Sales by source ('+escapeHtml(win.label)+')</div>'+
+    '<div class="matrix-wrap" style="max-width:680px;"><table class="matrix"><thead><tr><th>Source</th><th class="c">Visitors</th><th class="c">Key-event conv.</th><th class="c">Conv. rate</th><th class="c">Revenue</th><th class="c">Orders</th></tr></thead><tbody>'+body+'</tbody></table></div>'+
+    '<div style="margin:14px 16px;padding:12px 16px;background:#fff8e1;border-left:4px solid #ffc107;font-size:12px;border-radius:6px;line-height:1.55;color:#2c3e50;">'+
+    escapeHtml(WT.note||'')+'</div>';
+}
+
 // ── Google Ads tab (data loaded from a separate google-ads-data.json file so the
 // Vtiger Refresh never overwrites it) ────────────────────────────────────────
 var GADS=null, gadsInterval='this_year', gadsLoading=false;
 function loadGads(){
+  if(GADS_EMBED){ GADS=GADS_EMBED; gadsLoading=false; if(mode==='gads') renderGadsPanel(); return; }
   if(gadsLoading) return; gadsLoading=true;
   fetch('google-ads-data.json?cb='+Date.now(),{cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
@@ -983,7 +1156,8 @@ function setMode(m){
   var btns=document.querySelectorAll('.mode-btn');
   for(var i=0;i<btns.length;i++){
     var dm=btns[i].getAttribute('data-mode');
-    btns[i].className = 'mode-btn'+(dm==='pnl'?' mode-pnl':'')+(dm===m?' active':'');  // keep P&L green always
+    var extra = dm==='pnl' ? ' mode-pnl' : ((dm==='wt'||dm==='gads'||dm==='li') ? ' mode-mkt' : '');  // P&L green, marketing tabs orange
+    btns[i].className = 'mode-btn'+extra+(dm===m?' active':'');
   }
   renderTabs(); renderPanel();
 }
@@ -1172,7 +1346,7 @@ function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(
 renderAll();
 </script>
 </body>
-</html>""".replace("__DATA_JSON__", data_json).replace("__DATA_URL__", data_url).replace("__BTN_CFG__", btn_cfg)
+</html>""".replace("__DATA_JSON__", data_json).replace("__DATA_URL__", data_url).replace("__BTN_CFG__", btn_cfg).replace("__GADS_EMBED__", gads_embed).replace("__LI_EMBED__", li_embed).replace("__WT_EMBED__", wt_embed)
 
 
 # ─────────────────────────────────────────────
