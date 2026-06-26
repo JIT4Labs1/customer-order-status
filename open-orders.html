@@ -484,7 +484,8 @@ function renderWtPanel(){
 }
 
 // ── Shipments tab (UPS My Choice for Business — Third Party; statuses auto-refreshed via UPS Track API) ──
-var SHIP=null, shipLoading=false, shipFilter='all', shipFrom='', shipTo='', shipVis={}, shipShipperList=[];
+var SHIP=null, shipLoading=false, shipFilter='all', shipFrom='', shipTo='', shipVis={}, shipShipperList=[], shipDatePreset='all';
+var SHIP_DPS=[['all','All'],['today','Today'],['yesterday','Yesterday'],['7d','Past 7 days'],['month','This month'],['quarter','This quarter']];
 function loadShip(){
   if(SHIP_EMBED){ SHIP=SHIP_EMBED; shipLoading=false; if(mode==='ship') renderShipPanel(); return; }
   if(shipLoading) return; shipLoading=true;
@@ -498,18 +499,27 @@ function shipSetFilter(v){ shipFilter=v; renderShipPanel(); }
 function shipFAll(){ shipSetFilter('all'); }
 function shipFTransit(){ shipSetFilter('transit'); }
 function shipFDelivered(){ shipSetFilter('delivered'); }
-function shipSetFrom(v){ shipFrom=v||''; renderShipPanel(); }
-function shipSetTo(v){ shipTo=v||''; renderShipPanel(); }
-function shipClearDates(){ shipFrom=''; shipTo=''; renderShipPanel(); }
+function shipISO(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function shipSetDatePreset(p){
+  shipDatePreset=p; var now=new Date();
+  if(p==='all'){ shipFrom=''; shipTo=''; }
+  else if(p==='today'){ shipFrom=shipISO(now); shipTo=shipISO(now); }
+  else if(p==='yesterday'){ var y=new Date(now); y.setDate(y.getDate()-1); shipFrom=shipISO(y); shipTo=shipISO(y); }
+  else if(p==='7d'){ var s=new Date(now); s.setDate(s.getDate()-6); shipFrom=shipISO(s); shipTo=shipISO(now); }
+  else if(p==='month'){ shipFrom=shipISO(new Date(now.getFullYear(),now.getMonth(),1)); shipTo=shipISO(now); }
+  else if(p==='quarter'){ var q=Math.floor(now.getMonth()/3); shipFrom=shipISO(new Date(now.getFullYear(),q*3,1)); shipTo=shipISO(now); }
+  renderShipPanel();
+}
+function shipSetDatePresetIdx(i){ if(SHIP_DPS[i]) shipSetDatePreset(SHIP_DPS[i][0]); }
 function shipToggleShipperIdx(i,c){ var sh=shipShipperList[i]; if(sh!=null){ shipVis[sh]=!!c; renderShipPanel(); } }
 function shipAllShippers(c){ for(var i=0;i<shipShipperList.length;i++) shipVis[shipShipperList[i]]=!!c; renderShipPanel(); }
 function shipTC(s){ s=(s||'').trim(); return s.replace(/\w\S*/g,function(t){return t.charAt(0).toUpperCase()+t.substr(1).toLowerCase();}); }
 function shipLoc(s){ var p=(s||'').split(','); if(p.length===2 && p[1].trim().length<=3){ return shipTC(p[0])+', '+p[1].trim().toUpperCase(); } return shipTC(s); }
 function shipControls(){
-  var ds='padding:5px 8px;border:1px solid #cdd9e6;border-radius:6px;font-size:12px;font-family:inherit;';
   var h='<div style="display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin:0 2px 12px;font-size:12px;color:#2c3e50;">';
-  h+='<span style="color:#7a8a99;">Date:</span><input type="date" value="'+escapeHtml(shipFrom)+'" onchange="shipSetFrom(this.value)" style="'+ds+'"><span style="color:#7a8a99;">to</span><input type="date" value="'+escapeHtml(shipTo)+'" onchange="shipSetTo(this.value)" style="'+ds+'">';
-  if(shipFrom||shipTo) h+='<button onclick="shipClearDates()" class="mode-btn" style="padding:4px 10px;border-radius:6px;border:1px solid #cdd9e6;font-size:11px;">clear</button>';
+  h+='<span style="color:#7a8a99;">Date:</span>';
+  for(var i=0;i<SHIP_DPS.length;i++){ var on=(shipDatePreset===SHIP_DPS[i][0]);
+    h+='<button onclick="shipSetDatePresetIdx('+i+')" class="mode-btn'+(on?' active':'')+'" style="padding:5px 11px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;">'+escapeHtml(SHIP_DPS[i][1])+'</button>'; }
   h+='<span style="color:#7a8a99;margin-left:10px;">Shipper:</span>';
   var allOn=true; for(var a=0;a<shipShipperList.length;a++){ if(!shipVis[shipShipperList[a]]) allOn=false; }
   h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-weight:600;"><input type="checkbox" onchange="shipAllShippers(this.checked)"'+(allOn?' checked':'')+'> All</label>';
