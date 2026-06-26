@@ -535,7 +535,7 @@ function renderShipPanel(){
   for(var i=0;i<all.length;i++){ var st=all[i].status||''; if(all[i].delivered||st==='Delivered') nDel++; else if(st==='Exception') nExc++; else nTransit++; }
   // distinct shippers (preserve checkbox choices; default new ones on)
   shipShipperList=[]; var seenSh={};
-  for(var z=0;z<all.length;z++){ var sh=all[z].shipper||'(none)'; if(!seenSh[sh]){ seenSh[sh]=1; shipShipperList.push(sh); if(!(sh in shipVis)) shipVis[sh]=true; } }
+  for(var z=0;z<all.length;z++){ all[z]._idx=z; var sh=all[z].shipper||'(none)'; if(!seenSh[sh]){ seenSh[sh]=1; shipShipperList.push(sh); if(!(sh in shipVis)) shipVis[sh]=true; } }
   var rows=all.filter(function(s){
     var dv=(s.delivered||s.status==='Delivered');
     if(shipFilter==='transit' && dv) return false;
@@ -566,12 +566,13 @@ function renderShipPanel(){
       '<td>'+escapeHtml(shipTC(s.activity||''))+'</td>'+
       '<td class="item-name">'+escapeHtml(s.shipper||'')+'</td>'+
       '<td class="item-name">'+escapeHtml(s.receiver||'')+'</td>'+
+      (s.items&&s.items.length ? '<td class="c"><a onclick="shipItems('+s._idx+')" style="cursor:pointer;color:#1F4E79;white-space:nowrap;" title="View packing list">📋 '+s.items.length+'</a></td>' : '<td class="c" style="color:#c0cad4;">—</td>')+
       '<td>'+escapeHtml(s.ship_to||'')+'</td>'+
       '<td>'+escapeHtml((s.service||'').replace(/^UPS /,''))+'</td>'+
       '<td>'+(s.ship_date?fmtDate(s.ship_date):'—')+'</td>'+
       '<td>'+escapeHtml(upd)+'</td></tr>';
   }
-  if(!rows.length) body='<tr><td colspan="10" class="empty" style="padding:18px;">No shipments in this filter.</td></tr>';
+  if(!rows.length) body='<tr><td colspan="11" class="empty" style="padding:18px;">No shipments in this filter.</td></tr>';
   function fbtn(v,l,fn){ return '<button onclick="'+fn+'()" class="mode-btn'+(shipFilter===v?' active':'')+'" style="padding:6px 14px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;">'+l+'</button>'; }
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">'+
@@ -581,11 +582,23 @@ function renderShipPanel(){
     '<div style="display:flex;gap:8px;margin:6px 2px 8px;">'+fbtn('all','All','shipFAll')+fbtn('transit','In transit','shipFTransit')+fbtn('delivered','Delivered','shipFDelivered')+'</div>'+
     shipControls()+
     '<div class="matrix-wrap"><table class="matrix"><thead><tr>'+
-    '<th>Tracking #</th><th>Source</th><th>Status</th><th>Activity</th><th>Shipper</th><th>Receiver</th><th>Ship-To</th><th>Service</th><th>Label date</th><th>Last update</th>'+
+    '<th>Tracking #</th><th>Source</th><th>Status</th><th>Activity</th><th>Shipper</th><th>Receiver</th><th>Items</th><th>Ship-To</th><th>Service</th><th>Label date</th><th>Last update</th>'+
     '</tr></thead><tbody>'+body+'</tbody></table></div>'+
     '<div style="margin:14px 16px;padding:12px 16px;background:#fff8e1;border-left:4px solid #ffc107;font-size:12px;border-radius:6px;line-height:1.55;color:#2c3e50;">'+
-    escapeHtml(SHIP.note||'')+'</div>';
+    escapeHtml(SHIP.note||'')+'</div>'+
+    '<div id="shipModal" onclick="shipCloseItems(event)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;align-items:center;justify-content:center;"><div onclick="event.stopPropagation()" style="background:#fff;max-width:600px;width:92%;max-height:82vh;overflow:auto;border-radius:10px;padding:20px 22px;box-shadow:0 12px 44px rgba(0,0,0,.32);"><div id="shipModalBody"></div><div style="text-align:right;margin-top:14px;"><button onclick="shipCloseItems()" class="mode-btn" style="padding:6px 16px;border-radius:6px;border:1px solid #cdd9e6;">Close</button></div></div></div>';
 }
+function shipItems(i){ var s=((SHIP&&SHIP.shipments)||[])[i]; if(!s) return; var it=s.items||[];
+  var rows='', tot=0;
+  for(var k=0;k<it.length;k++){ tot+=it[k].qty||0; rows+='<tr><td class="c">'+(it[k].qty||0)+'</td><td>'+escapeHtml(it[k].sku||'')+'</td><td class="item-name">'+escapeHtml(it[k].name||'')+'</td></tr>'; }
+  var h='<h2 style="margin:0 0 4px;">Packing list &middot; '+escapeHtml(s.tracking)+'</h2>'+
+    '<div class="sub" style="margin-bottom:10px;">'+escapeHtml(s.receiver||'')+(s.order?' &middot; Order '+escapeHtml(s.order):'')+(s.ship_to?' &middot; '+escapeHtml(s.ship_to):'')+'</div>'+
+    '<div class="matrix-wrap"><table class="matrix"><thead><tr><th class="c">Qty</th><th>SKU</th><th>Item</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
+    '<div style="margin-top:8px;font-size:12px;color:#5a6b7a;">'+it.length+' line item'+(it.length!=1?'s':'')+' &middot; '+tot+' unit'+(tot!=1?'s':'')+'</div>';
+  document.getElementById('shipModalBody').innerHTML=h;
+  document.getElementById('shipModal').style.display='flex';
+}
+function shipCloseItems(e){ if(e&&e.target&&e.target.id!=='shipModal') return; var m=document.getElementById('shipModal'); if(m) m.style.display='none'; }
 
 // ── Google Ads tab (data loaded from a separate google-ads-data.json file so the
 // Vtiger Refresh never overwrites it) ────────────────────────────────────────
