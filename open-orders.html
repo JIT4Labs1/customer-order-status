@@ -575,6 +575,7 @@ function renderShipPanel(){
     var _sm={'Pirate Ship':['#e7e0f7','#5b3fa0','Pirate Ship'],'Shopify':['#d8f0e0','#1b7a3d','Shopify'],'UPS My Choice (3rd Party)':['#e6ecf2','#4a5b6a','My Choice']};
     var _sc=_sm[s.source]||['#e6ecf2','#4a5b6a',(s.source||'—')];
     var srcBadge='<span class="status" style="background:'+_sc[0]+';color:'+_sc[1]+'">'+escapeHtml(_sc[2])+'</span>';
+    if(s.shopify_fulfilled){ srcBadge+=' <span class="status" title="UPS tracking written to Shopify order '+escapeHtml(s.shopify_order||'')+'" style="background:#d8f0e0;color:#1b7a3d;white-space:nowrap;">🛍️ Shopify'+(s.shopify_order?' '+escapeHtml(s.shopify_order):'')+'</span>'; }
     body+='<tr>'+
       '<td class="so"><a href="'+url+'" target="_blank" rel="noopener" style="color:#1F4E79;text-decoration:none;">'+escapeHtml(s.tracking)+' <span style="color:#008080;">↗</span></a></td>'+
       '<td>'+srcBadge+'</td>'+
