@@ -1,9 +1,9 @@
 {
-  "pulled_at": "2026-06-26 09:58 AM PT",
-  "last_status_refresh": "2026-06-26 09:58 AM PT",
+  "pulled_at": "2026-06-26 10:08 AM PT",
+  "last_status_refresh": "2026-06-26 10:08 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
-  "note": "Shipments come from three sources (tagged per row): UPS My Choice for Business (Third Party), Pirate Ship (UPS labels), and Shopify order fulfillments (UPS only). Tracking numbers are de-duplicated across sources. Statuses auto-refresh 4x/day via the UPS Track API. Shopify shipments are auto-discovered on the schedule (it has an API); My Choice & Pirate Ship need an occasional Chrome re-scan to add new ones.",
+  "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
   "shipments": [
     {
       "tracking": "1Z8W007Y0191198265",
@@ -18,7 +18,8 @@
       "date": "2026-06-16",
       "time": "10:26 AM",
       "delivered": true,
-      "source": "UPS My Choice (3rd Party)"
+      "source": "UPS My Choice (3rd Party)",
+      "carrier": "UPS"
     },
     {
       "tracking": "1Z8W007Y0394417278",
@@ -33,7 +34,8 @@
       "date": "2026-06-24",
       "time": "11:16 AM",
       "delivered": true,
-      "source": "UPS My Choice (3rd Party)"
+      "source": "UPS My Choice (3rd Party)",
+      "carrier": "UPS"
     },
     {
       "tracking": "1Z8W007Y0393546087",
@@ -48,7 +50,8 @@
       "date": "2026-06-26",
       "time": "11:50 AM",
       "delivered": true,
-      "source": "UPS My Choice (3rd Party)"
+      "source": "UPS My Choice (3rd Party)",
+      "carrier": "UPS"
     },
     {
       "tracking": "1Z8W007Y0394710905",
@@ -63,7 +66,8 @@
       "date": "2026-06-26",
       "time": "12:49 PM",
       "delivered": true,
-      "source": "UPS My Choice (3rd Party)"
+      "source": "UPS My Choice (3rd Party)",
+      "carrier": "UPS"
     },
     {
       "tracking": "1Z8W007Y0397501662",
@@ -78,7 +82,8 @@
       "date": "2026-06-26",
       "time": "12:49 PM",
       "delivered": true,
-      "source": "UPS My Choice (3rd Party)"
+      "source": "UPS My Choice (3rd Party)",
+      "carrier": "UPS"
     },
     {
       "tracking": "1Z8W007Y0390188550",
@@ -93,7 +98,8 @@
       "date": "2026-06-26",
       "time": "",
       "delivered": false,
-      "source": "UPS My Choice (3rd Party)"
+      "source": "UPS My Choice (3rd Party)",
+      "carrier": "UPS"
     },
     {
       "tracking": "1Z8W007Y0394206219",
@@ -108,7 +114,8 @@
       "date": "2026-06-26",
       "time": "",
       "delivered": false,
-      "source": "UPS My Choice (3rd Party)"
+      "source": "UPS My Choice (3rd Party)",
+      "carrier": "UPS"
     },
     {
       "tracking": "1Z8W007Y0393006937",
@@ -123,7 +130,8 @@
       "date": "2026-06-26",
       "time": "",
       "delivered": false,
-      "source": "UPS My Choice (3rd Party)"
+      "source": "UPS My Choice (3rd Party)",
+      "carrier": "UPS"
     },
     {
       "tracking": "1Z8W007Y0397733288",
@@ -138,7 +146,8 @@
       "date": "2026-06-26",
       "time": "",
       "delivered": false,
-      "source": "UPS My Choice (3rd Party)"
+      "source": "UPS My Choice (3rd Party)",
+      "carrier": "UPS"
     },
     {
       "tracking": "1Z2XH6681323990629",
@@ -153,7 +162,9 @@
       "location": "SUGAR LAND, TX",
       "date": "2026-06-18",
       "time": "11:42 AM",
-      "delivered": true
+      "delivered": true,
+      "carrier": "UPS",
+      "ship_date": "2026-06-16"
     },
     {
       "tracking": "1Z2XH6681320019014",
@@ -168,7 +179,9 @@
       "location": "NORWOOD, MA",
       "date": "2026-06-18",
       "time": "1:48 PM",
-      "delivered": true
+      "delivered": true,
+      "carrier": "UPS",
+      "ship_date": "2026-06-16"
     },
     {
       "tracking": "1Z2XH6681308694424",
@@ -183,7 +196,9 @@
       "location": "NAPERVILLE, IL",
       "date": "2026-06-17",
       "time": "9:55 AM",
-      "delivered": true
+      "delivered": true,
+      "carrier": "UPS",
+      "ship_date": "2026-06-15"
     },
     {
       "tracking": "1Z2XH6681300011416",
@@ -198,7 +213,9 @@
       "location": "SUGAR LAND, TX",
       "date": "2026-06-16",
       "time": "11:59 AM",
-      "delivered": true
+      "delivered": true,
+      "carrier": "UPS",
+      "ship_date": "2026-06-11"
     },
     {
       "tracking": "1Z0E1B331333627634",
@@ -213,7 +230,9 @@
       "location": "NAPERVILLE, IL",
       "date": "2026-06-12",
       "time": "11:40 AM",
-      "delivered": true
+      "delivered": true,
+      "carrier": "UPS",
+      "ship_date": "2026-06-11"
     },
     {
       "tracking": "1Z0E1B331310899947",
@@ -228,7 +247,9 @@
       "location": "UTICA, KY",
       "date": "2026-06-23",
       "time": "10:12 AM",
-      "delivered": true
+      "delivered": true,
+      "carrier": "UPS",
+      "ship_date": "2026-06-10"
     },
     {
       "tracking": "1Z0E1B331323442629",
@@ -243,7 +264,9 @@
       "location": "NORWOOD, MA",
       "date": "2026-06-11",
       "time": "12:29 PM",
-      "delivered": true
+      "delivered": true,
+      "carrier": "UPS",
+      "ship_date": "2026-06-10"
     },
     {
       "tracking": "1Z0E1B331325539012",
@@ -258,7 +281,9 @@
       "location": "NORWOOD, MA",
       "date": "2026-06-11",
       "time": "12:29 PM",
-      "delivered": true
+      "delivered": true,
+      "carrier": "UPS",
+      "ship_date": "2026-06-09"
     },
     {
       "tracking": "1Z0E1B330315508735",
@@ -273,7 +298,9 @@
       "location": "SOMERSET, NJ",
       "date": "2026-06-11",
       "time": "12:01 PM",
-      "delivered": true
+      "delivered": true,
+      "carrier": "UPS",
+      "ship_date": "2026-06-09"
     },
     {
       "tracking": "1Z0E1B331327320806",
@@ -288,7 +315,9 @@
       "location": "NAPERVILLE, IL",
       "date": "2026-06-09",
       "time": "9:53 AM",
-      "delivered": true
+      "delivered": true,
+      "carrier": "UPS",
+      "ship_date": "2026-06-05"
     },
     {
       "tracking": "1Z0E1B331327631999",
@@ -303,7 +332,9 @@
       "location": "CHICAGO, IL",
       "date": "2026-06-04",
       "time": "11:25 AM",
-      "delivered": true
+      "delivered": true,
+      "carrier": "UPS",
+      "ship_date": "2026-06-03"
     },
     {
       "tracking": "1Z0E1B330135156582",
@@ -318,7 +349,9 @@
       "location": "HESPERIA, CA",
       "date": "2026-06-05",
       "time": "10:06 AM",
-      "delivered": true
+      "delivered": true,
+      "carrier": "UPS",
+      "ship_date": "2026-06-03"
     },
     {
       "tracking": "1Z0E1B331330818577",
@@ -333,7 +366,9 @@
       "location": "Addison, IL",
       "date": "2026-06-04",
       "time": "",
-      "delivered": false
+      "delivered": false,
+      "carrier": "UPS",
+      "ship_date": "2026-06-03"
     },
     {
       "tracking": "1Z0E1B331311911126",
@@ -348,7 +383,9 @@
       "location": "COSTA MESA, CA",
       "date": "2026-06-03",
       "time": "10:30 AM",
-      "delivered": true
+      "delivered": true,
+      "carrier": "UPS",
+      "ship_date": "2026-06-02"
     },
     {
       "tracking": "1Z0E1B331334181962",
@@ -363,7 +400,9 @@
       "location": "NAPERVILLE, IL",
       "date": "2026-06-03",
       "time": "10:05 AM",
-      "delivered": true
+      "delivered": true,
+      "carrier": "UPS",
+      "ship_date": "2026-06-02"
     },
     {
       "tracking": "1Z0E1B331333850759",
@@ -378,7 +417,9 @@
       "location": "NORWOOD, MA",
       "date": "2026-06-03",
       "time": "9:46 AM",
-      "delivered": true
+      "delivered": true,
+      "carrier": "UPS",
+      "ship_date": "2026-06-02"
     },
     {
       "tracking": "1Z0E1B331300352706",
@@ -394,7 +435,199 @@
       "location": "CHICAGO, IL",
       "date": "2026-06-03",
       "time": "11:42 AM",
-      "delivered": true
+      "delivered": true,
+      "carrier": "UPS",
+      "ship_date": "2026-06-03"
+    },
+    {
+      "tracking": "382253513001",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Bart Pitula",
+      "ship_to": "Costa Mesa, CA",
+      "order": "#1071",
+      "service": "FedEx",
+      "status": "In Transit",
+      "activity": "Out for Delivery",
+      "location": "",
+      "date": "2026-06-26",
+      "time": "",
+      "delivered": false,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=382253513001",
+      "ship_date": "2026-06-25"
+    },
+    {
+      "tracking": "873394608680",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Ahmed Syed",
+      "ship_to": "Chicago, IL",
+      "order": "#1067",
+      "service": "FedEx",
+      "status": "Delivered",
+      "activity": "Delivered",
+      "location": "",
+      "date": "2026-06-23",
+      "time": "",
+      "delivered": true,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=873394608680",
+      "ship_date": "2026-06-22"
+    },
+    {
+      "tracking": "873171738852",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Mahemdra Patel",
+      "ship_to": "Clarendon Hills, IL",
+      "order": "#1064",
+      "service": "FedEx",
+      "status": "Delivered",
+      "activity": "Delivered",
+      "location": "",
+      "date": "2026-06-17",
+      "time": "",
+      "delivered": true,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=873171738852",
+      "ship_date": "2026-06-17"
+    },
+    {
+      "tracking": "381971020480",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "SYED RIZVI",
+      "ship_to": "Sugar Land, TX",
+      "order": "#1051",
+      "service": "FedEx",
+      "status": "Delivered",
+      "activity": "Delivered",
+      "location": "",
+      "date": "2026-06-12",
+      "time": "",
+      "delivered": true,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=381971020480",
+      "ship_date": "2026-06-11"
+    },
+    {
+      "tracking": "873528494031",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Misty Mcwhorter",
+      "ship_to": "Bradenton, FL",
+      "order": "#1046",
+      "service": "FedEx",
+      "status": "In Transit",
+      "activity": "In Transit",
+      "location": "",
+      "date": "2026-06-25",
+      "time": "",
+      "delivered": false,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=873528494031",
+      "ship_date": "2026-06-24"
+    },
+    {
+      "tracking": "382029732517",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Karan Mehta",
+      "ship_to": "Norwood, MA",
+      "order": "#1045",
+      "service": "FedEx",
+      "status": "Delivered",
+      "activity": "Delivered",
+      "location": "",
+      "date": "2026-06-16",
+      "time": "",
+      "delivered": true,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=382029732517",
+      "ship_date": "2026-06-15"
+    },
+    {
+      "tracking": "873325696848",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Misty Mcwhorter",
+      "ship_to": "Bradenton, FL",
+      "order": "#1039",
+      "service": "FedEx",
+      "status": "Delivered",
+      "activity": "Delivered",
+      "location": "",
+      "date": "2026-06-26",
+      "time": "",
+      "delivered": true,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=873325696848",
+      "ship_date": "2026-06-20"
+    },
+    {
+      "tracking": "872654606057",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Misty Mcwhorter",
+      "ship_to": "Bradenton, FL",
+      "order": "#1039",
+      "service": "FedEx",
+      "status": "Delivered",
+      "activity": "Delivered",
+      "location": "",
+      "date": "2026-06-05",
+      "time": "",
+      "delivered": true,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=872654606057",
+      "ship_date": "2026-06-04"
+    },
+    {
+      "tracking": "872623399296",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Misty Mcwhorter",
+      "ship_to": "Bradenton, FL",
+      "order": "#1039",
+      "service": "FedEx",
+      "status": "Delivered",
+      "activity": "Delivered",
+      "location": "",
+      "date": "2026-06-05",
+      "time": "",
+      "delivered": true,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=872623399296",
+      "ship_date": "2026-06-04"
+    },
+    {
+      "tracking": "382143932313",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Karan Mehta",
+      "ship_to": "Norwood, MA",
+      "order": "#1038",
+      "service": "FedEx",
+      "status": "Delivered",
+      "activity": "Delivered",
+      "location": "",
+      "date": "2026-06-24",
+      "time": "",
+      "delivered": true,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=382143932313",
+      "ship_date": "2026-06-20"
     }
   ]
 }
