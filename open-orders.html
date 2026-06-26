@@ -544,7 +544,9 @@ function renderShipPanel(){
   for(var r=0;r<rows.length;r++){ var s=rows[r];
     var url='https://www.ups.com/track?loc=en_US&tracknum='+encodeURIComponent(s.tracking);
     var upd=shipLoc(s.location||''); if(s.date){ upd+=(upd?' · ':'')+fmtDate(s.date)+(s.time?' '+s.time:''); }
-    var srcBadge = (s.source==='Pirate Ship') ? '<span class="status" style="background:#e7e0f7;color:#5b3fa0">Pirate Ship</span>' : '<span class="status" style="background:#e6ecf2;color:#4a5b6a">My Choice</span>';
+    var _sm={'Pirate Ship':['#e7e0f7','#5b3fa0','Pirate Ship'],'Shopify':['#d8f0e0','#1b7a3d','Shopify'],'UPS My Choice (3rd Party)':['#e6ecf2','#4a5b6a','My Choice']};
+    var _sc=_sm[s.source]||['#e6ecf2','#4a5b6a',(s.source||'—')];
+    var srcBadge='<span class="status" style="background:'+_sc[0]+';color:'+_sc[1]+'">'+escapeHtml(_sc[2])+'</span>';
     body+='<tr>'+
       '<td class="so"><a href="'+url+'" target="_blank" rel="noopener" style="color:#1F4E79;text-decoration:none;">'+escapeHtml(s.tracking)+' <span style="color:#008080;">↗</span></a></td>'+
       '<td>'+srcBadge+'</td>'+
