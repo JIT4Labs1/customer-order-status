@@ -515,8 +515,10 @@ function renderShipPanel(){
   for(var r=0;r<rows.length;r++){ var s=rows[r];
     var url='https://www.ups.com/track?loc=en_US&tracknum='+encodeURIComponent(s.tracking);
     var upd=shipLoc(s.location||''); if(s.date){ upd+=(upd?' · ':'')+fmtDate(s.date)+(s.time?' '+s.time:''); }
+    var srcBadge = (s.source==='Pirate Ship') ? '<span class="status" style="background:#e7e0f7;color:#5b3fa0">Pirate Ship</span>' : '<span class="status" style="background:#e6ecf2;color:#4a5b6a">My Choice</span>';
     body+='<tr>'+
       '<td class="so"><a href="'+url+'" target="_blank" rel="noopener" style="color:#1F4E79;text-decoration:none;">'+escapeHtml(s.tracking)+' <span style="color:#008080;">↗</span></a></td>'+
+      '<td>'+srcBadge+'</td>'+
       '<td>'+pill(s)+'</td>'+
       '<td>'+escapeHtml(shipTC(s.activity||''))+'</td>'+
       '<td class="item-name">'+escapeHtml(s.shipper||'')+'</td>'+
@@ -525,16 +527,16 @@ function renderShipPanel(){
       '<td>'+escapeHtml((s.service||'').replace(/^UPS /,''))+'</td>'+
       '<td>'+escapeHtml(upd)+'</td></tr>';
   }
-  if(!rows.length) body='<tr><td colspan="8" class="empty" style="padding:18px;">No shipments in this filter.</td></tr>';
+  if(!rows.length) body='<tr><td colspan="9" class="empty" style="padding:18px;">No shipments in this filter.</td></tr>';
   function fbtn(v,l,fn){ return '<button onclick="'+fn+'()" class="mode-btn'+(shipFilter===v?' active':'')+'" style="padding:6px 14px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;">'+l+'</button>'; }
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">'+
-    '<div><h2>Shipments — UPS '+escapeHtml(SHIP.default_view||'Third Party')+'</h2><div class="sub">Billed to '+escapeHtml(SHIP.billed_to||'')+' &middot; statuses refreshed '+escapeHtml(SHIP.last_status_refresh||SHIP.pulled_at||'')+'</div></div>'+
+    '<div><h2>Shipments — UPS</h2><div class="sub">UPS My Choice (Third Party) + Pirate Ship &middot; statuses refreshed '+escapeHtml(SHIP.last_status_refresh||SHIP.pulled_at||'')+'</div></div>'+
     '<button class="refresh-btn" onclick="shipRefresh()" title="Reload the latest shipments snapshot"><span class="lbl">↻ Reload</span></button></div></div>'+
     '<div class="kpis" style="padding:6px 0 2px;">'+kpi(all.length,'Shipments')+kpi(nTransit,'In transit')+kpi(nDel,'Delivered')+(nExc?kpi(nExc,'Exceptions'):'')+'</div>'+
     '<div style="display:flex;gap:8px;margin:6px 2px 12px;">'+fbtn('all','All','shipFAll')+fbtn('transit','In transit','shipFTransit')+fbtn('delivered','Delivered','shipFDelivered')+'</div>'+
     '<div class="matrix-wrap"><table class="matrix"><thead><tr>'+
-    '<th>Tracking #</th><th>Status</th><th>Activity</th><th>Shipper</th><th>Receiver</th><th>Ship-To</th><th>Service</th><th>Last update</th>'+
+    '<th>Tracking #</th><th>Source</th><th>Status</th><th>Activity</th><th>Shipper</th><th>Receiver</th><th>Ship-To</th><th>Service</th><th>Last update</th>'+
     '</tr></thead><tbody>'+body+'</tbody></table></div>'+
     '<div style="margin:14px 16px;padding:12px 16px;background:#fff8e1;border-left:4px solid #ffc107;font-size:12px;border-radius:6px;line-height:1.55;color:#2c3e50;">'+
     escapeHtml(SHIP.note||'')+'</div>';
