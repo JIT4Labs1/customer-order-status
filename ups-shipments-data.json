@@ -1,9 +1,9 @@
 {
-  "pulled_at": "2026-06-26 09:32 AM PT",
-  "last_status_refresh": "2026-06-26 09:32 AM PT",
+  "pulled_at": "2026-06-26 09:49 AM PT",
+  "last_status_refresh": "2026-06-26 09:48 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
-  "note": "Shipments are discovered from UPS My Choice for Business (Third Party view) via a browser scan; statuses auto-refresh 4\u00d7/day through the UPS Track API. Shipper/Receiver come from the dashboard (the Track API doesn't expose them). New tracking numbers appear after the dashboard is re-scanned in Chrome \u2014 the API can refresh statuses but cannot list new shipments.",
+  "note": "Shipments come from two sources: UPS My Choice for Business (Third Party view) and Pirate Ship (UPS labels only). Discovery is via browser scan; statuses auto-refresh 4x/day through the UPS Track API (works for any UPS tracking number). New tracking numbers appear after a Chrome re-scan.",
   "shipments": [
     {
       "tracking": "1Z8W007Y0191198265",
@@ -17,7 +17,8 @@
       "location": "NEWPORT BEACH, CA",
       "date": "2026-06-16",
       "time": "10:26 AM",
-      "delivered": true
+      "delivered": true,
+      "source": "UPS My Choice (3rd Party)"
     },
     {
       "tracking": "1Z8W007Y0394417278",
@@ -31,7 +32,8 @@
       "location": "ANNANDALE, VA",
       "date": "2026-06-24",
       "time": "11:16 AM",
-      "delivered": true
+      "delivered": true,
+      "source": "UPS My Choice (3rd Party)"
     },
     {
       "tracking": "1Z8W007Y0393546087",
@@ -45,7 +47,8 @@
       "location": "ANNANDALE, VA",
       "date": "2026-06-26",
       "time": "11:50 AM",
-      "delivered": true
+      "delivered": true,
+      "source": "UPS My Choice (3rd Party)"
     },
     {
       "tracking": "1Z8W007Y0394710905",
@@ -59,7 +62,8 @@
       "location": "Columbus, OH",
       "date": "2026-06-26",
       "time": "",
-      "delivered": false
+      "delivered": false,
+      "source": "UPS My Choice (3rd Party)"
     },
     {
       "tracking": "1Z8W007Y0397501662",
@@ -73,7 +77,8 @@
       "location": "Columbus, OH",
       "date": "2026-06-26",
       "time": "",
-      "delivered": false
+      "delivered": false,
+      "source": "UPS My Choice (3rd Party)"
     },
     {
       "tracking": "1Z8W007Y0390188550",
@@ -87,7 +92,8 @@
       "location": "Chicago, IL",
       "date": "2026-06-26",
       "time": "",
-      "delivered": false
+      "delivered": false,
+      "source": "UPS My Choice (3rd Party)"
     },
     {
       "tracking": "1Z8W007Y0394206219",
@@ -101,7 +107,8 @@
       "location": "Chicago, IL",
       "date": "2026-06-26",
       "time": "",
-      "delivered": false
+      "delivered": false,
+      "source": "UPS My Choice (3rd Party)"
     },
     {
       "tracking": "1Z8W007Y0393006937",
@@ -115,7 +122,8 @@
       "location": "Atlanta, GA",
       "date": "2026-06-26",
       "time": "",
-      "delivered": false
+      "delivered": false,
+      "source": "UPS My Choice (3rd Party)"
     },
     {
       "tracking": "1Z8W007Y0397733288",
@@ -129,7 +137,248 @@
       "location": "Atlanta, GA",
       "date": "2026-06-26",
       "time": "",
+      "delivered": false,
+      "source": "UPS My Choice (3rd Party)"
+    },
+    {
+      "tracking": "1Z2XH6681323990629",
+      "source": "Pirate Ship",
+      "view": "Pirate Ship",
+      "shipper": "JIT4You",
+      "receiver": "MEDICAL HEALTH LAB",
+      "ship_to": "",
+      "service": "",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "SUGAR LAND, TX",
+      "date": "2026-06-18",
+      "time": "11:42 AM",
+      "delivered": true
+    },
+    {
+      "tracking": "1Z2XH6681320019014",
+      "source": "Pirate Ship",
+      "view": "Pirate Ship",
+      "shipper": "JIT4You",
+      "receiver": "OM Diagnostic Laboratories",
+      "ship_to": "",
+      "service": "",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "NORWOOD, MA",
+      "date": "2026-06-18",
+      "time": "1:48 PM",
+      "delivered": true
+    },
+    {
+      "tracking": "1Z2XH6681308694424",
+      "source": "Pirate Ship",
+      "view": "Pirate Ship",
+      "shipper": "JIT4You",
+      "receiver": "Radiance Diagnostics",
+      "ship_to": "",
+      "service": "",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "NAPERVILLE, IL",
+      "date": "2026-06-17",
+      "time": "9:55 AM",
+      "delivered": true
+    },
+    {
+      "tracking": "1Z2XH6681300011416",
+      "source": "Pirate Ship",
+      "view": "Pirate Ship",
+      "shipper": "JIT4You",
+      "receiver": "MEDICAL HEALTH LAB",
+      "ship_to": "",
+      "service": "",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "SUGAR LAND, TX",
+      "date": "2026-06-16",
+      "time": "11:59 AM",
+      "delivered": true
+    },
+    {
+      "tracking": "1Z0E1B331333627634",
+      "source": "Pirate Ship",
+      "view": "Pirate Ship",
+      "shipper": "JIT4You",
+      "receiver": "Radiance Diagnostics",
+      "ship_to": "",
+      "service": "",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "NAPERVILLE, IL",
+      "date": "2026-06-12",
+      "time": "11:40 AM",
+      "delivered": true
+    },
+    {
+      "tracking": "1Z0E1B331310899947",
+      "source": "Pirate Ship",
+      "view": "Pirate Ship",
+      "shipper": "JIT4You",
+      "receiver": "JIT",
+      "ship_to": "",
+      "service": "",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "UTICA, KY",
+      "date": "2026-06-23",
+      "time": "10:12 AM",
+      "delivered": true
+    },
+    {
+      "tracking": "1Z0E1B331323442629",
+      "source": "Pirate Ship",
+      "view": "Pirate Ship",
+      "shipper": "JIT4You",
+      "receiver": "OM Diagnostic Laboratories",
+      "ship_to": "",
+      "service": "",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "NORWOOD, MA",
+      "date": "2026-06-11",
+      "time": "12:29 PM",
+      "delivered": true
+    },
+    {
+      "tracking": "1Z0E1B331325539012",
+      "source": "Pirate Ship",
+      "view": "Pirate Ship",
+      "shipper": "JIT4You",
+      "receiver": "OM Diagnostic Laboratories",
+      "ship_to": "",
+      "service": "",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "NORWOOD, MA",
+      "date": "2026-06-11",
+      "time": "12:29 PM",
+      "delivered": true
+    },
+    {
+      "tracking": "1Z0E1B330315508735",
+      "source": "Pirate Ship",
+      "view": "Pirate Ship",
+      "shipper": "JIT4You",
+      "receiver": "L&M LAB CORP",
+      "ship_to": "",
+      "service": "",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "SOMERSET, NJ",
+      "date": "2026-06-11",
+      "time": "12:01 PM",
+      "delivered": true
+    },
+    {
+      "tracking": "1Z0E1B331327320806",
+      "source": "Pirate Ship",
+      "view": "Pirate Ship",
+      "shipper": "JIT4You",
+      "receiver": "Radiance Diagnostics",
+      "ship_to": "",
+      "service": "",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "NAPERVILLE, IL",
+      "date": "2026-06-09",
+      "time": "9:53 AM",
+      "delivered": true
+    },
+    {
+      "tracking": "1Z0E1B331327631999",
+      "source": "Pirate Ship",
+      "view": "Pirate Ship",
+      "shipper": "JIT4You",
+      "receiver": "Chicago Lab",
+      "ship_to": "",
+      "service": "",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "CHICAGO, IL",
+      "date": "2026-06-04",
+      "time": "11:25 AM",
+      "delivered": true
+    },
+    {
+      "tracking": "1Z0E1B330135156582",
+      "source": "Pirate Ship",
+      "view": "Pirate Ship",
+      "shipper": "JIT4You",
+      "receiver": "JIT4You",
+      "ship_to": "",
+      "service": "",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "HESPERIA, CA",
+      "date": "2026-06-05",
+      "time": "10:06 AM",
+      "delivered": true
+    },
+    {
+      "tracking": "1Z0E1B331330818577",
+      "source": "Pirate Ship",
+      "view": "Pirate Ship",
+      "shipper": "JIT4You",
+      "receiver": "Radiance Diagnostics",
+      "ship_to": "",
+      "service": "",
+      "status": "In Transit",
+      "activity": "Processing at UPS Facility",
+      "location": "Addison, IL",
+      "date": "2026-06-04",
+      "time": "",
       "delivered": false
+    },
+    {
+      "tracking": "1Z0E1B331311911126",
+      "source": "Pirate Ship",
+      "view": "Pirate Ship",
+      "shipper": "JIT4You",
+      "receiver": "3 Alpha Labs, LLC",
+      "ship_to": "",
+      "service": "",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "COSTA MESA, CA",
+      "date": "2026-06-03",
+      "time": "10:30 AM",
+      "delivered": true
+    },
+    {
+      "tracking": "1Z0E1B331334181962",
+      "source": "Pirate Ship",
+      "view": "Pirate Ship",
+      "shipper": "JIT4You",
+      "receiver": "Radiance Diagnostics",
+      "ship_to": "",
+      "service": "",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "NAPERVILLE, IL",
+      "date": "2026-06-03",
+      "time": "10:05 AM",
+      "delivered": true
+    },
+    {
+      "tracking": "1Z0E1B331333850759",
+      "source": "Pirate Ship",
+      "view": "Pirate Ship",
+      "shipper": "JIT4You",
+      "receiver": "OM Diagnostic Laboratories",
+      "ship_to": "",
+      "service": "",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "NORWOOD, MA",
+      "date": "2026-06-03",
+      "time": "9:46 AM",
+      "delivered": true
     }
   ]
 }
