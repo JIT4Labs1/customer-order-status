@@ -484,7 +484,7 @@ function renderWtPanel(){
 }
 
 // ── Shipments tab (UPS My Choice for Business — Third Party; statuses auto-refreshed via UPS Track API) ──
-var SHIP=null, shipLoading=false, shipFilter='all';
+var SHIP=null, shipLoading=false, shipFilter='all', shipFrom='', shipTo='', shipVis={}, shipShipperList=[];
 function loadShip(){
   if(SHIP_EMBED){ SHIP=SHIP_EMBED; shipLoading=false; if(mode==='ship') renderShipPanel(); return; }
   if(shipLoading) return; shipLoading=true;
@@ -498,14 +498,43 @@ function shipSetFilter(v){ shipFilter=v; renderShipPanel(); }
 function shipFAll(){ shipSetFilter('all'); }
 function shipFTransit(){ shipSetFilter('transit'); }
 function shipFDelivered(){ shipSetFilter('delivered'); }
+function shipSetFrom(v){ shipFrom=v||''; renderShipPanel(); }
+function shipSetTo(v){ shipTo=v||''; renderShipPanel(); }
+function shipClearDates(){ shipFrom=''; shipTo=''; renderShipPanel(); }
+function shipToggleShipperIdx(i,c){ var sh=shipShipperList[i]; if(sh!=null){ shipVis[sh]=!!c; renderShipPanel(); } }
+function shipAllShippers(c){ for(var i=0;i<shipShipperList.length;i++) shipVis[shipShipperList[i]]=!!c; renderShipPanel(); }
 function shipTC(s){ s=(s||'').trim(); return s.replace(/\w\S*/g,function(t){return t.charAt(0).toUpperCase()+t.substr(1).toLowerCase();}); }
 function shipLoc(s){ var p=(s||'').split(','); if(p.length===2 && p[1].trim().length<=3){ return shipTC(p[0])+', '+p[1].trim().toUpperCase(); } return shipTC(s); }
+function shipControls(){
+  var ds='padding:5px 8px;border:1px solid #cdd9e6;border-radius:6px;font-size:12px;font-family:inherit;';
+  var h='<div style="display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin:0 2px 12px;font-size:12px;color:#2c3e50;">';
+  h+='<span style="color:#7a8a99;">Date:</span><input type="date" value="'+escapeHtml(shipFrom)+'" onchange="shipSetFrom(this.value)" style="'+ds+'"><span style="color:#7a8a99;">to</span><input type="date" value="'+escapeHtml(shipTo)+'" onchange="shipSetTo(this.value)" style="'+ds+'">';
+  if(shipFrom||shipTo) h+='<button onclick="shipClearDates()" class="mode-btn" style="padding:4px 10px;border-radius:6px;border:1px solid #cdd9e6;font-size:11px;">clear</button>';
+  h+='<span style="color:#7a8a99;margin-left:10px;">Shipper:</span>';
+  var allOn=true; for(var a=0;a<shipShipperList.length;a++){ if(!shipVis[shipShipperList[a]]) allOn=false; }
+  h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-weight:600;"><input type="checkbox" onchange="shipAllShippers(this.checked)"'+(allOn?' checked':'')+'> All</label>';
+  for(var k=0;k<shipShipperList.length;k++){ var sh=shipShipperList[k];
+    h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:5px;"><input type="checkbox" onchange="shipToggleShipperIdx('+k+',this.checked)"'+(shipVis[sh]?' checked':'')+'>'+escapeHtml(sh)+'</label>';
+  }
+  return h+'</div>';
+}
 function renderShipPanel(){
   if(!SHIP){ document.getElementById('panel').innerHTML='<div class="empty">Loading shipments…</div>'; loadShip(); return; }
   var all=(SHIP.shipments||[]);
   var nDel=0,nTransit=0,nExc=0;
   for(var i=0;i<all.length;i++){ var st=all[i].status||''; if(all[i].delivered||st==='Delivered') nDel++; else if(st==='Exception') nExc++; else nTransit++; }
-  var rows=all.filter(function(s){ if(shipFilter==='all') return true; if(shipFilter==='transit') return !(s.delivered||s.status==='Delivered'); if(shipFilter==='delivered') return (s.delivered||s.status==='Delivered'); return true; });
+  // distinct shippers (preserve checkbox choices; default new ones on)
+  shipShipperList=[]; var seenSh={};
+  for(var z=0;z<all.length;z++){ var sh=all[z].shipper||'(none)'; if(!seenSh[sh]){ seenSh[sh]=1; shipShipperList.push(sh); if(!(sh in shipVis)) shipVis[sh]=true; } }
+  var rows=all.filter(function(s){
+    var dv=(s.delivered||s.status==='Delivered');
+    if(shipFilter==='transit' && dv) return false;
+    if(shipFilter==='delivered' && !dv) return false;
+    if(shipVis[s.shipper||'(none)']===false) return false;
+    if(shipFrom && (s.date||'') < shipFrom) return false;
+    if(shipTo && (s.date||'') > shipTo) return false;
+    return true;
+  });
   // sort: in-transit first, then by date desc
   rows.sort(function(a,b){ var ad=(a.delivered?1:0), bd=(b.delivered?1:0); if(ad!==bd) return ad-bd; return (b.date||'').localeCompare(a.date||''); });
   function pill(s){ var d=(s.delivered||s.status==='Delivered'); var ex=(s.status==='Exception');
@@ -534,7 +563,8 @@ function renderShipPanel(){
     '<div><h2>Shipments — UPS</h2><div class="sub">UPS My Choice (Third Party) + Pirate Ship &middot; statuses refreshed '+escapeHtml(SHIP.last_status_refresh||SHIP.pulled_at||'')+'</div></div>'+
     '<button class="refresh-btn" onclick="shipRefresh()" title="Reload the latest shipments snapshot"><span class="lbl">↻ Reload</span></button></div></div>'+
     '<div class="kpis" style="padding:6px 0 2px;">'+kpi(all.length,'Shipments')+kpi(nTransit,'In transit')+kpi(nDel,'Delivered')+(nExc?kpi(nExc,'Exceptions'):'')+'</div>'+
-    '<div style="display:flex;gap:8px;margin:6px 2px 12px;">'+fbtn('all','All','shipFAll')+fbtn('transit','In transit','shipFTransit')+fbtn('delivered','Delivered','shipFDelivered')+'</div>'+
+    '<div style="display:flex;gap:8px;margin:6px 2px 8px;">'+fbtn('all','All','shipFAll')+fbtn('transit','In transit','shipFTransit')+fbtn('delivered','Delivered','shipFDelivered')+'</div>'+
+    shipControls()+
     '<div class="matrix-wrap"><table class="matrix"><thead><tr>'+
     '<th>Tracking #</th><th>Source</th><th>Status</th><th>Activity</th><th>Shipper</th><th>Receiver</th><th>Ship-To</th><th>Service</th><th>Last update</th>'+
     '</tr></thead><tbody>'+body+'</tbody></table></div>'+
