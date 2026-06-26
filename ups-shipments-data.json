@@ -1,9 +1,9 @@
 {
-  "pulled_at": "2026-06-26 09:49 AM PT",
-  "last_status_refresh": "2026-06-26 09:48 AM PT",
+  "pulled_at": "2026-06-26 09:58 AM PT",
+  "last_status_refresh": "2026-06-26 09:58 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
-  "note": "Shipments come from two sources: UPS My Choice for Business (Third Party view) and Pirate Ship (UPS labels only). Discovery is via browser scan; statuses auto-refresh 4x/day through the UPS Track API (works for any UPS tracking number). New tracking numbers appear after a Chrome re-scan.",
+  "note": "Shipments come from three sources (tagged per row): UPS My Choice for Business (Third Party), Pirate Ship (UPS labels), and Shopify order fulfillments (UPS only). Tracking numbers are de-duplicated across sources. Statuses auto-refresh 4x/day via the UPS Track API. Shopify shipments are auto-discovered on the schedule (it has an API); My Choice & Pirate Ship need an occasional Chrome re-scan to add new ones.",
   "shipments": [
     {
       "tracking": "1Z8W007Y0191198265",
@@ -57,12 +57,12 @@
       "receiver": "Endure Aesthetics",
       "ship_to": "Grove City, OH",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Columbus, OH",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "GROVE CITY, OH",
       "date": "2026-06-26",
-      "time": "",
-      "delivered": false,
+      "time": "12:49 PM",
+      "delivered": true,
       "source": "UPS My Choice (3rd Party)"
     },
     {
@@ -72,12 +72,12 @@
       "receiver": "Endure Aesthetics",
       "ship_to": "Grove City, OH",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Columbus, OH",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "GROVE CITY, OH",
       "date": "2026-06-26",
-      "time": "",
-      "delivered": false,
+      "time": "12:49 PM",
+      "delivered": true,
       "source": "UPS My Choice (3rd Party)"
     },
     {
@@ -378,6 +378,22 @@
       "location": "NORWOOD, MA",
       "date": "2026-06-03",
       "time": "9:46 AM",
+      "delivered": true
+    },
+    {
+      "tracking": "1Z0E1B331300352706",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Ahmed Syed",
+      "ship_to": "Chicago, IL",
+      "order": "#1036",
+      "service": "",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "CHICAGO, IL",
+      "date": "2026-06-03",
+      "time": "11:42 AM",
       "delivered": true
     }
   ]
