@@ -38,6 +38,9 @@
   .mode-btn.mode-mkt { color:#c2410c; border-color:#fed7aa; background:#fff7ed; }
   .mode-btn.mode-mkt:hover { background:#ffedd5; }
   .mode-btn.mode-mkt.active { background:#ea580c; color:#fff; border-color:#ea580c; }
+  .mode-btn.mode-ship { color:#1d4ed8; border-color:#bfdbfe; background:#eff6ff; }
+  .mode-btn.mode-ship:hover { background:#dbeafe; }
+  .mode-btn.mode-ship.active { background:#2563eb; color:#fff; border-color:#2563eb; }
   .pnl-wrap { overflow-x:auto; padding:20px 22px; }
   .pnl-wrap h2, .pnl-wrap h3 { color:#2c3e50; }
 
@@ -130,11 +133,11 @@
   <button class="mode-btn" data-mode="cust" onclick="setMode('cust')">Customer Open SO's</button>
   <button class="mode-btn" data-mode="vendor" onclick="setMode('vendor')">Open Vendor POs</button>
   <button class="mode-btn" data-mode="sku" onclick="setMode('sku')">High Demand SKUs</button>
+  <button class="mode-btn mode-ship" data-mode="ship" onclick="setMode('ship')">Shipments</button>
   <button class="mode-btn" data-mode="ca" onclick="setMode('ca')">Customer Analysis</button>
   <button class="mode-btn mode-mkt" data-mode="wt" onclick="setMode('wt')">Website Traffic</button>
   <button class="mode-btn mode-mkt" data-mode="gads" onclick="setMode('gads')">Google Ads</button>
   <button class="mode-btn mode-mkt" data-mode="li" onclick="setMode('li')">LinkedIn</button>
-  <button class="mode-btn mode-mkt" data-mode="ship" onclick="setMode('ship')">Shipments</button>
 </div>
 
 <div class="layout">
@@ -848,7 +851,7 @@ function setMode(m){
   var btns=document.querySelectorAll('.mode-btn');
   for(var i=0;i<btns.length;i++){
     var dm=btns[i].getAttribute('data-mode');
-    var extra = dm==='pnl' ? ' mode-pnl' : ((dm==='wt'||dm==='gads'||dm==='li'||dm==='ship') ? ' mode-mkt' : '');  // P&L green, marketing/shipments tabs orange
+    var extra = dm==='pnl' ? ' mode-pnl' : (dm==='ship' ? ' mode-ship' : ((dm==='wt'||dm==='gads'||dm==='li') ? ' mode-mkt' : ''));  // P&L green, marketing tabs orange, shipments blue
     btns[i].className = 'mode-btn'+extra+(dm===m?' active':'');
   }
   renderTabs(); renderPanel();
