@@ -541,18 +541,20 @@ function renderShipPanel(){
     if(shipFilter==='transit' && dv) return false;
     if(shipFilter==='delivered' && !dv) return false;
     if(shipVis[s.shipper||'(none)']===false) return false;
-    if(shipFrom && (s.date||'') < shipFrom) return false;
-    if(shipTo && (s.date||'') > shipTo) return false;
+    var sd=s.ship_date||s.date||'';
+    if(shipFrom && sd < shipFrom) return false;
+    if(shipTo && sd > shipTo) return false;
     return true;
   });
   // sort: in-transit first, then by date desc
-  rows.sort(function(a,b){ var ad=(a.delivered?1:0), bd=(b.delivered?1:0); if(ad!==bd) return ad-bd; return (b.date||'').localeCompare(a.date||''); });
+  rows.sort(function(a,b){ var ad=(a.delivered?1:0), bd=(b.delivered?1:0); if(ad!==bd) return ad-bd; return (b.ship_date||b.date||'').localeCompare(a.ship_date||a.date||''); });
   function pill(s){ var d=(s.delivered||s.status==='Delivered'); var ex=(s.status==='Exception');
+    if(!d && !ex && !s.status){ return '<span class="status" style="background:#eef1f4;color:#7a8a99" title="Live status needs the FedEx API">Label created</span>'; }
     var c=d?['#d4edda','#155724']:(ex?['#f8d7da','#721c24']:['#fff3cd','#856404']);
     return '<span class="status" style="background:'+c[0]+';color:'+c[1]+'">'+escapeHtml(d?'Delivered':(ex?'Exception':'In Transit'))+'</span>'; }
   var body='';
   for(var r=0;r<rows.length;r++){ var s=rows[r];
-    var url='https://www.ups.com/track?loc=en_US&tracknum='+encodeURIComponent(s.tracking);
+    var url=s.url||('https://www.ups.com/track?loc=en_US&tracknum='+encodeURIComponent(s.tracking));
     var upd=shipLoc(s.location||''); if(s.date){ upd+=(upd?' · ':'')+fmtDate(s.date)+(s.time?' '+s.time:''); }
     var _sm={'Pirate Ship':['#e7e0f7','#5b3fa0','Pirate Ship'],'Shopify':['#d8f0e0','#1b7a3d','Shopify'],'UPS My Choice (3rd Party)':['#e6ecf2','#4a5b6a','My Choice']};
     var _sc=_sm[s.source]||['#e6ecf2','#4a5b6a',(s.source||'—')];
@@ -566,9 +568,10 @@ function renderShipPanel(){
       '<td class="item-name">'+escapeHtml(s.receiver||'')+'</td>'+
       '<td>'+escapeHtml(s.ship_to||'')+'</td>'+
       '<td>'+escapeHtml((s.service||'').replace(/^UPS /,''))+'</td>'+
+      '<td>'+(s.ship_date?fmtDate(s.ship_date):'—')+'</td>'+
       '<td>'+escapeHtml(upd)+'</td></tr>';
   }
-  if(!rows.length) body='<tr><td colspan="9" class="empty" style="padding:18px;">No shipments in this filter.</td></tr>';
+  if(!rows.length) body='<tr><td colspan="10" class="empty" style="padding:18px;">No shipments in this filter.</td></tr>';
   function fbtn(v,l,fn){ return '<button onclick="'+fn+'()" class="mode-btn'+(shipFilter===v?' active':'')+'" style="padding:6px 14px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;">'+l+'</button>'; }
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">'+
@@ -578,7 +581,7 @@ function renderShipPanel(){
     '<div style="display:flex;gap:8px;margin:6px 2px 8px;">'+fbtn('all','All','shipFAll')+fbtn('transit','In transit','shipFTransit')+fbtn('delivered','Delivered','shipFDelivered')+'</div>'+
     shipControls()+
     '<div class="matrix-wrap"><table class="matrix"><thead><tr>'+
-    '<th>Tracking #</th><th>Source</th><th>Status</th><th>Activity</th><th>Shipper</th><th>Receiver</th><th>Ship-To</th><th>Service</th><th>Last update</th>'+
+    '<th>Tracking #</th><th>Source</th><th>Status</th><th>Activity</th><th>Shipper</th><th>Receiver</th><th>Ship-To</th><th>Service</th><th>Label date</th><th>Last update</th>'+
     '</tr></thead><tbody>'+body+'</tbody></table></div>'+
     '<div style="margin:14px 16px;padding:12px 16px;background:#fff8e1;border-left:4px solid #ffc107;font-size:12px;border-radius:6px;line-height:1.55;color:#2c3e50;">'+
     escapeHtml(SHIP.note||'')+'</div>';
