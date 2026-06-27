@@ -1,6 +1,6 @@
 {
   "account": "Jit 4 You (1852255530)",
-  "pulled_at": "2026-06-27 12:48 PM PT",
+  "pulled_at": "2026-06-27 04:12 PM PT",
   "currency": "USD",
   "note_click_trails": "Google Ads exposes only the landing page (the first page a click lands on). For these Shopping campaigns the Final URL comes back empty, so the page-to-page user journey is not available from Google Ads. The full click trail lives in Google Analytics (GA4) \u2014 connect GA4 to add a real user-journey view.",
   "intervals": [
@@ -12,11 +12,39 @@
           "name": "Abbott_Sales_Shopping",
           "status": "enabled",
           "type": "Shopping",
-          "clicks": 38,
-          "impressions": 974,
-          "ctr": 0.039,
-          "cpc": 0.1905,
-          "cost": 7.24,
+          "clicks": 52,
+          "impressions": 1382,
+          "ctr": 0.0376,
+          "cpc": 0.1977,
+          "cost": 10.28,
+          "conversions": 0,
+          "conv_value": 0,
+          "roas": 0,
+          "start_date": "2026-06-22"
+        },
+        {
+          "name": "BeckmanCoulter_Shopping_Test",
+          "status": "enabled",
+          "type": "Shopping",
+          "clicks": 2,
+          "impressions": 157,
+          "ctr": 0.0127,
+          "cpc": 1.725,
+          "cost": 3.45,
+          "conversions": 0,
+          "conv_value": 0,
+          "roas": 0,
+          "start_date": "2026-06-10"
+        },
+        {
+          "name": "Siemens_Sales_Shopping",
+          "status": "enabled",
+          "type": "Shopping",
+          "clicks": 2,
+          "impressions": 112,
+          "ctr": 0.0179,
+          "cpc": 6.29,
+          "cost": 12.58,
           "conversions": 0,
           "conv_value": 0,
           "roas": 0,
@@ -27,42 +55,14 @@
           "status": "enabled",
           "type": "Shopping",
           "clicks": 1,
-          "impressions": 133,
-          "ctr": 0.0075,
+          "impressions": 189,
+          "ctr": 0.0053,
           "cpc": 1.41,
           "cost": 1.41,
           "conversions": 0,
           "conv_value": 0,
           "roas": 0,
           "start_date": "2026-05-13"
-        },
-        {
-          "name": "BeckmanCoulter_Shopping_Test",
-          "status": "enabled",
-          "type": "Shopping",
-          "clicks": 0,
-          "impressions": 111,
-          "ctr": 0,
-          "cpc": 0,
-          "cost": 0,
-          "conversions": 0,
-          "conv_value": 0,
-          "roas": 0,
-          "start_date": "2026-06-10"
-        },
-        {
-          "name": "Siemens_Sales_Shopping",
-          "status": "enabled",
-          "type": "Shopping",
-          "clicks": 0,
-          "impressions": 81,
-          "ctr": 0,
-          "cpc": 0,
-          "cost": 0,
-          "conversions": 0,
-          "conv_value": 0,
-          "roas": 0,
-          "start_date": "2026-06-22"
         },
         {
           "name": "Abbott_Search",
@@ -451,90 +451,6 @@
           "conv_value": 0,
           "roas": 0,
           "start_date": "2026-05-13"
-        },
-        {
-          "name": "Abbott_Sales_Shopping",
-          "status": "enabled",
-          "type": "Shopping",
-          "clicks": 0,
-          "impressions": 0,
-          "ctr": 0,
-          "cpc": 0,
-          "cost": 0,
-          "conversions": 0,
-          "conv_value": 0,
-          "roas": 0,
-          "start_date": "2026-06-22"
-        },
-        {
-          "name": "Abbott_Search",
-          "status": "enabled",
-          "type": "Search",
-          "clicks": 0,
-          "impressions": 0,
-          "ctr": 0,
-          "cpc": 0,
-          "cost": 0,
-          "conversions": 0,
-          "conv_value": 0,
-          "roas": 0,
-          "start_date": "2026-06-19"
-        },
-        {
-          "name": "BeckmanCoulter_Sales_Search",
-          "status": "enabled",
-          "type": "Search",
-          "clicks": 0,
-          "impressions": 0,
-          "ctr": 0,
-          "cpc": 0,
-          "cost": 0,
-          "conversions": 0,
-          "conv_value": 0,
-          "roas": 0,
-          "start_date": "2026-06-17"
-        },
-        {
-          "name": "BeckmanCoulter_Shopping_Test",
-          "status": "enabled",
-          "type": "Shopping",
-          "clicks": 0,
-          "impressions": 0,
-          "ctr": 0,
-          "cpc": 0,
-          "cost": 0,
-          "conversions": 0,
-          "conv_value": 0,
-          "roas": 0,
-          "start_date": "2026-06-10"
-        },
-        {
-          "name": "Siemens_Sales_Shopping",
-          "status": "enabled",
-          "type": "Shopping",
-          "clicks": 0,
-          "impressions": 0,
-          "ctr": 0,
-          "cpc": 0,
-          "cost": 0,
-          "conversions": 0,
-          "conv_value": 0,
-          "roas": 0,
-          "start_date": "2026-06-22"
-        },
-        {
-          "name": "Siemens_Search",
-          "status": "enabled",
-          "type": "Search",
-          "clicks": 0,
-          "impressions": 0,
-          "ctr": 0,
-          "cpc": 0,
-          "cost": 0,
-          "conversions": 0,
-          "conv_value": 0,
-          "roas": 0,
-          "start_date": "2026-06-19"
         }
       ]
     },
@@ -561,8 +477,8 @@
           "status": "enabled",
           "type": "Shopping",
           "clicks": 230,
-          "impressions": 28174,
-          "ctr": 0.0082,
+          "impressions": 28228,
+          "ctr": 0.0081,
           "cpc": 4.262,
           "cost": 980.27,
           "conversions": 1,
@@ -574,11 +490,11 @@
           "name": "Abbott_Sales_Shopping",
           "status": "enabled",
           "type": "Shopping",
-          "clicks": 184,
-          "impressions": 6785,
-          "ctr": 0.0271,
-          "cpc": 0.3399,
-          "cost": 62.54,
+          "clicks": 198,
+          "impressions": 7185,
+          "ctr": 0.0276,
+          "cpc": 0.3312,
+          "cost": 65.58,
           "conversions": 0,
           "conv_value": 0,
           "roas": 0,
@@ -588,11 +504,11 @@
           "name": "BeckmanCoulter_Shopping_Test",
           "status": "enabled",
           "type": "Shopping",
-          "clicks": 74,
-          "impressions": 10027,
-          "ctr": 0.0074,
-          "cpc": 1.1759,
-          "cost": 87.02,
+          "clicks": 76,
+          "impressions": 10072,
+          "ctr": 0.0075,
+          "cpc": 1.1904,
+          "cost": 90.47,
           "conversions": 0,
           "conv_value": 0,
           "roas": 0,
@@ -613,6 +529,20 @@
           "start_date": "2026-06-19"
         },
         {
+          "name": "Siemens_Sales_Shopping",
+          "status": "enabled",
+          "type": "Shopping",
+          "clicks": 3,
+          "impressions": 400,
+          "ctr": 0.0075,
+          "cpc": 4.98,
+          "cost": 14.94,
+          "conversions": 0,
+          "conv_value": 0,
+          "roas": 0,
+          "start_date": "2026-06-22"
+        },
+        {
           "name": "BeckmanCoulter_Sales_Search",
           "status": "enabled",
           "type": "Search",
@@ -625,20 +555,6 @@
           "conv_value": 0,
           "roas": 0,
           "start_date": "2026-06-17"
-        },
-        {
-          "name": "Siemens_Sales_Shopping",
-          "status": "enabled",
-          "type": "Shopping",
-          "clicks": 1,
-          "impressions": 370,
-          "ctr": 0.0027,
-          "cpc": 2.36,
-          "cost": 2.36,
-          "conversions": 0,
-          "conv_value": 0,
-          "roas": 0,
-          "start_date": "2026-06-22"
         }
       ]
     }
@@ -646,12 +562,12 @@
   "journey": {
     "today": {
       "summary": {
-        "sessions": 20,
-        "engaged": 3,
+        "sessions": 55,
+        "engaged": 11,
         "conversions": 0,
-        "bounce": 0.85,
-        "pages_per_session": 1.8,
-        "engagement_rate": 0.15
+        "bounce": 0.8,
+        "pages_per_session": 1.87,
+        "engagement_rate": 0.2
       },
       "campaigns": [
         {
@@ -659,10 +575,18 @@
           "landing_pages": [
             {
               "path": "/products/abbott-8p0701-alinity-8p0701i-hiv-ag-ab-combo-calibrator",
-              "sessions": 17,
-              "engaged": 3,
-              "pages_per_session": 1.82,
-              "bounce": 0.824,
+              "sessions": 47,
+              "engaged": 10,
+              "pages_per_session": 1.91,
+              "bounce": 0.787,
+              "conversions": 0
+            },
+            {
+              "path": "/products/abbott-8p0710-alinity-8p0710i-hiv-ag-ab-combo-control",
+              "sessions": 3,
+              "engaged": 1,
+              "pages_per_session": 1.67,
+              "bounce": 0.667,
               "conversions": 0
             },
             {
@@ -675,8 +599,8 @@
             }
           ],
           "totals": {
-            "sessions": 18,
-            "engaged": 3,
+            "sessions": 51,
+            "engaged": 11,
             "conversions": 0
           }
         },
@@ -685,7 +609,7 @@
           "landing_pages": [
             {
               "path": "/checkouts/do/a2c9e05b8d4851502974da3d6cbc93ed/en-us",
-              "sessions": 1,
+              "sessions": 2,
               "engaged": 0,
               "pages_per_session": 1.0,
               "bounce": 1.0,
@@ -693,7 +617,7 @@
             },
             {
               "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-startup-package",
-              "sessions": 1,
+              "sessions": 2,
               "engaged": 0,
               "pages_per_session": 2.0,
               "bounce": 1.0,
@@ -701,7 +625,7 @@
             }
           ],
           "totals": {
-            "sessions": 2,
+            "sessions": 4,
             "engaged": 0,
             "conversions": 0
           }
@@ -710,7 +634,7 @@
       "events": [
         {
           "event": "view_item",
-          "count": 29,
+          "count": 87,
           "conversions": 0,
           "is_key": false
         }
@@ -820,6 +744,14 @@
               "conversions": 0
             },
             {
+              "path": "(not set)",
+              "sessions": 4,
+              "engaged": 0,
+              "pages_per_session": 0.0,
+              "bounce": 1.0,
+              "conversions": 0
+            },
+            {
               "path": "/",
               "sessions": 4,
               "engaged": 4,
@@ -836,22 +768,6 @@
               "conversions": 2
             },
             {
-              "path": "(not set)",
-              "sessions": 2,
-              "engaged": 0,
-              "pages_per_session": 0.0,
-              "bounce": 1.0,
-              "conversions": 0
-            },
-            {
-              "path": "(not set)",
-              "sessions": 2,
-              "engaged": 0,
-              "pages_per_session": 0.0,
-              "bounce": 1.0,
-              "conversions": 0
-            },
-            {
               "path": "/products/conmed-virovac-armstand",
               "sessions": 2,
               "engaged": 0,
@@ -865,6 +781,14 @@
               "engaged": 2,
               "pages_per_session": 2.0,
               "bounce": 0.0,
+              "conversions": 0
+            },
+            {
+              "path": "/checkouts/do/a2c9e05b8d4851502974da3d6cbc93ed/en-us",
+              "sessions": 1,
+              "engaged": 0,
+              "pages_per_session": 2.0,
+              "bounce": 1.0,
               "conversions": 0
             }
           ],
@@ -1061,10 +985,10 @@
             },
             {
               "path": "(not set)",
-              "sessions": 32,
+              "sessions": 34,
               "engaged": 2,
               "pages_per_session": 0.0,
-              "bounce": 0.938,
+              "bounce": 0.941,
               "conversions": 0
             },
             {
@@ -1079,7 +1003,7 @@
               "path": "/products/conmed-virovac-vt10524-surgical-smoke-evacuation-tubing-24-box",
               "sessions": 24,
               "engaged": 10,
-              "pages_per_session": 1.62,
+              "pages_per_session": 1.63,
               "bounce": 0.583,
               "conversions": 0
             },
@@ -1108,10 +1032,10 @@
               "conversions": 2
             },
             {
-              "path": "(not set)",
-              "sessions": 2,
+              "path": "/checkouts/do/a2c9e05b8d4851502974da3d6cbc93ed/en-us",
+              "sessions": 1,
               "engaged": 0,
-              "pages_per_session": 0.0,
+              "pages_per_session": 2.0,
               "bounce": 1.0,
               "conversions": 0
             }
@@ -1432,6 +1356,14 @@
               "conversions": 0
             },
             {
+              "path": "(not set)",
+              "sessions": 19,
+              "engaged": 1,
+              "pages_per_session": 0.0,
+              "bounce": 0.947,
+              "conversions": 0
+            },
+            {
               "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-device-only",
               "sessions": 18,
               "engaged": 6,
@@ -1440,19 +1372,11 @@
               "conversions": 8
             },
             {
-              "path": "(not set)",
-              "sessions": 17,
-              "engaged": 1,
-              "pages_per_session": 0.0,
-              "bounce": 0.941,
-              "conversions": 0
-            },
-            {
               "path": "/products/conmed-virovac-vs35302-surgical-smoke-evacuator-filter-2-box",
               "sessions": 16,
               "engaged": 7,
-              "pages_per_session": 2.12,
-              "bounce": 0.562,
+              "pages_per_session": 2.13,
+              "bounce": 0.563,
               "conversions": 2
             },
             {
@@ -1472,10 +1396,10 @@
               "conversions": 2
             },
             {
-              "path": "(not set)",
-              "sessions": 2,
+              "path": "/checkouts/do/a2c9e05b8d4851502974da3d6cbc93ed/en-us",
+              "sessions": 1,
               "engaged": 0,
-              "pages_per_session": 0.0,
+              "pages_per_session": 2.0,
               "bounce": 1.0,
               "conversions": 0
             }
@@ -1800,7 +1724,7 @@
               "sessions": 13,
               "engaged": 6,
               "pages_per_session": 1.0,
-              "bounce": 0.538,
+              "bounce": 0.539,
               "conversions": 0
             },
             {
@@ -1926,12 +1850,12 @@
     },
     "this_year": {
       "summary": {
-        "sessions": 2324,
-        "engaged": 975,
+        "sessions": 2359,
+        "engaged": 983,
         "conversions": 28,
-        "bounce": 0.58,
-        "pages_per_session": 1.54,
-        "engagement_rate": 0.42
+        "bounce": 0.583,
+        "pages_per_session": 1.55,
+        "engagement_rate": 0.417
       },
       "campaigns": [
         {
@@ -2013,18 +1937,18 @@
           "landing_pages": [
             {
               "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-startup-package",
-              "sessions": 153,
+              "sessions": 154,
               "engaged": 58,
               "pages_per_session": 1.79,
-              "bounce": 0.621,
+              "bounce": 0.623,
               "conversions": 12
             },
             {
               "path": "(not set)",
-              "sessions": 59,
+              "sessions": 61,
               "engaged": 7,
               "pages_per_session": 0.0,
-              "bounce": 0.881,
+              "bounce": 0.885,
               "conversions": 0
             },
             {
@@ -2040,7 +1964,7 @@
               "sessions": 27,
               "engaged": 13,
               "pages_per_session": 1.74,
-              "bounce": 0.518,
+              "bounce": 0.519,
               "conversions": 2
             },
             {
@@ -2048,7 +1972,7 @@
               "sessions": 27,
               "engaged": 13,
               "pages_per_session": 1.63,
-              "bounce": 0.518,
+              "bounce": 0.519,
               "conversions": 0
             },
             {
@@ -2068,16 +1992,16 @@
               "conversions": 2
             },
             {
-              "path": "(not set)",
-              "sessions": 2,
+              "path": "/checkouts/do/a2c9e05b8d4851502974da3d6cbc93ed/en-us",
+              "sessions": 3,
               "engaged": 0,
-              "pages_per_session": 0.0,
+              "pages_per_session": 1.33,
               "bounce": 1.0,
               "conversions": 0
             }
           ],
           "totals": {
-            "sessions": 317,
+            "sessions": 319,
             "engaged": 108,
             "conversions": 24
           }
@@ -2087,18 +2011,18 @@
           "landing_pages": [
             {
               "path": "/products/abbott-8p0710-alinity-8p0710i-hiv-ag-ab-combo-control",
-              "sessions": 162,
-              "engaged": 36,
-              "pages_per_session": 1.89,
-              "bounce": 0.778,
+              "sessions": 165,
+              "engaged": 37,
+              "pages_per_session": 1.88,
+              "bounce": 0.776,
               "conversions": 0
             },
             {
               "path": "/products/abbott-8p0701-alinity-8p0701i-hiv-ag-ab-combo-calibrator",
-              "sessions": 22,
-              "engaged": 6,
-              "pages_per_session": 2.05,
-              "bounce": 0.727,
+              "sessions": 52,
+              "engaged": 13,
+              "pages_per_session": 2.0,
+              "bounce": 0.75,
               "conversions": 0
             },
             {
@@ -2151,8 +2075,8 @@
             }
           ],
           "totals": {
-            "sessions": 207,
-            "engaged": 48,
+            "sessions": 240,
+            "engaged": 56,
             "conversions": 0
           }
         },
@@ -2237,7 +2161,7 @@
               "path": "/",
               "sessions": 8,
               "engaged": 0,
-              "pages_per_session": 1.12,
+              "pages_per_session": 1.13,
               "bounce": 1.0,
               "conversions": 0
             },
@@ -2372,7 +2296,7 @@
       "events": [
         {
           "event": "view_item",
-          "count": 860,
+          "count": 918,
           "conversions": 0,
           "is_key": false
         },
