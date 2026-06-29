@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-06-29 12:23 PM PT",
-  "last_status_refresh": "2026-06-29 12:22 PM PT",
+  "pulled_at": "2026-06-29 04:25 PM PT",
+  "last_status_refresh": "2026-06-29 04:25 PM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -1505,8 +1505,8 @@
       "ship_to": "Sugar Land, TX",
       "order": "#1073",
       "service": "FedEx",
-      "status": "",
-      "activity": "Label created",
+      "status": "In Transit",
+      "activity": "",
       "delivered": false,
       "location": "",
       "date": "2026-06-29",
@@ -1552,6 +1552,112 @@
         {
           "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
           "sku": "B24838",
+          "qty": 2
+        }
+      ]
+    },
+    {
+      "tracking": "1Z2XH6680309899248",
+      "carrier": "UPS",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "OM Diagnostic Laboratories",
+      "contact": "Karan Mehta",
+      "ship_to": "Norwood, MA",
+      "order": "#1078",
+      "status": "In Transit",
+      "activity": "Shipper created a label, UPS has not received the package yet. ",
+      "location": "",
+      "date": "2026-06-29",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-06-29",
+      "items": [
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 2
+        }
+      ]
+    },
+    {
+      "tracking": "382331913099",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Doctors General Laboratory",
+      "contact": "Mahemdra Patel",
+      "ship_to": "Clarendon Hills, IL",
+      "order": "#1064",
+      "service": "FedEx",
+      "status": "",
+      "activity": "Label created",
+      "delivered": false,
+      "location": "",
+      "date": "2026-06-29",
+      "time": "",
+      "ship_date": "2026-06-29",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=382331913099",
+      "items": [
+        {
+          "name": "Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations",
+          "sku": "A98856",
+          "qty": 5
+        }
+      ]
+    },
+    {
+      "tracking": "873737539784",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "OM Diagnostic Laboratories",
+      "contact": "Karan Mehta",
+      "ship_to": "Norwood, MA",
+      "order": "#1049",
+      "service": "FedEx",
+      "status": "",
+      "activity": "Label created",
+      "delivered": false,
+      "location": "",
+      "date": "2026-06-29",
+      "time": "",
+      "ship_date": "2026-06-29",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=873737539784",
+      "items": [
+        {
+          "name": "Beckman Coulter 33880 Access Free T4 Reagent, 100 Determinations",
+          "sku": "33880",
+          "qty": 1
+        }
+      ]
+    },
+    {
+      "tracking": "382330524857",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Radiance Diagnostic",
+      "contact": "Siva Kumar",
+      "ship_to": "Naperville, IL",
+      "order": "#1033",
+      "service": "FedEx",
+      "status": "In Transit",
+      "activity": "",
+      "delivered": false,
+      "location": "",
+      "date": "2026-06-29",
+      "time": "",
+      "ship_date": "2026-06-29",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=382330524857",
+      "items": [
+        {
+          "name": "Beckman Coulter 33510 Access hLH Reagent, 100 Determinations",
+          "sku": "33510",
           "qty": 2
         }
       ]
