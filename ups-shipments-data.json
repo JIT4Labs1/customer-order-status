@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-06-29 04:25 PM PT",
-  "last_status_refresh": "2026-06-29 04:25 PM PT",
+  "pulled_at": "2026-06-30 12:29 PM PT",
+  "last_status_refresh": "2026-06-30 12:29 PM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -898,12 +898,12 @@
       "ship_to": "Bradenton, FL",
       "order": "#1046",
       "service": "FedEx",
-      "status": "In Transit",
+      "status": "Delivered",
       "activity": "",
       "location": "",
-      "date": "2026-06-25",
+      "date": "2026-06-30",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "url": "https://www.fedex.com/fedextrack/?trknbr=873528494031",
       "ship_date": "2026-06-24",
       "items": [
@@ -1506,10 +1506,10 @@
       "order": "#1073",
       "service": "FedEx",
       "status": "In Transit",
-      "activity": "",
+      "activity": "Out for Delivery",
       "delivered": false,
       "location": "",
-      "date": "2026-06-29",
+      "date": "2026-06-30",
       "time": "",
       "ship_date": "2026-06-29",
       "url": "https://www.fedex.com/fedextrack/?trknbr=873712913976",
@@ -1647,10 +1647,10 @@
       "order": "#1033",
       "service": "FedEx",
       "status": "In Transit",
-      "activity": "",
+      "activity": "Out for Delivery",
       "delivered": false,
       "location": "",
-      "date": "2026-06-29",
+      "date": "2026-06-30",
       "time": "",
       "ship_date": "2026-06-29",
       "url": "https://www.fedex.com/fedextrack/?trknbr=382330524857",
@@ -1659,6 +1659,75 @@
           "name": "Beckman Coulter 33510 Access hLH Reagent, 100 Determinations",
           "sku": "33510",
           "qty": 2
+        }
+      ]
+    },
+    {
+      "tracking": "873783685649",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "OM Diagnostic Laboratories",
+      "contact": "Karan Mehta",
+      "ship_to": "Norwood, MA",
+      "order": "#1045",
+      "service": "FedEx",
+      "status": "",
+      "activity": "Label created",
+      "delivered": false,
+      "location": "",
+      "date": "2026-06-30",
+      "time": "",
+      "ship_date": "2026-06-30",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=873783685649",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6211 Olympus Direct Bilirubin Reagent (DBil) 4x200 tests",
+          "sku": "OSR6211",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6112 Olympus Total Bilirubin Reagent",
+          "sku": "OSR6112",
+          "qty": 1
+        }
+      ]
+    },
+    {
+      "tracking": "873739778930",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Mercedes Scientific",
+      "contact": "Misty Mcwhorter",
+      "ship_to": "Bradenton, FL",
+      "order": "#1027",
+      "service": "FedEx",
+      "status": "",
+      "activity": "Label created",
+      "delivered": false,
+      "location": "",
+      "date": "2026-06-29",
+      "time": "",
+      "ship_date": "2026-06-29",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=873739778930",
+      "items": [
+        {
+          "name": "Beckman Coulter A98032 Access Folate Reagent, 100 Determinations",
+          "sku": "A98032",
+          "qty": 20
+        },
+        {
+          "name": "Beckman Coulter 33020 Access 2 Ferritin Reagent 2x50 Count 100/Kt",
+          "sku": "33020",
+          "qty": 10
+        },
+        {
+          "name": "Beckman Coulter 33520 Reagent Access Follicle Stimulating Hormone (FSH) 100 Tests",
+          "sku": "33520",
+          "qty": 8
         }
       ]
     }
