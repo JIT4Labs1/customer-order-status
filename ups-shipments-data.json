@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-06-30 12:29 PM PT",
-  "last_status_refresh": "2026-06-30 12:29 PM PT",
+  "pulled_at": "2026-06-30 04:00 PM PT",
+  "last_status_refresh": "2026-06-30 03:59 PM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -1505,9 +1505,9 @@
       "ship_to": "Sugar Land, TX",
       "order": "#1073",
       "service": "FedEx",
-      "status": "In Transit",
-      "activity": "Out for Delivery",
-      "delivered": false,
+      "status": "Delivered",
+      "activity": "",
+      "delivered": true,
       "location": "",
       "date": "2026-06-30",
       "time": "",
@@ -1592,11 +1592,11 @@
       "ship_to": "Clarendon Hills, IL",
       "order": "#1064",
       "service": "FedEx",
-      "status": "",
-      "activity": "Label created",
+      "status": "In Transit",
+      "activity": "",
       "delivered": false,
       "location": "",
-      "date": "2026-06-29",
+      "date": "2026-06-30",
       "time": "",
       "ship_date": "2026-06-29",
       "url": "https://www.fedex.com/fedextrack/?trknbr=382331913099",
@@ -1646,9 +1646,9 @@
       "ship_to": "Naperville, IL",
       "order": "#1033",
       "service": "FedEx",
-      "status": "In Transit",
-      "activity": "Out for Delivery",
-      "delivered": false,
+      "status": "Delivered",
+      "activity": "",
+      "delivered": true,
       "location": "",
       "date": "2026-06-30",
       "time": "",
@@ -1673,8 +1673,8 @@
       "ship_to": "Norwood, MA",
       "order": "#1045",
       "service": "FedEx",
-      "status": "",
-      "activity": "Label created",
+      "status": "In Transit",
+      "activity": "",
       "delivered": false,
       "location": "",
       "date": "2026-06-30",
@@ -1705,11 +1705,11 @@
       "ship_to": "Bradenton, FL",
       "order": "#1027",
       "service": "FedEx",
-      "status": "",
-      "activity": "Label created",
+      "status": "In Transit",
+      "activity": "",
       "delivered": false,
       "location": "",
-      "date": "2026-06-29",
+      "date": "2026-06-30",
       "time": "",
       "ship_date": "2026-06-29",
       "url": "https://www.fedex.com/fedextrack/?trknbr=873739778930",
@@ -1728,6 +1728,53 @@
           "name": "Beckman Coulter 33520 Reagent Access Follicle Stimulating Hormone (FSH) 100 Tests",
           "sku": "33520",
           "qty": 8
+        }
+      ]
+    },
+    {
+      "tracking": "873791765762",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "OM Diagnostic Laboratories",
+      "contact": "Karan Mehta",
+      "ship_to": "Norwood, MA",
+      "order": "#1078",
+      "service": "FedEx",
+      "status": "",
+      "activity": "Label created",
+      "delivered": false,
+      "location": "",
+      "date": "2026-06-30",
+      "time": "",
+      "ship_date": "2026-06-30",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=873791765762",
+      "items": [
+        {
+          "name": "Beckman Coulter A16972 Access Intact PTH Reagent, 100 determinations",
+          "sku": "A16972",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
+          "sku": "37200",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A98033 Access Folate Calibrator",
+          "sku": "A98033",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33560 Access Testosterone Reagent",
+          "sku": "33560",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B52699 High-Sensitivity Troponin 2x50 Tests",
+          "sku": "B52699",
+          "qty": 1
         }
       ]
     }
