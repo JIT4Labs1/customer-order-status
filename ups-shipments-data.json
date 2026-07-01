@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-06-30 05:21 PM PT",
-  "last_status_refresh": "2026-06-30 05:15 PM PT",
+  "pulled_at": "2026-06-30 08:24 PM PT",
+  "last_status_refresh": "2026-06-30 08:24 PM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -1853,8 +1853,8 @@
       "ship_to": "Madison, MS",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Jackson, MS",
+      "activity": "Arrived at Facility",
+      "location": "Ridgeland, MS",
       "date": "2026-06-30",
       "time": "",
       "delivered": false,
@@ -1886,8 +1886,8 @@
       "ship_to": "Madison, MS",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Jackson, MS",
+      "activity": "Arrived at Facility",
+      "location": "Ridgeland, MS",
       "date": "2026-06-30",
       "time": "",
       "delivered": false,
@@ -2003,6 +2003,43 @@
       "order": "#1077",
       "shopify_fulfilled": true,
       "shopify_order": "#1077"
+    },
+    {
+      "tracking": "382360208914",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "3 Alpha Labs, LLC",
+      "contact": "Bart Pitula",
+      "ship_to": "Costa Mesa, CA",
+      "order": "#1079",
+      "service": "FedEx",
+      "status": "",
+      "activity": "Label created",
+      "delivered": false,
+      "location": "",
+      "date": "2026-06-30",
+      "time": "",
+      "ship_date": "2026-06-30",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=382360208914",
+      "items": [
+        {
+          "name": "DZ568B Homocysteine Test Kit",
+          "sku": null,
+          "qty": 1
+        },
+        {
+          "name": "DZ568A-CON Homocysteine 4 Level Control Set",
+          "sku": null,
+          "qty": 1
+        },
+        {
+          "name": "DZ568A-CA5 Homocysteine Calibrator",
+          "sku": null,
+          "qty": 1
+        }
+      ]
     }
   ]
 }
