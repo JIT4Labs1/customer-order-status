@@ -486,7 +486,7 @@ function renderWtPanel(){
 
 // ── Shipments tab (UPS My Choice for Business — Third Party; statuses auto-refreshed via UPS Track API) ──
 var SHIP=null, shipLoading=false, shipFilter='all', shipFrom='', shipTo='', shipVis={}, shipShipperList=[], shipDatePreset='all', shipCust='', shipCustList=[];
-var SHIP_DPS=[['all','All'],['today','Today'],['yesterday','Yesterday'],['7d','Past 7 days'],['month','This month'],['quarter','This quarter']];
+var SHIP_DPS=[['all','All'],['today','Today'],['yesterday','Yesterday'],['thisweek','This week'],['lastweek','Last week'],['month','This month'],['quarter','This quarter']];
 function loadShip(){
   if(SHIP_EMBED){ SHIP=SHIP_EMBED; shipLoading=false; if(mode==='ship'){ renderTabs(); renderShipPanel(); } return; }
   if(shipLoading) return; shipLoading=true;
@@ -500,11 +500,12 @@ function shipSetFilter(v){ shipFilter=v; renderShipPanel(); }
 function renderShipTabs(el){
   el.style.display='';
   if(!SHIP){ el.innerHTML='<div class="empty">Loading…</div>'; return; }
-  var all=SHIP.shipments||[], cnt={}, names=[];
-  for(var i=0;i<all.length;i++){ var r=all[i].receiver||'(no customer)'; if(!(r in cnt)){ cnt[r]=0; names.push(r); } cnt[r]++; }
+  var all=SHIP.shipments||[], cnt={}, names=[], totalVis=0;
+  for(var i=0;i<all.length;i++){ if(shipVis[all[i].shipper||'(none)']===false) continue; totalVis++; var r=all[i].receiver||'(no customer)'; if(!(r in cnt)){ cnt[r]=0; names.push(r); } cnt[r]++; }
   names.sort(function(a,b){ return a.toLowerCase().localeCompare(b.toLowerCase()); });
   shipCustList=names;
-  var h='<button class="tab'+(shipCust===''?' active':'')+'" onclick="shipSelectCust(-1)">All customers<span class="cnt">'+all.length+'</span></button>';
+  if(shipCust && names.indexOf(shipCust)<0){ shipCust=''; }  // selected customer hidden by shipper filter -> reset to All
+  var h='<button class="tab'+(shipCust===''?' active':'')+'" onclick="shipSelectCust(-1)">All customers<span class="cnt">'+totalVis+'</span></button>';
   for(var j=0;j<names.length;j++){
     h+='<button class="tab'+(shipCust===names[j]?' active':'')+'" onclick="shipSelectCust('+j+')">'+escapeHtml(names[j])+'<span class="cnt">'+cnt[names[j]]+'</span></button>';
   }
@@ -515,19 +516,21 @@ function shipFAll(){ shipSetFilter('all'); }
 function shipFTransit(){ shipSetFilter('transit'); }
 function shipFDelivered(){ shipSetFilter('delivered'); }
 function shipISO(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function shipMonday(d){ var x=new Date(d); var wd=(x.getDay()+6)%7; x.setDate(x.getDate()-wd); return x; }
 function shipSetDatePreset(p){
   shipDatePreset=p; var now=new Date();
   if(p==='all'){ shipFrom=''; shipTo=''; }
   else if(p==='today'){ shipFrom=shipISO(now); shipTo=shipISO(now); }
   else if(p==='yesterday'){ var y=new Date(now); y.setDate(y.getDate()-1); shipFrom=shipISO(y); shipTo=shipISO(y); }
-  else if(p==='7d'){ var s=new Date(now); s.setDate(s.getDate()-6); shipFrom=shipISO(s); shipTo=shipISO(now); }
+  else if(p==='thisweek'){ shipFrom=shipISO(shipMonday(now)); shipTo=shipISO(now); }
+  else if(p==='lastweek'){ var m=shipMonday(now); var ls=new Date(m); ls.setDate(ls.getDate()-7); var le=new Date(m); le.setDate(le.getDate()-1); shipFrom=shipISO(ls); shipTo=shipISO(le); }
   else if(p==='month'){ shipFrom=shipISO(new Date(now.getFullYear(),now.getMonth(),1)); shipTo=shipISO(now); }
   else if(p==='quarter'){ var q=Math.floor(now.getMonth()/3); shipFrom=shipISO(new Date(now.getFullYear(),q*3,1)); shipTo=shipISO(now); }
   renderShipPanel();
 }
 function shipSetDatePresetIdx(i){ if(SHIP_DPS[i]) shipSetDatePreset(SHIP_DPS[i][0]); }
-function shipToggleShipperIdx(i,c){ var sh=shipShipperList[i]; if(sh!=null){ shipVis[sh]=!!c; renderShipPanel(); } }
-function shipAllShippers(c){ for(var i=0;i<shipShipperList.length;i++) shipVis[shipShipperList[i]]=!!c; renderShipPanel(); }
+function shipToggleShipperIdx(i,c){ var sh=shipShipperList[i]; if(sh!=null){ shipVis[sh]=!!c; renderTabs(); renderShipPanel(); } }
+function shipAllShippers(c){ for(var i=0;i<shipShipperList.length;i++) shipVis[shipShipperList[i]]=!!c; renderTabs(); renderShipPanel(); }
 function shipTC(s){ s=(s||'').trim(); return s.replace(/\w\S*/g,function(t){return t.charAt(0).toUpperCase()+t.substr(1).toLowerCase();}); }
 function shipLoc(s){ var p=(s||'').split(','); if(p.length===2 && p[1].trim().length<=3){ return shipTC(p[0])+', '+p[1].trim().toUpperCase(); } return shipTC(s); }
 function shipControls(){
@@ -574,7 +577,8 @@ function renderShipPanel(){
     var upd=shipLoc(s.location||''); if(s.date){ upd+=(upd?' · ':'')+fmtDate(s.date)+(s.time?' '+s.time:''); }
     var _sm={'Pirate Ship':['#e7e0f7','#5b3fa0','Pirate Ship'],'Shopify':['#d8f0e0','#1b7a3d','Shopify'],'UPS My Choice (3rd Party)':['#e6ecf2','#4a5b6a','My Choice']};
     var _sc=_sm[s.source]||['#e6ecf2','#4a5b6a',(s.source||'—')];
-    var srcBadge='<span class="status" style="background:'+_sc[0]+';color:'+_sc[1]+'">'+escapeHtml(_sc[2])+'</span>';
+    var _slabel=_sc[2]+((s.source==='Shopify'&&s.order)?' '+s.order:'');
+    var srcBadge='<span class="status" style="background:'+_sc[0]+';color:'+_sc[1]+';white-space:nowrap;">'+escapeHtml(_slabel)+'</span>';
     if(s.shopify_fulfilled){ srcBadge+=' <span class="status" title="UPS tracking written to Shopify order '+escapeHtml(s.shopify_order||'')+'" style="background:#d8f0e0;color:#1b7a3d;white-space:nowrap;">🛍️ Shopify'+(s.shopify_order?' '+escapeHtml(s.shopify_order):'')+'</span>'; }
     body+='<tr>'+
       '<td class="so"><a href="'+url+'" target="_blank" rel="noopener" style="color:#1F4E79;text-decoration:none;">'+escapeHtml(s.tracking)+' <span style="color:#008080;">↗</span></a></td>'+
