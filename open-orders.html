@@ -1058,7 +1058,7 @@ function renderPayPanel(){
       '<td class="c">'+payBadge(v.status)+'</td>'+
       '<td class="c">'+fmtDate(v.date)+'</td>'+
       '<td style="text-align:right;">'+payMoney(v.amount)+'</td>'+
-      '<td class="c"><a href="'+escapeHtml(v.link)+'" target="_blank" rel="noopener">Open</a></td>'+
+      '<td class="c">'+(v.link?'<a href="'+escapeHtml(v.link)+'" target="_blank" rel="noopener">View &amp; pay</a>':'<span style="color:#999;" title="Invoice not yet sent — no customer link">—</span>')+'</td>'+
       '</tr>';
   }
   var t=c.totals||{};
@@ -1085,7 +1085,7 @@ function buildPayEmailHtml(c){
       '<td style="'+td+'color:'+sc+';font-weight:600;">'+escapeHtml(v.status)+'</td>'+
       '<td style="'+td+'">'+fmtDate(v.date)+'</td>'+
       '<td style="'+td+'text-align:right;white-space:nowrap;">'+payMoney(v.amount)+'</td>'+
-      '<td style="'+td+'"><a href="'+escapeHtml(v.link)+'">View invoice</a></td>'+
+      '<td style="'+td+'">'+(v.link?'<a href="'+escapeHtml(v.link)+'">View &amp; pay</a>':'&mdash;')+'</td>'+
       '</tr>';
   }
   var t=c.totals||{};
