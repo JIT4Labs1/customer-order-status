@@ -883,7 +883,7 @@ function renderCustPanel(){
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">'+
     '<h2 style="margin:0;">'+escapeHtml(c.name)+'</h2>'+
-    '<button class="copy-email-btn" onclick="custEmailToClipboard()" title="Copy the HTML code of this customer&#39;s open-order email (Product, List Price, quantities) to your clipboard">📋 Copy email HTML</button></div>'+
+    '<button class="copy-email-btn" onclick="custEmailToClipboard()" title="Copy this customer&#39;s open-order email (Product, List Price, quantities) — pastes as a formatted table into email/Word/Docs">📋 Copy email</button></div>'+
     '<div class="sub">'+c.open_sos+' open SO(s) &middot; '+c.open_items+' open item(s) &middot; '+
     (c.vendors||[]).length+' vendor(s) &middot; grouped by SO'+sortNote+'</div></div>'+
     '<table><thead><tr>'+renderHead()+'</tr></thead><tbody>'+body+'</tbody></table>';
@@ -950,16 +950,28 @@ function custEmailToClipboard(){
   if(!c){ alert('No customer selected.'); return; }
   var html=buildCustEmailHtml(c);
   function done(){ var b=document.querySelector('.copy-email-btn'); if(b){ var o=b.innerHTML; b.innerHTML='✓ Copied!'; setTimeout(function(){ b.innerHTML=o; },1800); } }
-  // Copy the raw HTML source as PLAIN TEXT so pasting yields the HTML code (not a rendered table).
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(html).then(done, function(){ fallbackCopy(html, done); });
-  } else { fallbackCopy(html, done); }
+  // Copy as rich text/html so pasting drops in the RENDERED TABLE (email/Word/Docs), not raw code.
+  try {
+    if(navigator.clipboard && window.ClipboardItem){
+      var item=new ClipboardItem({
+        'text/html':new Blob([html],{type:'text/html'}),
+        'text/plain':new Blob([html],{type:'text/plain'})
+      });
+      navigator.clipboard.write([item]).then(done, function(){ fallbackCopyHtml(html, done); });
+      return;
+    }
+  } catch(e){}
+  fallbackCopyHtml(html, done);
 }
-function fallbackCopy(text, cb){
-  var ta=document.createElement('textarea'); ta.value=text;
-  ta.style.position='fixed'; ta.style.left='-9999px'; document.body.appendChild(ta); ta.select();
-  try{ document.execCommand('copy'); if(cb) cb(); }catch(e){ alert('Copy failed — please copy manually.'); }
-  document.body.removeChild(ta);
+function fallbackCopyHtml(html, cb){
+  // Copy rendered rich content via a temporary contenteditable node so paste yields a table.
+  var div=document.createElement('div'); div.contentEditable='true'; div.innerHTML=html;
+  div.style.position='fixed'; div.style.left='-9999px'; div.style.top='0';
+  document.body.appendChild(div);
+  var sel=window.getSelection(); sel.removeAllRanges();
+  var range=document.createRange(); range.selectNodeContents(div); sel.addRange(range);
+  try{ document.execCommand('copy'); if(cb) cb(); }catch(e){ alert('Copy failed — please select and copy manually.'); }
+  sel.removeAllRanges(); document.body.removeChild(div);
 }
 
 function renderVendorPanel(){
