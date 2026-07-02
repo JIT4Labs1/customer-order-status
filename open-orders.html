@@ -1029,7 +1029,8 @@ function renderVendorPanel(){
 
 // ── Payment Status tab (QuickBooks 2026 invoices for Independent Diagnostic Lab customers) ──
 var PAY=null, payLoading=false, payCust='', payReadyOnly=false;
-function payInvoices(c){ var invs=(c&&c.invoices)||[]; return payReadyOnly ? invs.filter(function(v){ return !!v.link; }) : invs; }
+// "Ready for payment" = still owed (Not Paid) AND has a customer pay link.
+function payInvoices(c){ var invs=(c&&c.invoices)||[]; return payReadyOnly ? invs.filter(function(v){ return !!v.link && v.status==='Not Paid'; }) : invs; }
 function payTotals(invs){ var amt=0, unpaid=0; for(var i=0;i<invs.length;i++){ amt+=Number(invs[i].amount)||0; unpaid+=Number(invs[i].balance)||0; }
   return {count:invs.length, amount:Math.round(amt*100)/100, unpaid:Math.round(unpaid*100)/100}; }
 function payToggleReady(cb){ payReadyOnly=!!cb.checked; renderPayPanel(); }
