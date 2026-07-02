@@ -41,6 +41,9 @@
   .mode-btn.mode-ship { color:#1d4ed8; border-color:#bfdbfe; background:#eff6ff; }
   .mode-btn.mode-ship:hover { background:#dbeafe; }
   .mode-btn.mode-ship.active { background:#2563eb; color:#fff; border-color:#2563eb; }
+  .mode-btn.mode-pay { color:#0f766e; border-color:#99f6e4; background:#f0fdfa; }
+  .mode-btn.mode-pay:hover { background:#ccfbf1; }
+  .mode-btn.mode-pay.active { background:#0d9488; color:#fff; border-color:#0d9488; }
   .pnl-wrap { overflow-x:auto; padding:20px 22px; }
   .pnl-wrap h2, .pnl-wrap h3 { color:#2c3e50; }
 
@@ -137,6 +140,7 @@
   <button class="mode-btn" data-mode="vendor" onclick="setMode('vendor')">Open Vendor POs</button>
   <button class="mode-btn" data-mode="sku" onclick="setMode('sku')">High Demand SKUs</button>
   <button class="mode-btn mode-ship" data-mode="ship" onclick="setMode('ship')">Shipments</button>
+  <button class="mode-btn mode-pay" data-mode="pay" onclick="setMode('pay')">Payment Status</button>
   <button class="mode-btn" data-mode="ca" onclick="setMode('ca')">Customer Analysis</button>
   <button class="mode-btn mode-mkt" data-mode="wt" onclick="setMode('wt')">Website Traffic</button>
   <button class="mode-btn mode-mkt" data-mode="gads" onclick="setMode('gads')">Google Ads</button>
@@ -160,7 +164,7 @@ function normData(d){ if(d&&d.customers){ d.customers=d.customers.filter(functio
 DATA=normData(DATA);
 var BTN = {"token_obf": "DQAAXBoNcgIEEi1UQissXDh3XD4dQRMTSwsBAhobInIWMF8iDDEgBxANDzM/TiUmYB4UUyYhJjA9OxtEGhVPHR9RHAkWWg0zIkUIFV46ICw+PTw9OSQ4X14sHQdS", "k": "jit4oo-refresh", "repo": "JIT4Labs1/customer-order-status", "workflow": "refresh-open-orders.yml", "branch": "main"};
 // Offline mirror: when built as the local copy these hold the data inline (no fetch needed). Online build leaves them null so the page fetches fresh each load.
-var GADS_EMBED = null, LI_EMBED = null, WT_EMBED = null, SHIP_EMBED = null;
+var GADS_EMBED = null, LI_EMBED = null, WT_EMBED = null, SHIP_EMBED = null, PAY_EMBED = null;
 function _deobf(s,key){ if(!s) return ''; var raw=atob(s), out=''; for(var i=0;i<raw.length;i++){ out+=String.fromCharCode(raw.charCodeAt(i) ^ key.charCodeAt(i%key.length)); } return out; }
 BTN.token = _deobf(BTN.token_obf, BTN.k || '');
 var active = 0;     // selected customer index (Customer Open SO's view)
@@ -226,7 +230,7 @@ function kpi(v,l){ return '<div class="kpi"><div class="v">'+(v==null?'0':v)+'</
 
 function renderTabs(){
   var tabsEl=document.getElementById('tabs');
-  if(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt'){ tabsEl.style.display='none'; tabsEl.innerHTML=''; return; }  // full-width views, no per-entity tabs
+  if(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay'){ tabsEl.style.display='none'; tabsEl.innerHTML=''; return; }  // full-width views, no per-entity tabs
   if(mode==='ship'){ renderShipTabs(tabsEl); return; }  // Shipments: sidebar of customers (receivers)
   tabsEl.style.display='';
   var list = mode==='vendor' ? (DATA.vendors||[]) : (mode==='ca' ? ((DATA.customer_analysis||{}).customers||[]) : (DATA.customers||[]));
@@ -276,6 +280,7 @@ function renderPanel(){
   else if(mode==='li') renderLiPanel();
   else if(mode==='wt') renderWtPanel();
   else if(mode==='ship') renderShipPanel();
+  else if(mode==='pay') renderPayPanel();
   else renderCustPanel();
 }
 
@@ -1022,13 +1027,101 @@ function renderVendorPanel(){
     '<table><thead><tr>'+renderHead()+'</tr></thead><tbody>'+body+'</tbody></table>';
 }
 
+// ── Payment Status tab (QuickBooks 2026 invoices for Independent Diagnostic Lab customers) ──
+var PAY=null, payLoading=false, payCust='';
+function loadPay(){
+  if(PAY_EMBED){ PAY=PAY_EMBED; payLoading=false; if(mode==='pay'){ renderPayPanel(); } return; }
+  if(payLoading) return; payLoading=true;
+  fetch('payment-status-data.json?cb='+Date.now(),{cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(d){ PAY=d; payLoading=false; if(mode==='pay'){ renderPayPanel(); } })
+    .catch(function(e){ payLoading=false; if(mode==='pay') document.getElementById('panel').innerHTML='<div class="empty">Could not load payment data: '+escapeHtml(e.message)+'</div>'; });
+}
+function payCustomers(){ return ((PAY&&PAY.customers)||[]).filter(function(c){ return (c.invoices||[]).length>0; }); }
+function payCurrent(){ var cs=payCustomers(); if(!cs.length) return null;
+  if(!payCust || !cs.some(function(c){return c.name===payCust;})) payCust=cs[0].name;
+  return cs.filter(function(c){return c.name===payCust;})[0]; }
+function paySelectChange(){ var s=document.getElementById('paySelect'); if(s){ payCust=s.value; } renderPayPanel(); }
+function payMoney(v){ var n=Number(v)||0; return '$'+n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,','); }
+function payBadge(st){ var col= st==='Paid'?['#d4edda','#155724']:(st==='Not Paid'?['#f8d7da','#842029']:['#e2e3e5','#41464b']);
+  return '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;background:'+col[0]+';color:'+col[1]+';">'+escapeHtml(st)+'</span>'; }
+function renderPayPanel(){
+  if(!PAY){ document.getElementById('panel').innerHTML='<div class="empty">Loading payment status…</div>'; loadPay(); return; }
+  var cs=payCustomers();
+  if(!cs.length){ document.getElementById('panel').innerHTML='<div class="empty">No 2026 invoices found for Independent Diagnostic Lab customers.</div>'; return; }
+  var c=payCurrent();
+  var opts=''; for(var i=0;i<cs.length;i++){ opts+='<option value="'+escapeHtml(cs[i].name)+'"'+(cs[i].name===payCust?' selected':'')+'>'+escapeHtml(cs[i].name)+' ('+cs[i].totals.count+')</option>'; }
+  var invs=c.invoices||[], body='';
+  for(var j=0;j<invs.length;j++){ var v=invs[j];
+    body+='<tr>'+
+      '<td>'+escapeHtml(v.number)+'</td>'+
+      '<td class="c">'+payBadge(v.status)+'</td>'+
+      '<td class="c">'+fmtDate(v.date)+'</td>'+
+      '<td style="text-align:right;">'+payMoney(v.amount)+'</td>'+
+      '<td class="c"><a href="'+escapeHtml(v.link)+'" target="_blank" rel="noopener">Open</a></td>'+
+      '</tr>';
+  }
+  var t=c.totals||{};
+  document.getElementById('panel').innerHTML =
+    '<div class="panel-head"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">'+
+    '<h2 style="margin:0;">Payment Status</h2>'+
+    '<select id="paySelect" onchange="paySelectChange()" style="padding:7px 10px;border:1px solid #cdd9e6;border-radius:6px;font-size:13px;min-width:240px;">'+opts+'</select>'+
+    '<button class="copy-email-btn" onclick="copyPayTable()" title="Copy this invoice table — pastes as a formatted table into email/Word/Docs">📋 Copy table</button></div>'+
+    '<div class="sub">Independent Diagnostic Lab &middot; '+t.count+' invoice(s) &middot; '+payMoney(t.amount)+' total &middot; '+payMoney(t.unpaid)+' unpaid &middot; QuickBooks '+escapeHtml(''+(PAY.year||''))+' &middot; as of '+escapeHtml(PAY.generated_at||'')+'</div></div>'+
+    '<table><thead><tr><th>Invoice #</th><th class="c">Status</th><th class="c">Date</th><th style="text-align:right;">Amount</th><th class="c">Link</th></tr></thead><tbody>'+body+
+    '<tr class="so-group"><td colspan="3" style="text-align:right;font-weight:700;">Total ('+t.count+')</td>'+
+    '<td style="text-align:right;font-weight:700;">'+payMoney(t.amount)+'</td><td class="c" style="font-weight:700;color:#c0392b;">'+payMoney(t.unpaid)+' unpaid</td></tr>'+
+    '</tbody></table>';
+}
+// Standalone HTML invoice table for the selected customer — copies as a rendered table for email.
+function buildPayEmailHtml(c){
+  var td='padding:8px 10px;border-bottom:1px solid #e6ebf1;font-size:13px;color:#2c3e50;';
+  var th='padding:8px 10px;background:#1f3a5f;color:#fff;font-size:12px;';
+  var invs=c.invoices||[], rows='';
+  for(var j=0;j<invs.length;j++){ var v=invs[j];
+    var sc = v.status==='Paid'?'#155724':(v.status==='Not Paid'?'#842029':'#6c757d');
+    rows+='<tr>'+
+      '<td style="'+td+'">'+escapeHtml(v.number)+'</td>'+
+      '<td style="'+td+'color:'+sc+';font-weight:600;">'+escapeHtml(v.status)+'</td>'+
+      '<td style="'+td+'">'+fmtDate(v.date)+'</td>'+
+      '<td style="'+td+'text-align:right;white-space:nowrap;">'+payMoney(v.amount)+'</td>'+
+      '<td style="'+td+'"><a href="'+escapeHtml(v.link)+'">View invoice</a></td>'+
+      '</tr>';
+  }
+  var t=c.totals||{};
+  return '<div style="font-family:Arial,Helvetica,sans-serif;max-width:680px;color:#2c3e50;">'+
+    '<div style="font-size:16px;font-weight:700;color:#1f3a5f;margin:0 0 4px;">JIT4Labs &mdash; Invoice Payment Status</div>'+
+    '<div style="font-size:13px;color:#555;margin:0 0 12px;">'+escapeHtml(c.name)+' &middot; QuickBooks '+escapeHtml(''+(PAY.year||''))+'</div>'+
+    '<table cellspacing="0" cellpadding="0" style="border-collapse:collapse;width:100%;max-width:660px;border:1px solid #e6ebf1;">'+
+    '<thead><tr><th style="'+th+'text-align:left;">Invoice #</th><th style="'+th+'text-align:left;">Status</th>'+
+    '<th style="'+th+'text-align:left;">Date</th><th style="'+th+'text-align:right;">Amount</th><th style="'+th+'text-align:left;">Link</th></tr></thead>'+
+    '<tbody>'+rows+
+    '<tr><td colspan="3" style="'+td+'text-align:right;font-weight:700;">Total ('+t.count+')</td>'+
+    '<td style="'+td+'text-align:right;font-weight:700;">'+payMoney(t.amount)+'</td>'+
+    '<td style="'+td+'font-weight:700;color:#c0392b;">'+payMoney(t.unpaid)+' unpaid</td></tr>'+
+    '</tbody></table></div>';
+}
+function copyPayTable(){
+  var c=payCurrent(); if(!c){ alert('No customer selected.'); return; }
+  var html=buildPayEmailHtml(c);
+  function done(){ var b=document.querySelectorAll('.copy-email-btn'); for(var i=0;i<b.length;i++){ if(/Copy table/.test(b[i].textContent)||/Copied/.test(b[i].textContent)){ var o=b[i].innerHTML; b[i].innerHTML='✓ Copied!'; (function(el,txt){ setTimeout(function(){ el.innerHTML=txt; },1800); })(b[i],'📋 Copy table'); } } }
+  try {
+    if(navigator.clipboard && window.ClipboardItem){
+      var item=new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([html],{type:'text/plain'})});
+      navigator.clipboard.write([item]).then(done, function(){ fallbackCopyHtml(html, done); });
+      return;
+    }
+  } catch(e){}
+  fallbackCopyHtml(html, done);
+}
+
 function setMode(m){
   if(mode===m) return;
   mode=m; sortState={key:null, dir:1};
   var btns=document.querySelectorAll('.mode-btn');
   for(var i=0;i<btns.length;i++){
     var dm=btns[i].getAttribute('data-mode');
-    var extra = dm==='pnl' ? ' mode-pnl' : (dm==='ship' ? ' mode-ship' : ((dm==='wt'||dm==='gads'||dm==='li') ? ' mode-mkt' : ''));  // P&L green, marketing tabs orange, shipments blue
+    var extra = dm==='pnl' ? ' mode-pnl' : (dm==='ship' ? ' mode-ship' : (dm==='pay' ? ' mode-pay' : ((dm==='wt'||dm==='gads'||dm==='li') ? ' mode-mkt' : '')));  // P&L green, marketing tabs orange, shipments/payment blue
     btns[i].className = 'mode-btn'+extra+(dm===m?' active':'');
   }
   renderTabs(); renderPanel();
