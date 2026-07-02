@@ -883,7 +883,7 @@ function renderCustPanel(){
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">'+
     '<h2 style="margin:0;">'+escapeHtml(c.name)+'</h2>'+
-    '<button class="copy-email-btn" onclick="custEmailToClipboard()" title="Copy an HTML email of this customer&#39;s open orders (Product, List Price, quantities) to your clipboard">📋 Copy email</button></div>'+
+    '<button class="copy-email-btn" onclick="custEmailToClipboard()" title="Copy the HTML code of this customer&#39;s open-order email (Product, List Price, quantities) to your clipboard">📋 Copy email HTML</button></div>'+
     '<div class="sub">'+c.open_sos+' open SO(s) &middot; '+c.open_items+' open item(s) &middot; '+
     (c.vendors||[]).length+' vendor(s) &middot; grouped by SO'+sortNote+'</div></div>'+
     '<table><thead><tr>'+renderHead()+'</tr></thead><tbody>'+body+'</tbody></table>';
@@ -950,14 +950,7 @@ function custEmailToClipboard(){
   if(!c){ alert('No customer selected.'); return; }
   var html=buildCustEmailHtml(c);
   function done(){ var b=document.querySelector('.copy-email-btn'); if(b){ var o=b.innerHTML; b.innerHTML='✓ Copied!'; setTimeout(function(){ b.innerHTML=o; },1800); } }
-  // Prefer rich (text/html) clipboard so it pastes as a formatted table into email clients.
-  try {
-    if(navigator.clipboard && window.ClipboardItem){
-      var item=new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([html],{type:'text/plain'})});
-      navigator.clipboard.write([item]).then(done, function(){ fallbackCopy(html, done); });
-      return;
-    }
-  } catch(e){}
+  // Copy the raw HTML source as PLAIN TEXT so pasting yields the HTML code (not a rendered table).
   if(navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(html).then(done, function(){ fallbackCopy(html, done); });
   } else { fallbackCopy(html, done); }
