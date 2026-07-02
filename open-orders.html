@@ -1028,7 +1028,11 @@ function renderVendorPanel(){
 }
 
 // ── Payment Status tab (QuickBooks 2026 invoices for Independent Diagnostic Lab customers) ──
-var PAY=null, payLoading=false, payCust='';
+var PAY=null, payLoading=false, payCust='', payReadyOnly=false;
+function payInvoices(c){ var invs=(c&&c.invoices)||[]; return payReadyOnly ? invs.filter(function(v){ return !!v.link; }) : invs; }
+function payTotals(invs){ var amt=0, unpaid=0; for(var i=0;i<invs.length;i++){ amt+=Number(invs[i].amount)||0; unpaid+=Number(invs[i].balance)||0; }
+  return {count:invs.length, amount:Math.round(amt*100)/100, unpaid:Math.round(unpaid*100)/100}; }
+function payToggleReady(cb){ payReadyOnly=!!cb.checked; renderPayPanel(); }
 function loadPay(){
   if(PAY_EMBED){ PAY=PAY_EMBED; payLoading=false; if(mode==='pay'){ renderPayPanel(); } return; }
   if(payLoading) return; payLoading=true;
@@ -1051,23 +1055,25 @@ function renderPayPanel(){
   if(!cs.length){ document.getElementById('panel').innerHTML='<div class="empty">No 2026 invoices found for Independent Diagnostic Lab customers.</div>'; return; }
   var c=payCurrent();
   var opts=''; for(var i=0;i<cs.length;i++){ opts+='<option value="'+escapeHtml(cs[i].name)+'"'+(cs[i].name===payCust?' selected':'')+'>'+escapeHtml(cs[i].name)+' ('+cs[i].totals.count+')</option>'; }
-  var invs=c.invoices||[], body='';
+  var invs=payInvoices(c), body='';
   for(var j=0;j<invs.length;j++){ var v=invs[j];
     body+='<tr>'+
       '<td>'+escapeHtml(v.number)+'</td>'+
       '<td class="c">'+payBadge(v.status)+'</td>'+
       '<td class="c">'+fmtDate(v.date)+'</td>'+
       '<td style="text-align:right;">'+payMoney(v.amount)+'</td>'+
-      '<td class="c">'+(v.link?'<a href="'+escapeHtml(v.link)+'" target="_blank" rel="noopener">View &amp; pay</a>':'<span style="color:#999;" title="Invoice not yet sent — no customer link">—</span>')+'</td>'+
+      '<td class="c">'+(v.link?'<a href="'+escapeHtml(v.link)+'" target="_blank" rel="noopener">View &amp; pay</a>':'<span style="color:#999;">Invoice not sent</span>')+'</td>'+
       '</tr>';
   }
-  var t=c.totals||{};
+  if(!invs.length){ body='<tr><td colspan="5" class="empty" style="padding:16px;">No invoices ready for payment (with a customer link) for this customer.</td></tr>'; }
+  var t=payTotals(invs);
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">'+
     '<h2 style="margin:0;">Payment Status</h2>'+
     '<select id="paySelect" onchange="paySelectChange()" style="padding:7px 10px;border:1px solid #cdd9e6;border-radius:6px;font-size:13px;min-width:240px;">'+opts+'</select>'+
+    '<label style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#2c3e50;cursor:pointer;white-space:nowrap;"><input type="checkbox" onchange="payToggleReady(this)"'+(payReadyOnly?' checked':'')+'> Ready for payment only</label>'+
     '<button class="copy-email-btn" onclick="copyPayTable()" title="Copy this invoice table — pastes as a formatted table into email/Word/Docs">📋 Copy table</button></div>'+
-    '<div class="sub">Independent Diagnostic Lab &middot; '+t.count+' invoice(s) &middot; '+payMoney(t.amount)+' total &middot; '+payMoney(t.unpaid)+' unpaid &middot; QuickBooks '+escapeHtml(''+(PAY.year||''))+' &middot; as of '+escapeHtml(PAY.generated_at||'')+'</div></div>'+
+    '<div class="sub">Independent Diagnostic Lab &middot; '+t.count+' invoice(s)'+(payReadyOnly?' ready for payment':'')+' &middot; '+payMoney(t.amount)+' total &middot; '+payMoney(t.unpaid)+' unpaid &middot; QuickBooks '+escapeHtml(''+(PAY.year||''))+' &middot; as of '+escapeHtml(PAY.generated_at||'')+'</div></div>'+
     '<table><thead><tr><th>Invoice #</th><th class="c">Status</th><th class="c">Date</th><th style="text-align:right;">Amount</th><th class="c">Link</th></tr></thead><tbody>'+body+
     '<tr class="so-group"><td colspan="3" style="text-align:right;font-weight:700;">Total ('+t.count+')</td>'+
     '<td style="text-align:right;font-weight:700;">'+payMoney(t.amount)+'</td><td class="c" style="font-weight:700;color:#c0392b;">'+payMoney(t.unpaid)+' unpaid</td></tr>'+
@@ -1077,7 +1083,7 @@ function renderPayPanel(){
 function buildPayEmailHtml(c){
   var td='padding:8px 10px;border-bottom:1px solid #e6ebf1;font-size:13px;color:#2c3e50;';
   var th='padding:8px 10px;background:#1f3a5f;color:#fff;font-size:12px;';
-  var invs=c.invoices||[], rows='';
+  var invs=payInvoices(c), rows='';
   for(var j=0;j<invs.length;j++){ var v=invs[j];
     var sc = v.status==='Paid'?'#155724':(v.status==='Not Paid'?'#842029':'#6c757d');
     rows+='<tr>'+
@@ -1085,10 +1091,10 @@ function buildPayEmailHtml(c){
       '<td style="'+td+'color:'+sc+';font-weight:600;">'+escapeHtml(v.status)+'</td>'+
       '<td style="'+td+'">'+fmtDate(v.date)+'</td>'+
       '<td style="'+td+'text-align:right;white-space:nowrap;">'+payMoney(v.amount)+'</td>'+
-      '<td style="'+td+'">'+(v.link?'<a href="'+escapeHtml(v.link)+'">View &amp; pay</a>':'&mdash;')+'</td>'+
+      '<td style="'+td+'">'+(v.link?'<a href="'+escapeHtml(v.link)+'">View &amp; pay</a>':'Invoice not sent')+'</td>'+
       '</tr>';
   }
-  var t=c.totals||{};
+  var t=payTotals(invs);
   return '<div style="font-family:Arial,Helvetica,sans-serif;max-width:680px;color:#2c3e50;">'+
     '<div style="font-size:16px;font-weight:700;color:#1f3a5f;margin:0 0 4px;">JIT4Labs &mdash; Invoice Payment Status</div>'+
     '<div style="font-size:13px;color:#555;margin:0 0 12px;">'+escapeHtml(c.name)+' &middot; QuickBooks '+escapeHtml(''+(PAY.year||''))+'</div>'+
