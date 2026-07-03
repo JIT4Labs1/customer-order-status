@@ -43,7 +43,7 @@ from customer_analysis import (build_customer_analysis, _build_email_doc as _ema
 # GitHub Pages publishing (same host/repo as the customer-order-status reports)
 # ─────────────────────────────────────────────
 GITHUB_REPO = os.environ.get("GH_PAGES_REPO", "JIT4Labs1/customer-order-status")
-GITHUB_TOKEN = os.environ.get("GH_PAT_TOKEN", "_86uvLarG97ygWvF0j3FPLyXjPK1QjUOWZsH1TlOqscO7XCE33IRE5yCSwid")
+GITHUB_TOKEN = os.environ.get("GH_PAT_TOKEN", "")
 GITHUB_PAGES_URL = os.environ.get("GH_PAGES_URL", "https://jit4labs1.github.io/customer-order-status")
 
 PAGE_FILENAME = "open-orders.html"
@@ -77,7 +77,7 @@ def _is_excluded_customer(name):
 # Fallback token below has Actions:write on this repo (used by the Refresh button to
 # workflow_dispatch). Embedded XOR-obfuscated in the published page. NOTE: replace with a
 # durable PAT before it expires (~2026-06-25), else the Refresh button reverts to snapshot-only.
-GH_BUTTON_TOKEN = os.environ.get("GH_BUTTON_TOKEN", "_rPiWRbceeZKzJIMlq5TDUXWRopuzboz7nle2gZVqgzsHEJLXOUSMLk1C0u7")
+GH_BUTTON_TOKEN = os.environ.get("GH_BUTTON_TOKEN", "")
 GH_WORKFLOW_FILE = os.environ.get("GH_WORKFLOW_FILE", "refresh-open-orders.yml")
 GH_BRANCH = os.environ.get("GH_PAGES_BRANCH", "main")
 BTN_OBF_KEY = os.environ.get("BTN_OBF_KEY", "jit4oo-refresh")
