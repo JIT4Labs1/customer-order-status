@@ -1,5 +1,5 @@
 {
-  "pulled_at": "2026-07-03 03:55 PM PT",
+  "pulled_at": "2026-07-03 04:04 PM PT",
   "property": "433514600 (jit4you.com)",
   "buckets": [
     "Direct",
@@ -102,19 +102,8 @@
           "transactions": 0
         }
       ],
-      "gads_campaigns": [
-        "BeckmanCoulter_Shopping_Test",
-        "ViroVac Shopping_Shopify",
-        "Abbott_Search"
-      ],
-      "gads_points": [
-        {
-          "t": "2026-07-03",
-          "BeckmanCoulter_Shopping_Test": 2,
-          "ViroVac Shopping_Shopify": 2,
-          "Abbott_Search": 1
-        }
-      ]
+      "gads_campaigns": [],
+      "gads_series": {}
     },
     "last_7_days": {
       "label": "Last 7 days",
@@ -290,74 +279,271 @@
         "ViroVac Shopping_Shopify",
         "BeckmanCoulter_Shopping_Test",
         "Siemens_Sales_Shopping",
+        "Siemens_Search",
         "BeckmanCoulter_Sales_Search",
         "Abbott_Search"
       ],
-      "gads_points": [
-        {
-          "t": "2026-06-27",
-          "Abbott_Sales_Shopping": 111,
-          "ViroVac Shopping_Shopify": 12,
-          "BeckmanCoulter_Shopping_Test": 2,
-          "Siemens_Sales_Shopping": 2,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-28",
-          "Abbott_Sales_Shopping": 42,
-          "ViroVac Shopping_Shopify": 4,
-          "BeckmanCoulter_Shopping_Test": 2,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-29",
-          "Abbott_Sales_Shopping": 85,
-          "ViroVac Shopping_Shopify": 3,
-          "BeckmanCoulter_Shopping_Test": 3,
-          "Siemens_Sales_Shopping": 1,
-          "BeckmanCoulter_Sales_Search": 2,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-30",
-          "Abbott_Sales_Shopping": 69,
-          "ViroVac Shopping_Shopify": 59,
-          "BeckmanCoulter_Shopping_Test": 9,
-          "Siemens_Sales_Shopping": 1,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-07-01",
-          "Abbott_Sales_Shopping": 50,
-          "ViroVac Shopping_Shopify": 8,
-          "BeckmanCoulter_Shopping_Test": 5,
-          "Siemens_Sales_Shopping": 1,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-07-02",
-          "Abbott_Sales_Shopping": 8,
-          "ViroVac Shopping_Shopify": 27,
-          "BeckmanCoulter_Shopping_Test": 1,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-07-03",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 2,
-          "BeckmanCoulter_Shopping_Test": 2,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Abbott_Search": 1
-        }
-      ]
+      "gads_series": {
+        "Abbott_Sales_Shopping": [
+          {
+            "t": "2026-06-27",
+            "impr": 2144,
+            "clicks": 72
+          },
+          {
+            "t": "2026-06-28",
+            "impr": 2917,
+            "clicks": 39
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 2716,
+            "clicks": 57
+          },
+          {
+            "t": "2026-06-30",
+            "impr": 1256,
+            "clicks": 40
+          },
+          {
+            "t": "2026-07-01",
+            "impr": 796,
+            "clicks": 43
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 285,
+            "clicks": 7
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 130,
+            "clicks": 1
+          }
+        ],
+        "ViroVac Shopping_Shopify": [
+          {
+            "t": "2026-06-27",
+            "impr": 306,
+            "clicks": 4
+          },
+          {
+            "t": "2026-06-28",
+            "impr": 412,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 581,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-30",
+            "impr": 804,
+            "clicks": 51
+          },
+          {
+            "t": "2026-07-01",
+            "impr": 643,
+            "clicks": 8
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 704,
+            "clicks": 21
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 182,
+            "clicks": 2
+          }
+        ],
+        "BeckmanCoulter_Shopping_Test": [
+          {
+            "t": "2026-06-27",
+            "impr": 251,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-28",
+            "impr": 192,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 272,
+            "clicks": 3
+          },
+          {
+            "t": "2026-06-30",
+            "impr": 292,
+            "clicks": 8
+          },
+          {
+            "t": "2026-07-01",
+            "impr": 279,
+            "clicks": 7
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 308,
+            "clicks": 1
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 140,
+            "clicks": 2
+          }
+        ],
+        "Siemens_Sales_Shopping": [
+          {
+            "t": "2026-06-27",
+            "impr": 151,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-28",
+            "impr": 201,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 208,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-30",
+            "impr": 317,
+            "clicks": 1
+          },
+          {
+            "t": "2026-07-01",
+            "impr": 12,
+            "clicks": 1
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 148,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 58,
+            "clicks": 0
+          }
+        ],
+        "Siemens_Search": [
+          {
+            "t": "2026-06-27",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-28",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-30",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-01",
+            "impr": 2,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 9,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 8,
+            "clicks": 0
+          }
+        ],
+        "BeckmanCoulter_Sales_Search": [
+          {
+            "t": "2026-06-27",
+            "impr": 1,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-28",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 3,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-30",
+            "impr": 2,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-01",
+            "impr": 3,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 0,
+            "clicks": 0
+          }
+        ],
+        "Abbott_Search": [
+          {
+            "t": "2026-06-27",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-28",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-30",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 4,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 2,
+            "clicks": 1
+          }
+        ]
+      }
     },
     "last_30_days": {
       "label": "Last 30 days",
@@ -752,347 +938,1080 @@
         }
       ],
       "gads_campaigns": [
-        "Abbott_Sales_Shopping",
         "ViroVac Shopping_Shopify",
+        "Abbott_Sales_Shopping",
         "BeckmanCoulter_Shopping_Test",
-        "(untagged / other paid)",
         "Siemens_Sales_Shopping",
-        "BeckmanCoulter_Sales_Search",
         "Siemens_Search",
+        "BeckmanCoulter_Sales_Search",
         "Abbott_Search"
       ],
-      "gads_points": [
-        {
-          "t": "2026-06-04",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 4,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-05",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 4,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 1,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-06",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 7,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-07",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 10,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-08",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 18,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-09",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 8,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-10",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 5,
-          "BeckmanCoulter_Shopping_Test": 3,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-11",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 5,
-          "BeckmanCoulter_Shopping_Test": 8,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-12",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 13,
-          "BeckmanCoulter_Shopping_Test": 12,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-13",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 9,
-          "BeckmanCoulter_Shopping_Test": 4,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-14",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 5,
-          "BeckmanCoulter_Shopping_Test": 6,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-15",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 11,
-          "BeckmanCoulter_Shopping_Test": 12,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-16",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 10,
-          "BeckmanCoulter_Shopping_Test": 5,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-17",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 8,
-          "BeckmanCoulter_Shopping_Test": 11,
-          "(untagged / other paid)": 4,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-18",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 21,
-          "BeckmanCoulter_Shopping_Test": 3,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-19",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 5,
-          "BeckmanCoulter_Shopping_Test": 4,
-          "(untagged / other paid)": 8,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-20",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 9,
-          "BeckmanCoulter_Shopping_Test": 8,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-21",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 6,
-          "BeckmanCoulter_Shopping_Test": 2,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-22",
-          "Abbott_Sales_Shopping": 8,
-          "ViroVac Shopping_Shopify": 11,
-          "BeckmanCoulter_Shopping_Test": 3,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 1,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-23",
-          "Abbott_Sales_Shopping": 118,
-          "ViroVac Shopping_Shopify": 6,
-          "BeckmanCoulter_Shopping_Test": 2,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 2,
-          "Siemens_Search": 2,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-24",
-          "Abbott_Sales_Shopping": 26,
-          "ViroVac Shopping_Shopify": 9,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 2,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-25",
-          "Abbott_Sales_Shopping": 21,
-          "ViroVac Shopping_Shopify": 12,
-          "BeckmanCoulter_Shopping_Test": 7,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 1,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-26",
-          "Abbott_Sales_Shopping": 16,
-          "ViroVac Shopping_Shopify": 10,
-          "BeckmanCoulter_Shopping_Test": 5,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 1,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-27",
-          "Abbott_Sales_Shopping": 111,
-          "ViroVac Shopping_Shopify": 12,
-          "BeckmanCoulter_Shopping_Test": 2,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 2,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-28",
-          "Abbott_Sales_Shopping": 42,
-          "ViroVac Shopping_Shopify": 4,
-          "BeckmanCoulter_Shopping_Test": 2,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-29",
-          "Abbott_Sales_Shopping": 85,
-          "ViroVac Shopping_Shopify": 3,
-          "BeckmanCoulter_Shopping_Test": 3,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 1,
-          "BeckmanCoulter_Sales_Search": 2,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-30",
-          "Abbott_Sales_Shopping": 69,
-          "ViroVac Shopping_Shopify": 59,
-          "BeckmanCoulter_Shopping_Test": 9,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 1,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-07-01",
-          "Abbott_Sales_Shopping": 50,
-          "ViroVac Shopping_Shopify": 8,
-          "BeckmanCoulter_Shopping_Test": 5,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 1,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-07-02",
-          "Abbott_Sales_Shopping": 8,
-          "ViroVac Shopping_Shopify": 27,
-          "BeckmanCoulter_Shopping_Test": 1,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-07-03",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 2,
-          "BeckmanCoulter_Shopping_Test": 2,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Abbott_Search": 1
-        }
-      ]
+      "gads_series": {
+        "ViroVac Shopping_Shopify": [
+          {
+            "t": "2026-06-04",
+            "impr": 153,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-05",
+            "impr": 431,
+            "clicks": 5
+          },
+          {
+            "t": "2026-06-06",
+            "impr": 593,
+            "clicks": 6
+          },
+          {
+            "t": "2026-06-07",
+            "impr": 508,
+            "clicks": 6
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 1212,
+            "clicks": 14
+          },
+          {
+            "t": "2026-06-09",
+            "impr": 890,
+            "clicks": 6
+          },
+          {
+            "t": "2026-06-10",
+            "impr": 868,
+            "clicks": 7
+          },
+          {
+            "t": "2026-06-11",
+            "impr": 1224,
+            "clicks": 5
+          },
+          {
+            "t": "2026-06-12",
+            "impr": 1485,
+            "clicks": 10
+          },
+          {
+            "t": "2026-06-13",
+            "impr": 660,
+            "clicks": 8
+          },
+          {
+            "t": "2026-06-14",
+            "impr": 653,
+            "clicks": 4
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 1391,
+            "clicks": 9
+          },
+          {
+            "t": "2026-06-16",
+            "impr": 853,
+            "clicks": 8
+          },
+          {
+            "t": "2026-06-17",
+            "impr": 1018,
+            "clicks": 5
+          },
+          {
+            "t": "2026-06-18",
+            "impr": 1090,
+            "clicks": 15
+          },
+          {
+            "t": "2026-06-19",
+            "impr": 1117,
+            "clicks": 4
+          },
+          {
+            "t": "2026-06-20",
+            "impr": 889,
+            "clicks": 8
+          },
+          {
+            "t": "2026-06-21",
+            "impr": 962,
+            "clicks": 4
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 917,
+            "clicks": 10
+          },
+          {
+            "t": "2026-06-23",
+            "impr": 1184,
+            "clicks": 7
+          },
+          {
+            "t": "2026-06-24",
+            "impr": 809,
+            "clicks": 5
+          },
+          {
+            "t": "2026-06-25",
+            "impr": 701,
+            "clicks": 9
+          },
+          {
+            "t": "2026-06-26",
+            "impr": 714,
+            "clicks": 4
+          },
+          {
+            "t": "2026-06-27",
+            "impr": 306,
+            "clicks": 4
+          },
+          {
+            "t": "2026-06-28",
+            "impr": 412,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 581,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-30",
+            "impr": 804,
+            "clicks": 51
+          },
+          {
+            "t": "2026-07-01",
+            "impr": 643,
+            "clicks": 8
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 704,
+            "clicks": 21
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 184,
+            "clicks": 2
+          }
+        ],
+        "Abbott_Sales_Shopping": [
+          {
+            "t": "2026-06-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-05",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-07",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-10",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-11",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-12",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-14",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-17",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-19",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-21",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 876,
+            "clicks": 7
+          },
+          {
+            "t": "2026-06-23",
+            "impr": 1904,
+            "clicks": 92
+          },
+          {
+            "t": "2026-06-24",
+            "impr": 1374,
+            "clicks": 21
+          },
+          {
+            "t": "2026-06-25",
+            "impr": 802,
+            "clicks": 15
+          },
+          {
+            "t": "2026-06-26",
+            "impr": 841,
+            "clicks": 11
+          },
+          {
+            "t": "2026-06-27",
+            "impr": 2144,
+            "clicks": 72
+          },
+          {
+            "t": "2026-06-28",
+            "impr": 2917,
+            "clicks": 39
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 2716,
+            "clicks": 57
+          },
+          {
+            "t": "2026-06-30",
+            "impr": 1256,
+            "clicks": 40
+          },
+          {
+            "t": "2026-07-01",
+            "impr": 796,
+            "clicks": 43
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 285,
+            "clicks": 7
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 130,
+            "clicks": 1
+          }
+        ],
+        "BeckmanCoulter_Shopping_Test": [
+          {
+            "t": "2026-06-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-05",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-07",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-10",
+            "impr": 286,
+            "clicks": 3
+          },
+          {
+            "t": "2026-06-11",
+            "impr": 464,
+            "clicks": 7
+          },
+          {
+            "t": "2026-06-12",
+            "impr": 458,
+            "clicks": 8
+          },
+          {
+            "t": "2026-06-13",
+            "impr": 551,
+            "clicks": 3
+          },
+          {
+            "t": "2026-06-14",
+            "impr": 552,
+            "clicks": 4
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 716,
+            "clicks": 6
+          },
+          {
+            "t": "2026-06-16",
+            "impr": 679,
+            "clicks": 3
+          },
+          {
+            "t": "2026-06-17",
+            "impr": 721,
+            "clicks": 9
+          },
+          {
+            "t": "2026-06-18",
+            "impr": 661,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-19",
+            "impr": 887,
+            "clicks": 5
+          },
+          {
+            "t": "2026-06-20",
+            "impr": 797,
+            "clicks": 8
+          },
+          {
+            "t": "2026-06-21",
+            "impr": 1242,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 537,
+            "clicks": 3
+          },
+          {
+            "t": "2026-06-23",
+            "impr": 294,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-24",
+            "impr": 391,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-25",
+            "impr": 352,
+            "clicks": 3
+          },
+          {
+            "t": "2026-06-26",
+            "impr": 327,
+            "clicks": 4
+          },
+          {
+            "t": "2026-06-27",
+            "impr": 251,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-28",
+            "impr": 192,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 272,
+            "clicks": 3
+          },
+          {
+            "t": "2026-06-30",
+            "impr": 292,
+            "clicks": 8
+          },
+          {
+            "t": "2026-07-01",
+            "impr": 279,
+            "clicks": 7
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 308,
+            "clicks": 1
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 140,
+            "clicks": 2
+          }
+        ],
+        "Siemens_Sales_Shopping": [
+          {
+            "t": "2026-06-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-05",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-07",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-10",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-11",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-12",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-14",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-17",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-19",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-21",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 5,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-23",
+            "impr": 10,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-24",
+            "impr": 9,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-25",
+            "impr": 119,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-26",
+            "impr": 145,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-27",
+            "impr": 151,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-28",
+            "impr": 201,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 208,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-30",
+            "impr": 317,
+            "clicks": 1
+          },
+          {
+            "t": "2026-07-01",
+            "impr": 12,
+            "clicks": 1
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 148,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 58,
+            "clicks": 0
+          }
+        ],
+        "Siemens_Search": [
+          {
+            "t": "2026-06-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-05",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-07",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-10",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-11",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-12",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-14",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-17",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-19",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-21",
+            "impr": 3,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 72,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-23",
+            "impr": 56,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-24",
+            "impr": 9,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-25",
+            "impr": 2,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-26",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-27",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-28",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-30",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-01",
+            "impr": 2,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 9,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 8,
+            "clicks": 0
+          }
+        ],
+        "BeckmanCoulter_Sales_Search": [
+          {
+            "t": "2026-06-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-05",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-07",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-10",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-11",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-12",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-14",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-17",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-19",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-21",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 2,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-23",
+            "impr": 4,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-24",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-25",
+            "impr": 2,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-26",
+            "impr": 1,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-27",
+            "impr": 1,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-28",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 3,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-30",
+            "impr": 2,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-01",
+            "impr": 3,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 0,
+            "clicks": 0
+          }
+        ],
+        "Abbott_Search": [
+          {
+            "t": "2026-06-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-05",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-07",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-10",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-11",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-12",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-14",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-17",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-19",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-21",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-23",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-24",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-25",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-26",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-27",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-28",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-30",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 4,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 2,
+            "clicks": 1
+          }
+        ]
+      }
     },
     "this_month": {
       "label": "This month",
@@ -1220,38 +2139,135 @@
         }
       ],
       "gads_campaigns": [
-        "Abbott_Sales_Shopping",
         "ViroVac Shopping_Shopify",
+        "Abbott_Sales_Shopping",
         "BeckmanCoulter_Shopping_Test",
         "Siemens_Sales_Shopping",
-        "Abbott_Search"
+        "Siemens_Search",
+        "Abbott_Search",
+        "BeckmanCoulter_Sales_Search"
       ],
-      "gads_points": [
-        {
-          "t": "2026-07-01",
-          "Abbott_Sales_Shopping": 50,
-          "ViroVac Shopping_Shopify": 8,
-          "BeckmanCoulter_Shopping_Test": 5,
-          "Siemens_Sales_Shopping": 1,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-07-02",
-          "Abbott_Sales_Shopping": 8,
-          "ViroVac Shopping_Shopify": 27,
-          "BeckmanCoulter_Shopping_Test": 1,
-          "Siemens_Sales_Shopping": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-07-03",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 2,
-          "BeckmanCoulter_Shopping_Test": 2,
-          "Siemens_Sales_Shopping": 0,
-          "Abbott_Search": 1
-        }
-      ]
+      "gads_series": {
+        "ViroVac Shopping_Shopify": [
+          {
+            "t": "2026-07-01",
+            "impr": 643,
+            "clicks": 8
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 704,
+            "clicks": 21
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 183,
+            "clicks": 2
+          }
+        ],
+        "Abbott_Sales_Shopping": [
+          {
+            "t": "2026-07-01",
+            "impr": 796,
+            "clicks": 43
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 285,
+            "clicks": 7
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 130,
+            "clicks": 1
+          }
+        ],
+        "BeckmanCoulter_Shopping_Test": [
+          {
+            "t": "2026-07-01",
+            "impr": 279,
+            "clicks": 7
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 308,
+            "clicks": 1
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 140,
+            "clicks": 2
+          }
+        ],
+        "Siemens_Sales_Shopping": [
+          {
+            "t": "2026-07-01",
+            "impr": 12,
+            "clicks": 1
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 148,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 58,
+            "clicks": 0
+          }
+        ],
+        "Siemens_Search": [
+          {
+            "t": "2026-07-01",
+            "impr": 2,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 9,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 8,
+            "clicks": 0
+          }
+        ],
+        "Abbott_Search": [
+          {
+            "t": "2026-07-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 4,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 2,
+            "clicks": 1
+          }
+        ],
+        "BeckmanCoulter_Sales_Search": [
+          {
+            "t": "2026-07-01",
+            "impr": 3,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-07-03",
+            "impr": 0,
+            "clicks": 0
+          }
+        ]
+      }
     },
     "last_month": {
       "label": "Last month",
@@ -1638,316 +2654,927 @@
         }
       ],
       "gads_campaigns": [
-        "Abbott_Sales_Shopping",
         "ViroVac Shopping_Shopify",
+        "Abbott_Sales_Shopping",
         "BeckmanCoulter_Shopping_Test",
-        "(untagged / other paid)",
-        "BeckmanCoulter_Sales_Search",
+        "Siemens_Sales_Shopping",
         "Siemens_Search",
-        "Siemens_Sales_Shopping"
+        "BeckmanCoulter_Sales_Search"
       ],
-      "gads_points": [
-        {
-          "t": "2026-06-01",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 3,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-02",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 3,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-03",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 8,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-04",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 4,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-05",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 4,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 1,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-06",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 7,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-07",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 10,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-08",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 18,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-09",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 8,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-10",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 5,
-          "BeckmanCoulter_Shopping_Test": 3,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-11",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 5,
-          "BeckmanCoulter_Shopping_Test": 8,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-12",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 13,
-          "BeckmanCoulter_Shopping_Test": 12,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-13",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 9,
-          "BeckmanCoulter_Shopping_Test": 4,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-14",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 5,
-          "BeckmanCoulter_Shopping_Test": 6,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-15",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 11,
-          "BeckmanCoulter_Shopping_Test": 12,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-16",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 10,
-          "BeckmanCoulter_Shopping_Test": 5,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-17",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 8,
-          "BeckmanCoulter_Shopping_Test": 11,
-          "(untagged / other paid)": 4,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-18",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 21,
-          "BeckmanCoulter_Shopping_Test": 3,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-19",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 5,
-          "BeckmanCoulter_Shopping_Test": 4,
-          "(untagged / other paid)": 8,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-20",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 9,
-          "BeckmanCoulter_Shopping_Test": 8,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-21",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 6,
-          "BeckmanCoulter_Shopping_Test": 2,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-22",
-          "Abbott_Sales_Shopping": 8,
-          "ViroVac Shopping_Shopify": 11,
-          "BeckmanCoulter_Shopping_Test": 3,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 1,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-23",
-          "Abbott_Sales_Shopping": 118,
-          "ViroVac Shopping_Shopify": 6,
-          "BeckmanCoulter_Shopping_Test": 2,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 2,
-          "Siemens_Search": 2,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-24",
-          "Abbott_Sales_Shopping": 26,
-          "ViroVac Shopping_Shopify": 9,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 2,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-25",
-          "Abbott_Sales_Shopping": 21,
-          "ViroVac Shopping_Shopify": 12,
-          "BeckmanCoulter_Shopping_Test": 7,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 1,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-26",
-          "Abbott_Sales_Shopping": 16,
-          "ViroVac Shopping_Shopify": 10,
-          "BeckmanCoulter_Shopping_Test": 5,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 1
-        },
-        {
-          "t": "2026-06-27",
-          "Abbott_Sales_Shopping": 111,
-          "ViroVac Shopping_Shopify": 12,
-          "BeckmanCoulter_Shopping_Test": 2,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 2
-        },
-        {
-          "t": "2026-06-28",
-          "Abbott_Sales_Shopping": 42,
-          "ViroVac Shopping_Shopify": 4,
-          "BeckmanCoulter_Shopping_Test": 2,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-29",
-          "Abbott_Sales_Shopping": 85,
-          "ViroVac Shopping_Shopify": 3,
-          "BeckmanCoulter_Shopping_Test": 3,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 2,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 1
-        },
-        {
-          "t": "2026-06-30",
-          "Abbott_Sales_Shopping": 69,
-          "ViroVac Shopping_Shopify": 59,
-          "BeckmanCoulter_Shopping_Test": 9,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 1
-        }
-      ]
+      "gads_series": {
+        "ViroVac Shopping_Shopify": [
+          {
+            "t": "2026-06-01",
+            "impr": 112,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-02",
+            "impr": 1020,
+            "clicks": 3
+          },
+          {
+            "t": "2026-06-03",
+            "impr": 1070,
+            "clicks": 7
+          },
+          {
+            "t": "2026-06-04",
+            "impr": 153,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-05",
+            "impr": 431,
+            "clicks": 5
+          },
+          {
+            "t": "2026-06-06",
+            "impr": 593,
+            "clicks": 6
+          },
+          {
+            "t": "2026-06-07",
+            "impr": 508,
+            "clicks": 6
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 1212,
+            "clicks": 14
+          },
+          {
+            "t": "2026-06-09",
+            "impr": 890,
+            "clicks": 6
+          },
+          {
+            "t": "2026-06-10",
+            "impr": 868,
+            "clicks": 7
+          },
+          {
+            "t": "2026-06-11",
+            "impr": 1224,
+            "clicks": 5
+          },
+          {
+            "t": "2026-06-12",
+            "impr": 1485,
+            "clicks": 10
+          },
+          {
+            "t": "2026-06-13",
+            "impr": 660,
+            "clicks": 8
+          },
+          {
+            "t": "2026-06-14",
+            "impr": 653,
+            "clicks": 4
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 1391,
+            "clicks": 9
+          },
+          {
+            "t": "2026-06-16",
+            "impr": 853,
+            "clicks": 8
+          },
+          {
+            "t": "2026-06-17",
+            "impr": 1018,
+            "clicks": 5
+          },
+          {
+            "t": "2026-06-18",
+            "impr": 1090,
+            "clicks": 15
+          },
+          {
+            "t": "2026-06-19",
+            "impr": 1117,
+            "clicks": 4
+          },
+          {
+            "t": "2026-06-20",
+            "impr": 889,
+            "clicks": 8
+          },
+          {
+            "t": "2026-06-21",
+            "impr": 962,
+            "clicks": 4
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 917,
+            "clicks": 10
+          },
+          {
+            "t": "2026-06-23",
+            "impr": 1184,
+            "clicks": 7
+          },
+          {
+            "t": "2026-06-24",
+            "impr": 809,
+            "clicks": 5
+          },
+          {
+            "t": "2026-06-25",
+            "impr": 701,
+            "clicks": 9
+          },
+          {
+            "t": "2026-06-26",
+            "impr": 714,
+            "clicks": 4
+          },
+          {
+            "t": "2026-06-27",
+            "impr": 306,
+            "clicks": 4
+          },
+          {
+            "t": "2026-06-28",
+            "impr": 412,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 581,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-30",
+            "impr": 804,
+            "clicks": 51
+          }
+        ],
+        "Abbott_Sales_Shopping": [
+          {
+            "t": "2026-06-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-03",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-05",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-07",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-10",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-11",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-12",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-14",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-17",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-19",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-21",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 876,
+            "clicks": 7
+          },
+          {
+            "t": "2026-06-23",
+            "impr": 1904,
+            "clicks": 92
+          },
+          {
+            "t": "2026-06-24",
+            "impr": 1374,
+            "clicks": 21
+          },
+          {
+            "t": "2026-06-25",
+            "impr": 802,
+            "clicks": 15
+          },
+          {
+            "t": "2026-06-26",
+            "impr": 841,
+            "clicks": 11
+          },
+          {
+            "t": "2026-06-27",
+            "impr": 2144,
+            "clicks": 72
+          },
+          {
+            "t": "2026-06-28",
+            "impr": 2917,
+            "clicks": 39
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 2716,
+            "clicks": 57
+          },
+          {
+            "t": "2026-06-30",
+            "impr": 1256,
+            "clicks": 40
+          }
+        ],
+        "BeckmanCoulter_Shopping_Test": [
+          {
+            "t": "2026-06-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-03",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-05",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-07",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-10",
+            "impr": 286,
+            "clicks": 3
+          },
+          {
+            "t": "2026-06-11",
+            "impr": 464,
+            "clicks": 7
+          },
+          {
+            "t": "2026-06-12",
+            "impr": 458,
+            "clicks": 8
+          },
+          {
+            "t": "2026-06-13",
+            "impr": 551,
+            "clicks": 3
+          },
+          {
+            "t": "2026-06-14",
+            "impr": 552,
+            "clicks": 4
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 716,
+            "clicks": 6
+          },
+          {
+            "t": "2026-06-16",
+            "impr": 679,
+            "clicks": 3
+          },
+          {
+            "t": "2026-06-17",
+            "impr": 721,
+            "clicks": 9
+          },
+          {
+            "t": "2026-06-18",
+            "impr": 661,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-19",
+            "impr": 887,
+            "clicks": 5
+          },
+          {
+            "t": "2026-06-20",
+            "impr": 797,
+            "clicks": 8
+          },
+          {
+            "t": "2026-06-21",
+            "impr": 1242,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 537,
+            "clicks": 3
+          },
+          {
+            "t": "2026-06-23",
+            "impr": 294,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-24",
+            "impr": 391,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-25",
+            "impr": 352,
+            "clicks": 3
+          },
+          {
+            "t": "2026-06-26",
+            "impr": 327,
+            "clicks": 4
+          },
+          {
+            "t": "2026-06-27",
+            "impr": 251,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-28",
+            "impr": 192,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 272,
+            "clicks": 3
+          },
+          {
+            "t": "2026-06-30",
+            "impr": 292,
+            "clicks": 8
+          }
+        ],
+        "Siemens_Sales_Shopping": [
+          {
+            "t": "2026-06-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-03",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-05",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-07",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-10",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-11",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-12",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-14",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-17",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-19",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-21",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 5,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-23",
+            "impr": 10,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-24",
+            "impr": 9,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-25",
+            "impr": 119,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-26",
+            "impr": 145,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-27",
+            "impr": 151,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-28",
+            "impr": 201,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 208,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-30",
+            "impr": 317,
+            "clicks": 1
+          }
+        ],
+        "Siemens_Search": [
+          {
+            "t": "2026-06-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-03",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-05",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-07",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-10",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-11",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-12",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-14",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-17",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-19",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-21",
+            "impr": 3,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 72,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-23",
+            "impr": 56,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-24",
+            "impr": 9,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-25",
+            "impr": 2,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-26",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-27",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-28",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-30",
+            "impr": 0,
+            "clicks": 0
+          }
+        ],
+        "BeckmanCoulter_Sales_Search": [
+          {
+            "t": "2026-06-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-03",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-05",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-07",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-10",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-11",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-12",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-14",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-17",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-19",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-21",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 2,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-23",
+            "impr": 4,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-24",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-25",
+            "impr": 2,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-26",
+            "impr": 1,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-27",
+            "impr": 1,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-28",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 3,
+            "clicks": 1
+          },
+          {
+            "t": "2026-06-30",
+            "impr": 2,
+            "clicks": 0
+          }
+        ]
+      }
     },
     "this_quarter": {
       "label": "This quarter",
@@ -2057,22 +3684,65 @@
         }
       ],
       "gads_campaigns": [
-        "Abbott_Sales_Shopping",
         "ViroVac Shopping_Shopify",
+        "Abbott_Sales_Shopping",
         "BeckmanCoulter_Shopping_Test",
         "Siemens_Sales_Shopping",
-        "Abbott_Search"
+        "Siemens_Search",
+        "Abbott_Search",
+        "BeckmanCoulter_Sales_Search"
       ],
-      "gads_points": [
-        {
-          "t": "2026-06-29",
-          "Abbott_Sales_Shopping": 58,
-          "ViroVac Shopping_Shopify": 37,
-          "BeckmanCoulter_Shopping_Test": 8,
-          "Siemens_Sales_Shopping": 1,
-          "Abbott_Search": 1
-        }
-      ]
+      "gads_series": {
+        "ViroVac Shopping_Shopify": [
+          {
+            "t": "2026-06-29",
+            "impr": 1530,
+            "clicks": 31
+          }
+        ],
+        "Abbott_Sales_Shopping": [
+          {
+            "t": "2026-06-29",
+            "impr": 1211,
+            "clicks": 51
+          }
+        ],
+        "BeckmanCoulter_Shopping_Test": [
+          {
+            "t": "2026-06-29",
+            "impr": 727,
+            "clicks": 10
+          }
+        ],
+        "Siemens_Sales_Shopping": [
+          {
+            "t": "2026-06-29",
+            "impr": 218,
+            "clicks": 1
+          }
+        ],
+        "Siemens_Search": [
+          {
+            "t": "2026-06-29",
+            "impr": 19,
+            "clicks": 0
+          }
+        ],
+        "Abbott_Search": [
+          {
+            "t": "2026-06-29",
+            "impr": 6,
+            "clicks": 1
+          }
+        ],
+        "BeckmanCoulter_Sales_Search": [
+          {
+            "t": "2026-06-29",
+            "impr": 3,
+            "clicks": 0
+          }
+        ]
+      }
     },
     "last_quarter": {
       "label": "Last quarter",
@@ -2332,171 +4002,520 @@
         }
       ],
       "gads_campaigns": [
-        "Abbott_Sales_Shopping",
-        "ViroVac Shopping_Shopify",
         "ViroVac Shopping",
+        "ViroVac Shopping_Shopify",
+        "Abbott_Sales_Shopping",
         "BeckmanCoulter_Shopping_Test",
-        "(untagged / other paid)",
-        "BeckmanCoulter_Sales_Search",
+        "Siemens_Sales_Shopping",
         "Siemens_Search",
-        "Siemens_Sales_Shopping"
+        "BeckmanCoulter_Sales_Search"
       ],
-      "gads_points": [
-        {
-          "t": "2026-03-30",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "ViroVac Shopping": 42,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-04-06",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "ViroVac Shopping": 85,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-04-13",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "ViroVac Shopping": 69,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-04-20",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "ViroVac Shopping": 82,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-04-27",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "ViroVac Shopping": 57,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-05-04",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "ViroVac Shopping": 30,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-05-11",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 6,
-          "ViroVac Shopping": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 2,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-05-18",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 18,
-          "ViroVac Shopping": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-05-25",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 72,
-          "ViroVac Shopping": 1,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-01",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 39,
-          "ViroVac Shopping": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 1,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-08",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 63,
-          "ViroVac Shopping": 0,
-          "BeckmanCoulter_Shopping_Test": 33,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-15",
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 70,
-          "ViroVac Shopping": 0,
-          "BeckmanCoulter_Shopping_Test": 45,
-          "(untagged / other paid)": 12,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 0
-        },
-        {
-          "t": "2026-06-22",
-          "Abbott_Sales_Shopping": 342,
-          "ViroVac Shopping_Shopify": 64,
-          "ViroVac Shopping": 0,
-          "BeckmanCoulter_Shopping_Test": 21,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 3,
-          "Siemens_Search": 5,
-          "Siemens_Sales_Shopping": 3
-        },
-        {
-          "t": "2026-06-29",
-          "Abbott_Sales_Shopping": 154,
-          "ViroVac Shopping_Shopify": 62,
-          "ViroVac Shopping": 0,
-          "BeckmanCoulter_Shopping_Test": 12,
-          "(untagged / other paid)": 0,
-          "BeckmanCoulter_Sales_Search": 2,
-          "Siemens_Search": 0,
-          "Siemens_Sales_Shopping": 2
-        }
-      ]
+      "gads_series": {
+        "ViroVac Shopping": [
+          {
+            "t": "2026-03-30",
+            "impr": 4788,
+            "clicks": 57
+          },
+          {
+            "t": "2026-04-06",
+            "impr": 9758,
+            "clicks": 101
+          },
+          {
+            "t": "2026-04-13",
+            "impr": 10076,
+            "clicks": 89
+          },
+          {
+            "t": "2026-04-20",
+            "impr": 12331,
+            "clicks": 87
+          },
+          {
+            "t": "2026-04-27",
+            "impr": 9572,
+            "clicks": 69
+          },
+          {
+            "t": "2026-05-04",
+            "impr": 8199,
+            "clicks": 66
+          },
+          {
+            "t": "2026-05-11",
+            "impr": 3379,
+            "clicks": 35
+          },
+          {
+            "t": "2026-05-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-25",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 0,
+            "clicks": 0
+          }
+        ],
+        "ViroVac Shopping_Shopify": [
+          {
+            "t": "2026-03-30",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-27",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-11",
+            "impr": 157,
+            "clicks": 3
+          },
+          {
+            "t": "2026-05-18",
+            "impr": 1113,
+            "clicks": 13
+          },
+          {
+            "t": "2026-05-25",
+            "impr": 4245,
+            "clicks": 41
+          },
+          {
+            "t": "2026-06-01",
+            "impr": 3887,
+            "clicks": 30
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 6992,
+            "clicks": 54
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 7320,
+            "clicks": 53
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 5043,
+            "clicks": 40
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 1385,
+            "clicks": 53
+          }
+        ],
+        "Abbott_Sales_Shopping": [
+          {
+            "t": "2026-03-30",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-27",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-11",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-25",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 10858,
+            "clicks": 257
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 3972,
+            "clicks": 97
+          }
+        ],
+        "BeckmanCoulter_Shopping_Test": [
+          {
+            "t": "2026-03-30",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-27",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-11",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-25",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 2311,
+            "clicks": 25
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 5703,
+            "clicks": 35
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 2344,
+            "clicks": 18
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 564,
+            "clicks": 11
+          }
+        ],
+        "Siemens_Sales_Shopping": [
+          {
+            "t": "2026-03-30",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-27",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-11",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-25",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 640,
+            "clicks": 4
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 525,
+            "clicks": 2
+          }
+        ],
+        "Siemens_Search": [
+          {
+            "t": "2026-03-30",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-27",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-11",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-25",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 3,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 139,
+            "clicks": 7
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 0,
+            "clicks": 0
+          }
+        ],
+        "BeckmanCoulter_Sales_Search": [
+          {
+            "t": "2026-03-30",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-27",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-11",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-25",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 10,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 5,
+            "clicks": 1
+          }
+        ]
+      }
     },
     "this_year": {
       "label": "2026 YTD",
@@ -2890,369 +4909,1112 @@
       ],
       "gads_campaigns": [
         "ViroVac Shopping",
-        "Abbott_Sales_Shopping",
         "ViroVac Shopping_Shopify",
+        "Abbott_Sales_Shopping",
         "BeckmanCoulter_Shopping_Test",
-        "(untagged / other paid)",
         "Siemens_Sales_Shopping",
-        "BeckmanCoulter_Sales_Search",
         "Siemens_Search",
-        "Search-Shopping-Siemens",
+        "BeckmanCoulter_Sales_Search",
         "Abbott_Search"
       ],
-      "gads_points": [
-        {
-          "t": "2025-12-29",
-          "ViroVac Shopping": 64,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-01-05",
-          "ViroVac Shopping": 132,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 1,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-01-12",
-          "ViroVac Shopping": 102,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-01-19",
-          "ViroVac Shopping": 84,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-01-26",
-          "ViroVac Shopping": 99,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-02-02",
-          "ViroVac Shopping": 118,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 2,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-02-09",
-          "ViroVac Shopping": 117,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-02-16",
-          "ViroVac Shopping": 131,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-02-23",
-          "ViroVac Shopping": 85,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 1,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-03-02",
-          "ViroVac Shopping": 111,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-03-09",
-          "ViroVac Shopping": 81,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-03-16",
-          "ViroVac Shopping": 87,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-03-23",
-          "ViroVac Shopping": 77,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-03-30",
-          "ViroVac Shopping": 63,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-04-06",
-          "ViroVac Shopping": 85,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-04-13",
-          "ViroVac Shopping": 69,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-04-20",
-          "ViroVac Shopping": 82,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-04-27",
-          "ViroVac Shopping": 57,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-05-04",
-          "ViroVac Shopping": 30,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 0,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-05-11",
-          "ViroVac Shopping": 0,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 6,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 2,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-05-18",
-          "ViroVac Shopping": 0,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 18,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-05-25",
-          "ViroVac Shopping": 1,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 72,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-01",
-          "ViroVac Shopping": 0,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 39,
-          "BeckmanCoulter_Shopping_Test": 0,
-          "(untagged / other paid)": 1,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-08",
-          "ViroVac Shopping": 0,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 63,
-          "BeckmanCoulter_Shopping_Test": 33,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-15",
-          "ViroVac Shopping": 0,
-          "Abbott_Sales_Shopping": 0,
-          "ViroVac Shopping_Shopify": 70,
-          "BeckmanCoulter_Shopping_Test": 45,
-          "(untagged / other paid)": 12,
-          "Siemens_Sales_Shopping": 0,
-          "BeckmanCoulter_Sales_Search": 0,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-22",
-          "ViroVac Shopping": 0,
-          "Abbott_Sales_Shopping": 342,
-          "ViroVac Shopping_Shopify": 64,
-          "BeckmanCoulter_Shopping_Test": 21,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 3,
-          "BeckmanCoulter_Sales_Search": 3,
-          "Siemens_Search": 5,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 0
-        },
-        {
-          "t": "2026-06-29",
-          "ViroVac Shopping": 0,
-          "Abbott_Sales_Shopping": 212,
-          "ViroVac Shopping_Shopify": 99,
-          "BeckmanCoulter_Shopping_Test": 20,
-          "(untagged / other paid)": 0,
-          "Siemens_Sales_Shopping": 3,
-          "BeckmanCoulter_Sales_Search": 2,
-          "Siemens_Search": 0,
-          "Search-Shopping-Siemens": 0,
-          "Abbott_Search": 1
-        }
-      ]
+      "gads_series": {
+        "ViroVac Shopping": [
+          {
+            "t": "2025-12-29",
+            "impr": 5583,
+            "clicks": 66
+          },
+          {
+            "t": "2026-01-05",
+            "impr": 7866,
+            "clicks": 105
+          },
+          {
+            "t": "2026-01-12",
+            "impr": 8339,
+            "clicks": 107
+          },
+          {
+            "t": "2026-01-19",
+            "impr": 13698,
+            "clicks": 83
+          },
+          {
+            "t": "2026-01-26",
+            "impr": 9176,
+            "clicks": 79
+          },
+          {
+            "t": "2026-02-02",
+            "impr": 11305,
+            "clicks": 111
+          },
+          {
+            "t": "2026-02-09",
+            "impr": 8273,
+            "clicks": 119
+          },
+          {
+            "t": "2026-02-16",
+            "impr": 7862,
+            "clicks": 128
+          },
+          {
+            "t": "2026-02-23",
+            "impr": 7903,
+            "clicks": 87
+          },
+          {
+            "t": "2026-03-02",
+            "impr": 8676,
+            "clicks": 58
+          },
+          {
+            "t": "2026-03-09",
+            "impr": 10493,
+            "clicks": 87
+          },
+          {
+            "t": "2026-03-16",
+            "impr": 11977,
+            "clicks": 109
+          },
+          {
+            "t": "2026-03-23",
+            "impr": 9393,
+            "clicks": 88
+          },
+          {
+            "t": "2026-03-30",
+            "impr": 7363,
+            "clicks": 81
+          },
+          {
+            "t": "2026-04-06",
+            "impr": 9758,
+            "clicks": 101
+          },
+          {
+            "t": "2026-04-13",
+            "impr": 10076,
+            "clicks": 89
+          },
+          {
+            "t": "2026-04-20",
+            "impr": 12331,
+            "clicks": 87
+          },
+          {
+            "t": "2026-04-27",
+            "impr": 9572,
+            "clicks": 69
+          },
+          {
+            "t": "2026-05-04",
+            "impr": 8199,
+            "clicks": 66
+          },
+          {
+            "t": "2026-05-11",
+            "impr": 3379,
+            "clicks": 35
+          },
+          {
+            "t": "2026-05-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-25",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 0,
+            "clicks": 0
+          }
+        ],
+        "ViroVac Shopping_Shopify": [
+          {
+            "t": "2025-12-29",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-05",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-12",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-19",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-26",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-23",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-23",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-30",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-27",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-11",
+            "impr": 157,
+            "clicks": 3
+          },
+          {
+            "t": "2026-05-18",
+            "impr": 1113,
+            "clicks": 13
+          },
+          {
+            "t": "2026-05-25",
+            "impr": 4245,
+            "clicks": 41
+          },
+          {
+            "t": "2026-06-01",
+            "impr": 3887,
+            "clicks": 30
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 6992,
+            "clicks": 54
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 7320,
+            "clicks": 53
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 5043,
+            "clicks": 40
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 2916,
+            "clicks": 84
+          }
+        ],
+        "Abbott_Sales_Shopping": [
+          {
+            "t": "2025-12-29",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-05",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-12",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-19",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-26",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-23",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-23",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-30",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-27",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-11",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-25",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 10858,
+            "clicks": 257
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 5183,
+            "clicks": 148
+          }
+        ],
+        "BeckmanCoulter_Shopping_Test": [
+          {
+            "t": "2025-12-29",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-05",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-12",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-19",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-26",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-23",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-23",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-30",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-27",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-11",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-25",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 2311,
+            "clicks": 25
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 5703,
+            "clicks": 35
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 2344,
+            "clicks": 18
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 1291,
+            "clicks": 21
+          }
+        ],
+        "Siemens_Sales_Shopping": [
+          {
+            "t": "2025-12-29",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-05",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-12",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-19",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-26",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-23",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-23",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-30",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-27",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-11",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-25",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 640,
+            "clicks": 4
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 743,
+            "clicks": 3
+          }
+        ],
+        "Siemens_Search": [
+          {
+            "t": "2025-12-29",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-05",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-12",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-19",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-26",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-23",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-23",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-30",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-27",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-11",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-25",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 3,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 139,
+            "clicks": 7
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 19,
+            "clicks": 0
+          }
+        ],
+        "BeckmanCoulter_Sales_Search": [
+          {
+            "t": "2025-12-29",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-05",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-12",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-19",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-26",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-23",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-23",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-30",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-27",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-11",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-25",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 10,
+            "clicks": 2
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 8,
+            "clicks": 1
+          }
+        ],
+        "Abbott_Search": [
+          {
+            "t": "2025-12-29",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-05",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-12",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-19",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-01-26",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-02-23",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-02",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-09",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-16",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-23",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-03-30",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-06",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-13",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-20",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-04-27",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-04",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-11",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-18",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-05-25",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-01",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-08",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-15",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-22",
+            "impr": 0,
+            "clicks": 0
+          },
+          {
+            "t": "2026-06-29",
+            "impr": 6,
+            "clicks": 1
+          }
+        ]
+      }
     }
   }
 }
