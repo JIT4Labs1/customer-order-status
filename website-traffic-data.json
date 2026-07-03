@@ -1,5 +1,5 @@
 {
-  "pulled_at": "2026-07-01 08:15 PM PT",
+  "pulled_at": "2026-07-03 02:34 PM PT",
   "property": "433514600 (jit4you.com)",
   "buckets": [
     "Direct",
@@ -14,27 +14,37 @@
     "today": {
       "label": "Today",
       "granularity": "day",
-      "points": [],
+      "points": [
+        {
+          "t": "2026-07-03",
+          "Direct": 3,
+          "Google Ads": 3,
+          "Organic Search": 12,
+          "Email": 0,
+          "LinkedIn": 0,
+          "Other": 7
+        }
+      ],
       "sales": [
         {
           "source": "Direct",
-          "sessions": 0,
+          "sessions": 3,
           "conversions": 0,
-          "revenue": 0,
+          "revenue": 0.0,
           "transactions": 0
         },
         {
           "source": "Google Ads",
-          "sessions": 0,
+          "sessions": 3,
           "conversions": 0,
-          "revenue": 0,
+          "revenue": 0.0,
           "transactions": 0
         },
         {
           "source": "Organic Search",
-          "sessions": 0,
+          "sessions": 12,
           "conversions": 0,
-          "revenue": 0,
+          "revenue": 0.0,
           "transactions": 0
         },
         {
@@ -53,43 +63,42 @@
         },
         {
           "source": "Other",
-          "sessions": 0,
+          "sessions": 7,
           "conversions": 0,
-          "revenue": 0,
+          "revenue": 0.0,
           "transactions": 0
         }
       ],
       "totals": {
-        "sessions": 0,
+        "sessions": 25,
         "conversions": 0,
-        "revenue": 0,
+        "revenue": 0.0,
         "transactions": 0
       },
       "email_detail": [],
-      "gads_detail": []
+      "gads_detail": [
+        {
+          "name": "BeckmanCoulter_Shopping_Test",
+          "campaign": "BeckmanCoulter_Shopping_Test",
+          "sessions": 2,
+          "conversions": 0,
+          "revenue": 0,
+          "transactions": 0
+        },
+        {
+          "name": "Abbott_Search",
+          "campaign": "Abbott_Search",
+          "sessions": 1,
+          "conversions": 0,
+          "revenue": 0,
+          "transactions": 0
+        }
+      ]
     },
     "last_7_days": {
       "label": "Last 7 days",
       "granularity": "day",
       "points": [
-        {
-          "t": "2026-06-25",
-          "Direct": 17,
-          "Google Ads": 41,
-          "Organic Search": 35,
-          "Email": 0,
-          "LinkedIn": 0,
-          "Other": 7
-        },
-        {
-          "t": "2026-06-26",
-          "Direct": 31,
-          "Google Ads": 42,
-          "Organic Search": 24,
-          "Email": 0,
-          "LinkedIn": 0,
-          "Other": 6
-        },
         {
           "t": "2026-06-27",
           "Direct": 16,
@@ -128,34 +137,52 @@
         },
         {
           "t": "2026-07-01",
-          "Direct": 17,
-          "Google Ads": 53,
-          "Organic Search": 23,
+          "Direct": 20,
+          "Google Ads": 65,
+          "Organic Search": 30,
           "Email": 0,
           "LinkedIn": 0,
           "Other": 3
+        },
+        {
+          "t": "2026-07-02",
+          "Direct": 45,
+          "Google Ads": 36,
+          "Organic Search": 19,
+          "Email": 0,
+          "LinkedIn": 0,
+          "Other": 7
+        },
+        {
+          "t": "2026-07-03",
+          "Direct": 3,
+          "Google Ads": 3,
+          "Organic Search": 12,
+          "Email": 0,
+          "LinkedIn": 0,
+          "Other": 7
         }
       ],
       "sales": [
         {
           "source": "Direct",
-          "sessions": 333,
-          "conversions": 20,
-          "revenue": 10537.8,
-          "transactions": 8
+          "sessions": 336,
+          "conversions": 26,
+          "revenue": 18218.4,
+          "transactions": 12
         },
         {
           "source": "Google Ads",
-          "sessions": 549,
-          "conversions": 25,
-          "revenue": 4060,
-          "transactions": 4
+          "sessions": 517,
+          "conversions": 16,
+          "revenue": 1060.0,
+          "transactions": 2
         },
         {
           "source": "Organic Search",
-          "sessions": 155,
+          "sessions": 134,
           "conversions": 0,
-          "revenue": 0,
+          "revenue": 0.0,
           "transactions": 0
         },
         {
@@ -174,48 +201,48 @@
         },
         {
           "source": "Other",
-          "sessions": 42,
-          "conversions": 1,
-          "revenue": 0,
+          "sessions": 43,
+          "conversions": 0,
+          "revenue": 0.0,
           "transactions": 0
         }
       ],
       "totals": {
-        "sessions": 1079,
-        "conversions": 46,
-        "revenue": 14597.8,
-        "transactions": 12
+        "sessions": 1030,
+        "conversions": 42,
+        "revenue": 19278.4,
+        "transactions": 14
       },
       "email_detail": [],
       "gads_detail": [
         {
           "name": "Abbott_Sales_Shopping",
           "campaign": "Abbott_Sales_Shopping",
-          "sessions": 388,
-          "conversions": 8,
+          "sessions": 365,
+          "conversions": 10,
           "revenue": 0,
           "transactions": 0
         },
         {
           "name": "ViroVac Shopping_Shopify",
           "campaign": "ViroVac Shopping_Shopify",
-          "sessions": 105,
-          "conversions": 13,
-          "revenue": 4060,
-          "transactions": 4
+          "sessions": 113,
+          "conversions": 6,
+          "revenue": 1060,
+          "transactions": 2
         },
         {
           "name": "BeckmanCoulter_Shopping_Test",
           "campaign": "BeckmanCoulter_Shopping_Test",
-          "sessions": 31,
-          "conversions": 4,
+          "sessions": 24,
+          "conversions": 0,
           "revenue": 0,
           "transactions": 0
         },
         {
           "name": "Siemens_Sales_Shopping",
           "campaign": "Siemens_Sales_Shopping",
-          "sessions": 6,
+          "sessions": 5,
           "conversions": 0,
           "revenue": 0,
           "transactions": 0
@@ -229,8 +256,8 @@
           "transactions": 0
         },
         {
-          "name": "Siemens_Search",
-          "campaign": "Siemens_Search",
+          "name": "Abbott_Search",
+          "campaign": "Abbott_Search",
           "sessions": 1,
           "conversions": 0,
           "revenue": 0,
@@ -242,24 +269,6 @@
       "label": "Last 30 days",
       "granularity": "day",
       "points": [
-        {
-          "t": "2026-06-02",
-          "Direct": 74,
-          "Google Ads": 3,
-          "Organic Search": 36,
-          "Email": 0,
-          "LinkedIn": 0,
-          "Other": 5
-        },
-        {
-          "t": "2026-06-03",
-          "Direct": 101,
-          "Google Ads": 8,
-          "Organic Search": 19,
-          "Email": 0,
-          "LinkedIn": 0,
-          "Other": 39
-        },
         {
           "t": "2026-06-04",
           "Direct": 87,
@@ -505,33 +514,51 @@
         },
         {
           "t": "2026-07-01",
-          "Direct": 17,
-          "Google Ads": 53,
-          "Organic Search": 23,
+          "Direct": 20,
+          "Google Ads": 65,
+          "Organic Search": 30,
           "Email": 0,
           "LinkedIn": 0,
           "Other": 3
+        },
+        {
+          "t": "2026-07-02",
+          "Direct": 45,
+          "Google Ads": 36,
+          "Organic Search": 19,
+          "Email": 0,
+          "LinkedIn": 0,
+          "Other": 7
+        },
+        {
+          "t": "2026-07-03",
+          "Direct": 3,
+          "Google Ads": 3,
+          "Organic Search": 12,
+          "Email": 0,
+          "LinkedIn": 0,
+          "Other": 7
         }
       ],
       "sales": [
         {
           "source": "Direct",
-          "sessions": 3234,
-          "conversions": 113,
-          "revenue": 48559.99999999999,
-          "transactions": 31
+          "sessions": 3110,
+          "conversions": 117,
+          "revenue": 58873.2,
+          "transactions": 38
         },
         {
           "source": "Google Ads",
-          "sessions": 1015,
-          "conversions": 36,
-          "revenue": 4060,
+          "sessions": 1055,
+          "conversions": 38,
+          "revenue": 4060.0,
           "transactions": 4
         },
         {
           "source": "Organic Search",
-          "sessions": 632,
-          "conversions": 30,
+          "sessions": 615,
+          "conversions": 27,
           "revenue": 4777.0,
           "transactions": 6
         },
@@ -551,32 +578,32 @@
         },
         {
           "source": "Other",
-          "sessions": 245,
-          "conversions": 40,
+          "sessions": 215,
+          "conversions": 37,
           "revenue": 13322.6,
           "transactions": 8
         }
       ],
       "totals": {
-        "sessions": 5134,
+        "sessions": 5003,
         "conversions": 219,
-        "revenue": 70719.59999999999,
-        "transactions": 49
+        "revenue": 81032.8,
+        "transactions": 56
       },
       "email_detail": [],
       "gads_detail": [
         {
           "name": "Abbott_Sales_Shopping",
           "campaign": "Abbott_Sales_Shopping",
-          "sessions": 540,
-          "conversions": 8,
+          "sessions": 554,
+          "conversions": 10,
           "revenue": 0,
           "transactions": 0
         },
         {
           "name": "ViroVac Shopping_Shopify",
           "campaign": "ViroVac Shopping_Shopify",
-          "sessions": 299,
+          "sessions": 318,
           "conversions": 24,
           "revenue": 4060,
           "transactions": 4
@@ -584,7 +611,7 @@
         {
           "name": "BeckmanCoulter_Shopping_Test",
           "campaign": "BeckmanCoulter_Shopping_Test",
-          "sessions": 114,
+          "sessions": 119,
           "conversions": 4,
           "revenue": 0,
           "transactions": 0
@@ -620,43 +647,69 @@
           "conversions": 0,
           "revenue": 0,
           "transactions": 0
+        },
+        {
+          "name": "Abbott_Search",
+          "campaign": "Abbott_Search",
+          "sessions": 1,
+          "conversions": 0,
+          "revenue": 0,
+          "transactions": 0
         }
       ]
     },
     "this_month": {
-      "label": "This month (Jul)",
+      "label": "This month",
       "granularity": "day",
       "points": [
         {
           "t": "2026-07-01",
-          "Direct": 17,
-          "Google Ads": 53,
-          "Organic Search": 23,
+          "Direct": 20,
+          "Google Ads": 65,
+          "Organic Search": 30,
           "Email": 0,
           "LinkedIn": 0,
           "Other": 3
+        },
+        {
+          "t": "2026-07-02",
+          "Direct": 45,
+          "Google Ads": 36,
+          "Organic Search": 19,
+          "Email": 0,
+          "LinkedIn": 0,
+          "Other": 7
+        },
+        {
+          "t": "2026-07-03",
+          "Direct": 3,
+          "Google Ads": 3,
+          "Organic Search": 12,
+          "Email": 0,
+          "LinkedIn": 0,
+          "Other": 7
         }
       ],
       "sales": [
         {
           "source": "Direct",
-          "sessions": 17,
-          "conversions": 0,
-          "revenue": 0,
-          "transactions": 0
+          "sessions": 68,
+          "conversions": 14,
+          "revenue": 12108.2,
+          "transactions": 8
         },
         {
           "source": "Google Ads",
-          "sessions": 53,
-          "conversions": 2,
-          "revenue": 0,
+          "sessions": 104,
+          "conversions": 4,
+          "revenue": 0.0,
           "transactions": 0
         },
         {
           "source": "Organic Search",
-          "sessions": 23,
+          "sessions": 61,
           "conversions": 0,
-          "revenue": 0,
+          "revenue": 0.0,
           "transactions": 0
         },
         {
@@ -675,32 +728,32 @@
         },
         {
           "source": "Other",
-          "sessions": 3,
+          "sessions": 17,
           "conversions": 0,
-          "revenue": 0,
+          "revenue": 0.0,
           "transactions": 0
         }
       ],
       "totals": {
-        "sessions": 96,
-        "conversions": 2,
-        "revenue": 0,
-        "transactions": 0
+        "sessions": 250,
+        "conversions": 18,
+        "revenue": 12108.2,
+        "transactions": 8
       },
       "email_detail": [],
       "gads_detail": [
         {
           "name": "Abbott_Sales_Shopping",
           "campaign": "Abbott_Sales_Shopping",
-          "sessions": 43,
-          "conversions": 2,
+          "sessions": 57,
+          "conversions": 4,
           "revenue": 0,
           "transactions": 0
         },
         {
           "name": "ViroVac Shopping_Shopify",
           "campaign": "ViroVac Shopping_Shopify",
-          "sessions": 5,
+          "sessions": 35,
           "conversions": 0,
           "revenue": 0,
           "transactions": 0
@@ -708,7 +761,15 @@
         {
           "name": "BeckmanCoulter_Shopping_Test",
           "campaign": "BeckmanCoulter_Shopping_Test",
-          "sessions": 3,
+          "sessions": 8,
+          "conversions": 0,
+          "revenue": 0,
+          "transactions": 0
+        },
+        {
+          "name": "Abbott_Search",
+          "campaign": "Abbott_Search",
+          "sessions": 1,
           "conversions": 0,
           "revenue": 0,
           "transactions": 0
@@ -724,7 +785,7 @@
       ]
     },
     "last_month": {
-      "label": "Last month (Jun)",
+      "label": "Last month",
       "granularity": "day",
       "points": [
         {
@@ -1003,14 +1064,14 @@
           "source": "Direct",
           "sessions": 3285,
           "conversions": 114,
-          "revenue": 48559.99999999999,
+          "revenue": 48560.0,
           "transactions": 31
         },
         {
           "source": "Google Ads",
           "sessions": 965,
           "conversions": 34,
-          "revenue": 4060,
+          "revenue": 4060.0,
           "transactions": 4
         },
         {
@@ -1045,7 +1106,7 @@
       "totals": {
         "sessions": 5159,
         "conversions": 218,
-        "revenue": 70719.59999999999,
+        "revenue": 70719.6,
         "transactions": 49
       },
       "email_detail": [],
@@ -1109,39 +1170,39 @@
       ]
     },
     "this_quarter": {
-      "label": "This quarter (Q3 '26, weekly)",
+      "label": "This quarter",
       "granularity": "week",
       "points": [
         {
           "t": "2026-06-29",
-          "Direct": 17,
-          "Google Ads": 53,
-          "Organic Search": 23,
+          "Direct": 68,
+          "Google Ads": 104,
+          "Organic Search": 61,
           "Email": 0,
           "LinkedIn": 0,
-          "Other": 3
+          "Other": 17
         }
       ],
       "sales": [
         {
           "source": "Direct",
-          "sessions": 17,
-          "conversions": 0,
-          "revenue": 0,
-          "transactions": 0
+          "sessions": 68,
+          "conversions": 14,
+          "revenue": 12108.2,
+          "transactions": 8
         },
         {
           "source": "Google Ads",
-          "sessions": 53,
-          "conversions": 2,
-          "revenue": 0,
+          "sessions": 104,
+          "conversions": 4,
+          "revenue": 0.0,
           "transactions": 0
         },
         {
           "source": "Organic Search",
-          "sessions": 23,
+          "sessions": 61,
           "conversions": 0,
-          "revenue": 0,
+          "revenue": 0.0,
           "transactions": 0
         },
         {
@@ -1160,32 +1221,32 @@
         },
         {
           "source": "Other",
-          "sessions": 3,
+          "sessions": 17,
           "conversions": 0,
-          "revenue": 0,
+          "revenue": 0.0,
           "transactions": 0
         }
       ],
       "totals": {
-        "sessions": 96,
-        "conversions": 2,
-        "revenue": 0,
-        "transactions": 0
+        "sessions": 250,
+        "conversions": 18,
+        "revenue": 12108.2,
+        "transactions": 8
       },
       "email_detail": [],
       "gads_detail": [
         {
           "name": "Abbott_Sales_Shopping",
           "campaign": "Abbott_Sales_Shopping",
-          "sessions": 43,
-          "conversions": 2,
+          "sessions": 57,
+          "conversions": 4,
           "revenue": 0,
           "transactions": 0
         },
         {
           "name": "ViroVac Shopping_Shopify",
           "campaign": "ViroVac Shopping_Shopify",
-          "sessions": 5,
+          "sessions": 35,
           "conversions": 0,
           "revenue": 0,
           "transactions": 0
@@ -1193,7 +1254,15 @@
         {
           "name": "BeckmanCoulter_Shopping_Test",
           "campaign": "BeckmanCoulter_Shopping_Test",
-          "sessions": 3,
+          "sessions": 8,
+          "conversions": 0,
+          "revenue": 0,
+          "transactions": 0
+        },
+        {
+          "name": "Abbott_Search",
+          "campaign": "Abbott_Search",
+          "sessions": 1,
           "conversions": 0,
           "revenue": 0,
           "transactions": 0
@@ -1209,7 +1278,7 @@
       ]
     },
     "last_quarter": {
-      "label": "Last quarter (Q2 '26, weekly)",
+      "label": "Last quarter",
       "granularity": "week",
       "points": [
         {
@@ -1241,7 +1310,7 @@
         },
         {
           "t": "2026-04-20",
-          "Direct": 189,
+          "Direct": 190,
           "Google Ads": 84,
           "Organic Search": 119,
           "Email": 0,
@@ -1268,7 +1337,7 @@
         },
         {
           "t": "2026-05-11",
-          "Direct": 378,
+          "Direct": 379,
           "Google Ads": 8,
           "Organic Search": 50,
           "Email": 2,
@@ -1286,7 +1355,7 @@
         },
         {
           "t": "2026-05-25",
-          "Direct": 422,
+          "Direct": 421,
           "Google Ads": 73,
           "Organic Search": 173,
           "Email": 1,
@@ -1304,8 +1373,8 @@
         },
         {
           "t": "2026-06-08",
-          "Direct": 278,
-          "Google Ads": 98,
+          "Direct": 279,
+          "Google Ads": 99,
           "Organic Search": 138,
           "Email": 0,
           "LinkedIn": 4,
@@ -1313,17 +1382,17 @@
         },
         {
           "t": "2026-06-15",
-          "Direct": 1861,
+          "Direct": 1860,
           "Google Ads": 131,
-          "Organic Search": 124,
+          "Organic Search": 125,
           "Email": 0,
           "LinkedIn": 4,
           "Other": 44
         },
         {
           "t": "2026-06-22",
-          "Direct": 411,
-          "Google Ads": 457,
+          "Direct": 410,
+          "Google Ads": 456,
           "Organic Search": 157,
           "Email": 0,
           "LinkedIn": 0,
@@ -1351,12 +1420,12 @@
           "source": "Google Ads",
           "sessions": 1433,
           "conversions": 40,
-          "revenue": 4060,
+          "revenue": 4060.0,
           "transactions": 4
         },
         {
           "source": "Organic Search",
-          "sessions": 1537,
+          "sessions": 1538,
           "conversions": 37,
           "revenue": 4777.0,
           "transactions": 6
@@ -1384,16 +1453,15 @@
         }
       ],
       "totals": {
-        "sessions": 9169,
+        "sessions": 9170,
         "conversions": 266,
         "revenue": 80699.6,
         "transactions": 55
       },
       "email_detail": [
         {
-          "name": "Shopify abandoned-cart reminder",
-          "campaign": "shopify_cart_reminder",
           "source": "abandoned_cart",
+          "campaign": "Shopify abandoned-cart reminder",
           "sessions": 4,
           "conversions": 1,
           "revenue": 1500,
@@ -1468,12 +1536,12 @@
       ]
     },
     "this_year": {
-      "label": "2026 YTD (weekly)",
+      "label": "2026 YTD",
       "granularity": "week",
       "points": [
         {
           "t": "2025-12-29",
-          "Direct": 548,
+          "Direct": 547,
           "Google Ads": 64,
           "Organic Search": 28,
           "Email": 0,
@@ -1482,16 +1550,16 @@
         },
         {
           "t": "2026-01-05",
-          "Direct": 769,
+          "Direct": 768,
           "Google Ads": 134,
-          "Organic Search": 76,
+          "Organic Search": 77,
           "Email": 0,
           "LinkedIn": 0,
           "Other": 14
         },
         {
           "t": "2026-01-12",
-          "Direct": 1040,
+          "Direct": 1039,
           "Google Ads": 103,
           "Organic Search": 99,
           "Email": 0,
@@ -1500,8 +1568,8 @@
         },
         {
           "t": "2026-01-19",
-          "Direct": 868,
-          "Google Ads": 85,
+          "Direct": 869,
+          "Google Ads": 86,
           "Organic Search": 106,
           "Email": 0,
           "LinkedIn": 0,
@@ -1518,7 +1586,7 @@
         },
         {
           "t": "2026-02-02",
-          "Direct": 1012,
+          "Direct": 1014,
           "Google Ads": 120,
           "Organic Search": 97,
           "Email": 0,
@@ -1536,7 +1604,7 @@
         },
         {
           "t": "2026-02-16",
-          "Direct": 999,
+          "Direct": 997,
           "Google Ads": 132,
           "Organic Search": 117,
           "Email": 0,
@@ -1545,7 +1613,7 @@
         },
         {
           "t": "2026-02-23",
-          "Direct": 929,
+          "Direct": 928,
           "Google Ads": 86,
           "Organic Search": 100,
           "Email": 0,
@@ -1554,7 +1622,7 @@
         },
         {
           "t": "2026-03-02",
-          "Direct": 1105,
+          "Direct": 1108,
           "Google Ads": 111,
           "Organic Search": 100,
           "Email": 0,
@@ -1617,7 +1685,7 @@
         },
         {
           "t": "2026-04-20",
-          "Direct": 189,
+          "Direct": 190,
           "Google Ads": 84,
           "Organic Search": 119,
           "Email": 0,
@@ -1644,7 +1712,7 @@
         },
         {
           "t": "2026-05-11",
-          "Direct": 378,
+          "Direct": 379,
           "Google Ads": 8,
           "Organic Search": 50,
           "Email": 2,
@@ -1662,7 +1730,7 @@
         },
         {
           "t": "2026-05-25",
-          "Direct": 422,
+          "Direct": 421,
           "Google Ads": 73,
           "Organic Search": 173,
           "Email": 1,
@@ -1680,8 +1748,8 @@
         },
         {
           "t": "2026-06-08",
-          "Direct": 278,
-          "Google Ads": 98,
+          "Direct": 279,
+          "Google Ads": 99,
           "Organic Search": 138,
           "Email": 0,
           "LinkedIn": 4,
@@ -1689,17 +1757,17 @@
         },
         {
           "t": "2026-06-15",
-          "Direct": 1861,
+          "Direct": 1860,
           "Google Ads": 131,
-          "Organic Search": 124,
+          "Organic Search": 125,
           "Email": 0,
           "LinkedIn": 4,
           "Other": 44
         },
         {
           "t": "2026-06-22",
-          "Direct": 411,
-          "Google Ads": 457,
+          "Direct": 410,
+          "Google Ads": 456,
           "Organic Search": 157,
           "Email": 0,
           "LinkedIn": 0,
@@ -1707,32 +1775,32 @@
         },
         {
           "t": "2026-06-29",
-          "Direct": 263,
-          "Google Ads": 291,
-          "Organic Search": 83,
+          "Direct": 314,
+          "Google Ads": 342,
+          "Organic Search": 121,
           "Email": 0,
           "LinkedIn": 0,
-          "Other": 18
+          "Other": 32
         }
       ],
       "sales": [
         {
           "source": "Direct",
-          "sessions": 16574,
-          "conversions": 145,
-          "revenue": 54040.0,
-          "transactions": 35
+          "sessions": 16625,
+          "conversions": 159,
+          "revenue": 66148.2,
+          "transactions": 43
         },
         {
           "source": "Google Ads",
-          "sessions": 2815,
-          "conversions": 42,
-          "revenue": 4060,
+          "sessions": 2867,
+          "conversions": 44,
+          "revenue": 4060.0,
           "transactions": 4
         },
         {
           "source": "Organic Search",
-          "sessions": 2783,
+          "sessions": 2823,
           "conversions": 37,
           "revenue": 4777.0,
           "transactions": 6
@@ -1753,23 +1821,22 @@
         },
         {
           "source": "Other",
-          "sessions": 855,
+          "sessions": 869,
           "conversions": 43,
           "revenue": 16322.6,
           "transactions": 10
         }
       ],
       "totals": {
-        "sessions": 23039,
-        "conversions": 268,
-        "revenue": 80699.6,
-        "transactions": 55
+        "sessions": 23196,
+        "conversions": 284,
+        "revenue": 92807.8,
+        "transactions": 63
       },
       "email_detail": [
         {
-          "name": "Shopify abandoned-cart reminder",
-          "campaign": "shopify_cart_reminder",
           "source": "abandoned_cart",
+          "campaign": "Shopify abandoned-cart reminder",
           "sessions": 4,
           "conversions": 1,
           "revenue": 1500,
@@ -1788,15 +1855,15 @@
         {
           "name": "Abbott_Sales_Shopping",
           "campaign": "Abbott_Sales_Shopping",
-          "sessions": 540,
-          "conversions": 8,
+          "sessions": 554,
+          "conversions": 10,
           "revenue": 0,
           "transactions": 0
         },
         {
           "name": "ViroVac Shopping_Shopify",
           "campaign": "ViroVac Shopping_Shopify",
-          "sessions": 399,
+          "sessions": 429,
           "conversions": 30,
           "revenue": 4060,
           "transactions": 4
@@ -1804,7 +1871,7 @@
         {
           "name": "BeckmanCoulter_Shopping_Test",
           "campaign": "BeckmanCoulter_Shopping_Test",
-          "sessions": 114,
+          "sessions": 119,
           "conversions": 4,
           "revenue": 0,
           "transactions": 0
@@ -1837,6 +1904,14 @@
           "name": "Siemens_Search",
           "campaign": "Siemens_Search",
           "sessions": 5,
+          "conversions": 0,
+          "revenue": 0,
+          "transactions": 0
+        },
+        {
+          "name": "Abbott_Search",
+          "campaign": "Abbott_Search",
+          "sessions": 1,
           "conversions": 0,
           "revenue": 0,
           "transactions": 0
