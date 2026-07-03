@@ -433,6 +433,40 @@ function wtLegend(){
   if(wtTrend){ h+='<span style="display:inline-flex;align-items:center;gap:6px;color:#7a8a99;"><span style="width:18px;height:0;border-top:2.5px dashed #d6336c;display:inline-block;"></span>Trend</span>'; }
   return h+'</div>';
 }
+var WT_GADS_PALETTE=['#1a73e8','#34a853','#f59e0b','#d6336c','#7048e8','#0a66c2','#e8590c','#12b886','#845ef7','#fa5252','#15aabf','#f06595'];
+function wtMini(win,camp,color){
+  var pts=win.gads_points||[], n=pts.length;
+  var vals=[], maxV=0, tot=0;
+  for(var i=0;i<n;i++){ var v=pts[i][camp]||0; vals.push(v); tot+=v; if(v>maxV) maxV=v; }
+  if(maxV<=0) maxV=1;
+  var W=232,H=104, padL=6,padR=6,padT=16,padB=18, plotH=H-padT-padB, plotW=W-padL-padR;
+  var step=plotW/(n||1), bw=Math.min(14, step*0.7);
+  function xx(idx){ return padL+step*idx+step/2; }
+  function yy(val){ val=Math.max(0,Math.min(maxV,val)); return padT+plotH-plotH*val/maxV; }
+  var svg='<svg viewBox="0 0 '+W+' '+H+'" width="100%" preserveAspectRatio="xMinYMin meet" style="font-family:inherit;">';
+  svg+='<line x1="'+padL+'" y1="'+(padT+plotH)+'" x2="'+(padL+plotW)+'" y2="'+(padT+plotH)+'" stroke="#e0e7ee" stroke-width="1"/>';
+  for(var i=0;i<n;i++){ var v=vals[i]; if(v>0){ var h2=plotH*v/maxV; var x=padL+step*i+(step-bw)/2, y=padT+plotH-h2;
+    svg+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+h2.toFixed(1)+'" rx="1" fill="'+color+'"><title>'+escapeHtml(wtLabel(pts[i].t,win.granularity))+': '+v+'</title></rect>';
+  } }
+  if(n>=2){ var sx=0,sy=0,sxy=0,sxx=0; for(var k=0;k<n;k++){ sx+=k; sy+=vals[k]; sxy+=k*vals[k]; sxx+=k*k; }
+    var den=(n*sxx-sx*sx)||1, m=(n*sxy-sx*sy)/den, c=(sy-m*sx)/n;
+    svg+='<line x1="'+xx(0).toFixed(1)+'" y1="'+yy(c).toFixed(1)+'" x2="'+xx(n-1).toFixed(1)+'" y2="'+yy(m*(n-1)+c).toFixed(1)+'" stroke="#d6336c" stroke-width="1.5" stroke-dasharray="4 3"/>';
+  }
+  svg+='<text x="'+padL+'" y="11" font-size="9" fill="#9aa7b4">peak '+maxV+'/'+(win.granularity==='week'?'wk':'day')+'</text>';
+  svg+='</svg>';
+  var nm=camp.length>26?camp.slice(0,25)+'…':camp;
+  return '<div style="border:1px solid #e6ecf2;border-radius:8px;padding:8px 10px 6px;background:#fff;">'+
+    '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:6px;margin-bottom:2px;">'+
+    '<span style="font-size:12px;font-weight:600;color:#2c3e50;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="'+escapeHtml(camp)+'"><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:'+color+';margin-right:5px;"></span>'+escapeHtml(nm)+'</span>'+
+    '<span style="font-size:12px;font-weight:700;color:'+color+';white-space:nowrap;">'+tot.toLocaleString()+'</span></div>'+svg+'</div>';
+}
+function wtGadsGrid(win){
+  var camps=win.gads_campaigns||[];
+  if(!camps.length) return '<div class="empty" style="margin:6px 0;">No Google Ads campaign traffic in this window.</div>';
+  var h='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:6px 2px 4px;">';
+  for(var i=0;i<camps.length;i++){ h+=wtMini(win,camps[i],WT_GADS_PALETTE[i%WT_GADS_PALETTE.length]); }
+  return h+'</div>';
+}
 function renderWtPanel(){
   if(!WT){ document.getElementById('panel').innerHTML='<div class="empty">Loading website-traffic data…</div>'; loadWT(); return; }
   var allb=WT.buckets||[]; for(var z=0;z<allb.length;z++){ if(!(allb[z] in wtVisible)) wtVisible[allb[z]]=true; }
@@ -491,6 +525,8 @@ function renderWtPanel(){
         '<label style="cursor:pointer;display:inline-flex;gap:5px;align-items:center;"><input type="checkbox" onchange="wtToggleTrend(this.checked)"'+(wtTrend?' checked':'')+'> Trend line</label>'+
       '</span></div>'+
     wtLegend()+ wtBarSvg(win)+
+    '<div class="ca-h" style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;"><span>Google Ads visitors by campaign ('+escapeHtml(win.label)+')</span><span style="font-weight:400;font-size:12px;color:#7a8a99;">sessions per '+(win.granularity==='week'?'week':'day')+' &middot; one chart per campaign</span></div>'+
+    wtGadsGrid(win)+
     '<div class="ca-h" style="margin-top:18px;">Does it convert? Sales by source ('+escapeHtml(win.label)+')</div>'+
     '<div class="matrix-wrap" style="max-width:680px;"><table class="matrix"><thead><tr><th>Source</th><th class="c">Visitors</th><th class="c">Key-event conv.</th><th class="c">Conv. rate</th><th class="c">Revenue</th><th class="c">Orders</th></tr></thead><tbody>'+body+'</tbody></table></div>'+
     '<div style="margin:14px 16px;padding:12px 16px;background:#fff8e1;border-left:4px solid #ffc107;font-size:12px;border-radius:6px;line-height:1.55;color:#2c3e50;">'+
