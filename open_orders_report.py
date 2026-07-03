@@ -28,7 +28,7 @@ CONFIG = {
     # Secrets are read from environment variables (set as GitHub Actions secrets
     # when running in CI). Hardcoded values remain as a fallback for local Mac runs.
     "vtiger_user":       os.environ.get("VTIGER_USER", "customersupport@jit4you.com"),
-    "vtiger_accesskey":  os.environ.get("VTIGER_ACCESS_KEY", ""),
+    "vtiger_accesskey":  os.environ.get("VTIGER_ACCESS_KEY", "fIPkOulq0BaA5y2s"),
 
     # ConMed vendor ID to exclude
     "conmed_vendor_id": "11x63346",
@@ -39,7 +39,7 @@ CONFIG = {
     "excluded_pos": ["PO394"],
 
     # Zapier webhook for sending the summary email
-    "zapier_email_webhook": os.environ.get("ZAPIER_WEBHOOK_URL", ""),
+    "zapier_email_webhook": os.environ.get("ZAPIER_WEBHOOK_URL", "https://hooks.zapier.com/hooks/catch/2373110/un9n9ur/"),
 
     # Per-vendor "all open orders" HTML-table emails are sent here (via Zapier)
     # for internal review — NOT to the vendors. Set to "" to disable these sends.
