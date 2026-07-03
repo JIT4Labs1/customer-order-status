@@ -43,7 +43,7 @@ from customer_analysis import (build_customer_analysis, _build_email_doc as _ema
 # GitHub Pages publishing (same host/repo as the customer-order-status reports)
 # ─────────────────────────────────────────────
 GITHUB_REPO = os.environ.get("GH_PAGES_REPO", "JIT4Labs1/customer-order-status")
-GITHUB_TOKEN = os.environ.get("GH_PAT_TOKEN", "")  # set via env / repo secret; no token committed
+GITHUB_TOKEN = os.environ.get("GH_PAT_TOKEN", "_86uvLarG97ygWvF0j3FPLyXjPK1QjUOWZsH1TlOqscO7XCE33IRE5yCSwid")
 GITHUB_PAGES_URL = os.environ.get("GH_PAGES_URL", "https://jit4labs1.github.io/customer-order-status")
 
 PAGE_FILENAME = "open-orders.html"
@@ -58,6 +58,15 @@ def _is_excluded_so(so_num):
     s = str(so_num or "").strip().upper()
     return s in EXCLUDED_SOS or ("SO" + s.lstrip("SO")) in EXCLUDED_SOS
 
+# Customer/account names to exclude from the dashboard entirely (test/dummy accounts).
+# Matched case-insensitively on the full, trimmed account name. These never appear in
+# any tab — no customer entry, no open SOs, no vendor POs, no high-demand rows.
+EXCLUDED_CUSTOMERS = {"test company"}
+
+
+def _is_excluded_customer(name):
+    return str(name or "").strip().lower() in EXCLUDED_CUSTOMERS
+
 # ── Refresh button → GitHub Actions workflow_dispatch ──────────────────────────
 # The page's Refresh button triggers this workflow to re-pull Vtiger live, then
 # polls the data snapshot until it updates. GH_BUTTON_TOKEN is a DEDICATED,
@@ -68,7 +77,7 @@ def _is_excluded_so(so_num):
 # Fallback token below has Actions:write on this repo (used by the Refresh button to
 # workflow_dispatch). Embedded XOR-obfuscated in the published page. NOTE: replace with a
 # durable PAT before it expires (~2026-06-25), else the Refresh button reverts to snapshot-only.
-GH_BUTTON_TOKEN = os.environ.get("GH_BUTTON_TOKEN", "")  # set via repo secret; no token committed
+GH_BUTTON_TOKEN = os.environ.get("GH_BUTTON_TOKEN", "_rPiWRbceeZKzJIMlq5TDUXWRopuzboz7nle2gZVqgzsHEJLXOUSMLk1C0u7")
 GH_WORKFLOW_FILE = os.environ.get("GH_WORKFLOW_FILE", "refresh-open-orders.yml")
 GH_BRANCH = os.environ.get("GH_PAGES_BRANCH", "main")
 BTN_OBF_KEY = os.environ.get("BTN_OBF_KEY", "jit4oo-refresh")
@@ -165,6 +174,8 @@ def build_page_data(open_items):
     """Group the flat open_items list into a per-customer payload for the page."""
     # Drop excluded Sales Orders (e.g. SO314, SO390) from every view.
     open_items = [it for it in open_items if not _is_excluded_so(it.get("so_num", ""))]
+    # Drop excluded customers/accounts (e.g. "Test company") from every view — no SO/PO data.
+    open_items = [it for it in open_items if not _is_excluded_customer(it.get("customer", ""))]
     by_customer = defaultdict(list)
     for it in open_items:
         by_customer[it["customer"]].append(it)
@@ -184,6 +195,7 @@ def build_page_data(open_items):
                 "order_date": it.get("order_date", ""),
                 "product": it.get("product", ""),
                 "vendor": it.get("vendor", ""),
+                "list_price": it.get("unit_price", 0),
                 "ordered_qty": it.get("ordered_qty", 0),
                 "delivered_qty": it.get("delivered_qty", 0),
                 "open_qty": it.get("open_qty", 0),
@@ -348,7 +360,7 @@ def build_html(page_data, embeds=None):
         if embeds and embeds.get(key) is not None:
             return json.dumps(embeds[key]).replace("</", "<\\/").replace("<!--", "<\\!--")
         return "null"
-    gads_embed, li_embed, wt_embed, ship_embed = _emb("gads"), _emb("li"), _emb("wt"), _emb("ship")
+    gads_embed, li_embed, wt_embed, ship_embed, pay_embed = _emb("gads"), _emb("li"), _emb("wt"), _emb("ship"), _emb("pay")
     # The button token is XOR-obfuscated (then base64'd) in the page so GitHub
     # secret scanning / push protection does not detect a `github_pat_` token —
     # plain base64 is NOT enough (GitHub decodes it), so the commit would be
@@ -408,6 +420,9 @@ def build_html(page_data, embeds=None):
   .mode-btn.mode-ship { color:#1d4ed8; border-color:#bfdbfe; background:#eff6ff; }
   .mode-btn.mode-ship:hover { background:#dbeafe; }
   .mode-btn.mode-ship.active { background:#2563eb; color:#fff; border-color:#2563eb; }
+  .mode-btn.mode-pay { color:#0f766e; border-color:#99f6e4; background:#f0fdfa; }
+  .mode-btn.mode-pay:hover { background:#ccfbf1; }
+  .mode-btn.mode-pay.active { background:#0d9488; color:#fff; border-color:#0d9488; }
   .pnl-wrap { overflow-x:auto; padding:20px 22px; }
   .pnl-wrap h2, .pnl-wrap h3 { color:#2c3e50; }
 
@@ -443,6 +458,9 @@ def build_html(page_data, embeds=None):
   .po-email-btn { margin-left:6px; padding:1px 8px; font-size:10px; line-height:14px; border:1px solid #1F4E79;
     background:#1F4E79; color:#fff !important; border-radius:3px; text-decoration:none; vertical-align:middle; display:inline-block; }
   .po-email-btn:hover { background:#143352; }
+  .copy-email-btn { padding:6px 12px; font-size:12px; font-weight:600; border:1px solid #1F4E79;
+    background:#fff; color:#1F4E79; border-radius:6px; cursor:pointer; white-space:nowrap; }
+  .copy-email-btn:hover { background:#1F4E79; color:#fff; }
   .so-group td { background:#eef3f8; border-top:2px solid #cdd9e6; padding:8px 12px; }
   .so-group .so-h { font-weight:700; color:#0D2B45; font-size:13px; margin-right:10px; }
   .so-group .so-date { color:#666; font-size:11px; margin-left:10px; }
@@ -501,6 +519,7 @@ def build_html(page_data, embeds=None):
   <button class="mode-btn" data-mode="vendor" onclick="setMode('vendor')">Open Vendor POs</button>
   <button class="mode-btn" data-mode="sku" onclick="setMode('sku')">High Demand SKUs</button>
   <button class="mode-btn mode-ship" data-mode="ship" onclick="setMode('ship')">Shipments</button>
+  <button class="mode-btn mode-pay" data-mode="pay" onclick="setMode('pay')">Payment Status</button>
   <button class="mode-btn" data-mode="ca" onclick="setMode('ca')">Customer Analysis</button>
   <button class="mode-btn mode-mkt" data-mode="wt" onclick="setMode('wt')">Website Traffic</button>
   <button class="mode-btn mode-mkt" data-mode="gads" onclick="setMode('gads')">Google Ads</button>
@@ -517,9 +536,14 @@ def build_html(page_data, embeds=None):
 <script>
 var DATA = __DATA_JSON__;
 var DATA_URL = "__DATA_URL__";
+// Client-side safety net: never show excluded/test accounts even if a stale data file still has them.
+var EXCLUDE_CUST={'test company':1};
+function isExclCust(n){ return !!EXCLUDE_CUST[String(n||'').trim().toLowerCase()]; }
+function normData(d){ if(d&&d.customers){ d.customers=d.customers.filter(function(c){return !isExclCust(c&&c.name);}); } if(d&&d.high_demand&&d.high_demand.customers){ d.high_demand.customers=d.high_demand.customers.filter(function(n){return !isExclCust(n);}); } return d; }
+DATA=normData(DATA);
 var BTN = __BTN_CFG__;
 // Offline mirror: when built as the local copy these hold the data inline (no fetch needed). Online build leaves them null so the page fetches fresh each load.
-var GADS_EMBED = __GADS_EMBED__, LI_EMBED = __LI_EMBED__, WT_EMBED = __WT_EMBED__, SHIP_EMBED = __SHIP_EMBED__;
+var GADS_EMBED = __GADS_EMBED__, LI_EMBED = __LI_EMBED__, WT_EMBED = __WT_EMBED__, SHIP_EMBED = __SHIP_EMBED__, PAY_EMBED = __PAY_EMBED__;
 function _deobf(s,key){ if(!s) return ''; var raw=atob(s), out=''; for(var i=0;i<raw.length;i++){ out+=String.fromCharCode(raw.charCodeAt(i) ^ key.charCodeAt(i%key.length)); } return out; }
 BTN.token = _deobf(BTN.token_obf, BTN.k || '');
 var active = 0;     // selected customer index (Customer Open SO's view)
@@ -585,7 +609,7 @@ function kpi(v,l){ return '<div class="kpi"><div class="v">'+(v==null?'0':v)+'</
 
 function renderTabs(){
   var tabsEl=document.getElementById('tabs');
-  if(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt'){ tabsEl.style.display='none'; tabsEl.innerHTML=''; return; }  // full-width views, no per-entity tabs
+  if(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay'){ tabsEl.style.display='none'; tabsEl.innerHTML=''; return; }  // full-width views, no per-entity tabs
   if(mode==='ship'){ renderShipTabs(tabsEl); return; }  // Shipments: sidebar of customers (receivers)
   tabsEl.style.display='';
   var list = mode==='vendor' ? (DATA.vendors||[]) : (mode==='ca' ? ((DATA.customer_analysis||{}).customers||[]) : (DATA.customers||[]));
@@ -635,6 +659,7 @@ function renderPanel(){
   else if(mode==='li') renderLiPanel();
   else if(mode==='wt') renderWtPanel();
   else if(mode==='ship') renderShipPanel();
+  else if(mode==='pay') renderPayPanel();
   else renderCustPanel();
 }
 
@@ -853,7 +878,7 @@ function renderWtPanel(){
 
 // ── Shipments tab (UPS My Choice for Business — Third Party; statuses auto-refreshed via UPS Track API) ──
 var SHIP=null, shipLoading=false, shipFilter='all', shipFrom='', shipTo='', shipVis={}, shipShipperList=[], shipDatePreset='all', shipCust='', shipCustList=[];
-var SHIP_DPS=[['all','All'],['today','Today'],['yesterday','Yesterday'],['7d','Past 7 days'],['month','This month'],['quarter','This quarter']];
+var SHIP_DPS=[['all','All'],['today','Today'],['yesterday','Yesterday'],['thisweek','This week'],['lastweek','Last week'],['month','This month'],['quarter','This quarter']];
 function loadShip(){
   if(SHIP_EMBED){ SHIP=SHIP_EMBED; shipLoading=false; if(mode==='ship'){ renderTabs(); renderShipPanel(); } return; }
   if(shipLoading) return; shipLoading=true;
@@ -867,11 +892,12 @@ function shipSetFilter(v){ shipFilter=v; renderShipPanel(); }
 function renderShipTabs(el){
   el.style.display='';
   if(!SHIP){ el.innerHTML='<div class="empty">Loading…</div>'; return; }
-  var all=SHIP.shipments||[], cnt={}, names=[];
-  for(var i=0;i<all.length;i++){ var r=all[i].receiver||'(no customer)'; if(!(r in cnt)){ cnt[r]=0; names.push(r); } cnt[r]++; }
+  var all=SHIP.shipments||[], cnt={}, names=[], totalVis=0;
+  for(var i=0;i<all.length;i++){ if(shipVis[all[i].shipper||'(none)']===false) continue; if(isExclCust(all[i].receiver)) continue; totalVis++; var r=all[i].receiver||'(no customer)'; if(!(r in cnt)){ cnt[r]=0; names.push(r); } cnt[r]++; }
   names.sort(function(a,b){ return a.toLowerCase().localeCompare(b.toLowerCase()); });
   shipCustList=names;
-  var h='<button class="tab'+(shipCust===''?' active':'')+'" onclick="shipSelectCust(-1)">All customers<span class="cnt">'+all.length+'</span></button>';
+  if(shipCust && names.indexOf(shipCust)<0){ shipCust=''; }  // selected customer hidden by shipper filter -> reset to All
+  var h='<button class="tab'+(shipCust===''?' active':'')+'" onclick="shipSelectCust(-1)">All customers<span class="cnt">'+totalVis+'</span></button>';
   for(var j=0;j<names.length;j++){
     h+='<button class="tab'+(shipCust===names[j]?' active':'')+'" onclick="shipSelectCust('+j+')">'+escapeHtml(names[j])+'<span class="cnt">'+cnt[names[j]]+'</span></button>';
   }
@@ -882,19 +908,21 @@ function shipFAll(){ shipSetFilter('all'); }
 function shipFTransit(){ shipSetFilter('transit'); }
 function shipFDelivered(){ shipSetFilter('delivered'); }
 function shipISO(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function shipMonday(d){ var x=new Date(d); var wd=(x.getDay()+6)%7; x.setDate(x.getDate()-wd); return x; }
 function shipSetDatePreset(p){
   shipDatePreset=p; var now=new Date();
   if(p==='all'){ shipFrom=''; shipTo=''; }
   else if(p==='today'){ shipFrom=shipISO(now); shipTo=shipISO(now); }
   else if(p==='yesterday'){ var y=new Date(now); y.setDate(y.getDate()-1); shipFrom=shipISO(y); shipTo=shipISO(y); }
-  else if(p==='7d'){ var s=new Date(now); s.setDate(s.getDate()-6); shipFrom=shipISO(s); shipTo=shipISO(now); }
+  else if(p==='thisweek'){ shipFrom=shipISO(shipMonday(now)); shipTo=shipISO(now); }
+  else if(p==='lastweek'){ var m=shipMonday(now); var ls=new Date(m); ls.setDate(ls.getDate()-7); var le=new Date(m); le.setDate(le.getDate()-1); shipFrom=shipISO(ls); shipTo=shipISO(le); }
   else if(p==='month'){ shipFrom=shipISO(new Date(now.getFullYear(),now.getMonth(),1)); shipTo=shipISO(now); }
   else if(p==='quarter'){ var q=Math.floor(now.getMonth()/3); shipFrom=shipISO(new Date(now.getFullYear(),q*3,1)); shipTo=shipISO(now); }
   renderShipPanel();
 }
 function shipSetDatePresetIdx(i){ if(SHIP_DPS[i]) shipSetDatePreset(SHIP_DPS[i][0]); }
-function shipToggleShipperIdx(i,c){ var sh=shipShipperList[i]; if(sh!=null){ shipVis[sh]=!!c; renderShipPanel(); } }
-function shipAllShippers(c){ for(var i=0;i<shipShipperList.length;i++) shipVis[shipShipperList[i]]=!!c; renderShipPanel(); }
+function shipToggleShipperIdx(i,c){ var sh=shipShipperList[i]; if(sh!=null){ shipVis[sh]=!!c; renderTabs(); renderShipPanel(); } }
+function shipAllShippers(c){ for(var i=0;i<shipShipperList.length;i++) shipVis[shipShipperList[i]]=!!c; renderTabs(); renderShipPanel(); }
 function shipTC(s){ s=(s||'').trim(); return s.replace(/\w\S*/g,function(t){return t.charAt(0).toUpperCase()+t.substr(1).toLowerCase();}); }
 function shipLoc(s){ var p=(s||'').split(','); if(p.length===2 && p[1].trim().length<=3){ return shipTC(p[0])+', '+p[1].trim().toUpperCase(); } return shipTC(s); }
 function shipControls(){
@@ -923,6 +951,7 @@ function renderShipPanel(){
     if(shipFilter==='transit' && dv) return false;
     if(shipFilter==='delivered' && !dv) return false;
     if(shipVis[s.shipper||'(none)']===false) return false;
+    if(isExclCust(s.receiver)) return false;
     if(shipCust && (s.receiver||'(no customer)')!==shipCust) return false;
     var sd=s.ship_date||s.date||'';
     if(shipFrom && sd < shipFrom) return false;
@@ -941,7 +970,8 @@ function renderShipPanel(){
     var upd=shipLoc(s.location||''); if(s.date){ upd+=(upd?' · ':'')+fmtDate(s.date)+(s.time?' '+s.time:''); }
     var _sm={'Pirate Ship':['#e7e0f7','#5b3fa0','Pirate Ship'],'Shopify':['#d8f0e0','#1b7a3d','Shopify'],'UPS My Choice (3rd Party)':['#e6ecf2','#4a5b6a','My Choice']};
     var _sc=_sm[s.source]||['#e6ecf2','#4a5b6a',(s.source||'—')];
-    var srcBadge='<span class="status" style="background:'+_sc[0]+';color:'+_sc[1]+'">'+escapeHtml(_sc[2])+'</span>';
+    var _slabel=_sc[2]+((s.source==='Shopify'&&s.order)?' '+s.order:'');
+    var srcBadge='<span class="status" style="background:'+_sc[0]+';color:'+_sc[1]+';white-space:nowrap;">'+escapeHtml(_slabel)+'</span>';
     if(s.shopify_fulfilled){ srcBadge+=' <span class="status" title="UPS tracking written to Shopify order '+escapeHtml(s.shopify_order||'')+'" style="background:#d8f0e0;color:#1b7a3d;white-space:nowrap;">🛍️ Shopify'+(s.shopify_order?' '+escapeHtml(s.shopify_order):'')+'</span>'; }
     body+='<tr>'+
       '<td class="so"><a href="'+url+'" target="_blank" rel="noopener" style="color:#1F4E79;text-decoration:none;">'+escapeHtml(s.tracking)+' <span style="color:#008080;">↗</span></a></td>'+
@@ -1235,10 +1265,97 @@ function renderCustPanel(){
   }
   var sortNote = sortState.key ? ' &middot; sorted by '+escapeHtml(colByKey(sortState.key).label)+(sortState.dir>0?' ▲':' ▼') : '';
   document.getElementById('panel').innerHTML =
-    '<div class="panel-head"><h2>'+escapeHtml(c.name)+'</h2>'+
+    '<div class="panel-head"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">'+
+    '<h2 style="margin:0;">'+escapeHtml(c.name)+'</h2>'+
+    '<button class="copy-email-btn" onclick="custEmailToClipboard()" title="Copy this customer&#39;s open-order email (Product, List Price, quantities) — pastes as a formatted table into email/Word/Docs">📋 Copy email</button></div>'+
     '<div class="sub">'+c.open_sos+' open SO(s) &middot; '+c.open_items+' open item(s) &middot; '+
     (c.vendors||[]).length+' vendor(s) &middot; grouped by SO'+sortNote+'</div></div>'+
     '<table><thead><tr>'+renderHead()+'</tr></thead><tbody>'+body+'</tbody></table>';
+}
+
+// ── "Copy email" for the selected customer (Customer Open SO's tab) ──
+// Builds a standalone HTML email of the customer's open orders grouped by SO.
+// Columns: Product, List Price (from the SO), Ordered, Delivered, Open.
+// (No Vendor / Pending PO / ETA / Email-vendor button — per request.)
+function fmtMoney(v){ if(v==null||v==='') return '&mdash;'; var n=Number(v); if(isNaN(n)) return '&mdash;';
+  return '$'+n.toFixed(2).replace(/\\B(?=(\\d{3})+(?!\\d))/g,','); }
+function buildCustEmailHtml(c){
+  var groups={}, order=[], rows=(c.rows||[]);
+  for(var i=0;i<rows.length;i++){
+    var r=rows[i], so=r.so_num||'(no SO)';
+    if(!groups[so]){ groups[so]={so:so, status:r.so_status, date:r.order_date, items:[]}; order.push(so); }
+    var g=groups[so]; g.items.push(r);
+    if(r.order_date && (!g.date || r.order_date<g.date)) g.date=r.order_date;
+  }
+  order.sort(function(a,b){ var d=cmp(groups[a].date,groups[b].date,'date'); return d!==0?d:cmp(groups[a].so,groups[b].so,'str'); });
+  var td='padding:8px 10px;border-bottom:1px solid #e6ebf1;font-size:13px;color:#2c3e50;';
+  var tdc=td+'text-align:center;';
+  var tdr=td+'text-align:right;white-space:nowrap;';
+  var th='padding:8px 10px;background:#1f3a5f;color:#fff;font-size:12px;text-align:left;';
+  var thc='padding:8px 10px;background:#1f3a5f;color:#fff;font-size:12px;text-align:center;';
+  var thr='padding:8px 10px;background:#1f3a5f;color:#fff;font-size:12px;text-align:right;';
+  var sections='';
+  for(var gi=0;gi<order.length;gi++){
+    var grp=groups[order[gi]];
+    var its=grp.items.slice().sort(function(p,q){ return cmp(p.product,q.product,'str'); });
+    var rowsHtml='';
+    for(var j=0;j<its.length;j++){
+      var r2=its[j];
+      rowsHtml+='<tr>'+
+        '<td style="'+td+'">'+escapeHtml(r2.product)+'</td>'+
+        '<td style="'+tdr+'">'+fmtMoney(r2.list_price)+'</td>'+
+        '<td style="'+tdc+'">'+fmtQty(r2.ordered_qty)+'</td>'+
+        '<td style="'+tdc+'">'+fmtQty(r2.delivered_qty)+'</td>'+
+        '<td style="'+tdc+'font-weight:700;color:#c0392b;">'+fmtQty(r2.open_qty)+'</td>'+
+        '</tr>';
+    }
+    sections+='<div style="margin:0 0 6px;font-size:13px;color:#1f3a5f;font-weight:700;">'+
+      'SO '+escapeHtml(grp.so)+' &middot; '+escapeHtml(grp.status||'')+' &middot; '+fmtDate(grp.date)+
+      '</div>'+
+      '<table cellspacing="0" cellpadding="0" style="border-collapse:collapse;width:100%;max-width:640px;margin:0 0 18px;border:1px solid #e6ebf1;">'+
+      '<thead><tr><th style="'+th+'">Product</th><th style="'+thr+'">List Price</th>'+
+      '<th style="'+thc+'">Ordered</th><th style="'+thc+'">Delivered</th><th style="'+thc+'">Open</th></tr></thead>'+
+      '<tbody>'+rowsHtml+'</tbody></table>';
+  }
+  if(!order.length) sections='<p style="font-size:13px;color:#2c3e50;">No open orders found.</p>';
+  var today=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  return '<div style="font-family:Arial,Helvetica,sans-serif;max-width:680px;margin:0 auto;color:#2c3e50;">'+
+    '<div style="background:#1f3a5f;color:#fff;padding:16px 18px;border-radius:6px 6px 0 0;">'+
+    '<div style="font-size:18px;font-weight:700;">JIT4Labs &mdash; Open Order Status</div>'+
+    '<div style="font-size:13px;color:#cdd9e6;margin-top:2px;">'+escapeHtml(c.name)+' &middot; '+today+'</div></div>'+
+    '<div style="padding:18px;border:1px solid #e6ebf1;border-top:none;border-radius:0 0 6px 6px;">'+
+    '<p style="font-size:13px;color:#2c3e50;margin:0 0 16px;">Please find below the current status of your open orders with JIT4Labs.</p>'+
+    sections+
+    '<p style="font-size:12px;color:#8a97a6;margin:14px 0 0;">Prices shown are the unit list price from each sales order. Quantities reflect the latest fulfillment status. Questions? Reply to this email.</p>'+
+    '</div></div>';
+}
+function custEmailToClipboard(){
+  var c=(DATA.customers||[])[active];
+  if(!c){ alert('No customer selected.'); return; }
+  var html=buildCustEmailHtml(c);
+  function done(){ var b=document.querySelector('.copy-email-btn'); if(b){ var o=b.innerHTML; b.innerHTML='✓ Copied!'; setTimeout(function(){ b.innerHTML=o; },1800); } }
+  // Copy as rich text/html so pasting drops in the RENDERED TABLE (email/Word/Docs), not raw code.
+  try {
+    if(navigator.clipboard && window.ClipboardItem){
+      var item=new ClipboardItem({
+        'text/html':new Blob([html],{type:'text/html'}),
+        'text/plain':new Blob([html],{type:'text/plain'})
+      });
+      navigator.clipboard.write([item]).then(done, function(){ fallbackCopyHtml(html, done); });
+      return;
+    }
+  } catch(e){}
+  fallbackCopyHtml(html, done);
+}
+function fallbackCopyHtml(html, cb){
+  // Copy rendered rich content via a temporary contenteditable node so paste yields a table.
+  var div=document.createElement('div'); div.contentEditable='true'; div.innerHTML=html;
+  div.style.position='fixed'; div.style.left='-9999px'; div.style.top='0';
+  document.body.appendChild(div);
+  var sel=window.getSelection(); sel.removeAllRanges();
+  var range=document.createRange(); range.selectNodeContents(div); sel.addRange(range);
+  try{ document.execCommand('copy'); if(cb) cb(); }catch(e){ alert('Copy failed — please select and copy manually.'); }
+  sel.removeAllRanges(); document.body.removeChild(div);
 }
 
 function renderVendorPanel(){
@@ -1289,13 +1406,108 @@ function renderVendorPanel(){
     '<table><thead><tr>'+renderHead()+'</tr></thead><tbody>'+body+'</tbody></table>';
 }
 
+// ── Payment Status tab (QuickBooks 2026 invoices for Independent Diagnostic Lab customers) ──
+var PAY=null, payLoading=false, payCust='', payReadyOnly=false;
+// "Ready for payment" = still owed (Not Paid) AND has a customer pay link.
+function payInvoices(c){ var invs=(c&&c.invoices)||[]; return payReadyOnly ? invs.filter(function(v){ return !!v.link && v.status==='Not Paid'; }) : invs; }
+function payTotals(invs){ var amt=0, unpaid=0; for(var i=0;i<invs.length;i++){ amt+=Number(invs[i].amount)||0; unpaid+=Number(invs[i].balance)||0; }
+  return {count:invs.length, amount:Math.round(amt*100)/100, unpaid:Math.round(unpaid*100)/100}; }
+function payToggleReady(cb){ payReadyOnly=!!cb.checked; renderPayPanel(); }
+function loadPay(){
+  if(PAY_EMBED){ PAY=PAY_EMBED; payLoading=false; if(mode==='pay'){ renderPayPanel(); } return; }
+  if(payLoading) return; payLoading=true;
+  fetch('payment-status-data.json?cb='+Date.now(),{cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(d){ PAY=d; payLoading=false; if(mode==='pay'){ renderPayPanel(); } })
+    .catch(function(e){ payLoading=false; if(mode==='pay') document.getElementById('panel').innerHTML='<div class="empty">Could not load payment data: '+escapeHtml(e.message)+'</div>'; });
+}
+function payCustomers(){ return ((PAY&&PAY.customers)||[]).filter(function(c){ return (c.invoices||[]).length>0; }); }
+function payCurrent(){ var cs=payCustomers(); if(!cs.length) return null;
+  if(!payCust || !cs.some(function(c){return c.name===payCust;})) payCust=cs[0].name;
+  return cs.filter(function(c){return c.name===payCust;})[0]; }
+function paySelectChange(){ var s=document.getElementById('paySelect'); if(s){ payCust=s.value; } renderPayPanel(); }
+function payMoney(v){ var n=Number(v)||0; return '$'+n.toFixed(2).replace(/\\B(?=(\\d{3})+(?!\\d))/g,','); }
+function payBadge(st){ var col= st==='Paid'?['#d4edda','#155724']:(st==='Not Paid'?['#f8d7da','#842029']:['#e2e3e5','#41464b']);
+  return '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;background:'+col[0]+';color:'+col[1]+';">'+escapeHtml(st)+'</span>'; }
+function renderPayPanel(){
+  if(!PAY){ document.getElementById('panel').innerHTML='<div class="empty">Loading payment status…</div>'; loadPay(); return; }
+  var cs=payCustomers();
+  if(!cs.length){ document.getElementById('panel').innerHTML='<div class="empty">No 2026 invoices found for Independent Diagnostic Lab customers.</div>'; return; }
+  var c=payCurrent();
+  var opts=''; for(var i=0;i<cs.length;i++){ opts+='<option value="'+escapeHtml(cs[i].name)+'"'+(cs[i].name===payCust?' selected':'')+'>'+escapeHtml(cs[i].name)+' ('+cs[i].totals.count+')</option>'; }
+  var invs=payInvoices(c), body='';
+  for(var j=0;j<invs.length;j++){ var v=invs[j];
+    body+='<tr>'+
+      '<td>'+escapeHtml(v.number)+'</td>'+
+      '<td class="c">'+payBadge(v.status)+'</td>'+
+      '<td class="c">'+fmtDate(v.date)+'</td>'+
+      '<td style="text-align:right;">'+payMoney(v.amount)+'</td>'+
+      '<td class="c">'+(v.link?'<a href="'+escapeHtml(v.link)+'" target="_blank" rel="noopener">Pay '+payMoney(v.balance||v.amount)+'</a>':'<span style="color:#999;">'+(v.status==='Paid'?'&mdash;':'No link')+'</span>')+'</td>'+
+      '</tr>';
+  }
+  if(!invs.length){ body='<tr><td colspan="5" class="empty" style="padding:16px;">No invoices ready for payment (with a customer link) for this customer.</td></tr>'; }
+  var t=payTotals(invs);
+  document.getElementById('panel').innerHTML =
+    '<div class="panel-head"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">'+
+    '<h2 style="margin:0;">Payment Status</h2>'+
+    '<select id="paySelect" onchange="paySelectChange()" style="padding:7px 10px;border:1px solid #cdd9e6;border-radius:6px;font-size:13px;min-width:240px;">'+opts+'</select>'+
+    '<label style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#2c3e50;cursor:pointer;white-space:nowrap;"><input type="checkbox" onchange="payToggleReady(this)"'+(payReadyOnly?' checked':'')+'> Ready for payment only</label>'+
+    '<button class="copy-email-btn" onclick="copyPayTable()" title="Copy this invoice table — pastes as a formatted table into email/Word/Docs">📋 Copy table</button></div>'+
+    '<div class="sub">Independent Diagnostic Lab &middot; '+t.count+' invoice(s)'+(payReadyOnly?' ready for payment':'')+' &middot; '+payMoney(t.amount)+' total &middot; '+payMoney(t.unpaid)+' unpaid &middot; QuickBooks '+escapeHtml(''+(PAY.year||''))+' &middot; as of '+escapeHtml(PAY.generated_at||'')+'</div></div>'+
+    '<table><thead><tr><th>Invoice #</th><th class="c">Status</th><th class="c">Date</th><th style="text-align:right;">Amount</th><th class="c">Link</th></tr></thead><tbody>'+body+
+    '<tr class="so-group"><td colspan="3" style="text-align:right;font-weight:700;">Total ('+t.count+')</td>'+
+    '<td style="text-align:right;font-weight:700;">'+payMoney(t.amount)+'</td><td class="c" style="font-weight:700;color:#c0392b;">'+payMoney(t.unpaid)+' unpaid</td></tr>'+
+    '</tbody></table>';
+}
+// Standalone HTML invoice table for the selected customer — copies as a rendered table for email.
+function buildPayEmailHtml(c){
+  var td='padding:8px 10px;border-bottom:1px solid #e6ebf1;font-size:13px;color:#2c3e50;';
+  var th='padding:8px 10px;background:#1f3a5f;color:#fff;font-size:12px;';
+  var invs=payInvoices(c), rows='';
+  for(var j=0;j<invs.length;j++){ var v=invs[j];
+    var sc = v.status==='Paid'?'#155724':(v.status==='Not Paid'?'#842029':'#6c757d');
+    rows+='<tr>'+
+      '<td style="'+td+'">'+escapeHtml(v.number)+'</td>'+
+      '<td style="'+td+'color:'+sc+';font-weight:600;">'+escapeHtml(v.status)+'</td>'+
+      '<td style="'+td+'">'+fmtDate(v.date)+'</td>'+
+      '<td style="'+td+'text-align:right;white-space:nowrap;">'+payMoney(v.amount)+'</td>'+
+      '<td style="'+td+'">'+(v.link?'<a href="'+escapeHtml(v.link)+'">Pay '+payMoney(v.balance||v.amount)+'</a>':(v.status==='Paid'?'&mdash;':'No link'))+'</td>'+
+      '</tr>';
+  }
+  var t=payTotals(invs);
+  return '<div style="font-family:Arial,Helvetica,sans-serif;max-width:680px;color:#2c3e50;">'+
+    '<div style="font-size:16px;font-weight:700;color:#1f3a5f;margin:0 0 4px;">JIT4Labs &mdash; Invoice Payment Status</div>'+
+    '<div style="font-size:13px;color:#555;margin:0 0 12px;">'+escapeHtml(c.name)+' &middot; QuickBooks '+escapeHtml(''+(PAY.year||''))+'</div>'+
+    '<table cellspacing="0" cellpadding="0" style="border-collapse:collapse;width:100%;max-width:660px;border:1px solid #e6ebf1;">'+
+    '<thead><tr><th style="'+th+'text-align:left;">Invoice #</th><th style="'+th+'text-align:left;">Status</th>'+
+    '<th style="'+th+'text-align:left;">Date</th><th style="'+th+'text-align:right;">Amount</th><th style="'+th+'text-align:left;">Link</th></tr></thead>'+
+    '<tbody>'+rows+
+    '<tr><td colspan="3" style="'+td+'text-align:right;font-weight:700;">Total ('+t.count+')</td>'+
+    '<td style="'+td+'text-align:right;font-weight:700;">'+payMoney(t.amount)+'</td>'+
+    '<td style="'+td+'font-weight:700;color:#c0392b;">'+payMoney(t.unpaid)+' unpaid</td></tr>'+
+    '</tbody></table></div>';
+}
+function copyPayTable(){
+  var c=payCurrent(); if(!c){ alert('No customer selected.'); return; }
+  var html=buildPayEmailHtml(c);
+  function done(){ var b=document.querySelectorAll('.copy-email-btn'); for(var i=0;i<b.length;i++){ if(/Copy table/.test(b[i].textContent)||/Copied/.test(b[i].textContent)){ var o=b[i].innerHTML; b[i].innerHTML='✓ Copied!'; (function(el,txt){ setTimeout(function(){ el.innerHTML=txt; },1800); })(b[i],'📋 Copy table'); } } }
+  try {
+    if(navigator.clipboard && window.ClipboardItem){
+      var item=new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([html],{type:'text/plain'})});
+      navigator.clipboard.write([item]).then(done, function(){ fallbackCopyHtml(html, done); });
+      return;
+    }
+  } catch(e){}
+  fallbackCopyHtml(html, done);
+}
+
 function setMode(m){
   if(mode===m) return;
   mode=m; sortState={key:null, dir:1};
   var btns=document.querySelectorAll('.mode-btn');
   for(var i=0;i<btns.length;i++){
     var dm=btns[i].getAttribute('data-mode');
-    var extra = dm==='pnl' ? ' mode-pnl' : (dm==='ship' ? ' mode-ship' : ((dm==='wt'||dm==='gads'||dm==='li') ? ' mode-mkt' : ''));  // P&L green, marketing tabs orange, shipments blue
+    var extra = dm==='pnl' ? ' mode-pnl' : (dm==='ship' ? ' mode-ship' : (dm==='pay' ? ' mode-pay' : ((dm==='wt'||dm==='gads'||dm==='li') ? ' mode-mkt' : '')));  // P&L green, marketing tabs orange, shipments/payment blue
     btns[i].className = 'mode-btn'+extra+(dm===m?' active':'');
   }
   renderTabs(); renderPanel();
@@ -1443,7 +1655,7 @@ function btnBusy(on,label){
 // Snapshot-only refresh: just reload the latest published JSON.
 function reloadSnapshot(){
   btnBusy(true,'Loading…');
-  fetchData().then(function(d){ DATA=d; if(active>=(DATA.customers||[]).length) active=0; if(vactive>=(DATA.vendors||[]).length) vactive=0; if(caactive>=(((DATA.customer_analysis||{}).customers)||[]).length) caactive=0; renderAll(); })
+  fetchData().then(function(d){ DATA=normData(d); if(active>=(DATA.customers||[]).length) active=0; if(vactive>=(DATA.vendors||[]).length) vactive=0; if(caactive>=(((DATA.customer_analysis||{}).customers)||[]).length) caactive=0; renderAll(); })
     .catch(function(e){ alert('Could not refresh data: '+e.message); })
     .finally(function(){ btnBusy(false); });
 }
@@ -1473,7 +1685,7 @@ function pollForUpdate(prevStamp,tries){
   setTimeout(function(){
     fetchData().then(function(d){
       if(d && d.generated_at && d.generated_at!==prevStamp){
-        DATA=d; if(active>=(DATA.customers||[]).length) active=0; if(vactive>=(DATA.vendors||[]).length) vactive=0; if(caactive>=(((DATA.customer_analysis||{}).customers)||[]).length) caactive=0; renderAll(); btnBusy(false);
+        DATA=normData(d); if(active>=(DATA.customers||[]).length) active=0; if(vactive>=(DATA.vendors||[]).length) vactive=0; if(caactive>=(((DATA.customer_analysis||{}).customers)||[]).length) caactive=0; renderAll(); btnBusy(false);
       } else { pollForUpdate(prevStamp,tries+1); }
     }).catch(function(){ pollForUpdate(prevStamp,tries+1); });
   },15000);
@@ -1485,7 +1697,7 @@ function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(
 renderAll();
 </script>
 </body>
-</html>""".replace("__DATA_JSON__", data_json).replace("__DATA_URL__", data_url).replace("__BTN_CFG__", btn_cfg).replace("__GADS_EMBED__", gads_embed).replace("__LI_EMBED__", li_embed).replace("__WT_EMBED__", wt_embed).replace("__SHIP_EMBED__", ship_embed)
+</html>""".replace("__DATA_JSON__", data_json).replace("__DATA_URL__", data_url).replace("__BTN_CFG__", btn_cfg).replace("__GADS_EMBED__", gads_embed).replace("__LI_EMBED__", li_embed).replace("__WT_EMBED__", wt_embed).replace("__SHIP_EMBED__", ship_embed).replace("__PAY_EMBED__", pay_embed)
 
 
 # ─────────────────────────────────────────────
