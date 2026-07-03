@@ -433,38 +433,79 @@ function wtLegend(){
   if(wtTrend){ h+='<span style="display:inline-flex;align-items:center;gap:6px;color:#7a8a99;"><span style="width:18px;height:0;border-top:2.5px dashed #d6336c;display:inline-block;"></span>Trend</span>'; }
   return h+'</div>';
 }
-var WT_GADS_PALETTE=['#1a73e8','#34a853','#f59e0b','#d6336c','#7048e8','#0a66c2','#e8590c','#12b886','#845ef7','#fa5252','#15aabf','#f06595'];
-function wtMini(win,camp,color){
-  var pts=win.gads_points||[], n=pts.length;
-  var vals=[], maxV=0, tot=0;
-  for(var i=0;i<n;i++){ var v=pts[i][camp]||0; vals.push(v); tot+=v; if(v>maxV) maxV=v; }
-  if(maxV<=0) maxV=1;
-  var W=232,H=104, padL=6,padR=6,padT=16,padB=18, plotH=H-padT-padB, plotW=W-padL-padR;
-  var step=plotW/(n||1), bw=Math.min(14, step*0.7);
-  function xx(idx){ return padL+step*idx+step/2; }
-  function yy(val){ val=Math.max(0,Math.min(maxV,val)); return padT+plotH-plotH*val/maxV; }
+var WT_IMPR_COLOR='#1a73e8', WT_CLK_COLOR='#e8590c';
+function wtGrowth(vals){ // % change from regression start->end
+  var n=vals.length; if(n<2) return null;
+  var sx=0,sy=0,sxy=0,sxx=0; for(var k=0;k<n;k++){ sx+=k; sy+=vals[k]; sxy+=k*vals[k]; sxx+=k*k; }
+  var den=(n*sxx-sx*sx)||1, m=(n*sxy-sx*sy)/den, c=(sy-m*sx)/n;
+  var start=c, end=m*(n-1)+c;
+  var g = start>0 ? (end-start)/start*100 : (end>0?100:0);
+  return { m:m, c:c, start:start, end:end, pct:Math.round(g) };
+}
+function wtPctBadge(pct){
+  if(pct===null||pct===undefined) return '';
+  var pos=pct>=0, col=pos?'#188038':'#d93025', ar=pos?'▲':'▼';
+  return '<span style="color:'+col+';font-weight:700;">'+ar+Math.abs(pct)+'%</span>';
+}
+function wtMini(win,camp){
+  var ser=(win.gads_series||{})[camp]||[], n=ser.length;
+  var impr=[],clk=[], imprMax=0,clkMax=0, imprTot=0,clkTot=0;
+  for(var i=0;i<n;i++){ var a=ser[i].impr||0, b=ser[i].clicks||0; impr.push(a); clk.push(b);
+    imprTot+=a; clkTot+=b; if(a>imprMax)imprMax=a; if(b>clkMax)clkMax=b; }
+  if(imprMax<=0)imprMax=1; if(clkMax<=0)clkMax=1;
+  var W=250,H=132, padL=6,padR=8,padT=14,padB=28, plotH=H-padT-padB, plotW=W-padL-padR;
+  function X(i){ return padL+(n>1?plotW*i/(n-1):plotW/2); }
+  function Yi(v){ v=Math.max(0,Math.min(imprMax,v)); return padT+plotH-plotH*v/imprMax; }
+  function Yc(v){ v=Math.max(0,Math.min(clkMax,v)); return padT+plotH-plotH*v/clkMax; }
   var svg='<svg viewBox="0 0 '+W+' '+H+'" width="100%" preserveAspectRatio="xMinYMin meet" style="font-family:inherit;">';
-  svg+='<line x1="'+padL+'" y1="'+(padT+plotH)+'" x2="'+(padL+plotW)+'" y2="'+(padT+plotH)+'" stroke="#e0e7ee" stroke-width="1"/>';
-  for(var i=0;i<n;i++){ var v=vals[i]; if(v>0){ var h2=plotH*v/maxV; var x=padL+step*i+(step-bw)/2, y=padT+plotH-h2;
-    svg+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+h2.toFixed(1)+'" rx="1" fill="'+color+'"><title>'+escapeHtml(wtLabel(pts[i].t,win.granularity))+': '+v+'</title></rect>';
-  } }
-  if(n>=2){ var sx=0,sy=0,sxy=0,sxx=0; for(var k=0;k<n;k++){ sx+=k; sy+=vals[k]; sxy+=k*vals[k]; sxx+=k*k; }
-    var den=(n*sxx-sx*sx)||1, m=(n*sxy-sx*sy)/den, c=(sy-m*sx)/n;
-    svg+='<line x1="'+xx(0).toFixed(1)+'" y1="'+yy(c).toFixed(1)+'" x2="'+xx(n-1).toFixed(1)+'" y2="'+yy(m*(n-1)+c).toFixed(1)+'" stroke="#d6336c" stroke-width="1.5" stroke-dasharray="4 3"/>';
+  // gridlines
+  for(var g=0;g<=2;g++){ var gy=padT+plotH*g/2; svg+='<line x1="'+padL+'" y1="'+gy.toFixed(1)+'" x2="'+(padL+plotW)+'" y2="'+gy.toFixed(1)+'" stroke="#eef2f6" stroke-width="1"/>'; }
+  svg+='<line x1="'+padL+'" y1="'+(padT+plotH)+'" x2="'+(padL+plotW)+'" y2="'+(padT+plotH)+'" stroke="#dbe3ec" stroke-width="1"/>';
+  function poly(arr,Yf){ var p=''; for(var i=0;i<n;i++){ p+=X(i).toFixed(1)+','+Yf(arr[i]).toFixed(1)+' '; } return p; }
+  if(n>=1){
+    svg+='<polyline points="'+poly(impr,Yi)+'" fill="none" stroke="'+WT_IMPR_COLOR+'" stroke-width="1.8" stroke-linejoin="round"/>';
+    svg+='<polyline points="'+poly(clk,Yc)+'" fill="none" stroke="'+WT_CLK_COLOR+'" stroke-width="1.8" stroke-linejoin="round"/>';
+    // impressions dots w/ tooltip
+    for(var i=0;i<n;i++){ svg+='<circle cx="'+X(i).toFixed(1)+'" cy="'+Yi(impr[i]).toFixed(1)+'" r="1.6" fill="'+WT_IMPR_COLOR+'"><title>'+escapeHtml(wtLabel(ser[i].t,win.granularity))+' · impr '+impr[i]+' · clicks '+clk[i]+'</title></circle>'; }
   }
-  svg+='<text x="'+padL+'" y="11" font-size="9" fill="#9aa7b4">peak '+maxV+'/'+(win.granularity==='week'?'wk':'day')+'</text>';
+  // trend line on impressions + % growth next to it
+  var gi=wtGrowth(impr);
+  if(gi){
+    svg+='<line x1="'+X(0).toFixed(1)+'" y1="'+Yi(gi.start).toFixed(1)+'" x2="'+X(n-1).toFixed(1)+'" y2="'+Yi(gi.end).toFixed(1)+'" stroke="#d6336c" stroke-width="1.4" stroke-dasharray="4 3"/>';
+    var pos=gi.pct>=0, col=pos?'#188038':'#d93025', ar=pos?'▲':'▼';
+    var ty=Math.max(9, Yi(gi.end)-3);
+    svg+='<text x="'+(padL+plotW-2).toFixed(1)+'" y="'+ty.toFixed(1)+'" text-anchor="end" font-size="9.5" font-weight="700" fill="'+col+'">'+ar+Math.abs(gi.pct)+'%</text>';
+  }
+  // x-axis timescale (first / middle / last)
+  if(n>=1){
+    var idxs = n>=3 ? [0, Math.floor((n-1)/2), n-1] : (n===2?[0,1]:[0]);
+    for(var j=0;j<idxs.length;j++){ var ix=idxs[j], anchor=(ix===0?'start':(ix===n-1?'end':'middle')), tx=X(ix);
+      if(ix===0) tx=padL; if(ix===n-1) tx=padL+plotW;
+      svg+='<text x="'+tx.toFixed(1)+'" y="'+(padT+plotH+12)+'" text-anchor="'+anchor+'" font-size="8.5" fill="#7a8a99">'+escapeHtml(wtLabel(ser[ix].t,win.granularity))+'</text>';
+    }
+  }
   svg+='</svg>';
-  var nm=camp.length>26?camp.slice(0,25)+'…':camp;
+  var nm=camp.length>24?camp.slice(0,23)+'…':camp;
+  var gc=wtGrowth(clk);
+  // purchases + revenue for this campaign (GA4 last-click; from gads_detail)
+  var det=(win.gads_detail||[]), dd=null; for(var q=0;q<det.length;q++){ if(det[q].name===camp){ dd=det[q]; break; } }
+  var purch=dd?(dd.transactions||0):0, rev=dd?(dd.revenue||0):0;
   return '<div style="border:1px solid #e6ecf2;border-radius:8px;padding:8px 10px 6px;background:#fff;">'+
-    '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:6px;margin-bottom:2px;">'+
-    '<span style="font-size:12px;font-weight:600;color:#2c3e50;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="'+escapeHtml(camp)+'"><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:'+color+';margin-right:5px;"></span>'+escapeHtml(nm)+'</span>'+
-    '<span style="font-size:12px;font-weight:700;color:'+color+';white-space:nowrap;">'+tot.toLocaleString()+'</span></div>'+svg+'</div>';
+    '<div style="font-size:12px;font-weight:600;color:#2c3e50;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;" title="'+escapeHtml(camp)+'">'+escapeHtml(nm)+'</div>'+
+    '<div style="display:flex;justify-content:space-between;gap:8px;font-size:11px;margin-bottom:2px;">'+
+      '<span style="color:'+WT_IMPR_COLOR+';white-space:nowrap;"><span style="display:inline-block;width:14px;height:2px;background:'+WT_IMPR_COLOR+';vertical-align:middle;margin-right:4px;"></span>Impr '+imprTot.toLocaleString()+' '+wtPctBadge(gi?gi.pct:null)+'</span>'+
+      '<span style="color:'+WT_CLK_COLOR+';white-space:nowrap;"><span style="display:inline-block;width:14px;height:2px;background:'+WT_CLK_COLOR+';vertical-align:middle;margin-right:4px;"></span>Clicks '+clkTot.toLocaleString()+' '+wtPctBadge(gc?gc.pct:null)+'</span>'+
+    '</div>'+
+    '<div style="display:flex;justify-content:space-between;gap:8px;font-size:11px;margin-bottom:3px;padding:2px 6px;background:#f6f9fc;border-radius:4px;">'+
+      '<span style="color:#2c3e50;white-space:nowrap;">🛒 <b>'+Number(purch).toLocaleString()+'</b> '+(purch===1?'purchase':'purchases')+'</span>'+
+      '<span style="color:#188038;font-weight:700;white-space:nowrap;">'+money0(rev)+'</span>'+
+    '</div>'+svg+'</div>';
 }
 function wtGadsGrid(win){
   var camps=win.gads_campaigns||[];
   if(!camps.length) return '<div class="empty" style="margin:6px 0;">No Google Ads campaign traffic in this window.</div>';
   var h='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:6px 2px 4px;">';
-  for(var i=0;i<camps.length;i++){ h+=wtMini(win,camps[i],WT_GADS_PALETTE[i%WT_GADS_PALETTE.length]); }
+  for(var i=0;i<camps.length;i++){ h+=wtMini(win,camps[i]); }
   return h+'</div>';
 }
 function renderWtPanel(){
