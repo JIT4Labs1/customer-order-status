@@ -457,7 +457,7 @@ function wtMini(win,camp){
   function X(i){ return padL+(n>1?plotW*i/(n-1):plotW/2); }
   function Yi(v){ v=Math.max(0,Math.min(imprMax,v)); return padT+plotH-plotH*v/imprMax; }
   function Yc(v){ v=Math.max(0,Math.min(clkMax,v)); return padT+plotH-plotH*v/clkMax; }
-  var svg='<svg viewBox="0 0 '+W+' '+H+'" width="100%" preserveAspectRatio="xMinYMin meet" style="font-family:inherit;">';
+  var svg='<svg viewBox="0 0 '+W+' '+H+'" width="100%" height="'+H+'" preserveAspectRatio="xMidYMid meet" style="font-family:inherit;display:block;width:100%;height:auto;">';
   // gridlines
   for(var g=0;g<=2;g++){ var gy=padT+plotH*g/2; svg+='<line x1="'+padL+'" y1="'+gy.toFixed(1)+'" x2="'+(padL+plotW)+'" y2="'+gy.toFixed(1)+'" stroke="#eef2f6" stroke-width="1"/>'; }
   svg+='<line x1="'+padL+'" y1="'+(padT+plotH)+'" x2="'+(padL+plotW)+'" y2="'+(padT+plotH)+'" stroke="#dbe3ec" stroke-width="1"/>';
@@ -487,18 +487,22 @@ function wtMini(win,camp){
   svg+='</svg>';
   var nm=camp.length>24?camp.slice(0,23)+'…':camp;
   var gc=wtGrowth(clk);
-  // purchases + revenue for this campaign (GA4 last-click; from gads_detail)
+  // purchases + revenue for this campaign (GA4 last-click; from gads_detail); cost from gads_cost
   var det=(win.gads_detail||[]), dd=null; for(var q=0;q<det.length;q++){ if(det[q].name===camp){ dd=det[q]; break; } }
   var purch=dd?(dd.transactions||0):0, rev=dd?(dd.revenue||0):0;
+  var cost=(win.gads_cost&&win.gads_cost[camp]!=null)?win.gads_cost[camp]:0;
+  var roas=cost>0?(rev/cost):null;
   return '<div style="border:1px solid #e6ecf2;border-radius:8px;padding:8px 10px 6px;background:#fff;">'+
     '<div style="font-size:12px;font-weight:600;color:#2c3e50;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;" title="'+escapeHtml(camp)+'">'+escapeHtml(nm)+'</div>'+
     '<div style="display:flex;justify-content:space-between;gap:8px;font-size:11px;margin-bottom:2px;">'+
       '<span style="color:'+WT_IMPR_COLOR+';white-space:nowrap;"><span style="display:inline-block;width:14px;height:2px;background:'+WT_IMPR_COLOR+';vertical-align:middle;margin-right:4px;"></span>Impr '+imprTot.toLocaleString()+' '+wtPctBadge(gi?gi.pct:null)+'</span>'+
       '<span style="color:'+WT_CLK_COLOR+';white-space:nowrap;"><span style="display:inline-block;width:14px;height:2px;background:'+WT_CLK_COLOR+';vertical-align:middle;margin-right:4px;"></span>Clicks '+clkTot.toLocaleString()+' '+wtPctBadge(gc?gc.pct:null)+'</span>'+
     '</div>'+
-    '<div style="display:flex;justify-content:space-between;gap:8px;font-size:11px;margin-bottom:3px;padding:2px 6px;background:#f6f9fc;border-radius:4px;">'+
-      '<span style="color:#2c3e50;white-space:nowrap;">🛒 <b>'+Number(purch).toLocaleString()+'</b> '+(purch===1?'purchase':'purchases')+'</span>'+
-      '<span style="color:#188038;font-weight:700;white-space:nowrap;">'+money0(rev)+'</span>'+
+    '<div style="display:flex;justify-content:space-between;gap:6px;font-size:11px;margin-bottom:3px;padding:3px 6px;background:#f6f9fc;border-radius:4px;">'+
+      '<span style="color:#2c3e50;white-space:nowrap;">🛒 <b>'+Number(purch).toLocaleString()+'</b></span>'+
+      '<span style="color:#b54708;white-space:nowrap;">Cost <b>'+money0(cost)+'</b></span>'+
+      '<span style="color:#188038;font-weight:700;white-space:nowrap;">Rev '+money0(rev)+'</span>'+
+      (roas!==null?'<span style="color:#5a6b7a;white-space:nowrap;">'+roas.toFixed(1)+'×</span>':'')+
     '</div>'+svg+'</div>';
 }
 function wtGadsGrid(win){
