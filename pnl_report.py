@@ -14,6 +14,7 @@ Section order (fixed): 1 Monthly Summary · 2 New IDL Customers · 3 Note
 """
 
 import calendar
+import json
 from datetime import datetime
 from collections import defaultdict
 
@@ -24,6 +25,10 @@ ALLOWED_SO_STATUSES = {"created", "approved", "delivered", "partially delivered"
 EXCLUDED_PO_STATUSES = {"draft", "cancelled", "new"}
 PO394_ADJUSTMENT = 5211.00
 MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+# Payment-processing fee rate used for "Net deposit" (QB payment received minus fees).
+# QuickBooks does not expose per-invoice deposit/fee via API, so net deposit is computed as
+# amount received x (1 - NET_FEE_RATE). (Interim rate until actual QB fees are wired in.)
+NET_FEE_RATE = 0.033
 
 
 def _pac_now():
@@ -68,7 +73,23 @@ def _esc(s):
 # ── Sparkline (nested HTML table of colored div bars — email-safe, per spec) ──
 def _spark_table(arr, current_month_val, avg, row_max):
     n = len(arr); H = 28; W = 22
-    t = '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr>'
+    t = '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">'
+    # Row 1: spend data label on TOP of each bar
+    t += '<tr>'
+    for i in range(n):
+        val = arr[i]
+        label = "0" if val == 0 else "{:.1f}k".format(val / 1000.0)
+        color = "#bbb" if val == 0 else "#2c3e50"
+        if i == n - 1 and val != 0:
+            if current_month_val >= avg:
+                color = "#2e7d32"
+            elif current_month_val > 0 and current_month_val < avg:
+                color = "#c62828"
+        t += ('<td align="center" valign="bottom" style="width:%dpx;font-size:9px;color:%s;padding:0 0 2px 0;font-family:Arial,sans-serif;white-space:nowrap;">%s</td>'
+              % (W, color, label))
+    t += '</tr>'
+    # Row 2: bars
+    t += '<tr>'
     for i in range(n):
         val = arr[i]
         h = max(2, round((val / row_max) * H)) if (val > 0 and row_max > 0) else 1
@@ -80,23 +101,62 @@ def _spark_table(arr, current_month_val, avg, row_max):
                 color = "#2e7d32"
             elif current_month_val > 0 and current_month_val < avg:
                 color = "#c62828"
-        t += ('<td valign="bottom" align="center" style="width:%dpx;height:%dpx;padding:0;">'
+        t += ('<td valign="bottom" align="center" style="width:%dpx;height:%dpx;padding:0;vertical-align:bottom;">'
               '<div style="width:10px;height:%dpx;background:%s;margin:0 auto;line-height:1px;font-size:1px;">&nbsp;</div></td>'
               % (W, H, h, color))
-    t += '</tr><tr>'
+    t += '</tr>'
+    # Row 3: month label under each bar
+    t += '<tr>'
     for i in range(n):
-        val = arr[i]
-        label = "0" if val == 0 else "{:.1f}k".format(val / 1000.0)
-        color = "#bbb" if val == 0 else "#2c3e50"
-        if i == n - 1 and val != 0:
-            if current_month_val >= avg:
-                color = "#2e7d32"
-            elif current_month_val > 0 and current_month_val < avg:
-                color = "#c62828"
-        t += ('<td align="center" style="width:%dpx;font-size:9px;color:%s;padding:2px 0 0 0;font-family:Arial,sans-serif;">%s</td>'
-              % (W, color, label))
-    t += '</tr></table>'
+        m = MONTHS[i] if i < len(MONTHS) else ""
+        t += ('<td align="center" style="width:%dpx;font-size:9px;color:#888;padding:2px 0 0 0;font-family:Arial,sans-serif;">%s</td>'
+              % (W, m))
+    t += '</tr>'
+    t += '</table>'
     return t
+
+
+def _load_qb_payments():
+    """Load the QuickBooks payment cache (SO# -> {paid,total,customer,date}) written by the
+    dashboard refresh (QuickBooks MCP). Missing/invalid file -> empty maps (QB column shows —)."""
+    import os as _os
+    p = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "qb_payments.json")
+    try:
+        d = json.load(open(p))
+        d.setdefault("by_cust_date", {})
+        # Per-customer date index for the near-date fallback (SO created date can drift a
+        # few days from the QuickBooks invoice date).
+        idx = {}
+        for k, rec in d["by_cust_date"].items():
+            if "|" in k:
+                c, dt = k.rsplit("|", 1)
+                idx.setdefault(c, []).append((dt, rec))
+        d["_by_cust"] = idx
+        return d
+    except Exception:
+        return {"by_cust_date": {}, "_by_cust": {}}
+
+
+def _load_ship_costs():
+    """Total UPS shipping COST per receiver, from ups-shipments-data.json ('cost' field on each
+    shipment). Used for the Section 7 'Shipping cost' column (medical-spa customers only).
+    Receiver in the shipments tab == the P&L customer name."""
+    import os as _os
+    p = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "ups-shipments-data.json")
+    costs = {}
+    try:
+        d = json.load(open(p))
+        for x in d.get("shipments", []):
+            c = x.get("cost")
+            if c in (None, ""):
+                continue
+            r = str(x.get("receiver", "")).strip().lower()
+            if not r:
+                continue
+            costs[r] = round(costs.get(r, 0.0) + float(c), 2)
+    except Exception:
+        pass
+    return costs
 
 
 def build_pnl(vt):
@@ -118,6 +178,11 @@ def build_pnl(vt):
     accounts = vt.query_all("SELECT id, accountname, industry FROM Accounts")
     acct = {a["id"]: {"name": a.get("accountname", ""), "industry": (a.get("industry", "") or "")}
             for a in accounts}
+    # Exclude test/dummy accounts (e.g. "Test company") from the P&L entirely.
+    EXCLUDED_ACCOUNTS_PNL = {"test company"}
+    _excl_ids = {aid for aid, a in acct.items() if a.get("name", "").strip().lower() in EXCLUDED_ACCOUNTS_PNL}
+    if _excl_ids:
+        year_sos = [s for s in year_sos if s.get("account_id", "") not in _excl_ids]
 
     # Shipping map: SO id -> shipping $ (sum qty*listprice of shipping line items)
     ship_map = defaultdict(float)
@@ -385,21 +450,88 @@ def build_pnl(vt):
              'Only %d data used. SO Amount is net of shipping.</div>' % (Y, MONTHS[cur_month - 1], Y, Y))
 
     # ── SECTION 7: Detailed Report (current month, NET) ──────────────────────
-    H.append('<h3 style="color:#2c3e50;">7. Detailed Report (current month)</h3>')
-    H.append('<table style="%s"><thead><tr><th style="%s">Customer</th><th style="%s">SO #</th><th style="%s">Created</th>'
-             '<th style="%s">SO Amount</th><th style="%s">PO Total</th><th style="%s">P&amp;L</th>'
-             '<th style="%s">Margin</th></tr></thead><tbody>' % (tbl, thl, thl, thl, th, th, th, th))
-    dr = dc = 0.0
-    for s in sorted(cur_sos, key=lambda x: x["created"], reverse=True):
-        pnl = s["net"] - s["po_total"]; dr += s["net"]; dc += s["po_total"]
-        created = datetime.strptime(str(s["created"])[:10], "%Y-%m-%d").strftime("%-m/%-d/%Y") if s["created"] else ""
-        H.append('<tr><td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td>'
-                 '<td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td></tr>'
-                 % (tdl, _esc(s["customer"]), tdl, _esc(s["no"]), tdl, created, td, _money(s["net"]),
-                    td, _money(s["po_total"]), td, _money(pnl), td, _pct(pnl, s["net"])))
-    H.append('<tr><td colspan="3" style="%s">Total</td><td style="%s">%s</td><td style="%s">%s</td>'
-             '<td style="%s">%s</td><td style="%s">%s</td></tr></tbody></table>'
-             % (btl, bt, _money(dr), bt, _money(dc), bt, _money(dr - dc), bt, _pct(dr - dc, dr)))
+    H.append('<h3 style="color:#2c3e50;">7. Detailed Report</h3>')
+    qbp = _load_qb_payments()
+
+    from datetime import date as _date
+
+    def _pd(x):
+        try:
+            p = str(x)[:10].split("-"); return _date(int(p[0]), int(p[1]), int(p[2]))
+        except Exception:
+            return None
+
+    def _qb_for(s):
+        # Match QB invoices by Customer + created date (Vtiger SO# != QuickBooks invoice #).
+        cust = str(s.get("customer", "")).strip().lower()
+        dt = str(s.get("created", ""))[:10]
+        rec = qbp.get("by_cust_date", {}).get(cust + "|" + dt)
+        if rec is not None:
+            return rec
+        # Near-date fallback: exactly one QB invoice for this customer within +/-7 days.
+        d0 = _pd(dt); cand = qbp.get("_by_cust", {}).get(cust, [])
+        if d0 is not None and cand:
+            near = [r for od, r in cand if _pd(od) and abs((d0 - _pd(od)).days) <= 7]
+            if len(near) == 1:
+                return near[0]
+        return None
+
+    # Month selector (default = current month). Inline onchange toggles the per-month blocks.
+    sel = ('<div style="margin:4px 0 10px;font-size:13px;color:#2c3e50;">Month: '
+           '<select onchange="var v=this.value;var b=document.querySelectorAll(&quot;.pnl-detail-mo&quot;);'
+           'for(var i=0;i&lt;b.length;i++){b[i].style.display=(b[i].getAttribute(&quot;data-mo&quot;)===v)?&quot;&quot;:&quot;none&quot;;}" '
+           'style="padding:4px 9px;font-size:13px;border:1px solid #cdd9e6;border-radius:6px;">')
+    for m in range(cur_month, 0, -1):
+        sel += '<option value="%d"%s>%s %d</option>' % (m, (" selected" if m == cur_month else ""), MONTHS[m - 1], Y)
+    sel += '</select></div>'
+    H.append(sel)
+
+    # Green column group styles (QuickBooks columns).
+    thg = th + "background:#e8f5e9;color:#1b7a3d;"
+    tdg = td + "background:#f4fbf5;"
+    btg = bt + "background:#d8f0e0;"
+
+    qb_note = False
+    for m in range(1, cur_month + 1):
+        msos = sorted([s for s in main_sos if s["month"] == m], key=lambda x: x["created"], reverse=True)
+        disp = "" if m == cur_month else "none"
+        H.append('<div class="pnl-detail-mo" data-mo="%d" style="display:%s;">' % (m, disp))
+        H.append('<table style="%s"><thead><tr><th style="%s">Customer</th><th style="%s">SO #</th><th style="%s">Created</th>'
+                 '<th style="%s">SO Amount</th><th style="%s">PO Total</th><th style="%s">P&amp;L</th><th style="%s">Margin</th>'
+                 '<th style="%s">QB Payment</th><th style="%s">Net deposit</th>'
+                 '</tr></thead><tbody>' % (tbl, thl, thl, thl, th, th, th, th, thg, thg))
+        dr = dc = dqb = dnet = 0.0
+        for s in msos:
+            pnl = s["net"] - s["po_total"]; dr += s["net"]; dc += s["po_total"]
+            created = datetime.strptime(str(s["created"])[:10], "%Y-%m-%d").strftime("%-m/%-d/%Y") if s["created"] else ""
+            rec = _qb_for(s)
+            if rec is not None:
+                paid = float(rec.get("paid", 0) or 0); dqb += paid
+                qbcell = _money(paid) if paid > 0 else '<span style="color:#c62828;">%s</span>' % _money(0)
+                netdep = round(paid * (1.0 - NET_FEE_RATE), 2); dnet += netdep
+                netcell = _money(netdep) if paid > 0 else '<span style="color:#c62828;">%s</span>' % _money(0)
+            else:
+                qbcell = '<span style="color:#c0cad4;">&mdash;</span>'; qb_note = True
+                netcell = '<span style="color:#c0cad4;">&mdash;</span>'
+            H.append('<tr><td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td>'
+                     '<td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td>'
+                     '<td style="%s">%s</td><td style="%s">%s</td></tr>'
+                     % (tdl, _esc(s["customer"]), tdl, _esc(s["no"]), tdl, created,
+                        td, _money(s["net"]), td, _money(s["po_total"]), td, _money(pnl), td, _pct(pnl, s["net"]),
+                        tdg, qbcell, tdg, netcell))
+        if not msos:
+            H.append('<tr><td colspan="9" style="%spadding:14px;color:#7a8a99;">No sales orders in %s %d.</td></tr>' % (tdl, MONTHS[m - 1], Y))
+        H.append('<tr><td colspan="3" style="%s">Total</td>'
+                 '<td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td>'
+                 '<td style="%s">%s</td><td style="%s">%s</td></tr></tbody></table>'
+                 % (btl, bt, _money(dr), bt, _money(dc), bt, _money(dr - dc), bt, _pct(dr - dc, dr),
+                    btg, _money(dqb), btg, _money(dnet)))
+        H.append('</div>')
+    H.append('<div style="font-size:11px;color:#888;margin-bottom:8px;">Green columns are from QuickBooks (matched by '
+             'Customer + created date). QB Payment = amount received on the matching QuickBooks invoice. '
+             'Net deposit = QB Payment minus processing fees (%.1f%%). '
+             '&mdash; = no matching QB invoice%s. SO Amount is net of shipping.</div>'
+             % (NET_FEE_RATE * 100, " (cache may need a refresh)" if qb_note else ""))
 
     H.append('</div>')
     return "".join(H)
