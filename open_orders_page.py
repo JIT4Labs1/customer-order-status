@@ -1616,8 +1616,6 @@ function renderPayPanel(){
     '<div class="sub">Independent Diagnostic Lab &middot; '+t.count+' invoice(s)'+(payReadyOnly?' ready for payment':'')+' &middot; '+payMoney(t.amount)+' total &middot; '+payMoney(t.unpaid)+' unpaid &middot; QuickBooks '+escapeHtml(''+(PAY.year||''))+' &middot; as of '+escapeHtml(PAY.generated_at||'')+'</div></div>'+
     (function(){var g=payGrandTotals(); return '<div class="ca-h" style="margin:2px 0 4px;">Portfolio summary &mdash; all Independent Diagnostic Labs ('+g.custN+' customers)</div>'+
       '<div class="kpis" style="padding:2px 0 12px;">'+
-        kpi(payMoney(g.amt),'Total invoiced (2026)')+
-        kpi(payMoney(g.paid),'Paid')+
         kpi(payMoney(g.unpaid),'Outstanding')+
         kpi(payMoney(g.ready),'Ready for payment')+
         kpi(g.readyN+' / '+g.openN,'Invoices ready / open')+
