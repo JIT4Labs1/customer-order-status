@@ -1511,8 +1511,14 @@ function loadPay(){
 }
 function payCustomers(){ return ((PAY&&PAY.customers)||[]).filter(function(c){ return (c.invoices||[]).length>0; }); }
 function payCurrent(){ var cs=payCustomers(); if(!cs.length) return null;
+  if(payCust==='__ALL__') return null;
   if(!payCust || !cs.some(function(c){return c.name===payCust;})) payCust=cs[0].name;
   return cs.filter(function(c){return c.name===payCust;})[0]; }
+function payCurrentOrAll(){
+  if(payCust!=='__ALL__') return payCurrent();
+  var cs=payCustomers(), inv=[];
+  for(var i=0;i<cs.length;i++){ var iv=cs[i].invoices||[]; for(var j=0;j<iv.length;j++){ inv.push(Object.assign({_cust:cs[i].name}, iv[j])); } }
+  return {name:'All customers', invoices:inv, _all:true}; }
 function paySelectChange(){ var s=document.getElementById('paySelect'); if(s){ payCust=s.value; } renderPayPanel(); }
 function payMoney(v){ var n=Number(v)||0; return '$'+n.toFixed(2).replace(/\\B(?=(\\d{3})+(?!\\d))/g,','); }
 function payBadge(st){ var col= st==='Paid'?['#d4edda','#155724']:(st==='Not Paid'?['#f8d7da','#842029']:['#e2e3e5','#41464b']);
@@ -1532,11 +1538,13 @@ function renderPayPanel(){
   if(!PAY){ document.getElementById('panel').innerHTML='<div class="empty">Loading payment status…</div>'; loadPay(); return; }
   var cs=payCustomers();
   if(!cs.length){ document.getElementById('panel').innerHTML='<div class="empty">No 2026 invoices found for Independent Diagnostic Lab customers.</div>'; return; }
-  var c=payCurrent();
-  var opts=''; for(var i=0;i<cs.length;i++){ opts+='<option value="'+escapeHtml(cs[i].name)+'"'+(cs[i].name===payCust?' selected':'')+'>'+escapeHtml(cs[i].name)+' ('+cs[i].totals.count+')</option>'; }
+  var c=payCurrentOrAll(); var allMode=!!(c&&c._all);
+  var opts='<option value="__ALL__"'+(allMode?' selected':'')+'>All customers ('+cs.length+')</option>';
+  for(var i=0;i<cs.length;i++){ opts+='<option value="'+escapeHtml(cs[i].name)+'"'+(cs[i].name===payCust?' selected':'')+'>'+escapeHtml(cs[i].name)+' ('+cs[i].totals.count+')</option>'; }
   var invs=payInvoices(c), body='';
   for(var j=0;j<invs.length;j++){ var v=invs[j];
     body+='<tr>'+
+      (allMode?'<td style="white-space:nowrap;">'+escapeHtml(v._cust||'')+'</td>':'')+
       '<td>'+escapeHtml(v.number)+'</td>'+
       '<td class="c">'+payBadge(v.status)+'</td>'+
       '<td class="c">'+fmtDate(v.date)+'</td>'+
@@ -1544,7 +1552,7 @@ function renderPayPanel(){
       '<td class="c">'+(function(){var u=v.invoice_link||v.link; if(!u) return '<span style="color:#999;">'+(v.status==='Paid'?'&mdash;':'No link')+'</span>'; return '<a href="'+escapeHtml(u)+'" target="_blank" rel="noopener" title="'+(v.invoice_link?'Opens the full invoice (line items) with a Pay button':'Opens the payment page')+'">'+(v.invoice_link?'View invoice &amp; pay ':'Pay ')+payMoney(v.balance||v.amount)+' <span style="color:#008080;">↗</span></a>';})()+'</td>'+
       '</tr>';
   }
-  if(!invs.length){ body='<tr><td colspan="5" class="empty" style="padding:16px;">No invoices ready for payment (with a customer link) for this customer.</td></tr>'; }
+  if(!invs.length){ body='<tr><td colspan="'+(allMode?6:5)+'" class="empty" style="padding:16px;">No invoices'+(payReadyOnly?' ready for payment':'')+' for this selection.</td></tr>'; }
   var t=payTotals(invs);
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">'+
@@ -1561,9 +1569,9 @@ function renderPayPanel(){
         kpi(payMoney(g.ready),'Ready for payment')+
         kpi(g.readyN+' / '+g.openN,'Invoices ready / open')+
       '</div>';})()+
-    '<div class="ca-h" style="margin-top:6px;">'+escapeHtml(c.name)+' &mdash; invoices</div>'+
-    '<table><thead><tr><th>Invoice #</th><th class="c">Status</th><th class="c">Date</th><th style="text-align:right;">Amount</th><th class="c">Link</th></tr></thead><tbody>'+body+
-    '<tr class="so-group"><td colspan="3" style="text-align:right;font-weight:700;">Total ('+t.count+')</td>'+
+    '<div class="ca-h" style="margin-top:6px;">'+escapeHtml(allMode?'All customers':c.name)+' &mdash; invoices</div>'+
+    '<table><thead><tr>'+(allMode?'<th>Customer</th>':'')+'<th>Invoice #</th><th class="c">Status</th><th class="c">Date</th><th style="text-align:right;">Amount</th><th class="c">Link</th></tr></thead><tbody>'+body+
+    '<tr class="so-group"><td colspan="'+(allMode?4:3)+'" style="text-align:right;font-weight:700;">Total ('+t.count+')</td>'+
     '<td style="text-align:right;font-weight:700;">'+payMoney(t.amount)+'</td><td class="c" style="font-weight:700;color:#c0392b;">'+payMoney(t.unpaid)+' unpaid</td></tr>'+
     '</tbody></table>';
 }
@@ -1596,7 +1604,7 @@ function buildPayEmailHtml(c){
     '</tbody></table></div>';
 }
 function copyPayTable(){
-  var c=payCurrent(); if(!c){ alert('No customer selected.'); return; }
+  var c=payCurrentOrAll(); if(!c){ alert('No customer selected.'); return; }
   var html=buildPayEmailHtml(c);
   function done(){ var b=document.querySelectorAll('.copy-email-btn'); for(var i=0;i<b.length;i++){ if(/Copy table/.test(b[i].textContent)||/Copied/.test(b[i].textContent)){ var o=b[i].innerHTML; b[i].innerHTML='✓ Copied!'; (function(el,txt){ setTimeout(function(){ el.innerHTML=txt; },1800); })(b[i],'📋 Copy table'); } } }
   try {
