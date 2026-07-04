@@ -1144,6 +1144,51 @@ function paySelectChange(){ var s=document.getElementById('paySelect'); if(s){ p
 function payMoney(v){ var n=Number(v)||0; return '$'+n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,','); }
 function payBadge(st){ var col= st==='Paid'?['#d4edda','#155724']:(st==='Not Paid'?['#f8d7da','#842029']:['#e2e3e5','#41464b']);
   return '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;background:'+col[0]+';color:'+col[1]+';">'+escapeHtml(st)+'</span>'; }
+function payFulfillCell(v){
+  var f=v.fulfillment||'';
+  if(f==='Fulfilled') return '<span style="color:#188038;font-weight:600;">Fulfilled</span>';
+  if(f==='Cancelled') return '<span style="color:#9aa7b4;">Cancelled</span>';
+  if(f==='Partially'){
+    if(v.so_num) return '<a href="#" onclick="showFulfill(''+v.so_num+'');return false;" style="color:#b54708;font-weight:600;text-decoration:none;">Partially <span style="font-size:11px;">▦</span></a>';
+    return '<span style="color:#b54708;font-weight:600;">Partially</span>';
+  }
+  return '<span style="color:#c8d0d8;">—</span>';
+}
+function closeFulfill(){ var m=document.getElementById('fulfillModal'); if(m) m.parentNode.removeChild(m); }
+function payFindInvoice(soNum){
+  var cs=(PAY&&PAY.customers)||[];
+  for(var i=0;i<cs.length;i++){ var iv=cs[i].invoices||[]; for(var j=0;j<iv.length;j++){ if(iv[j].so_num===soNum) return {inv:iv[j],cust:cs[i].name}; } }
+  return null;
+}
+function showFulfill(soNum){
+  var hit=payFindInvoice(soNum), inv=hit?hit.inv:null, cust=hit?hit.cust:'', odate=inv?inv.so_date:'';
+  var rows=(inv&&inv.open_items)||[];
+  var body='';
+  if(!rows.length){ body='<div style="padding:14px 4px;color:#7a8a99;">No open line items returned from Vtiger for '+escapeHtml(soNum)+'.</div>'; }
+  else {
+    body='<table style="width:100%;border-collapse:collapse;font-size:13px;margin-top:6px;"><thead><tr>'+
+      '<th style="text-align:left;padding:6px 8px;border-bottom:2px solid #e6ecf2;">Open item</th>'+
+      '<th style="text-align:right;padding:6px 8px;border-bottom:2px solid #e6ecf2;">Open qty</th>'+
+      '<th style="text-align:left;padding:6px 8px;border-bottom:2px solid #e6ecf2;">Vendor</th>'+
+      '<th style="text-align:left;padding:6px 8px;border-bottom:2px solid #e6ecf2;">PO #</th></tr></thead><tbody>';
+    for(var k=0;k<rows.length;k++){ var r=rows[k];
+      body+='<tr>'+
+        '<td style="padding:6px 8px;border-bottom:1px solid #eef2f6;">'+escapeHtml(r.product||'')+'</td>'+
+        '<td style="padding:6px 8px;border-bottom:1px solid #eef2f6;text-align:right;">'+(r.open_qty!=null?r.open_qty:'')+'</td>'+
+        '<td style="padding:6px 8px;border-bottom:1px solid #eef2f6;">'+escapeHtml(r.vendor||'')+'</td>'+
+        '<td style="padding:6px 8px;border-bottom:1px solid #eef2f6;">'+escapeHtml(r.po||'')+'</td></tr>';
+    }
+    body+='</tbody></table>';
+  }
+  var html='<div id="fulfillModal" style="position:fixed;inset:0;background:rgba(20,30,45,0.45);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)closeFulfill();">'+
+    '<div style="background:#fff;border-radius:10px;max-width:640px;width:100%;max-height:80vh;overflow:auto;box-shadow:0 12px 40px rgba(0,0,0,0.25);padding:18px 20px;">'+
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">'+
+      '<div><div style="font-size:16px;font-weight:700;color:#1f3a5f;">Open items &mdash; '+escapeHtml(soNum)+'</div>'+
+      '<div style="font-size:12px;color:#5a6b7a;margin-top:2px;">'+escapeHtml(cust||'')+(odate?' &middot; SO date '+escapeHtml(fmtDate(odate)):'')+'</div></div>'+
+      '<button onclick="closeFulfill()" style="border:none;background:#eef2f6;border-radius:6px;font-size:18px;line-height:1;padding:4px 10px;cursor:pointer;color:#5a6b7a;">&times;</button>'+
+    '</div>'+body+'</div></div>';
+  var d=document.createElement('div'); d.innerHTML=html; document.body.appendChild(d.firstChild);
+}
 function payGrandTotals(){
   var cs=payCustomers(), amt=0,unpaid=0,ready=0,readyN=0,openN=0,paid=0;
   for(var i=0;i<cs.length;i++){ var iv=cs[i].invoices||[];
@@ -1167,13 +1212,15 @@ function renderPayPanel(){
     body+='<tr>'+
       (allMode?'<td style="white-space:nowrap;">'+escapeHtml(v._cust||'')+'</td>':'')+
       '<td>'+escapeHtml(v.number)+'</td>'+
+      '<td>'+(v.so_num?escapeHtml(v.so_num):'<span style="color:#c8d0d8;">—</span>')+'</td>'+
       '<td class="c">'+payBadge(v.status)+'</td>'+
+      '<td class="c">'+payFulfillCell(v)+'</td>'+
       '<td class="c">'+fmtDate(v.date)+'</td>'+
       '<td style="text-align:right;">'+payMoney(v.amount)+'</td>'+
       '<td class="c">'+(function(){var u=v.invoice_link||v.link; if(!u) return '<span style="color:#999;">'+(v.status==='Paid'?'&mdash;':'No link')+'</span>'; return '<a href="'+escapeHtml(u)+'" target="_blank" rel="noopener" title="'+(v.invoice_link?'Opens the full invoice (line items) with a Pay button':'Opens the payment page')+'">'+(v.invoice_link?'View invoice &amp; pay ':'Pay ')+payMoney(v.balance||v.amount)+' <span style="color:#008080;">↗</span></a>';})()+'</td>'+
       '</tr>';
   }
-  if(!invs.length){ body='<tr><td colspan="'+(allMode?6:5)+'" class="empty" style="padding:16px;">No invoices'+(payReadyOnly?' ready for payment':'')+' for this selection.</td></tr>'; }
+  if(!invs.length){ body='<tr><td colspan="'+(allMode?8:7)+'" class="empty" style="padding:16px;">No invoices'+(payReadyOnly?' ready for payment':'')+' for this selection.</td></tr>'; }
   var t=payTotals(invs);
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">'+
@@ -1191,8 +1238,8 @@ function renderPayPanel(){
         kpi(g.readyN+' / '+g.openN,'Invoices ready / open')+
       '</div>';})()+
     '<div class="ca-h" style="margin-top:6px;">'+escapeHtml(allMode?'All customers':c.name)+' &mdash; invoices</div>'+
-    '<table><thead><tr>'+(allMode?'<th>Customer</th>':'')+'<th>Invoice #</th><th class="c">Status</th><th class="c">Date</th><th style="text-align:right;">Amount</th><th class="c">Link</th></tr></thead><tbody>'+body+
-    '<tr class="so-group"><td colspan="'+(allMode?4:3)+'" style="text-align:right;font-weight:700;">Total ('+t.count+')</td>'+
+    '<table><thead><tr>'+(allMode?'<th>Customer</th>':'')+'<th>Invoice #</th><th>SO #</th><th class="c">Status</th><th class="c">Fulfillment</th><th class="c">Date</th><th style="text-align:right;">Amount</th><th class="c">Link</th></tr></thead><tbody>'+body+
+    '<tr class="so-group"><td colspan="'+(allMode?6:5)+'" style="text-align:right;font-weight:700;">Total ('+t.count+')</td>'+
     '<td style="text-align:right;font-weight:700;">'+payMoney(t.amount)+'</td><td class="c" style="font-weight:700;color:#c0392b;">'+payMoney(t.unpaid)+' unpaid</td></tr>'+
     '</tbody></table>';
 }
