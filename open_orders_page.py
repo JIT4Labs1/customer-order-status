@@ -1497,7 +1497,7 @@ function renderVendorPanel(){
 // ── Payment Status tab (QuickBooks 2026 invoices for Independent Diagnostic Lab customers) ──
 var PAY=null, payLoading=false, payCust='', payReadyOnly=false;
 // "Ready for payment" = still owed (Not Paid) AND has a customer pay link.
-function payInvoices(c){ var invs=(c&&c.invoices)||[]; return payReadyOnly ? invs.filter(function(v){ return !!(v.invoice_link||v.link) && v.status==='Not Paid'; }) : invs; }
+function payInvoices(c){ var invs=(c&&c.invoices)||[]; return payReadyOnly ? invs.filter(function(v){ return v.status==='Not Paid' && v.fulfillment==='Fulfilled'; }) : invs; }
 function payTotals(invs){ var amt=0, unpaid=0; for(var i=0;i<invs.length;i++){ amt+=Number(invs[i].amount)||0; unpaid+=Number(invs[i].balance)||0; }
   return {count:invs.length, amount:Math.round(amt*100)/100, unpaid:Math.round(unpaid*100)/100}; }
 function payToggleReady(cb){ payReadyOnly=!!cb.checked; renderPayPanel(); }
@@ -1574,7 +1574,7 @@ function payGrandTotals(){
   for(var i=0;i<cs.length;i++){ var iv=cs[i].invoices||[];
     for(var j=0;j<iv.length;j++){ var v=iv[j], bal=Number(v.balance)||0;
       amt+=Number(v.amount)||0; unpaid+=bal;
-      if(v.status==='Not Paid'){ openN++; if(v.invoice_link||v.link){ ready+=bal; readyN++; } }
+      if(v.status==='Not Paid'){ openN++; if(v.fulfillment==='Fulfilled'){ ready+=bal; readyN++; } }
     }
   }
   paid=amt-unpaid;
@@ -1584,9 +1584,14 @@ function renderPayPanel(){
   if(!PAY){ document.getElementById('panel').innerHTML='<div class="empty">Loading payment status…</div>'; loadPay(); return; }
   var cs=payCustomers();
   if(!cs.length){ document.getElementById('panel').innerHTML='<div class="empty">No 2026 invoices found for Independent Diagnostic Lab customers.</div>'; return; }
+  // "Ready for payment only" also narrows the customer dropdown to customers who have
+  // ready (Not Paid + Fulfilled) invoices, and shows the ready count per customer.
+  function readyCount(cc){ var n=0,iv=(cc&&cc.invoices)||[]; for(var i=0;i<iv.length;i++){ if(iv[i].status==='Not Paid'&&iv[i].fulfillment==='Fulfilled') n++; } return n; }
+  var vcs = payReadyOnly ? cs.filter(function(cc){ return readyCount(cc)>0; }) : cs;
+  if(payCust!=='__ALL__' && payReadyOnly && !vcs.some(function(cc){return cc.name===payCust;})) payCust='__ALL__';
   var c=payCurrentOrAll(); var allMode=!!(c&&c._all);
-  var opts='<option value="__ALL__"'+(allMode?' selected':'')+'>All customers ('+cs.length+')</option>';
-  for(var i=0;i<cs.length;i++){ opts+='<option value="'+escapeHtml(cs[i].name)+'"'+(cs[i].name===payCust?' selected':'')+'>'+escapeHtml(cs[i].name)+' ('+cs[i].totals.count+')</option>'; }
+  var opts='<option value="__ALL__"'+(allMode?' selected':'')+'>All customers ('+vcs.length+')</option>';
+  for(var i=0;i<vcs.length;i++){ var cnt=payReadyOnly?readyCount(vcs[i]):vcs[i].totals.count; opts+='<option value="'+escapeHtml(vcs[i].name)+'"'+(vcs[i].name===payCust?' selected':'')+'>'+escapeHtml(vcs[i].name)+' ('+cnt+')</option>'; }
   var invs=payInvoices(c), body='';
   for(var j=0;j<invs.length;j++){ var v=invs[j];
     body+='<tr>'+
