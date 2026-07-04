@@ -1149,7 +1149,7 @@ function payFulfillCell(v){
   if(f==='Fulfilled') return '<span style="color:#188038;font-weight:600;">Fulfilled</span>';
   if(f==='Cancelled') return '<span style="color:#9aa7b4;">Cancelled</span>';
   if(f==='Partially'){
-    if(v.so_num) return '<a href="#" onclick="showFulfill(''+v.so_num+'');return false;" style="color:#b54708;font-weight:600;text-decoration:none;">Partially <span style="font-size:11px;">▦</span></a>';
+    if(v.so_num) return '<a href="#" data-so="'+escapeHtml(v.so_num)+'" onclick="showFulfill(this);return false;" style="color:#b54708;font-weight:600;text-decoration:none;">Partially <span style="font-size:11px;">▦</span></a>';
     return '<span style="color:#b54708;font-weight:600;">Partially</span>';
   }
   return '<span style="color:#c8d0d8;">—</span>';
@@ -1161,6 +1161,7 @@ function payFindInvoice(soNum){
   return null;
 }
 function showFulfill(soNum){
+  if(soNum&&soNum.getAttribute) soNum=soNum.getAttribute('data-so');
   var hit=payFindInvoice(soNum), inv=hit?hit.inv:null, cust=hit?hit.cust:'', odate=inv?inv.so_date:'';
   var rows=(inv&&inv.open_items)||[];
   var body='';
