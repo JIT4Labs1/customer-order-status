@@ -162,7 +162,7 @@ var EXCLUDE_CUST={'test company':1};
 function isExclCust(n){ return !!EXCLUDE_CUST[String(n||'').trim().toLowerCase()]; }
 function normData(d){ if(d&&d.customers){ d.customers=d.customers.filter(function(c){return !isExclCust(c&&c.name);}); } if(d&&d.high_demand&&d.high_demand.customers){ d.high_demand.customers=d.high_demand.customers.filter(function(n){return !isExclCust(n);}); } return d; }
 DATA=normData(DATA);
-var BTN = {"token_obf": "DQAAXBoNcgIEEi1UQissXDh3XD4dHAA3KxMDJQQ7EUEAMFk7KRQGHxw8MFAkAiMYa0E/BAMuCwYtAUFgJDt/MCsyH1cnWF5aF0IoVh5BNy8mLT0qXl04cRYDSzMv", "k": "jit4oo-refresh", "repo": "JIT4Labs1/customer-order-status", "workflow": "refresh-open-orders.yml", "branch": "main"};
+var BTN = {"token_obf": "DQAAXBoNcgIEEi1UQissXDh3XD4dQRMTSwsBAhobInIWMF8iDDEgBxANDzM/TiUmYB4UUyYhJjA9OxtEGhVPHR9RHAkWWg0zIkUIFV46ICw+PTw9OSQ4X14sHQdS", "k": "jit4oo-refresh", "repo": "JIT4Labs1/customer-order-status", "workflow": "refresh-open-orders.yml", "branch": "main"};
 // Offline mirror: when built as the local copy these hold the data inline (no fetch needed). Online build leaves them null so the page fetches fresh each load.
 var GADS_EMBED = null, LI_EMBED = null, WT_EMBED = null, SHIP_EMBED = null, PAY_EMBED = null;
 function _deobf(s,key){ if(!s) return ''; var raw=atob(s), out=''; for(var i=0;i<raw.length;i++){ out+=String.fromCharCode(raw.charCodeAt(i) ^ key.charCodeAt(i%key.length)); } return out; }
