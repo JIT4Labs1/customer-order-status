@@ -4,6 +4,13 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
+  # Also deploy after the Refresh button rebuilds the page. The refresh workflow
+  # commits with the built-in GITHUB_TOKEN, which does NOT trigger a `push`-based
+  # deploy. `workflow_run` fires across that boundary, so the freshly committed
+  # data actually gets published.
+  workflow_run:
+    workflows: ["Refresh Open Orders Page"]
+    types: [completed]
 
 # Allow this workflow to deploy to Pages
 permissions:
@@ -18,6 +25,8 @@ concurrency:
 
 jobs:
   deploy:
+    # For refresh-triggered runs, only deploy when the refresh actually succeeded.
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -25,6 +34,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Always publish the current tip of main (includes the refresh commit).
+          ref: main
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
