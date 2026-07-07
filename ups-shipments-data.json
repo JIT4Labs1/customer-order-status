@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-07-06 09:07 AM PT",
-  "last_status_refresh": "2026-07-06 09:06 AM PT",
+  "pulled_at": "2026-07-07 09:11 AM PT",
+  "last_status_refresh": "2026-07-07 09:09 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -1727,12 +1727,12 @@
       "contact": "Terri Ogden",
       "ship_to": "Reno, NV",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Loaded on Delivery Vehicle ",
-      "location": "Sparks, NV",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "RENO, NV",
       "date": "2026-07-06",
-      "time": "",
-      "delivered": false,
+      "time": "9:29 AM",
+      "delivered": true,
       "source": "UPS My Choice (3rd Party)",
       "carrier": "UPS",
       "ship_date": "2026-06-27",
@@ -1760,12 +1760,12 @@
       "contact": "Terri Ogden",
       "ship_to": "Reno, NV",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Loaded on Delivery Vehicle ",
-      "location": "Sparks, NV",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "RENO, NV",
       "date": "2026-07-06",
-      "time": "",
-      "delivered": false,
+      "time": "9:29 AM",
+      "delivered": true,
       "source": "UPS My Choice (3rd Party)",
       "carrier": "UPS",
       "ship_date": "2026-06-29",
@@ -2019,12 +2019,12 @@
       "contact": "Sheridan Craig",
       "ship_to": "Wichita Falls, TX",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Wichita Falls, TX",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "WICHITA FALLS, TX",
       "date": "2026-07-06",
-      "time": "",
-      "delivered": false,
+      "time": "12:37 PM",
+      "delivered": true,
       "ship_date": "2026-07-01",
       "items": [
         {
@@ -2052,12 +2052,12 @@
       "contact": "Sheridan Craig",
       "ship_to": "Wichita Falls, TX",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Wichita Falls, TX",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "WICHITA FALLS, TX",
       "date": "2026-07-06",
-      "time": "",
-      "delivered": false,
+      "time": "12:37 PM",
+      "delivered": true,
       "ship_date": "2026-07-01",
       "items": [
         {
@@ -2178,12 +2178,12 @@
       "contact": "ibtihaj@clinicaldiagnosticlab.com",
       "ship_to": "Ashburn, VA",
       "order": "#1084",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Chantilly, VA",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "ASHBURN, VA",
       "date": "2026-07-06",
-      "time": "",
-      "delivered": false,
+      "time": "1:20 PM",
+      "delivered": true,
       "ship_date": "2026-07-02",
       "items": [
         {
@@ -2194,6 +2194,68 @@
         {
           "name": "Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations",
           "sku": "A98856",
+          "qty": 1
+        }
+      ]
+    },
+    {
+      "tracking": "382471428933",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Clinical Diagnostic Laboratories, LLC",
+      "contact": "ibtihaj@clinicaldiagnosticlab.com",
+      "ship_to": "Ashburn, VA",
+      "order": "#1084",
+      "service": "FedEx",
+      "status": "",
+      "activity": "Label created",
+      "delivered": false,
+      "location": "",
+      "date": "2026-07-07",
+      "time": "",
+      "ship_date": "2026-07-07",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=382471428933",
+      "items": [
+        {
+          "name": "Beckman Coulter 33000 Access Vitamin B12 Reagent, 100 Determinations",
+          "sku": "33000",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations",
+          "sku": "A98856",
+          "qty": 1
+        }
+      ]
+    },
+    {
+      "tracking": "1Z8W007Y0392685214",
+      "carrier": "UPS",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Glo & Spa-rkle Aesthetics and Medical Spa",
+      "contact": "Edwin Onkendi",
+      "ship_to": "Lubbock, TX",
+      "order": "#1082",
+      "status": "In Transit",
+      "activity": "Departed from Facility",
+      "location": "Jackson, MS",
+      "date": "2026-07-07",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-07-06",
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator",
+          "sku": "VV120-DO",
           "qty": 1
         }
       ]
