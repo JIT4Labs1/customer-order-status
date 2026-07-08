@@ -348,6 +348,48 @@ def build_page_data(open_items):
 
 
 # ─────────────────────────────────────────────
+# Alternative Sources cost map (vendor tab side box): SKU -> vendor costs.
+# Only Beckman Coulter products; only the 4 requested vendors. Blank/zero => ''
+# (rendered as N/A client-side). Value order per SKU: [name, pma, allora, aldx, clearchem].
+# ─────────────────────────────────────────────
+ALT_SOURCE_MANUFACTURER = "Beckman Coulter"
+
+
+def build_alt_sources(vt):
+    def clean(v):
+        s = str(v or "").strip()
+        if not s:
+            return ""
+        try:
+            f = float(s)
+        except Exception:
+            return ""
+        return "" if f == 0 else round(f, 2)
+
+    rows = vt.query_all(
+        "SELECT productcode, productname, manufacturer, cf_products_pmacost, "
+        "cf_products_alloracost, cf_products_hldxcost, cf_products_clearchemcost "
+        "FROM Products WHERE manufacturer = '" + ALT_SOURCE_MANUFACTURER + "'")
+    out = {}
+    for r in rows:
+        code = (r.get("productcode") or "").strip()
+        if not code:
+            continue
+        key = code.upper()
+        rec = [(r.get("productname") or "").strip(),
+               clean(r.get("cf_products_pmacost")),
+               clean(r.get("cf_products_alloracost")),
+               clean(r.get("cf_products_hldxcost")),
+               clean(r.get("cf_products_clearchemcost"))]
+        if key in out:
+            # On duplicate SKU, keep whichever record has more populated costs.
+            if sum(1 for x in rec[1:] if x != "") <= sum(1 for x in out[key][1:] if x != ""):
+                continue
+        out[key] = rec
+    return out
+
+
+# ─────────────────────────────────────────────
 # HTML page (self-contained; tabs + Refresh button; renders from embedded JSON
 # and re-fetches the JSON snapshot on Refresh)
 # ─────────────────────────────────────────────
@@ -427,7 +469,21 @@ def build_html(page_data, embeds=None):
   .pnl-wrap h2, .pnl-wrap h3 { color:#2c3e50; }
 
   .layout { display:flex; gap:0; padding:18px 28px 40px; align-items:flex-start; }
-  .tabs { flex:0 0 270px; background:#fff; border:1px solid #dee5ec; border-radius:10px; overflow:hidden; max-height:78vh; overflow-y:auto; }
+  .sidecol { flex:0 0 270px; display:flex; flex-direction:column; gap:14px; }
+  .tabs { flex:0 0 auto; width:100%; background:#fff; border:1px solid #dee5ec; border-radius:10px; overflow:hidden; max-height:78vh; overflow-y:auto; }
+  .altsrc { background:#fff; border:1px solid #dee5ec; border-radius:10px; padding:14px 14px 16px; }
+  .altsrc h3 { font-size:12px; color:#0D2B45; text-transform:uppercase; letter-spacing:.6px; margin-bottom:4px; }
+  .altsrc .as-sub { font-size:11px; color:#888; margin-bottom:10px; }
+  .altsrc input { width:100%; padding:8px 10px; border:1px solid #cdd9e6; border-radius:6px; font-size:13px; font-family:inherit; text-transform:uppercase; }
+  .altsrc input:focus { outline:none; border-color:#1F4E79; }
+  .altsrc .as-name { font-size:12px; color:#333; margin:11px 0 6px; font-weight:600; line-height:1.3; }
+  .altsrc table { width:100%; border-collapse:collapse; font-size:13px; margin-top:6px; }
+  .altsrc td { padding:6px 4px; border-bottom:1px solid #eef2f6; }
+  .altsrc td.lbl { color:#555; font-weight:600; }
+  .altsrc td.v { text-align:right; font-weight:700; color:#1F4E79; }
+  .altsrc td.na { text-align:right; font-weight:600; color:#aaa; }
+  .altsrc .as-hint { font-size:11px; color:#888; margin-top:10px; }
+  .altsrc .as-none { font-size:12px; color:#c0392b; margin-top:11px; font-weight:600; }
   .tab { display:block; width:100%; text-align:left; background:none; border:none; border-bottom:1px solid #eef2f6;
          padding:12px 16px; cursor:pointer; font-size:13px; color:#2c3e50; font-family:inherit; }
   .tab:hover { background:#f5f8fb; }
@@ -493,7 +549,7 @@ def build_html(page_data, embeds=None):
   .ca-overall li { margin:4px 0; }
   .ca-visuals { display:flex; gap:34px; flex-wrap:wrap; padding:0 16px; align-items:flex-start; }
   .footer { text-align:center; font-size:11px; color:#888; padding:18px; }
-  @media (max-width:760px){ .layout{flex-direction:column;} .tabs{flex-basis:auto;width:100%;max-height:none;}
+  @media (max-width:760px){ .layout{flex-direction:column;} .sidecol{flex-basis:auto;width:100%;} .tabs{flex-basis:auto;width:100%;max-height:none;}
     .panel-wrap{margin-left:0;margin-top:14px;} }
 </style>
 </head>
@@ -527,7 +583,10 @@ def build_html(page_data, embeds=None):
 </div>
 
 <div class="layout">
-  <div class="tabs" id="tabs"></div>
+  <div class="sidecol">
+    <div class="tabs" id="tabs"></div>
+    <div class="altsrc" id="altsrc" style="display:none;"></div>
+  </div>
   <div class="panel-wrap"><div class="panel" id="panel"></div></div>
 </div>
 
@@ -609,6 +668,7 @@ function kpi(v,l){ return '<div class="kpi"><div class="v">'+(v==null?'0':v)+'</
 
 function renderTabs(){
   var tabsEl=document.getElementById('tabs');
+  showAltSrc(mode==='vendor');  // Alternative Sources box: vendor tab only
   if(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay'){ tabsEl.style.display='none'; tabsEl.innerHTML=''; return; }  // full-width views, no per-entity tabs
   if(mode==='ship'){ renderShipTabs(tabsEl); return; }  // Shipments: sidebar of customers (receivers)
   tabsEl.style.display='';
@@ -1814,6 +1874,37 @@ function renderAsOf(){
   document.getElementById('asof').textContent = 'Last refreshed: '+(DATA.generated_at||'—');
 }
 function selectTab(i){ if(mode==='vendor') vactive=i; else if(mode==='ca') caactive=i; else active=i; renderTabs(); renderPanel(); }
+
+// ── Alternative Sources box (vendor tab): type a SKU, compare 4 vendor costs ──
+function showAltSrc(show){
+  var el=document.getElementById('altsrc'); if(!el) return;
+  if(!show){ el.style.display='none'; return; }
+  el.style.display='';
+  if(!el.getAttribute('data-built')){
+    el.innerHTML='<h3>Alternative Sources</h3>'+
+      '<div class="as-sub">Beckman Coulter SKU &rarr; vendor cost</div>'+
+      '<input id="as-sku" type="text" placeholder="Enter SKU / Part #" autocomplete="off" '+
+      'spellcheck="false" oninput="lookupAltSrc()">'+
+      '<div id="as-result"><div class="as-hint">Type a SKU to compare PMA, Allora, ALDX &amp; ClearChem costs.</div></div>';
+    el.setAttribute('data-built','1');
+  }
+}
+function asCost(v){ return (v===''||v==null) ? '<td class="na">N/A</td>' : '<td class="v">$'+Number(v).toFixed(2)+'</td>'; }
+function lookupAltSrc(){
+  var inp=document.getElementById('as-sku'); if(!inp) return;
+  var res=document.getElementById('as-result'); if(!res) return;
+  var raw=inp.value.replace(/^\s+|\s+$/g,'');
+  if(!raw){ res.innerHTML='<div class="as-hint">Type a SKU to compare PMA, Allora, ALDX &amp; ClearChem costs.</div>'; return; }
+  var rec=(DATA.alt_sources||{})[raw.toUpperCase()];
+  if(!rec){ res.innerHTML='<div class="as-none">SKU “'+escapeHtml(raw)+'” not found in Beckman Coulter catalog.</div>'; return; }
+  res.innerHTML=(rec[0]?'<div class="as-name">'+escapeHtml(rec[0])+'</div>':'')+
+    '<table><tbody>'+
+    '<tr><td class="lbl">PMA</td>'+asCost(rec[1])+'</tr>'+
+    '<tr><td class="lbl">Allora</td>'+asCost(rec[2])+'</tr>'+
+    '<tr><td class="lbl">ALDX</td>'+asCost(rec[3])+'</tr>'+
+    '<tr><td class="lbl">ClearChem</td>'+asCost(rec[4])+'</tr>'+
+    '</tbody></table>';
+}
 function renderAll(){ renderKpis(); renderTabs(); renderPanel(); renderAsOf(); }
 
 function fetchData(){ return fetch(DATA_URL+'?cb='+Date.now(),{cache:'no-store'})
@@ -1961,6 +2052,11 @@ def main():
     log("Building Customer Analysis...")
     page_data["customer_analysis"] = build_customer_analysis(vt)
     log(f"  Customer Analysis: {len(page_data['customer_analysis']['customers'])} IDL customers")
+
+    # Alternative Sources: Beckman Coulter SKU -> 4-vendor cost map (vendor tab side box).
+    log("Building Alternative Sources cost map...")
+    page_data["alt_sources"] = build_alt_sources(vt)
+    log(f"  Alt sources: {len(page_data['alt_sources'])} Beckman Coulter products")
 
     out_dir = CONFIG["output_dir"]
     data_path = os.path.join(out_dir, DATA_FILENAME)
