@@ -714,16 +714,11 @@ function renderShipPanel(){
 function shipItems(i){ var s=((SHIP&&SHIP.shipments)||[])[i]; if(!s) return; var it=s.items||[];
   var rows='', tot=0;
   for(var k=0;k<it.length;k++){ tot+=it[k].qty||0; rows+='<tr><td class="c">'+(it[k].qty||0)+'</td><td>'+escapeHtml(it[k].sku||'')+'</td><td class="item-name">'+escapeHtml(it[k].name||'')+'</td></tr>'; }
-  // Sales Order # comes from the Shopify "Vtiger SO:" order tag; Purchase Order #(s) from Vtiger.
-  var pos=s.pos||[]; if(!pos.length && s.po) pos=[{po:s.po,vendor:''}];
-  var poHtml = pos.length
-    ? pos.map(function(p){ return '<b>'+escapeHtml(p.po||'')+'</b>'+(p.vendor?' <span style="color:#5a6b7a;">('+escapeHtml(p.vendor)+')</span>':''); }).join(', ')
-    : '<span style="color:#9aa7b4;">—</span>';
+  // Sales Order # comes from the Shopify "Vtiger SO:" order tag.
   var soHtml = s.so_num ? '<b>'+escapeHtml(s.so_num)+'</b>' : '<span style="color:#9aa7b4;">—</span>';
   var idLine =
     '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">'+
       '<span style="background:#eef3f9;border:1px solid #d5e0ec;border-radius:6px;padding:3px 10px;font-size:12.5px;">Sales Order: '+soHtml+'</span>'+
-      '<span style="background:#eef3f9;border:1px solid #d5e0ec;border-radius:6px;padding:3px 10px;font-size:12.5px;">Purchase Order'+(pos.length>1?'s':'')+': '+poHtml+'</span>'+
     '</div>';
   var h='<h2 style="margin:0 0 4px;">Packing list &middot; '+escapeHtml(s.tracking)+'</h2>'+
     '<div class="sub" style="margin-bottom:8px;">'+escapeHtml(s.receiver||'')+(s.order?' &middot; Order '+escapeHtml(s.order):'')+(s.ship_to?' &middot; '+escapeHtml(s.ship_to):'')+'</div>'+
