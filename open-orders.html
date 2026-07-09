@@ -130,45 +130,54 @@
   .footer { text-align:center; font-size:11px; color:#888; padding:18px; }
   /* ── Mobile (tablet & phone), app-like. All rules scoped to ≤760px so the
      desktop view is byte-for-byte unchanged. Containers span ~95% of the
-     screen (2.5% gutters); the mode nav is a wrapped tile grid (2–3 rows);
+     screen (1.5% gutters); the mode nav is a wrapped tile grid (2–3 rows);
      data-dense tables scroll horizontally within the panel. ── */
   @media (max-width:760px){
-    .layout{ flex-direction:column; padding:10px 2.5% 28px; }
-    .sidecol{ flex-basis:auto; width:100%; }
-    .tabs{ flex-basis:auto; width:100%; max-height:none; }
+    .layout{ flex-direction:column; align-items:stretch; padding:10px 1.5% 28px; }
+    .sidecol{ flex-basis:auto; width:100%; min-width:0; }
+    .panel-wrap{ min-width:0; max-width:100%; }
+    /* Customer / entity list becomes a 2-column tile grid instead of a single
+       tall column (fills the width, fewer scrolls) */
+    .tabs{ flex-basis:auto; width:100%; max-height:none; display:grid;
+      grid-template-columns:repeat(2,1fr); gap:7px; background:transparent;
+      border:none; border-radius:0; overflow:visible; }
+    .tab{ width:auto; border:1px solid #dee5ec; border-radius:10px; background:#fff;
+      padding:11px 12px; }
+    .tab.active{ border-color:#1F4E79; }
     .panel-wrap{ margin-left:0; margin-top:12px; }
-    .header{ padding:14px 2.5%; }
+    .header{ padding:14px 1.5%; }
     .header .brand{ font-size:19px; }
     .header .meta{ font-size:11px; }
-    .kpis{ padding:12px 2.5% 0; gap:7px; }
-    .kpi{ min-width:0; flex:1 1 30%; padding:10px 6px; }
-    .kpi .v{ font-size:22px; }
-    /* App-like mode nav: wrapped tile GRID (fills ~95% width, 2–3 rows) instead
-       of a horizontal scroll strip. auto-fit keeps it 2 rows on tablets and
-       ~3 rows on phones. */
-    .modebar{ display:grid; grid-template-columns:repeat(auto-fit,minmax(78px,1fr));
-      gap:6px; padding:12px 2.5%; border-bottom:none; overflow:visible; }
-    .mode-btn{ margin:0; border:1px solid #cdd9e6; border-radius:10px; padding:9px 6px;
-      font-size:11px; line-height:1.15; white-space:normal; text-align:center;
-      min-height:46px; display:flex; align-items:center; justify-content:center; }
-    .mode-btn.active{ box-shadow:0 1px 5px rgba(13,43,69,.28); }
+    .kpis{ padding:14px 1.5% 0; gap:9px; }
+    /* Bigger KPI cards — 2 per row, larger numbers */
+    .kpi{ min-width:0; flex:1 1 46%; padding:16px 12px; }
+    .kpi .v{ font-size:28px; }
+    .kpi .l{ font-size:11px; }
+    /* App-like mode nav: wrapped tile GRID that fills the width. Bigger tiles —
+       ~3 columns on phones, more on tablets. */
+    .modebar{ display:grid; grid-template-columns:repeat(auto-fit,minmax(102px,1fr));
+      gap:8px; padding:14px 1.5%; border-bottom:none; overflow:visible; }
+    .mode-btn{ margin:0; border:1px solid #cdd9e6; border-radius:12px; padding:13px 8px;
+      font-size:12.5px; line-height:1.18; white-space:normal; text-align:center;
+      min-height:56px; display:flex; align-items:center; justify-content:center; }
+    .mode-btn.active{ box-shadow:0 2px 6px rgba(13,43,69,.28); }
     /* Data-dense tables (P&L, vendor POs, payments, shipments, matrix): scroll
        sideways within the panel instead of being clipped by overflow:hidden */
     .panel{ overflow-x:auto; overflow-y:visible; -webkit-overflow-scrolling:touch; }
     .panel-head{ padding:12px 3%; }
     .pnl-wrap{ padding:14px 3%; }
-    .ca-visuals{ gap:18px; padding:0 2.5%; }
-    .footer{ padding:16px 2.5%; }
+    .ca-visuals{ gap:18px; padding:0 1.5%; }
+    .footer{ padding:16px 1.5%; }
     /* Google Ads / Website-Traffic per-campaign small-multiples: 3 → 2 columns */
     .wt-mult{ grid-template-columns:repeat(2,1fr) !important; }
   }
   @media (max-width:480px){
-    .kpi{ flex:1 1 30%; padding:9px 4px; }
-    .kpi .v{ font-size:20px; }
-    .kpi .l{ font-size:10px; }
-    /* keep the nav to ~3 rows on phones (10 tiles across 4 columns) */
-    .modebar{ grid-template-columns:repeat(4,1fr); }
-    .mode-btn{ font-size:10.5px; padding:8px 4px; min-height:44px; }
+    /* Bigger KPI cards, 2 per row */
+    .kpi{ flex:1 1 46%; padding:15px 10px; }
+    .kpi .v{ font-size:26px; }
+    /* Bigger nav tiles — 3 columns on phones */
+    .modebar{ grid-template-columns:repeat(3,1fr); }
+    .mode-btn{ font-size:12px; padding:12px 6px; min-height:56px; }
     /* small-multiples: single column on phones */
     .wt-mult{ grid-template-columns:1fr !important; }
   }
