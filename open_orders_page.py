@@ -569,9 +569,13 @@ def build_html(page_data, embeds=None):
       padding:11px 12px; }
     .tab.active{ border-color:#1F4E79; }
     .panel-wrap{ margin-left:0; margin-top:12px; }
-    .header{ padding:13px 1.5%; }
+    /* Stack the header: logo on top, then date + Refresh button below it */
+    .header{ padding:13px 1.5%; flex-direction:column; align-items:stretch; gap:10px; }
     .brand-word{ font-size:25px; }
-    .header .meta{ font-size:11px; }
+    .header-right{ width:100%; justify-content:space-between; gap:12px; }
+    .header .meta{ font-size:11px; text-align:left; }
+    .meta-scope{ display:none; }  /* drop "2026 Sales Orders · Excl. ConMed" on mobile */
+    .refresh-btn{ padding:11px 20px; }
     .kpis{ padding:14px 1.5% 0; gap:9px; }
     /* Bigger KPI cards — 2 per row, larger numbers */
     .kpi{ min-width:0; flex:1 1 46%; padding:16px 12px; }
@@ -610,10 +614,10 @@ def build_html(page_data, embeds=None):
 <body>
 <div class="header">
   <div class="brand"><span class="brand-word"><span class="brand-jit">JIT4</span><span class="brand-labs">Labs</span></span><small>Business Dashboard</small></div>
-  <div style="display:flex;align-items:center;gap:18px;">
+  <div class="header-right" style="display:flex;align-items:center;gap:18px;">
     <div class="meta">
       <div id="asof">&nbsp;</div>
-      <div>2026 Sales Orders &middot; Excl. ConMed</div>
+      <div class="meta-scope">2026 Sales Orders &middot; Excl. ConMed</div>
     </div>
     <button id="refresh" class="refresh-btn" onclick="refreshData()">
       <span class="spin"></span><span class="lbl">Refresh</span>
