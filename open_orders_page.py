@@ -393,9 +393,21 @@ def build_alt_sources(vt):
 # HTML page (self-contained; tabs + Refresh button; renders from embedded JSON
 # and re-fetches the JSON snapshot on Refresh)
 # ─────────────────────────────────────────────
+def _brand_logo_src():
+    """JIT4Labs wordmark as a data: URI so it renders on the live page, the
+    artifact, AND the offline local mirror. Falls back to the hosted copy."""
+    try:
+        p = os.path.join(CONFIG["output_dir"], "JIT4LABS-Logo.jpg")
+        with open(p, "rb") as fh:
+            return "data:image/jpeg;base64," + base64.b64encode(fh.read()).decode()
+    except Exception:
+        return "https://jit4labs1.github.io/customer-order-status/JIT4LABS-Logo.jpg"
+
+
 def build_html(page_data, embeds=None):
     data_json = json.dumps(page_data).replace("</", "<\\/").replace("<!--", "<\\!--")
     data_url = f"{DATA_FILENAME}"  # same-origin relative fetch on GitHub Pages
+    brand_logo = _brand_logo_src()
     # Optional offline embeds: dict with keys gads/li/wt -> data dicts (used to
     # build the self-contained LOCAL mirror). None => online build (page fetches).
     def _emb(key):
@@ -424,7 +436,7 @@ def build_html(page_data, embeds=None):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JIT4You — Open Orders by Customer</title>
+<title>JIT4Labs — Business Dashboard</title>
 <link rel="icon" href="https://jit4you.myshopify.com/cdn/shop/files/JIT4LABS_Favicon.png" type="image/png">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -432,7 +444,8 @@ def build_html(page_data, embeds=None):
   .header { background:#0D2B45; color:#fff; padding:18px 28px; display:flex; align-items:center;
             justify-content:space-between; flex-wrap:wrap; gap:12px; }
   .header .brand { font-size:22px; font-weight:700; letter-spacing:1px; }
-  .header .brand small { display:block; font-size:13px; font-weight:600; color:#cdd9e6; letter-spacing:0; margin-top:2px; }
+  .header .brand small { display:block; font-size:13px; font-weight:600; color:#cdd9e6; letter-spacing:0; margin-top:5px; }
+  .brand-logo { height:34px; width:auto; display:block; border-radius:4px; }
   .header .meta { text-align:right; font-size:12px; color:#cdd9e6; }
   .refresh-btn { background:#1F4E79; color:#fff; border:none; padding:9px 18px; border-radius:6px;
                  font-size:13px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:8px; }
@@ -567,7 +580,7 @@ def build_html(page_data, embeds=None):
     .tab.active{ border-color:#1F4E79; }
     .panel-wrap{ margin-left:0; margin-top:12px; }
     .header{ padding:14px 1.5%; }
-    .header .brand{ font-size:19px; }
+    .brand-logo{ height:28px; }
     .header .meta{ font-size:11px; }
     .kpis{ padding:14px 1.5% 0; gap:9px; }
     /* Bigger KPI cards — 2 per row, larger numbers */
@@ -606,7 +619,7 @@ def build_html(page_data, embeds=None):
 </head>
 <body>
 <div class="header">
-  <div class="brand">JIT4You<small>Open Orders by Customer</small></div>
+  <div class="brand"><img class="brand-logo" src="__BRAND_LOGO__" alt="JIT4Labs"><small>Business Dashboard</small></div>
   <div style="display:flex;align-items:center;gap:18px;">
     <div class="meta">
       <div id="asof">&nbsp;</div>
@@ -641,7 +654,7 @@ def build_html(page_data, embeds=None):
   <div class="panel-wrap"><div class="panel" id="panel"></div></div>
 </div>
 
-<div class="footer">JIT4You Inc. &middot; Open Orders &middot; data refreshes from Vtiger on each scheduled run</div>
+<div class="footer">JIT4Labs &middot; Business Dashboard &middot; data refreshes from Vtiger on each scheduled run</div>
 
 <script>
 var DATA = __DATA_JSON__;
@@ -2013,7 +2026,7 @@ function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(
 renderAll();
 </script>
 </body>
-</html>""".replace("__DATA_JSON__", data_json).replace("__DATA_URL__", data_url).replace("__BTN_CFG__", btn_cfg).replace("__GADS_EMBED__", gads_embed).replace("__LI_EMBED__", li_embed).replace("__WT_EMBED__", wt_embed).replace("__SHIP_EMBED__", ship_embed).replace("__PAY_EMBED__", pay_embed)
+</html>""".replace("__DATA_JSON__", data_json).replace("__DATA_URL__", data_url).replace("__BTN_CFG__", btn_cfg).replace("__GADS_EMBED__", gads_embed).replace("__LI_EMBED__", li_embed).replace("__WT_EMBED__", wt_embed).replace("__SHIP_EMBED__", ship_embed).replace("__PAY_EMBED__", pay_embed).replace("__BRAND_LOGO__", brand_logo)
 
 
 # ─────────────────────────────────────────────
