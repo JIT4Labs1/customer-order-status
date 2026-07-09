@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-08 09:22 AM PDT",
+  "generated_at": "2026-07-09 09:19 AM PDT",
   "year": 2026,
   "customers": [
     {
@@ -1016,30 +1016,30 @@
       "qb_id": "1486",
       "invoices": [
         {
+          "number": "SO547",
+          "status": "Not Paid",
+          "amount": 48.0,
+          "balance": 48.0,
+          "date": "2026-07-09",
+          "link": "",
+          "invoice_link": "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-38cb8e78b5374116b04af6ec4c250dc0268b2a9bd776484c8b2269b3b84e8702d17a8d3f72c6450d91ab6b089724d56f?locale=en_US&cta=v3invoicelink",
+          "so_num": "",
+          "fulfillment": "",
+          "so_date": "",
+          "open_items": []
+        },
+        {
           "number": "SO516",
           "status": "Not Paid",
-          "amount": 2218.3,
-          "balance": 2218.3,
+          "amount": 2243.3,
+          "balance": 2243.3,
           "date": "2026-06-24",
           "link": "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-dc593271f1f14ac7907e8655e6c8e43d2af4aeff0a1d47799dc57cce2a998120d5d88a8eb73c409a83c8803eb70d305c?locale=EN_US",
-          "invoice_link": "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-8fd65fc65350455ba6d598c2a00d4dc49a3f5eae473647bb97527e2e9896bb21ba5d9fcc26b143579748e9395b32d939?locale=en_US&cta=v3invoicelink",
+          "invoice_link": "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-78ad2ec9f16b4ed58461700ee899b315bccee1a48e554b57a288cdaaa72277f19d5c08e2a7f34840afffbf2ee602bfc7?locale=en_US&cta=v3invoicelink",
           "so_num": "SO448",
-          "fulfillment": "Partially",
+          "fulfillment": "Fulfilled",
           "so_date": "2026-06-24",
-          "open_items": [
-            {
-              "product": "Beckman Coulter 81906 Access Substrate",
-              "open_qty": 1.0,
-              "po": "PO706",
-              "vendor": "PMA Services"
-            },
-            {
-              "product": "Beckman Coulter 33880 Access Free T4 Reagent, 100 Determinations",
-              "open_qty": 1.0,
-              "po": "PO708",
-              "vendor": "ClearChem Diagnostics, Inc"
-            }
-          ]
+          "open_items": []
         },
         {
           "number": "SO491",
@@ -1069,16 +1069,36 @@
         }
       ],
       "totals": {
-        "count": 3,
-        "amount": 4114.9,
+        "count": 4,
+        "amount": 4187.9,
         "paid": 0.0,
-        "unpaid": 4114.9
+        "unpaid": 4187.9
       }
     },
     {
       "name": "Mercedes Scientific",
       "qb_id": "1288",
       "invoices": [
+        {
+          "number": "SO546",
+          "status": "Not Paid",
+          "amount": 195.7,
+          "balance": 195.7,
+          "date": "2026-07-08",
+          "link": "",
+          "invoice_link": "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-e3c5f9156ac04f41ba235f3e51645ae09e958455597f4102812c0e4e7d115e1ec151c29e93b04c4fb31442c4ed714038?locale=en_US&cta=v3invoicelink",
+          "so_num": "SO470",
+          "fulfillment": "Partially",
+          "so_date": "2026-07-08",
+          "open_items": [
+            {
+              "product": "Beckman coulter 33545 Calibrator, Access, Estradiol (REF)",
+              "open_qty": 1.0,
+              "po": "PO738",
+              "vendor": "ALDX Holding"
+            }
+          ]
+        },
         {
           "number": "SO544",
           "status": "Not Paid",
@@ -1624,10 +1644,10 @@
         }
       ],
       "totals": {
-        "count": 37,
-        "amount": 89273.53,
+        "count": 38,
+        "amount": 89469.23,
         "paid": 81111.73,
-        "unpaid": 8161.8
+        "unpaid": 8357.5
       }
     },
     {
@@ -1786,7 +1806,7 @@
           "so_date": "2026-06-10",
           "open_items": [
             {
-              "product": "Beckman Coulter 33880 Access Free T4 Reagent, 100 Determinations",
+              "product": "Beckman Coulter 33880 (c76421) Access Free T4 Reagent, 100 Determinations",
               "open_qty": 1.0,
               "po": "PO679",
               "vendor": "PMA Services"
@@ -2025,5 +2045,5 @@
       }
     }
   ],
-  "pulled_at": "2026-07-08 10:06 AM PT"
+  "pulled_at": "2026-07-09 09:34 AM PT"
 }
