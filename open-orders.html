@@ -128,8 +128,37 @@
   .ca-overall li { margin:4px 0; }
   .ca-visuals { display:flex; gap:34px; flex-wrap:wrap; padding:0 16px; align-items:flex-start; }
   .footer { text-align:center; font-size:11px; color:#888; padding:18px; }
-  @media (max-width:760px){ .layout{flex-direction:column;} .sidecol{flex-basis:auto;width:100%;} .tabs{flex-basis:auto;width:100%;max-height:none;}
-    .panel-wrap{margin-left:0;margin-top:14px;} }
+  /* ── Mobile (tablet & phone). All rules scoped to ≤760px so the desktop view
+     is byte-for-byte unchanged. Data-dense tables scroll horizontally. ── */
+  @media (max-width:760px){
+    .layout{ flex-direction:column; padding:12px 10px 30px; }
+    .sidecol{ flex-basis:auto; width:100%; }
+    .tabs{ flex-basis:auto; width:100%; max-height:none; }
+    .panel-wrap{ margin-left:0; margin-top:14px; }
+    .header{ padding:14px 14px; }
+    .header .brand{ font-size:19px; }
+    .header .meta{ font-size:11px; }
+    .kpis{ padding:12px 12px 0; gap:8px; }
+    .kpi{ min-width:0; flex:1 1 40%; padding:10px 8px; }
+    .kpi .v{ font-size:22px; }
+    /* Mode tabs become one swipeable row instead of wrapping to 3 cramped rows */
+    .modebar{ flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; padding:12px 12px 0; gap:6px; }
+    .mode-btn{ flex:0 0 auto; white-space:nowrap; padding:9px 13px; font-size:12px; }
+    /* Data-dense tables (P&L, vendor POs, payments, shipments, matrix): scroll
+       sideways within the panel instead of being clipped by overflow:hidden */
+    .panel{ overflow-x:auto; overflow-y:visible; -webkit-overflow-scrolling:touch; }
+    .panel-head{ padding:12px 14px; }
+    .pnl-wrap{ padding:14px 12px; }
+    .ca-visuals{ gap:18px; padding:0 12px; }
+    /* Google Ads / Website-Traffic per-campaign small-multiples: 3 → 2 columns */
+    .wt-mult{ grid-template-columns:repeat(2,1fr) !important; }
+  }
+  @media (max-width:480px){
+    .kpi{ flex:1 1 45%; }
+    .mode-btn{ padding:8px 12px; }
+    /* small-multiples: single column on phones */
+    .wt-mult{ grid-template-columns:1fr !important; }
+  }
 </style>
 </head>
 <body>
@@ -533,7 +562,7 @@ function wtMini(win,camp){
 function wtGadsGrid(win){
   var camps=win.gads_campaigns||[];
   if(!camps.length) return '<div class="empty" style="margin:6px 0;">No Google Ads campaign traffic in this window.</div>';
-  var h='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:6px 2px 4px;">';
+  var h='<div class="wt-mult" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:6px 2px 4px;">';
   for(var i=0;i<camps.length;i++){ h+=wtMini(win,camps[i]); }
   return h+'</div>';
 }
