@@ -726,8 +726,12 @@ function kpi(v,l){ return '<div class="kpi"><div class="v">'+(v==null?'0':v)+'</
 
 function renderTabs(){
   var tabsEl=document.getElementById('tabs');
+  var fullWidth=(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay');
+  // Left-align: when a view has no left sidebar, collapse the side column so content aligns left (not centered).
+  var sidecol=document.querySelector('.sidecol'); if(sidecol) sidecol.style.display = fullWidth ? 'none' : '';
+  var pw=document.querySelector('.panel-wrap'); if(pw) pw.style.marginLeft = fullWidth ? '0' : '';
   showAltSrc(mode==='vendor');  // Alternative Sources box: vendor tab only
-  if(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay'){ tabsEl.style.display='none'; tabsEl.innerHTML=''; return; }  // full-width views, no per-entity tabs
+  if(fullWidth){ tabsEl.style.display='none'; tabsEl.innerHTML=''; return; }  // full-width views, no per-entity tabs
   if(mode==='ship'){ renderShipTabs(tabsEl); return; }  // Shipments: sidebar of customers (receivers)
   tabsEl.style.display='';
   var list = mode==='vendor' ? (DATA.vendors||[]) : (mode==='ca' ? ((DATA.customer_analysis||{}).customers||[]) : (DATA.customers||[]));
@@ -842,6 +846,7 @@ function liGa4Html(){
 
 // ── Website Traffic tab (GA4 daily visitors by source + sales by source) ──────
 var WT=null, wtLoading=false, wtWin='last_30_days', wtLabels=true, wtTrend=true, wtVisible={};
+var wtCampVisible={};   // item 3: which Google Ads campaigns show in the per-campaign grid
 var WT_WIN_ORDER=['today','last_7_days','last_30_days','this_month','last_month','this_quarter','last_quarter','this_year'];
 var WT_COLORS={ 'Direct':'#6b7a8f','Google Ads':'#1a73e8','Organic Search':'#34a853','Email':'#f59e0b','LinkedIn':'#0a66c2','Other':'#aab4bf' };
 function loadWT(){
@@ -860,6 +865,42 @@ function wtToggleSource(bk,c){ wtVisible[bk]=!!c; renderWtPanel(); }
 function wtToggleSourceIdx(i,c){ var bk=((WT&&WT.buckets)||[])[i]; if(bk!=null){ wtVisible[bk]=!!c; renderWtPanel(); } }
 function wtAllSources(c){ var bs=(WT&&WT.buckets)||[]; for(var i=0;i<bs.length;i++) wtVisible[bs[i]]=!!c; renderWtPanel(); }
 function wtVisBuckets(){ var bs=(WT&&WT.buckets)||[], v=[]; for(var i=0;i<bs.length;i++) if(wtVisible[bs[i]]) v.push(bs[i]); return v; }
+// ── item 3: active-campaign checkboxes controlling the per-campaign grid ──
+function wtCampList(){ var w=(WT&&WT.windows&&WT.windows[wtWin])||{}; return (w.gads_active&&w.gads_active.length)?w.gads_active:(w.gads_campaigns||[]); }
+function wtInitCamps(){ var cs=wtCampList(); for(var i=0;i<cs.length;i++){ if(!(cs[i] in wtCampVisible)) wtCampVisible[cs[i]]=true; } }
+function wtCampShown(c){ return (c in wtCampVisible)? wtCampVisible[c] : true; }
+function wtToggleCampIdx(i,c){ var cs=wtCampList(); if(cs[i]!=null){ wtCampVisible[cs[i]]=!!c; renderWtPanel(); } }
+function wtAllCamps(c){ var cs=wtCampList(); for(var i=0;i<cs.length;i++) wtCampVisible[cs[i]]=!!c; renderWtPanel(); }
+function wtCampLegend(win){
+  var cs=wtCampList(); if(!cs.length) return '';
+  var allOn=true; for(var i=0;i<cs.length;i++){ if(!wtCampVisible[cs[i]]) allOn=false; }
+  var types=win.gads_types||{};
+  var h='<div style="display:flex;flex-wrap:wrap;gap:6px 14px;margin:2px 2px 8px;font-size:12px;color:#2c3e50;align-items:center;">';
+  h+='<span style="color:#7a8a99;">Campaigns:</span>';
+  h+='<label style="cursor:pointer;font-weight:600;display:inline-flex;gap:5px;align-items:center;"><input type="checkbox" onchange="wtAllCamps(this.checked)"'+(allOn?' checked':'')+'> All campaigns</label>';
+  for(var i=0;i<cs.length;i++){ var tp=types[cs[i]]||'';
+    h+='<label style="cursor:pointer;display:inline-flex;gap:5px;align-items:center;"><input type="checkbox" onchange="wtToggleCampIdx('+i+',this.checked)"'+(wtCampVisible[cs[i]]?' checked':'')+'>'+escapeHtml(cs[i])+(tp?' <span style="color:#9aa7b4;">'+escapeHtml(tp)+'</span>':'')+'</label>';
+  }
+  return h+'</div>';
+}
+// ── items 4 & 5: Klaviyo email-flow clicks (bar chart of clicks per flow) ──
+function wtFlowChart(win){
+  var flows=win.klaviyo_flows||[], k=(WT.klaviyo||{});
+  if(!flows.length) return '<div class="empty" style="margin:6px 0;">'+(k.ok===false?'Klaviyo not connected — add a private API key to see per-flow clicks.':'No live Klaviyo flows found.')+'</div>';
+  var max=0; for(var i=0;i<flows.length;i++){ if((flows[i].clicks||0)>max) max=flows[i].clicks||0; }
+  var denom=max>0?max:1;
+  var h='<div style="max-width:680px;margin:4px 2px 2px;">';
+  for(var i=0;i<flows.length;i++){ var fl=flows[i], w=Math.round((fl.clicks||0)/denom*100);
+    h+='<div style="display:flex;align-items:center;gap:10px;margin:5px 0;font-size:12px;">'+
+       '<div style="flex:0 0 220px;color:#2c3e50;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="'+escapeHtml(fl.flow)+'">✉ '+escapeHtml(fl.flow)+'</div>'+
+       '<div style="flex:1 1 auto;background:#f0f2f5;border-radius:4px;height:16px;"><div style="width:'+(fl.clicks>0?Math.max(w,4):0)+'%;height:16px;background:'+WT_COLORS.Email+';border-radius:4px;"></div></div>'+
+       '<div style="flex:0 0 64px;text-align:right;font-weight:600;color:#2c3e50;">'+Number(fl.clicks||0).toLocaleString()+'</div>'+
+     '</div>';
+  }
+  h+='</div>';
+  if(max===0){ h+='<div style="font-size:11px;color:#9aa7b4;margin:2px 2px 6px;">No email-flow clicks in this window yet — fills in automatically as your flows send and get clicked.</div>'; }
+  return h;
+}
 function wtLabel(t,gran){
   // t is YYYY-MM-DD (day) or week-Monday date (week)
   var p=(t||'').split('-'); if(p.length<3) return t;
@@ -987,6 +1028,8 @@ function wtMini(win,camp){
   // purchases + revenue for this campaign (GA4 last-click; from gads_detail); cost from gads_cost
   var det=(win.gads_detail||[]), dd=null; for(var q=0;q<det.length;q++){ if(det[q].name===camp){ dd=det[q]; break; } }
   var purch=dd?(dd.transactions||0):0, rev=dd?(dd.revenue||0):0;
+  // item 2: GA4 key events for THIS window (add_to_cart + purchase)
+  var kev=(win.gads_events||{})[camp]||{}; var atc=kev.add_to_cart||0, pur=kev.purchase||0;
   var cost=(win.gads_cost&&win.gads_cost[camp]!=null)?win.gads_cost[camp]:0;
   var roas=cost>0?(rev/cost):null;
   var cpc=clkTot>0?(cost/clkTot):null;
@@ -1002,23 +1045,43 @@ function wtMini(win,camp){
       '<span style="color:'+WT_IMPR_COLOR+';white-space:nowrap;"><span style="display:inline-block;width:14px;height:2px;background:'+WT_IMPR_COLOR+';vertical-align:middle;margin-right:4px;"></span>Impr '+imprTot.toLocaleString()+' '+wtPctBadge(gi?gi.pct:null)+'</span>'+
       '<span style="color:'+WT_CLK_COLOR+';white-space:nowrap;"><span style="display:inline-block;width:14px;height:2px;background:'+WT_CLK_COLOR+';vertical-align:middle;margin-right:4px;"></span>Clicks '+clkTot.toLocaleString()+' '+wtPctBadge(gc?gc.pct:null)+'</span>'+
     '</div>'+
+    '<div style="display:flex;justify-content:space-between;gap:6px;font-size:11px;margin-bottom:3px;padding:2px 6px;background:#eef7f0;border-radius:4px;">'+
+      '<span style="color:#2c3e50;white-space:nowrap;" title="GA4 add_to_cart events in this window">🛒 Add to cart <b>'+Number(atc).toLocaleString()+'</b></span>'+
+      '<span style="color:#188038;font-weight:700;white-space:nowrap;" title="GA4 purchase events in this window">✅ Purchases <b>'+Number(pur).toLocaleString()+'</b></span>'+
+    '</div>'+
     '<div style="display:flex;justify-content:space-between;gap:6px;font-size:11px;margin-bottom:3px;padding:3px 6px;background:#f6f9fc;border-radius:4px;">'+
-      '<span style="color:#2c3e50;white-space:nowrap;">🛒 <b>'+Number(purch).toLocaleString()+'</b></span>'+
       '<span style="color:#b54708;white-space:nowrap;">Cost <b>'+money0(cost)+'</b>'+(cpc!=null?' · $'+cpc.toFixed(2)+'/clk':'')+'</span>'+
       '<span style="color:#188038;font-weight:700;white-space:nowrap;">Rev '+money0(rev)+'</span>'+
-      (roas!==null?'<span style="color:#5a6b7a;white-space:nowrap;">'+roas.toFixed(1)+'×</span>':'')+
+      (roas!==null?'<span style="color:#5a6b7a;white-space:nowrap;" title="Revenue / cost (GA4 last-click)">'+roas.toFixed(1)+'×</span>':'')+
     '</div>'+svg+'</div>';
 }
 function wtGadsGrid(win){
   var camps=win.gads_campaigns||[];
   if(!camps.length) return '<div class="empty" style="margin:6px 0;">No Google Ads campaign traffic in this window.</div>';
-  var h='<div class="wt-mult" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:6px 2px 4px;">';
-  for(var i=0;i<camps.length;i++){ h+=wtMini(win,camps[i]); }
-  return h+'</div>';
+  var types=win.gads_types||{};
+  // item 1: one row per campaign type (Search, then Shopping), each its own grid; item 3: respect campaign checkboxes.
+  function rowFor(tkey,label,seen){
+    var rc=[]; for(var i=0;i<camps.length;i++){ if((types[camps[i]]||'Other')===tkey && wtCampShown(camps[i])){ rc.push(camps[i]); if(seen) seen[camps[i]]=1; } }
+    if(!rc.length) return '';
+    var s='<div style="font-size:12px;font-weight:700;color:#5a6b7a;margin:10px 2px 4px;">'+label+' <span style="color:#9aa7b4;font-weight:400;">('+rc.length+')</span></div>';
+    s+='<div class="wt-mult" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:2px 2px 6px;">';
+    for(var j=0;j<rc.length;j++){ s+=wtMini(win,rc[j]); }
+    return s+'</div>';
+  }
+  var seen={}, h=rowFor('Search','Search campaigns',seen)+rowFor('Shopping','Shopping campaigns',seen);
+  var other=[]; for(var i=0;i<camps.length;i++){ if(!seen[camps[i]] && wtCampShown(camps[i])) other.push(camps[i]); }
+  if(other.length){
+    h+='<div style="font-size:12px;font-weight:700;color:#5a6b7a;margin:10px 2px 4px;">Other campaigns <span style="color:#9aa7b4;font-weight:400;">('+other.length+')</span></div>';
+    h+='<div class="wt-mult" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:2px 2px 6px;">';
+    for(var j=0;j<other.length;j++){ h+=wtMini(win,other[j]); }
+    h+='</div>';
+  }
+  return h || '<div class="empty" style="margin:6px 0;">No campaigns selected — check a campaign above to show its chart.</div>';
 }
 function renderWtPanel(){
   if(!WT){ document.getElementById('panel').innerHTML='<div class="empty">Loading website-traffic data…</div>'; loadWT(); return; }
   var allb=WT.buckets||[]; for(var z=0;z<allb.length;z++){ if(!(allb[z] in wtVisible)) wtVisible[allb[z]]=true; }
+  wtInitCamps();
   var wins=WT.windows||{}, ids=WT_WIN_ORDER;
   var win=wins[wtWin]||wins['last_30_days']||wins[ids[0]];
   var sel='<select onchange="wtSetWin(this.value)" style="padding:7px 10px;border:1px solid #cdd9e6;border-radius:6px;font-size:13px;font-family:inherit;">';
@@ -1059,6 +1122,17 @@ function renderWtPanel(){
       }
       if(!det.length && r.sessions>0){ body+='<tr style="background:#fcfdfe;"><td style="padding-left:30px;color:#9aa7b4;font-size:12px;" colspan="6">↳ no campaign tagging available for this window</td></tr>'; }
     }
+    // item 5: email clicks per Klaviyo flow, nested under the Email source
+    if(order[b]==='Email'){
+      var eflows=win.klaviyo_flows||[];
+      for(var fq=0;fq<eflows.length;fq++){ var fl=eflows[fq];
+        body+='<tr style="background:#fffdf5;">'+
+          '<td style="padding-left:30px;color:#8a6d1a;font-size:12px;">↳ ✉ '+escapeHtml(fl.flow)+' <span style="color:#b9a24a;">(Klaviyo flow)</span></td>'+
+          '<td class="c" style="font-size:12px;color:#8a6d1a;" title="Email clicks from this flow ('+escapeHtml(win.label)+')">'+Number(fl.clicks||0).toLocaleString()+' <span style="color:#c9b46a;font-size:10px;">clicks</span></td>'+
+          '<td colspan="4" style="font-size:11px;color:#b9a24a;padding-left:10px;">'+(fl.clicks>0?'email-flow clicks':'no clicks in this window yet')+'</td></tr>';
+      }
+      if(!eflows.length){ body+='<tr style="background:#fffdf5;"><td colspan="6" style="padding-left:30px;color:#b9a24a;font-size:12px;">↳ Klaviyo not connected / no live flows</td></tr>'; }
+    }
   }
   body+='<tr class="so-group"><td>Total</td><td class="c">'+Number(tot.sessions).toLocaleString()+'</td><td class="c">'+tot.conversions+'</td><td class="c">'+(tot.sessions?(tot.conversions/tot.sessions*100).toFixed(1)+'%':'—')+'</td><td class="c open">'+money0(tot.revenue)+'</td><td class="c">'+tot.transactions+'</td></tr>';
   document.getElementById('panel').innerHTML =
@@ -1074,8 +1148,11 @@ function renderWtPanel(){
         '<label style="cursor:pointer;display:inline-flex;gap:5px;align-items:center;"><input type="checkbox" onchange="wtToggleTrend(this.checked)"'+(wtTrend?' checked':'')+'> Trend line</label>'+
       '</span></div>'+
     wtLegend()+ wtBarSvg(win)+
-    '<div class="ca-h" style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;"><span>Google Ads visitors by campaign ('+escapeHtml(win.label)+')</span><span style="font-weight:400;font-size:12px;color:#7a8a99;">sessions per '+(win.granularity==='week'?'week':'day')+' &middot; one chart per campaign</span></div>'+
+    '<div class="ca-h" style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;"><span>Google Ads campaigns — impressions &amp; clicks ('+escapeHtml(win.label)+')</span><span style="font-weight:400;font-size:12px;color:#7a8a99;">grouped by type &middot; add-to-cart &amp; purchases per campaign &middot; per '+(win.granularity==='week'?'week':'day')+'</span></div>'+
+    wtCampLegend(win)+
     wtGadsGrid(win)+
+    '<div class="ca-h" style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;"><span>Email flow clicks — clicks per Klaviyo flow ('+escapeHtml(win.label)+')</span><span style="font-weight:400;font-size:12px;color:#7a8a99;">'+((WT.klaviyo&&WT.klaviyo.account)?escapeHtml(WT.klaviyo.account)+' &middot; live flows':'')+'</span></div>'+
+    wtFlowChart(win)+
     '<div class="ca-h" style="margin-top:18px;">Does it convert? Sales by source ('+escapeHtml(win.label)+')</div>'+
     '<div class="matrix-wrap" style="max-width:680px;"><table class="matrix"><thead><tr><th>Source</th><th class="c">Visitors</th><th class="c">Key-event conv.</th><th class="c">Conv. rate</th><th class="c">Revenue</th><th class="c">Orders</th></tr></thead><tbody>'+body+'</tbody></table></div>'+
     '<div style="margin:14px 16px;padding:12px 16px;background:#fff8e1;border-left:4px solid #ffc107;font-size:12px;border-radius:6px;line-height:1.55;color:#2c3e50;">'+
