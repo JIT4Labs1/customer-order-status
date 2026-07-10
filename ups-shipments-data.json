@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-07-09 09:34 AM PT",
-  "last_status_refresh": "2026-07-09 09:20 AM PT",
+  "pulled_at": "2026-07-10 09:03 AM PT",
+  "last_status_refresh": "2026-07-10 08:39 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -2908,12 +2908,12 @@
       "contact": "Ashli Wolf",
       "ship_to": "Argyle, TX",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Haslet, TX",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "ARGYLE, TX",
       "date": "2026-07-09",
-      "time": "",
-      "delivered": false,
+      "time": "11:23 AM",
+      "delivered": true,
       "ship_date": "2026-07-07",
       "items": [
         {
@@ -2949,12 +2949,12 @@
       "contact": "Ashli Wolf",
       "ship_to": "Argyle, TX",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Haslet, TX",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "ARGYLE, TX",
       "date": "2026-07-09",
-      "time": "",
-      "delivered": false,
+      "time": "11:23 AM",
+      "delivered": true,
       "ship_date": "2026-07-07",
       "items": [
         {
@@ -3111,9 +3111,9 @@
       "ship_to": "Sugar Land, TX",
       "order": "#1073",
       "service": "FedEx",
-      "status": "In Transit",
-      "activity": "Out for Delivery",
-      "delivered": false,
+      "status": "Delivered",
+      "activity": "Delivered",
+      "delivered": true,
       "location": "",
       "date": "2026-07-09",
       "time": "",
@@ -3126,6 +3126,72 @@
           "qty": 1
         }
       ]
+    },
+    {
+      "tracking": "1Z8W007Y0398914376",
+      "carrier": "UPS",
+      "source": "UPS My Choice (3rd Party)",
+      "view": "Third Party",
+      "shipper": "CONMED OUTBOUND",
+      "receiver": "Gudgel Aesthetics",
+      "contact": "Gudgel",
+      "ship_to": "Norman, OK",
+      "service": "UPS Ground",
+      "status": "In Transit",
+      "activity": "Departed from Facility",
+      "location": "Atlanta, GA",
+      "date": "2026-07-10",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-07-09",
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "sku": "VV120-DO",
+          "qty": 1
+        }
+      ],
+      "order": "#1093",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1093"
+    },
+    {
+      "tracking": "1Z8W007Y0395109466",
+      "carrier": "UPS",
+      "source": "UPS My Choice (3rd Party)",
+      "view": "Third Party",
+      "shipper": "CONMED OUTBOUND",
+      "receiver": "Gudgel Aesthetics",
+      "contact": "Gudgel",
+      "ship_to": "Norman, OK",
+      "service": "UPS Ground",
+      "status": "In Transit",
+      "activity": "Shipper created a label, UPS has not received the package yet. ",
+      "location": "",
+      "date": "2026-07-10",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-07-10",
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "sku": "VV120-DO",
+          "qty": 1
+        }
+      ],
+      "order": "#1093",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1093"
     }
   ]
 }
