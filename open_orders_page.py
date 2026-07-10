@@ -846,7 +846,8 @@ function liGa4Html(){
 
 // ── Website Traffic tab (GA4 daily visitors by source + sales by source) ──────
 var WT=null, wtLoading=false, wtWin='last_30_days', wtLabels=true, wtTrend=true, wtVisible={};
-var wtCampVisible={};   // item 3: which Google Ads campaigns show in the per-campaign grid
+var wtCampVisible={};   // item 3: which Google Ads campaigns show as series in the bar chart
+var wtMetricImpr=false, wtMetricClk=false;   // bar-chart ad-metric view (Google Ads impressions / clicks)
 var WT_WIN_ORDER=['today','last_7_days','last_30_days','this_month','last_month','this_quarter','last_quarter','this_year'];
 var WT_COLORS={ 'Direct':'#6b7a8f','Google Ads':'#1a73e8','Organic Search':'#34a853','Email':'#f59e0b','LinkedIn':'#0a66c2','Other':'#aab4bf' };
 function loadWT(){
@@ -873,6 +874,8 @@ function wtCampColor(name){ var cs=wtCampList(), i=cs.indexOf(name); if(i<0){ i=
 function wtVisCampaigns(){ var cs=wtCampList(), v=[]; for(var i=0;i<cs.length;i++) if(wtCampVisible[cs[i]]) v.push(cs[i]); return v; }
 function wtToggleCampIdx(i,c){ var cs=wtCampList(); if(cs[i]!=null){ wtCampVisible[cs[i]]=!!c; renderWtPanel(); } }
 function wtAllCamps(c){ var cs=wtCampList(); for(var i=0;i<cs.length;i++) wtCampVisible[cs[i]]=!!c; renderWtPanel(); }
+function wtToggleImpr(c){ wtMetricImpr=!!c; renderWtPanel(); }
+function wtToggleClk(c){ wtMetricClk=!!c; renderWtPanel(); }
 // ── items 4 & 5: Klaviyo email-flow clicks (bar chart of clicks per flow) ──
 function wtFlowChart(win){
   var flows=win.klaviyo_flows||[], k=(WT.klaviyo||{});
@@ -898,6 +901,7 @@ function wtLabel(t,gran){
   return mo+' '+parseInt(p[2],10);
 }
 function wtBarSvg(win){
+  if(wtMetricImpr||wtMetricClk) return wtBarSvgAd(win);   // ad-metric view: campaign impressions / clicks
   var buckets=wtVisBuckets(), camps=wtVisCampaigns(), pts=win.points||[], n=pts.length;
   // when campaigns are selected they REPLACE the aggregate "Google Ads" bucket (avoid double-counting)
   if(camps.length){ buckets=buckets.filter(function(b){ return b!=='Google Ads'; }); }
@@ -954,6 +958,54 @@ function wtBarSvg(win){
   svg+='</svg>';
   return '<div style="overflow-x:auto;padding:4px 0;">'+svg+'</div>';
 }
+function wtBarSvgAd(win){
+  // Google Ads impressions / clicks as GROUPED bars per period, summed over selected campaigns
+  var pts=win.points||[], n=pts.length;
+  var camps=wtVisCampaigns(); if(!camps.length) camps=wtCampList();
+  var metrics=[]; if(wtMetricImpr) metrics.push({key:'impr',color:WT_IMPR_COLOR,label:'Impressions'}); if(wtMetricClk) metrics.push({key:'clicks',color:WT_CLK_COLOR,label:'Clicks'});
+  if(!camps.length) return '<div class="empty">No Google Ads campaigns in this window.</div>';
+  if(!metrics.length) return '<div class="empty">Select Impressions and/or Clicks above.</div>';
+  if(!n) return '<div class="empty">No data in this window.</div>';
+  // lookup: campaign -> time key -> {impr,clicks}
+  var gs=win.gads_series||{}, lut={};
+  for(var ci=0;ci<camps.length;ci++){ var arr=gs[camps[ci]]||[], m={}; for(var k=0;k<arr.length;k++){ m[arr[k].t]=arr[k]; } lut[camps[ci]]=m; }
+  var vals=[], maxV=0;
+  for(var i=0;i<n;i++){ var t=pts[i].t, mv={};
+    for(var mi=0;mi<metrics.length;mi++){ var mk=metrics[mi].key, s=0;
+      for(var cj=0;cj<camps.length;cj++){ var rec=lut[camps[cj]][t]; if(rec) s+=rec[mk]||0; }
+      mv[mk]=s; if(s>maxV) maxV=s; }
+    vals.push(mv);
+  }
+  if(maxV<=0) maxV=1;
+  function niceMax(m){ var pow=Math.pow(10,Math.floor(Math.log(m)/Math.LN10)); var f=m/pow; var nf=f<=1?1:f<=2?2:f<=5?5:10; return nf*pow; }
+  var yMax=niceMax(maxV*1.08);
+  var padL=52,padR=14,padT=18,padB=52, plotH=250;
+  var minStep=Math.max(26, metrics.length*12+8), plotW=Math.max(660-padL-padR, n*minStep);
+  var W=padL+plotW+padR, H=padT+plotH+padB, step=plotW/n;
+  var groupW=Math.min(38, step*0.7), bw=groupW/metrics.length;
+  function yOf(v){ return padT+plotH-(plotH*v/yMax); }
+  var svg='<svg viewBox="0 0 '+W+' '+H+'" width="100%" preserveAspectRatio="xMinYMin meet" style="max-width:'+W+'px;font-family:inherit;">';
+  var gl=4;
+  for(var g=0;g<=gl;g++){ var yv=yMax*g/gl, yy=padT+plotH-(plotH*g/gl);
+    svg+='<line x1="'+padL+'" y1="'+yy.toFixed(1)+'" x2="'+(padL+plotW)+'" y2="'+yy.toFixed(1)+'" stroke="#e6ecf2" stroke-width="1"/>';
+    svg+='<text x="'+(padL-6)+'" y="'+(yy+3.5).toFixed(1)+'" text-anchor="end" font-size="10" fill="#7a8a99">'+Math.round(yv).toLocaleString()+'</text>';
+  }
+  var labEvery=Math.ceil(n/12);
+  for(var i=0;i<n;i++){
+    var gx=padL+step*i+(step-groupW)/2;
+    for(var mi=0;mi<metrics.length;mi++){ var mk=metrics[mi].key, v=vals[i][mk]||0; if(v<0) v=0;
+      var hh=plotH*v/yMax, bx=gx+bw*mi, by=padT+plotH-hh;
+      svg+='<rect x="'+bx.toFixed(1)+'" y="'+by.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+hh.toFixed(1)+'" fill="'+metrics[mi].color+'"><title>'+escapeHtml(wtLabel(pts[i].t,win.granularity))+' · '+metrics[mi].label+': '+v.toLocaleString()+'</title></rect>';
+      if(wtLabels && v>0){ svg+='<text x="'+(bx+bw/2).toFixed(1)+'" y="'+(by-3).toFixed(1)+'" text-anchor="middle" font-size="8" font-weight="600" fill="'+metrics[mi].color+'">'+v.toLocaleString()+'</text>'; }
+    }
+    if(i%labEvery===0){ var lx=gx+groupW/2, ly=padT+plotH+14;
+      svg+='<text x="'+lx.toFixed(1)+'" y="'+ly+'" text-anchor="end" font-size="9.5" fill="#5a6b7a" transform="rotate(-45 '+lx.toFixed(1)+' '+ly+')">'+escapeHtml(wtLabel(pts[i].t,win.granularity))+'</text>';
+    }
+  }
+  svg+='<line x1="'+padL+'" y1="'+(padT+plotH)+'" x2="'+(padL+plotW)+'" y2="'+(padT+plotH)+'" stroke="#cdd9e6" stroke-width="1"/></svg>';
+  var note='<div style="font-size:11px;color:#7a8a99;margin:2px 2px 0;">Google Ads '+metrics.map(function(m){return m.label;}).join(' &amp; ')+' &middot; summed over '+(wtVisCampaigns().length?('the '+camps.length+' selected campaign'+(camps.length>1?'s':'')):('all '+camps.length+' active campaigns'))+' &middot; source buckets don’t apply to ad metrics.</div>';
+  return '<div style="overflow-x:auto;padding:4px 0;">'+svg+'</div>'+note;
+}
 function wtLegend(){
   var buckets=WT.buckets||[], allOn=true;
   for(var a=0;a<buckets.length;a++){ if(!wtVisible[buckets[a]]) allOn=false; }
@@ -965,6 +1017,13 @@ function wtLegend(){
     h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;'+(gAdsSplit?'opacity:.45;':'')+'" '+(gAdsSplit?'title="Split into the selected campaigns below"':'')+'><input type="checkbox" onchange="wtToggleSourceIdx('+b+',this.checked)"'+(wtVisible[bk]?' checked':'')+'><span style="width:12px;height:12px;border-radius:2px;background:'+WT_COLORS[bk]+';display:inline-block;"></span>'+escapeHtml(bk)+(gAdsSplit?' <span style="font-size:10px;color:#9aa7b4;">(split)</span>':'')+'</label>';
   }
   if(wtTrend){ h+='<span style="display:inline-flex;align-items:center;gap:6px;color:#7a8a99;"><span style="width:18px;height:0;border-top:2.5px dashed #d6336c;display:inline-block;"></span>Trend</span>'; }
+  h+='</div>';
+  // ad-metric checkboxes — Google Ads impressions / clicks (grouped-bar view; both can be on)
+  h+='<div style="display:flex;flex-wrap:wrap;gap:6px 14px;margin:0 2px 8px;font-size:12px;color:#2c3e50;align-items:center;">';
+  h+='<span style="color:#7a8a99;">Ad metric:</span>';
+  h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;"><input type="checkbox" onchange="wtToggleImpr(this.checked)"'+(wtMetricImpr?' checked':'')+'><span style="width:12px;height:12px;border-radius:2px;background:'+WT_IMPR_COLOR+';display:inline-block;"></span>Impressions</label>';
+  h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;"><input type="checkbox" onchange="wtToggleClk(this.checked)"'+(wtMetricClk?' checked':'')+'><span style="width:12px;height:12px;border-radius:2px;background:'+WT_CLK_COLOR+';display:inline-block;"></span>Clicks</label>';
+  if(wtMetricImpr||wtMetricClk){ h+='<span style="font-size:11px;color:#9aa7b4;">showing Google Ads campaign '+((wtMetricImpr&&wtMetricClk)?'impressions &amp; clicks':(wtMetricImpr?'impressions':'clicks'))+' (grouped per period) — Visitors view paused</span>'; }
   h+='</div>';
   // campaign series checkboxes — break the Google Ads bucket into its active campaigns
   var cs=wtCampList();
