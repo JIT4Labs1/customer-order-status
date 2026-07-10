@@ -865,24 +865,14 @@ function wtToggleSource(bk,c){ wtVisible[bk]=!!c; renderWtPanel(); }
 function wtToggleSourceIdx(i,c){ var bk=((WT&&WT.buckets)||[])[i]; if(bk!=null){ wtVisible[bk]=!!c; renderWtPanel(); } }
 function wtAllSources(c){ var bs=(WT&&WT.buckets)||[]; for(var i=0;i<bs.length;i++) wtVisible[bs[i]]=!!c; renderWtPanel(); }
 function wtVisBuckets(){ var bs=(WT&&WT.buckets)||[], v=[]; for(var i=0;i<bs.length;i++) if(wtVisible[bs[i]]) v.push(bs[i]); return v; }
-// ── item 3: active-campaign checkboxes controlling the per-campaign grid ──
+// ── item 3: active-campaign checkboxes that add campaign series to the visitors BAR CHART ──
+var WT_CAMP_PALETTE=['#7e57c2','#26a69a','#ef6c00','#42a5f5','#ec407a','#9ccc65','#5c6bc0','#8d6e63','#26c6da','#c2185b'];
 function wtCampList(){ var w=(WT&&WT.windows&&WT.windows[wtWin])||{}; return (w.gads_active&&w.gads_active.length)?w.gads_active:(w.gads_campaigns||[]); }
-function wtInitCamps(){ var cs=wtCampList(); for(var i=0;i<cs.length;i++){ if(!(cs[i] in wtCampVisible)) wtCampVisible[cs[i]]=true; } }
-function wtCampShown(c){ return (c in wtCampVisible)? wtCampVisible[c] : true; }
+function wtInitCamps(){ var cs=wtCampList(); for(var i=0;i<cs.length;i++){ if(!(cs[i] in wtCampVisible)) wtCampVisible[cs[i]]=false; } }  // default OFF: chart starts on source buckets
+function wtCampColor(name){ var cs=wtCampList(), i=cs.indexOf(name); if(i<0){ i=0; for(var j=0;j<name.length;j++) i+=name.charCodeAt(j); } return WT_CAMP_PALETTE[i%WT_CAMP_PALETTE.length]; }
+function wtVisCampaigns(){ var cs=wtCampList(), v=[]; for(var i=0;i<cs.length;i++) if(wtCampVisible[cs[i]]) v.push(cs[i]); return v; }
 function wtToggleCampIdx(i,c){ var cs=wtCampList(); if(cs[i]!=null){ wtCampVisible[cs[i]]=!!c; renderWtPanel(); } }
 function wtAllCamps(c){ var cs=wtCampList(); for(var i=0;i<cs.length;i++) wtCampVisible[cs[i]]=!!c; renderWtPanel(); }
-function wtCampLegend(win){
-  var cs=wtCampList(); if(!cs.length) return '';
-  var allOn=true; for(var i=0;i<cs.length;i++){ if(!wtCampVisible[cs[i]]) allOn=false; }
-  var types=win.gads_types||{};
-  var h='<div style="display:flex;flex-wrap:wrap;gap:6px 14px;margin:2px 2px 8px;font-size:12px;color:#2c3e50;align-items:center;">';
-  h+='<span style="color:#7a8a99;">Campaigns:</span>';
-  h+='<label style="cursor:pointer;font-weight:600;display:inline-flex;gap:5px;align-items:center;"><input type="checkbox" onchange="wtAllCamps(this.checked)"'+(allOn?' checked':'')+'> All campaigns</label>';
-  for(var i=0;i<cs.length;i++){ var tp=types[cs[i]]||'';
-    h+='<label style="cursor:pointer;display:inline-flex;gap:5px;align-items:center;"><input type="checkbox" onchange="wtToggleCampIdx('+i+',this.checked)"'+(wtCampVisible[cs[i]]?' checked':'')+'>'+escapeHtml(cs[i])+(tp?' <span style="color:#9aa7b4;">'+escapeHtml(tp)+'</span>':'')+'</label>';
-  }
-  return h+'</div>';
-}
 // ── items 4 & 5: Klaviyo email-flow clicks (bar chart of clicks per flow) ──
 function wtFlowChart(win){
   var flows=win.klaviyo_flows||[], k=(WT.klaviyo||{});
@@ -908,11 +898,16 @@ function wtLabel(t,gran){
   return mo+' '+parseInt(p[2],10);
 }
 function wtBarSvg(win){
-  var buckets=wtVisBuckets(), pts=win.points||[], n=pts.length;
-  if(!buckets.length) return '<div class="empty">Select at least one source above to show the chart.</div>';
+  var buckets=wtVisBuckets(), camps=wtVisCampaigns(), pts=win.points||[], n=pts.length;
+  // when campaigns are selected they REPLACE the aggregate "Google Ads" bucket (avoid double-counting)
+  if(camps.length){ buckets=buckets.filter(function(b){ return b!=='Google Ads'; }); }
+  var series=[];
+  for(var sb=0;sb<buckets.length;sb++) series.push({key:buckets[sb], color:WT_COLORS[buckets[sb]], label:buckets[sb]});
+  for(var sc=0;sc<camps.length;sc++) series.push({key:'camp::'+camps[sc], color:wtCampColor(camps[sc]), label:camps[sc]});
+  if(!series.length) return '<div class="empty">Select at least one source or campaign above to show the chart.</div>';
   if(!n) return '<div class="empty">No visitors in this window.</div>';
   var totals=[], maxT=0;
-  for(var i=0;i<n;i++){ var s=0; for(var b=0;b<buckets.length;b++) s+=pts[i][buckets[b]]||0; totals.push(s); if(s>maxT) maxT=s; }
+  for(var i=0;i<n;i++){ var s=0; for(var b=0;b<series.length;b++) s+=pts[i][series[b].key]||0; totals.push(s); if(s>maxT) maxT=s; }
   if(maxT<=0) maxT=1;
   function niceMax(m){ var pow=Math.pow(10,Math.floor(Math.log(m)/Math.LN10)); var f=m/pow; var nf=f<=1?1:f<=2?2:f<=5?5:10; return nf*pow; }
   var yMax=niceMax(maxT*1.08);
@@ -931,10 +926,10 @@ function wtBarSvg(win){
   var labEvery=Math.ceil(n/12), lblEvery=1, lblFont=(n>22?7:(n>14?8:9.5));
   for(var i=0;i<n;i++){
     var x=padL+step*i+(step-bw)/2, yCur=padT+plotH;
-    for(var b=0;b<buckets.length;b++){
-      var bk=buckets[b], v=pts[i][bk]||0; if(v<=0) continue;
+    for(var b=0;b<series.length;b++){
+      var v=pts[i][series[b].key]||0; if(v<=0) continue;
       var h=plotH*v/yMax; yCur-=h;
-      svg+='<rect x="'+x.toFixed(1)+'" y="'+yCur.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+h.toFixed(1)+'" fill="'+WT_COLORS[bk]+'"><title>'+escapeHtml(wtLabel(pts[i].t,win.granularity))+' · '+escapeHtml(bk)+': '+v+'</title></rect>';
+      svg+='<rect x="'+x.toFixed(1)+'" y="'+yCur.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+h.toFixed(1)+'" fill="'+series[b].color+'"><title>'+escapeHtml(wtLabel(pts[i].t,win.granularity))+' · '+escapeHtml(series[b].label)+': '+v+'</title></rect>';
     }
     // data label (total atop bar)
     if(wtLabels && totals[i]>0 && (i%lblEvery===0)){
@@ -966,10 +961,25 @@ function wtLegend(){
   h+='<span style="color:#7a8a99;">Show:</span>';
   h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-weight:600;"><input type="checkbox" onchange="wtAllSources(this.checked)"'+(allOn?' checked':'')+'> All</label>';
   for(var b=0;b<buckets.length;b++){ var bk=buckets[b];
-    h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;"><input type="checkbox" onchange="wtToggleSourceIdx('+b+',this.checked)"'+(wtVisible[bk]?' checked':'')+'><span style="width:12px;height:12px;border-radius:2px;background:'+WT_COLORS[bk]+';display:inline-block;"></span>'+escapeHtml(bk)+'</label>';
+    var gAdsSplit = (bk==='Google Ads' && wtVisCampaigns().length>0);
+    h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;'+(gAdsSplit?'opacity:.45;':'')+'" '+(gAdsSplit?'title="Split into the selected campaigns below"':'')+'><input type="checkbox" onchange="wtToggleSourceIdx('+b+',this.checked)"'+(wtVisible[bk]?' checked':'')+'><span style="width:12px;height:12px;border-radius:2px;background:'+WT_COLORS[bk]+';display:inline-block;"></span>'+escapeHtml(bk)+(gAdsSplit?' <span style="font-size:10px;color:#9aa7b4;">(split)</span>':'')+'</label>';
   }
   if(wtTrend){ h+='<span style="display:inline-flex;align-items:center;gap:6px;color:#7a8a99;"><span style="width:18px;height:0;border-top:2.5px dashed #d6336c;display:inline-block;"></span>Trend</span>'; }
-  return h+'</div>';
+  h+='</div>';
+  // campaign series checkboxes — break the Google Ads bucket into its active campaigns
+  var cs=wtCampList();
+  if(cs.length){
+    var allOn=true; for(var i=0;i<cs.length;i++){ if(!wtCampVisible[cs[i]]) allOn=false; }
+    var types=(WT.windows&&WT.windows[wtWin]&&WT.windows[wtWin].gads_types)||{};
+    h+='<div style="display:flex;flex-wrap:wrap;gap:6px 14px;margin:0 2px 10px;font-size:12px;color:#2c3e50;align-items:center;">';
+    h+='<span style="color:#7a8a99;">Campaigns:</span>';
+    h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-weight:600;"><input type="checkbox" onchange="wtAllCamps(this.checked)"'+(allOn?' checked':'')+'> All campaigns</label>';
+    for(var i=0;i<cs.length;i++){ var tp=types[cs[i]]||'';
+      h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;"><input type="checkbox" onchange="wtToggleCampIdx('+i+',this.checked)"'+(wtCampVisible[cs[i]]?' checked':'')+'><span style="width:12px;height:12px;border-radius:2px;background:'+wtCampColor(cs[i])+';display:inline-block;"></span>'+escapeHtml(cs[i])+(tp?' <span style="color:#9aa7b4;">'+escapeHtml(tp)+'</span>':'')+'</label>';
+    }
+    h+='</div>';
+  }
+  return h;
 }
 var WT_IMPR_COLOR='#1a73e8', WT_CLK_COLOR='#e8590c';
 function wtGrowth(vals){ // % change from regression start->end
@@ -1061,7 +1071,7 @@ function wtGadsGrid(win){
   var types=win.gads_types||{};
   // item 1: one row per campaign type (Search, then Shopping), each its own grid; item 3: respect campaign checkboxes.
   function rowFor(tkey,label,seen){
-    var rc=[]; for(var i=0;i<camps.length;i++){ if((types[camps[i]]||'Other')===tkey && wtCampShown(camps[i])){ rc.push(camps[i]); if(seen) seen[camps[i]]=1; } }
+    var rc=[]; for(var i=0;i<camps.length;i++){ if((types[camps[i]]||'Other')===tkey){ rc.push(camps[i]); if(seen) seen[camps[i]]=1; } }
     if(!rc.length) return '';
     var s='<div style="font-size:12px;font-weight:700;color:#5a6b7a;margin:10px 2px 4px;">'+label+' <span style="color:#9aa7b4;font-weight:400;">('+rc.length+')</span></div>';
     s+='<div class="wt-mult" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:2px 2px 6px;">';
@@ -1069,7 +1079,7 @@ function wtGadsGrid(win){
     return s+'</div>';
   }
   var seen={}, h=rowFor('Search','Search campaigns',seen)+rowFor('Shopping','Shopping campaigns',seen);
-  var other=[]; for(var i=0;i<camps.length;i++){ if(!seen[camps[i]] && wtCampShown(camps[i])) other.push(camps[i]); }
+  var other=[]; for(var i=0;i<camps.length;i++){ if(!seen[camps[i]]) other.push(camps[i]); }
   if(other.length){
     h+='<div style="font-size:12px;font-weight:700;color:#5a6b7a;margin:10px 2px 4px;">Other campaigns <span style="color:#9aa7b4;font-weight:400;">('+other.length+')</span></div>';
     h+='<div class="wt-mult" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:2px 2px 6px;">';
@@ -1149,7 +1159,6 @@ function renderWtPanel(){
       '</span></div>'+
     wtLegend()+ wtBarSvg(win)+
     '<div class="ca-h" style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;"><span>Google Ads campaigns — impressions &amp; clicks ('+escapeHtml(win.label)+')</span><span style="font-weight:400;font-size:12px;color:#7a8a99;">grouped by type &middot; add-to-cart &amp; purchases per campaign &middot; per '+(win.granularity==='week'?'week':'day')+'</span></div>'+
-    wtCampLegend(win)+
     wtGadsGrid(win)+
     '<div class="ca-h" style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;"><span>Email flow clicks — clicks per Klaviyo flow ('+escapeHtml(win.label)+')</span><span style="font-weight:400;font-size:12px;color:#7a8a99;">'+((WT.klaviyo&&WT.klaviyo.account)?escapeHtml(WT.klaviyo.account)+' &middot; live flows':'')+'</span></div>'+
     wtFlowChart(win)+
