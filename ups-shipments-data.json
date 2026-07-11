@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-07-10 09:18 AM PT",
-  "last_status_refresh": "2026-07-10 09:16 AM PT",
+  "pulled_at": "2026-07-11 09:26 AM PT",
+  "last_status_refresh": "2026-07-11 09:04 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -3018,9 +3018,9 @@
       "ship_to": "Mission Viejo, CA",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Atlanta, GA",
-      "date": "2026-07-09",
+      "activity": "Loaded on Delivery Vehicle ",
+      "location": "Aliso Viejo, CA",
+      "date": "2026-07-11",
       "time": "",
       "delivered": false,
       "ship_date": "2026-07-08",
@@ -3051,9 +3051,9 @@
       "ship_to": "Mission Viejo, CA",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Atlanta, GA",
-      "date": "2026-07-09",
+      "activity": "Loaded on Delivery Vehicle ",
+      "location": "Aliso Viejo, CA",
+      "date": "2026-07-11",
       "time": "",
       "delivered": false,
       "ship_date": "2026-07-08",
@@ -3138,9 +3138,9 @@
       "ship_to": "Norman, OK",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Atlanta, GA",
-      "date": "2026-07-10",
+      "activity": "Processing at UPS Facility",
+      "location": "Oklahoma City, OK",
+      "date": "2026-07-11",
       "time": "",
       "delivered": false,
       "ship_date": "2026-07-09",
@@ -3171,9 +3171,9 @@
       "ship_to": "Norman, OK",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Shipper created a label, UPS has not received the package yet. ",
-      "location": "",
-      "date": "2026-07-10",
+      "activity": "Departed from Facility",
+      "location": "Atlanta, GA",
+      "date": "2026-07-11",
       "time": "",
       "delivered": false,
       "ship_date": "2026-07-10",
@@ -3216,6 +3216,129 @@
         {
           "name": "Beckman Coulter A98857 Access 25OH Vitamin D Calibrator",
           "sku": "A98857",
+          "qty": 1
+        }
+      ]
+    },
+    {
+      "tracking": "874235745134",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "OM Diagnostic Laboratories",
+      "contact": "Karan Mehta",
+      "ship_to": "Norwood, MA",
+      "order": "#1078",
+      "service": "FedEx",
+      "status": "",
+      "activity": "Label created",
+      "delivered": false,
+      "location": "",
+      "date": "2026-07-10",
+      "time": "",
+      "ship_date": "2026-07-10",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=874235745134",
+      "items": [
+        {
+          "name": "Beckman Coulter B63285 Access TSH Calibrator (3rd IS) S0-S5",
+          "sku": "B63285",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A13430 Access Free T3 Calibrator",
+          "sku": "A13430",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 37205 Access Hybritech PSA Calibrator (S0-S5)",
+          "sku": "37205",
+          "qty": 1
+        }
+      ]
+    },
+    {
+      "tracking": "382545834317",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "3 Alpha Labs, LLC",
+      "contact": "Bart Pitula",
+      "ship_to": "Costa Mesa, CA",
+      "order": "#1071",
+      "service": "FedEx",
+      "status": "",
+      "activity": "Label created",
+      "delivered": false,
+      "location": "",
+      "date": "2026-07-10",
+      "time": "",
+      "ship_date": "2026-07-10",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=382545834317",
+      "items": [
+        {
+          "name": "Beckman Coulter A18227 Access TPO Antibody Calibrator",
+          "sku": "A18227",
+          "qty": 1
+        }
+      ]
+    },
+    {
+      "tracking": "382541891546",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "OM Diagnostic Laboratories",
+      "contact": "Karan Mehta",
+      "ship_to": "Norwood, MA",
+      "order": "#1038",
+      "service": "FedEx",
+      "status": "",
+      "activity": "Label created",
+      "delivered": false,
+      "location": "",
+      "date": "2026-07-10",
+      "time": "",
+      "ship_date": "2026-07-10",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=382541891546",
+      "items": [
+        {
+          "name": "Beckman Coulter 98201 Access BNP OC",
+          "sku": "98201",
+          "qty": 1
+        }
+      ]
+    },
+    {
+      "tracking": "874235331262",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Radiance Diagnostic",
+      "contact": "Siva Kumar",
+      "ship_to": "Naperville, IL",
+      "order": "#1033",
+      "service": "FedEx",
+      "status": "",
+      "activity": "Label created",
+      "delivered": false,
+      "location": "",
+      "date": "2026-07-10",
+      "time": "",
+      "ship_date": "2026-07-10",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=874235331262",
+      "items": [
+        {
+          "name": "Beckman Coulter A48618 Access SHBG Sex Hormone-Binding Globulin",
+          "sku": "A48618",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33005 Access Vitamin B12 Calibrator (S0-S5)",
+          "sku": "33005",
           "qty": 1
         }
       ]
