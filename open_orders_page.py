@@ -2223,6 +2223,8 @@ def main():
     cache_path = os.path.join(CONFIG["output_dir"], f"retrieve_cache_{today}.json")
     vt = VtigerAPI(CONFIG["vtiger_rest_base"], CONFIG["vtiger_user"],
                    CONFIG["vtiger_accesskey"], cache_path=cache_path)
+    # Bulk-query cache is purged by VtigerAPI on load once it exceeds QUERY_CACHE_TTL
+    # (see open_orders_report.VtigerAPI). Force a full purge with PURGE_QUERY_CACHE=1.
     vt.login()
 
     open_items = extract_open_orders(vt, dry_run=args.dry_run)

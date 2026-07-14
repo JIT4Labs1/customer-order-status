@@ -79,6 +79,12 @@ CONFIG = {
 }
 
 VTIGER_BASE = "https://jit4youinc.od2.vtiger.com"
+
+# How long a cached BULK query stays usable (seconds). Long enough for the
+# rate-limit resume loop (successive passes minutes apart) to reuse it, short
+# enough that a Vtiger edit shows up on the next Refresh. Override with
+# QUERY_CACHE_TTL_SEC; force a purge with PURGE_QUERY_CACHE=1.
+QUERY_CACHE_TTL = int(os.environ.get("QUERY_CACHE_TTL_SEC", "900"))
 SKIP_ITEMS = ['shipping', 'tax', 'ca sales tax']
 
 ctx = ssl.create_default_context()
@@ -133,6 +139,7 @@ class VtigerAPI:
         self.cache_path = cache_path
         self.retrieve_cache = {}
         self.query_cache = {}
+        self.query_cache_at = 0.0   # epoch when the bulk-query cache was written
         self._uncached_fetches = 0
         self.fetch_failures = 0  # count of retrieves that failed this run (e.g. 429)
         if cache_path and os.path.exists(cache_path):
@@ -141,20 +148,40 @@ class VtigerAPI:
                     blob = json.load(f)
                 self.retrieve_cache = blob.get("retrieve", {})
                 self.query_cache = blob.get("query", {})
+                self.query_cache_at = float(blob.get("query_at", 0) or 0)
                 log(f"  Loaded cache: {len(self.retrieve_cache)} records, "
                     f"{len(self.query_cache)} queries")
             except Exception as e:
                 log(f"  Warning: could not load cache ({e}); starting fresh")
                 self.retrieve_cache, self.query_cache = {}, {}
+            # ── PURGE stale bulk queries ───────────────────────────────────
+            # The cache file is date-scoped, so without this an edit made in
+            # Vtiger *after* the first pass of the day (setting an account's
+            # Industry, an opportunity's Lead Source, …) stays invisible to
+            # every later run that day. Bulk queries are cheap, so we keep them
+            # only long enough for the rate-limit resume loop (successive passes
+            # a few minutes apart) and re-read them fresh after that. The
+            # per-record retrieve cache is never purged — it's what lets a
+            # rate-limited run resume. PURGE_QUERY_CACHE=1 forces a full purge.
+            age = time.time() - self.query_cache_at
+            force = os.environ.get("PURGE_QUERY_CACHE", "") == "1"
+            if self.query_cache and (force or age > QUERY_CACHE_TTL):
+                n = len(self.query_cache)
+                self.query_cache = {}
+                why = "forced by PURGE_QUERY_CACHE=1" if force else f"stale ({age/60:.0f} min old)"
+                log(f"  Purged {n} cached bulk queries — {why}; all bulk data re-read fresh")
 
     def save_cache(self):
         if not self.cache_path:
             return
         try:
             tmp = self.cache_path + ".tmp"
+            if not self.query_cache_at:
+                self.query_cache_at = time.time()
             with open(tmp, "w") as f:
                 json.dump({"retrieve": self.retrieve_cache,
-                           "query": self.query_cache}, f)
+                           "query": self.query_cache,
+                           "query_at": self.query_cache_at}, f)
             os.replace(tmp, self.cache_path)
         except Exception as e:
             log(f"  Warning: could not save cache ({e})")
