@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-14 08:01 AM EDT",
+  "generated_at": "2026-07-14 06:02 PM EDT",
   "year": 2026,
   "customers": [
     {
@@ -1073,6 +1073,19 @@
       "qb_id": "1288",
       "invoices": [
         {
+          "number": "SO554",
+          "status": "Not Paid",
+          "amount": 134.0,
+          "balance": 134.0,
+          "date": "2026-07-14",
+          "link": "",
+          "invoice_link": "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-fd886da9f108437c8d8ee879bd3f94987b306f567cef4da18d5266751af75c2d413eba64b6044cb991defdccf7bdfba1?locale=en_US&cta=v3invoicelink",
+          "so_num": "",
+          "fulfillment": "",
+          "so_date": "",
+          "open_items": []
+        },
+        {
           "number": "SO552",
           "status": "Not Paid",
           "amount": 2900.0,
@@ -1099,7 +1112,7 @@
           "balance": 195.7,
           "date": "2026-07-08",
           "link": "",
-          "invoice_link": "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-aed910b34aa84df58830a47297acefc433ef2c8bbe2542a8bcb80453c0a6eeebfb4e1a0def6544e18f01b9d11082b9b5?locale=en_US&cta=v3invoicelink",
+          "invoice_link": "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-fd886da9f108437c8d8ee879bd3f94987b306f567cef4da18d5266751af75c2d413eba64b6044cb991defdccf7bdfba1?locale=en_US&cta=v3invoicelink",
           "so_num": "SO470",
           "fulfillment": "Partially",
           "so_date": "2026-07-08",
@@ -1182,12 +1195,6 @@
               "vendor": "PMA Services"
             },
             {
-              "product": "Beckman Coulter 33830 Access Total T3, 100 Determinations",
-              "open_qty": 2.0,
-              "po": "PO665",
-              "vendor": "PMA Services"
-            },
-            {
               "product": "Beckman Coulter 33510 Access hLH Reagent, 100 Determinations",
               "open_qty": 3.0,
               "po": "PO665",
@@ -1248,12 +1255,6 @@
             {
               "product": "Beckman Coulter 33520 Follicle Stimulating Hormone (FSH) 100 Tests",
               "open_qty": 8.0,
-              "po": "PO665",
-              "vendor": "PMA Services"
-            },
-            {
-              "product": "Beckman Coulter 33830 Access Total T3, 100 Determinations",
-              "open_qty": 2.0,
               "po": "PO665",
               "vendor": "PMA Services"
             },
@@ -1657,10 +1658,10 @@
         }
       ],
       "totals": {
-        "count": 39,
-        "amount": 92369.23,
+        "count": 40,
+        "amount": 92503.23,
         "paid": 86931.53,
-        "unpaid": 5437.7
+        "unpaid": 5571.7
       }
     },
     {
@@ -2012,6 +2013,38 @@
       "qb_id": "1493",
       "invoices": [
         {
+          "number": "SO555",
+          "status": "Not Paid",
+          "amount": 1791.1,
+          "balance": 1791.1,
+          "date": "2026-07-14",
+          "link": "",
+          "invoice_link": "",
+          "so_num": "SO477",
+          "fulfillment": "Partially",
+          "so_date": "2026-07-14",
+          "open_items": [
+            {
+              "product": "Beckman Coulter 33810 Access Thyroid Uptake Reagent, 100 Determinations",
+              "open_qty": 2.0,
+              "po": "PO748",
+              "vendor": "PMA Services"
+            },
+            {
+              "product": "Beckman Coulter A48618 Access SHBG Sex Hormone-Binding Globulin",
+              "open_qty": 1.0,
+              "po": "PO748",
+              "vendor": "PMA Services"
+            },
+            {
+              "product": "Beckman Coulter B12396 HbA1c Extend Sure Control Kit",
+              "open_qty": 2.0,
+              "po": "PO750",
+              "vendor": "Allora Biotech LLC"
+            }
+          ]
+        },
+        {
           "number": "SO513",
           "status": "Paid",
           "amount": 1105.1,
@@ -2026,12 +2059,12 @@
         }
       ],
       "totals": {
-        "count": 1,
-        "amount": 1105.1,
+        "count": 2,
+        "amount": 2896.2,
         "paid": 1105.1,
-        "unpaid": 0.0
+        "unpaid": 1791.1
       }
     }
   ],
-  "pulled_at": "2026-07-14 05:22 AM PT"
+  "pulled_at": "2026-07-14 03:02 PM PT"
 }
