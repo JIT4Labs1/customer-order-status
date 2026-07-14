@@ -169,9 +169,14 @@ def build_pnl(vt):
 
     # ── Fetch ────────────────────────────────────────────────────────────────
     year_sos = vt.query_all(
-        "SELECT salesorder_no, sostatus, createdtime, hdnGrandTotal, account_id, id, "
+        "SELECT salesorder_no, sostatus, createdtime, hdnGrandTotal, account_id, id, potential_id, "
         "cf_salesorder_leadsourcedealoriginated FROM SalesOrder "
         "WHERE createdtime >= '%d-01-01' AND createdtime < '%d-01-01'" % (Y, Y + 1))
+    # Lead source actually lives on the linked Opportunity (Potentials.leadsource);
+    # the SO custom field cf_salesorder_leadsourcedealoriginated is only filled in
+    # sporadically. Build an opportunity -> leadsource map so we can fall back to it.
+    opp_lead = {p["id"]: (p.get("leadsource", "") or "")
+                for p in vt.query_all("SELECT id, leadsource FROM Potentials")}
     year_pos = vt.query_all(
         "SELECT purchaseorder_no, postatus, hdnGrandTotal, salesorder_id, id FROM PurchaseOrder "
         "WHERE createdtime >= '%d-01-01' AND createdtime < '%d-01-01'" % (Y, Y + 1))
@@ -230,7 +235,8 @@ def build_pnl(vt):
             "gross": gross, "ship": ship, "net": net, "id": sid, "acct_id": aid,
             "customer": acct.get(aid, {}).get("name", "Unknown"),
             "industry": acct.get(aid, {}).get("industry", ""),
-            "lead": (so.get("cf_salesorder_leadsourcedealoriginated", "") or ""),
+            "lead": ((so.get("cf_salesorder_leadsourcedealoriginated", "") or "").strip()
+                     or opp_lead.get(so.get("potential_id", ""), "")),
             "po_total": po_total_by_so.get(sid, 0.0),
         }
     allowed = [mk(s) for s in year_sos if (s.get("sostatus", "") or "").strip().lower() in ALLOWED_SO_STATUSES]
