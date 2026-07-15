@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-07-15 01:16:28 PM PDT",
+  "generated_at": "2026-07-15 02:04:44 PM PDT",
   "totals": {
-    "customers": 6,
-    "open_sos": 10,
-    "open_items": 20,
+    "customers": 5,
+    "open_sos": 8,
+    "open_items": 11,
     "vendors": 4,
-    "high_demand_skus": 3
+    "high_demand_skus": 2
   },
   "customers": [
     {
@@ -28,29 +28,6 @@
           "open_qty": 1.0,
           "pending_pos": "PO579",
           "eta": "2026-07-20"
-        }
-      ]
-    },
-    {
-      "name": "Clinical Diagnostic Laboratories, LLC",
-      "open_sos": 1,
-      "open_items": 1,
-      "vendors": [
-        "PMA Services"
-      ],
-      "rows": [
-        {
-          "so_num": "SO473",
-          "so_status": "Approved",
-          "order_date": "2026-07-10",
-          "product": "Beckman Coulter A16792 Access Wash Buffer II",
-          "vendor": "PMA Services",
-          "list_price": 38.0,
-          "ordered_qty": 2.0,
-          "delivered_qty": 0,
-          "open_qty": 2.0,
-          "pending_pos": "PO742",
-          "eta": ""
         }
       ]
     },
@@ -143,77 +120,12 @@
     },
     {
       "name": "OM Diagnostic Laboratories",
-      "open_sos": 2,
-      "open_items": 9,
+      "open_sos": 1,
+      "open_items": 1,
       "vendors": [
         "PMA Services"
       ],
       "rows": [
-        {
-          "so_num": "SO428",
-          "so_status": "Partially delivered",
-          "order_date": "2026-06-10",
-          "product": "Beckman Coulter 33880 (c76421) Access Free T4 Reagent, 100 Determinations",
-          "vendor": "PMA Services",
-          "list_price": 64.0,
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "pending_pos": "PO679",
-          "eta": ""
-        },
-        {
-          "so_num": "SO453",
-          "so_status": "Partially delivered",
-          "order_date": "2026-06-29",
-          "product": "Beckman Coulter 33560 Access Testosterone Reagent",
-          "vendor": "PMA Services",
-          "list_price": 115.6,
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "pending_pos": "PO715",
-          "eta": ""
-        },
-        {
-          "so_num": "SO453",
-          "so_status": "Partially delivered",
-          "order_date": "2026-06-29",
-          "product": "Beckman Coulter 33565 Testosterone CalIbrator",
-          "vendor": "PMA Services",
-          "list_price": 42.3,
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "pending_pos": "PO715",
-          "eta": ""
-        },
-        {
-          "so_num": "SO453",
-          "so_status": "Partially delivered",
-          "order_date": "2026-06-29",
-          "product": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
-          "vendor": "PMA Services",
-          "list_price": 206.8,
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "pending_pos": "PO715",
-          "eta": ""
-        },
-        {
-          "so_num": "SO453",
-          "so_status": "Partially delivered",
-          "order_date": "2026-06-29",
-          "product": "Beckman Coulter 81901 Reaction Vessel Access",
-          "vendor": "PMA Services",
-          "list_price": 26.7,
-          "ordered_qty": 2.0,
-          "delivered_qty": 0,
-          "open_qty": 2.0,
-          "pending_pos": "PO715",
-          "eta": ""
-        },
         {
           "so_num": "SO453",
           "so_status": "Partially delivered",
@@ -221,45 +133,6 @@
           "product": "Beckman Coulter A16953 Access Intact PTH Calibrator (S0-S5, RB)",
           "vendor": "PMA Services",
           "list_price": 179.8,
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "pending_pos": "PO715",
-          "eta": ""
-        },
-        {
-          "so_num": "SO453",
-          "so_status": "Partially delivered",
-          "order_date": "2026-06-29",
-          "product": "Beckman Coulter A16972 Access Intact PTH Reagent, 100 determinations",
-          "vendor": "PMA Services",
-          "list_price": 182.3,
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "pending_pos": "PO715",
-          "eta": ""
-        },
-        {
-          "so_num": "SO453",
-          "so_status": "Partially delivered",
-          "order_date": "2026-06-29",
-          "product": "Beckman Coulter A98033 Access Folate Calibrator",
-          "vendor": "PMA Services",
-          "list_price": 174.0,
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "pending_pos": "PO715",
-          "eta": ""
-        },
-        {
-          "so_num": "SO453",
-          "so_status": "Partially delivered",
-          "order_date": "2026-06-29",
-          "product": "Beckman Coulter B52699 High-Sensitivity Troponin 2x50 Tests",
-          "vendor": "PMA Services",
-          "list_price": 159.0,
           "ordered_qty": 1.0,
           "delivered_qty": 0,
           "open_qty": 1.0,
@@ -435,15 +308,14 @@
     },
     {
       "name": "PMA Services",
-      "open_items": 15,
+      "open_items": 6,
       "customers": [
         "3 Alpha Labs, LLC",
-        "Clinical Diagnostic Laboratories, LLC",
         "Doctors General Laboratory",
         "OM Diagnostic Laboratories",
         "Well Health Labs"
       ],
-      "pos": 6,
+      "pos": 4,
       "rows": [
         {
           "customer": "3 Alpha Labs, LLC",
@@ -456,18 +328,6 @@
           "open_qty": 1.0,
           "pending_pos": "PO579",
           "eta": "2026-07-20"
-        },
-        {
-          "customer": "Clinical Diagnostic Laboratories, LLC",
-          "so_num": "SO473",
-          "so_status": "Approved",
-          "order_date": "2026-07-10",
-          "product": "Beckman Coulter A16792 Access Wash Buffer II",
-          "ordered_qty": 2.0,
-          "delivered_qty": 0,
-          "open_qty": 2.0,
-          "pending_pos": "PO742",
-          "eta": ""
         },
         {
           "customer": "Doctors General Laboratory",
@@ -495,106 +355,10 @@
         },
         {
           "customer": "OM Diagnostic Laboratories",
-          "so_num": "SO428",
-          "so_status": "Partially delivered",
-          "order_date": "2026-06-10",
-          "product": "Beckman Coulter 33880 (c76421) Access Free T4 Reagent, 100 Determinations",
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "pending_pos": "PO679",
-          "eta": ""
-        },
-        {
-          "customer": "OM Diagnostic Laboratories",
-          "so_num": "SO453",
-          "so_status": "Partially delivered",
-          "order_date": "2026-06-29",
-          "product": "Beckman Coulter 33560 Access Testosterone Reagent",
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "pending_pos": "PO715",
-          "eta": ""
-        },
-        {
-          "customer": "OM Diagnostic Laboratories",
-          "so_num": "SO453",
-          "so_status": "Partially delivered",
-          "order_date": "2026-06-29",
-          "product": "Beckman Coulter 33565 Testosterone CalIbrator",
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "pending_pos": "PO715",
-          "eta": ""
-        },
-        {
-          "customer": "OM Diagnostic Laboratories",
-          "so_num": "SO453",
-          "so_status": "Partially delivered",
-          "order_date": "2026-06-29",
-          "product": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "pending_pos": "PO715",
-          "eta": ""
-        },
-        {
-          "customer": "OM Diagnostic Laboratories",
-          "so_num": "SO453",
-          "so_status": "Partially delivered",
-          "order_date": "2026-06-29",
-          "product": "Beckman Coulter 81901 Reaction Vessel Access",
-          "ordered_qty": 2.0,
-          "delivered_qty": 0,
-          "open_qty": 2.0,
-          "pending_pos": "PO715",
-          "eta": ""
-        },
-        {
-          "customer": "OM Diagnostic Laboratories",
           "so_num": "SO453",
           "so_status": "Partially delivered",
           "order_date": "2026-06-29",
           "product": "Beckman Coulter A16953 Access Intact PTH Calibrator (S0-S5, RB)",
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "pending_pos": "PO715",
-          "eta": ""
-        },
-        {
-          "customer": "OM Diagnostic Laboratories",
-          "so_num": "SO453",
-          "so_status": "Partially delivered",
-          "order_date": "2026-06-29",
-          "product": "Beckman Coulter A16972 Access Intact PTH Reagent, 100 determinations",
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "pending_pos": "PO715",
-          "eta": ""
-        },
-        {
-          "customer": "OM Diagnostic Laboratories",
-          "so_num": "SO453",
-          "so_status": "Partially delivered",
-          "order_date": "2026-06-29",
-          "product": "Beckman Coulter A98033 Access Folate Calibrator",
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "pending_pos": "PO715",
-          "eta": ""
-        },
-        {
-          "customer": "OM Diagnostic Laboratories",
-          "so_num": "SO453",
-          "so_status": "Partially delivered",
-          "order_date": "2026-06-29",
-          "product": "Beckman Coulter B52699 High-Sensitivity Troponin 2x50 Tests",
           "ordered_qty": 1.0,
           "delivered_qty": 0,
           "open_qty": 1.0,
@@ -627,52 +391,16 @@
         }
       ],
       "email": "debbie@pmaservices.com",
-      "email_subject": "JIT4You \u2014 Your Open Purchase Orders (15 open items) \u2014 please advise delivery",
-      "email_doc": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>Email draft \u2014 PMA Services</title></head><body style=\"margin:0;background:#eef1f5;font-family:Arial,sans-serif;\"><div style=\"background:#0D2B45;color:#fff;padding:14px 20px;\"><div style=\"font-size:13px;margin-bottom:3px;\"><b>To:</b> debbie@pmaservices.com</div><div style=\"font-size:13px;margin-bottom:10px;\"><b>Subject:</b> JIT4You \u2014 Your Open Purchase Orders (15 open items) \u2014 please advise delivery</div><button id=\"cp\" style=\"padding:7px 14px;border:none;border-radius:5px;background:#008080;color:#fff;font-weight:700;cursor:pointer;\">Copy formatted email</button><a href=\"mailto:debbie@pmaservices.com?subject=JIT4You%20\u2014%20Your%20Open%20Purchase%20Orders%20(15%20open%20items)%20\u2014%20please%20advise%20delivery\" style=\"color:#7fd4d4;margin-left:14px;font-size:13px;\">Open blank email to customer</a><div style=\"margin-top:8px;font-size:12px;opacity:.9;\">Click <b>Copy formatted email</b>, then in Outlook paste with <b>Ctrl/Cmd+V</b> (it pastes the rendered email, not code). This only creates the draft \u2014 you send it.</div></div><div style=\"padding:20px;\"><div id=\"emailbody\" style=\"max-width:760px;margin:0 auto;background:#fff;\"><div style=\"font-family:Arial,Helvetica,sans-serif;color:#101E3E;max-width:840px;margin:0 auto;background:#fff;\"><div style=\"background:#fff;padding:18px 24px;border-bottom:3px solid #008080;\"><div style=\"font-family:'Open Sans',Arial,sans-serif;font-size:24px;font-weight:800;letter-spacing:.4px;\"><span style=\"color:#101E3E;\">JIT4</span><span style=\"color:#008080;\">Labs</span></div></div><div style=\"padding:22px 24px;font-size:14px;line-height:1.6;\"><p>Hi Debbie,</p><p>Find enclosed the list of open POs with previously provided ETA.</p><table cellspacing=\"0\" cellpadding=\"0\" style=\"border-collapse:collapse;width:100%;max-width:800px;background:#fff;font-family:Arial,sans-serif;\"><thead><tr style=\"background:#0D2B45;\"><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Order Date</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Product</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Customer</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Ordered</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Delivered</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Open</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">ETA</th></tr></thead><tbody><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO579</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-04-08</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33810 Access Thyroid Uptake Reagent, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">3 Alpha Labs, LLC</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">2026-07-20</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO679</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-06-10</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33880 (c76421) Access Free T4 Reagent, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">OM Diagnostic Laboratories</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO689</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-06-15</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Doctors General Laboratory</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">5</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">3</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-06-15</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Doctors General Laboratory</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">10</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">8</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO715</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-06-29</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33560 Access Testosterone Reagent</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">OM Diagnostic Laboratories</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-06-29</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33565 Testosterone CalIbrator</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">OM Diagnostic Laboratories</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-06-29</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">OM Diagnostic Laboratories</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-06-29</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 81901 Reaction Vessel Access</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">OM Diagnostic Laboratories</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-06-29</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter A16953 Access Intact PTH Calibrator (S0-S5, RB)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">OM Diagnostic Laboratories</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-06-29</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter A16972 Access Intact PTH Reagent, 100 determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">OM Diagnostic Laboratories</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-06-29</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter A98033 Access Folate Calibrator</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">OM Diagnostic Laboratories</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-06-29</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter B52699 High-Sensitivity Troponin 2x50 Tests</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">OM Diagnostic Laboratories</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO742</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-10</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter A16792 Access Wash Buffer II</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Clinical Diagnostic Laboratories, LLC</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO748</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-14</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33810 Access Thyroid Uptake Reagent, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Well Health Labs</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-14</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter A48618 Access SHBG Sex Hormone-Binding Globulin</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Well Health Labs</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr></tbody></table><p style=\"margin-top:18px;\">Thank you,<br>JIT4You</p><p style=\"font-size:12px;color:#008080;\"><a href=\"mailto:CustomerSupport@jit4you.com\" style=\"color:#008080;text-decoration:none;\">CustomerSupport@jit4you.com</a> &nbsp;&middot;&nbsp; (949) 396-9194</p></div></div></div></div><script>(function(){var b=document.getElementById(\"cp\"),body=document.getElementById(\"emailbody\");function ok(){b.textContent=\"Copied \\u2713 \\u2014 paste into Outlook\";}function fail(){b.textContent=\"Select the email and press Ctrl/Cmd+C\";}function selCopy(){var r=document.createRange();r.selectNode(body);var s=window.getSelection();s.removeAllRanges();s.addRange(r);try{var done=document.execCommand(\"copy\");s.removeAllRanges();done?ok():fail();}catch(e){fail();}}b.addEventListener(\"click\",function(){var html=body.innerHTML;if(window.ClipboardItem&&navigator.clipboard&&navigator.clipboard.write){try{var item=new ClipboardItem({\"text/html\":new Blob([html],{type:\"text/html\"}),\"text/plain\":new Blob([body.innerText],{type:\"text/plain\"})});navigator.clipboard.write([item]).then(ok,selCopy);}catch(e){selCopy();}}else{selCopy();}});})();</script></body></html>"
+      "email_subject": "JIT4You \u2014 Your Open Purchase Orders (6 open items) \u2014 please advise delivery",
+      "email_doc": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>Email draft \u2014 PMA Services</title></head><body style=\"margin:0;background:#eef1f5;font-family:Arial,sans-serif;\"><div style=\"background:#0D2B45;color:#fff;padding:14px 20px;\"><div style=\"font-size:13px;margin-bottom:3px;\"><b>To:</b> debbie@pmaservices.com</div><div style=\"font-size:13px;margin-bottom:10px;\"><b>Subject:</b> JIT4You \u2014 Your Open Purchase Orders (6 open items) \u2014 please advise delivery</div><button id=\"cp\" style=\"padding:7px 14px;border:none;border-radius:5px;background:#008080;color:#fff;font-weight:700;cursor:pointer;\">Copy formatted email</button><a href=\"mailto:debbie@pmaservices.com?subject=JIT4You%20\u2014%20Your%20Open%20Purchase%20Orders%20(6%20open%20items)%20\u2014%20please%20advise%20delivery\" style=\"color:#7fd4d4;margin-left:14px;font-size:13px;\">Open blank email to customer</a><div style=\"margin-top:8px;font-size:12px;opacity:.9;\">Click <b>Copy formatted email</b>, then in Outlook paste with <b>Ctrl/Cmd+V</b> (it pastes the rendered email, not code). This only creates the draft \u2014 you send it.</div></div><div style=\"padding:20px;\"><div id=\"emailbody\" style=\"max-width:760px;margin:0 auto;background:#fff;\"><div style=\"font-family:Arial,Helvetica,sans-serif;color:#101E3E;max-width:840px;margin:0 auto;background:#fff;\"><div style=\"background:#fff;padding:18px 24px;border-bottom:3px solid #008080;\"><div style=\"font-family:'Open Sans',Arial,sans-serif;font-size:24px;font-weight:800;letter-spacing:.4px;\"><span style=\"color:#101E3E;\">JIT4</span><span style=\"color:#008080;\">Labs</span></div></div><div style=\"padding:22px 24px;font-size:14px;line-height:1.6;\"><p>Hi Debbie,</p><p>Find enclosed the list of open POs with previously provided ETA.</p><table cellspacing=\"0\" cellpadding=\"0\" style=\"border-collapse:collapse;width:100%;max-width:800px;background:#fff;font-family:Arial,sans-serif;\"><thead><tr style=\"background:#0D2B45;\"><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Order Date</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Product</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Customer</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Ordered</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Delivered</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Open</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">ETA</th></tr></thead><tbody><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO579</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-04-08</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33810 Access Thyroid Uptake Reagent, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">3 Alpha Labs, LLC</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">2026-07-20</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO689</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-06-15</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Doctors General Laboratory</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">5</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">3</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-06-15</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Doctors General Laboratory</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">10</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">8</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO715</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-06-29</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter A16953 Access Intact PTH Calibrator (S0-S5, RB)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">OM Diagnostic Laboratories</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO748</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-14</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33810 Access Thyroid Uptake Reagent, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Well Health Labs</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-14</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter A48618 Access SHBG Sex Hormone-Binding Globulin</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Well Health Labs</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr></tbody></table><p style=\"margin-top:18px;\">Thank you,<br>JIT4You</p><p style=\"font-size:12px;color:#008080;\"><a href=\"mailto:CustomerSupport@jit4you.com\" style=\"color:#008080;text-decoration:none;\">CustomerSupport@jit4you.com</a> &nbsp;&middot;&nbsp; (949) 396-9194</p></div></div></div></div><script>(function(){var b=document.getElementById(\"cp\"),body=document.getElementById(\"emailbody\");function ok(){b.textContent=\"Copied \\u2713 \\u2014 paste into Outlook\";}function fail(){b.textContent=\"Select the email and press Ctrl/Cmd+C\";}function selCopy(){var r=document.createRange();r.selectNode(body);var s=window.getSelection();s.removeAllRanges();s.addRange(r);try{var done=document.execCommand(\"copy\");s.removeAllRanges();done?ok():fail();}catch(e){fail();}}b.addEventListener(\"click\",function(){var html=body.innerHTML;if(window.ClipboardItem&&navigator.clipboard&&navigator.clipboard.write){try{var item=new ClipboardItem({\"text/html\":new Blob([html],{type:\"text/html\"}),\"text/plain\":new Blob([body.innerText],{type:\"text/plain\"})});navigator.clipboard.write([item]).then(ok,selCopy);}catch(e){selCopy();}}else{selCopy();}});})();</script></body></html>"
     }
   ],
   "high_demand": {
     "customers": [
       "3 Alpha Labs, LLC",
-      "Doctors General Laboratory",
-      "OM Diagnostic Laboratories",
       "Well Health Labs"
     ],
     "items": [
-      {
-        "product": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
-        "vendor": "PMA Services",
-        "total": 4.0,
-        "cust_count": 2,
-        "order_count": 2,
-        "po_count": 2,
-        "pos": [
-          "PO689",
-          "PO715"
-        ],
-        "qty": {
-          "Doctors General Laboratory": 3.0,
-          "OM Diagnostic Laboratories": 1.0
-        },
-        "detail": {
-          "Doctors General Laboratory": [
-            {
-              "po": "PO689",
-              "date": "2026-06-15",
-              "so": "SO434",
-              "qty": 3.0
-            }
-          ],
-          "OM Diagnostic Laboratories": [
-            {
-              "po": "PO715",
-              "date": "2026-06-29",
-              "so": "SO453",
-              "qty": 1.0
-            }
-          ]
-        }
-      },
       {
         "product": "Beckman Coulter 33810 Access Thyroid Uptake Reagent, 100 Determinations",
         "vendor": "PMA Services",
@@ -743,12 +471,10 @@
   "po_emails": {
     "PO579": "mailto:debbie@pmaservices.com?subject=PO579%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO579.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%2033810%20Access%20Thyroid%20Uptake%20Reagent%2C%20100%20Determinations%20%E2%80%94%201%20open%2C%20ETA%3A%20Jul%2020%2C%202026%0A%0AThank%20you%2C%0AAmir",
     "PO666": "mailto:customerservice@clearchem.net?subject=PO666%20ETA%3F&body=Hi%20Reanna%2C%0A%0AFollowing%20up%20on%20PO%20PO666.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%2081906%20Access%20Substrate%20%E2%80%94%2020%20open%2C%20ETA%3A%20Jul%2030%2C%202026%0A%0AThank%20you%2C%0AAmir",
-    "PO679": "mailto:debbie@pmaservices.com?subject=PO679%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO679.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%2033880%20%28c76421%29%20Access%20Free%20T4%20Reagent%2C%20100%20Determinations%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO689": "mailto:debbie@pmaservices.com?subject=PO689%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO689.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20A98856%20Access%2025OH%20Vitamin%20D%20Reagent%2C%20100%20Determinations%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%2037200%20Access%20Hybritech%20PSA%20Reagent%20Kit%2C%20100%20Determinations%20%E2%80%94%203%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO700": "mailto:Arthur@allorabiotech.com?subject=PO700%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO700.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20B12396%20HbA1c%20Extend%20Sure%20Control%20Kit%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
-    "PO715": "mailto:debbie@pmaservices.com?subject=PO715%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO715.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20A16972%20Access%20Intact%20PTH%20Reagent%2C%20100%20determinations%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%2037200%20Access%20Hybritech%20PSA%20Reagent%20Kit%2C%20100%20Determinations%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20A16953%20Access%20Intact%20PTH%20Calibrator%20%28S0-S5%2C%20RB%29%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20A98033%20Access%20Folate%20Calibrator%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%2033565%20Testosterone%20CalIbrator%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%2033560%20Access%20Testosterone%20Reagent%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%2081901%20Reaction%20Vessel%20Access%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20B52699%20High-Sensitivity%20Troponin%202x50%20Tests%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
+    "PO715": "mailto:debbie@pmaservices.com?subject=PO715%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO715.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20A16953%20Access%20Intact%20PTH%20Calibrator%20%28S0-S5%2C%20RB%29%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO738": "mailto:Riad@aldxholding.com?subject=PO738%20ETA%3F&body=Hi%20Karen%2C%0A%0AFollowing%20up%20on%20PO%20PO738.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20coulter%2033545%20Calibrator%2C%20Access%2C%20Estradiol%20%28REF%29%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
-    "PO742": "mailto:debbie@pmaservices.com?subject=PO742%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO742.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20A16792%20Access%20Wash%20Buffer%20II%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO746": "mailto:Arthur@allorabiotech.com?subject=PO746%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO746.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20A16793%20Reagent%2C%20DXI%2C%20Wash%20Buffer%20II%20UniCel%20%E2%80%94%20100%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO748": "mailto:debbie@pmaservices.com?subject=PO748%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO748.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%2033810%20Access%20Thyroid%20Uptake%20Reagent%2C%20100%20Determinations%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20A48618%20Access%20SHBG%20Sex%20Hormone-Binding%20Globulin%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO750": "mailto:Arthur@allorabiotech.com?subject=PO750%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO750.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20B12396%20HbA1c%20Extend%20Sure%20Control%20Kit%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir"
