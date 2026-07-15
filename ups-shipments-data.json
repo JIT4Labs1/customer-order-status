@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-07-14 03:02 PM PT",
-  "last_status_refresh": "2026-07-14 03:00 PM PT",
+  "pulled_at": "2026-07-14 07:44 PM PT",
+  "last_status_refresh": "2026-07-14 07:35 PM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -3404,7 +3404,7 @@
       "service": "UPS Ground",
       "status": "In Transit",
       "activity": "Departed from Facility",
-      "location": "Richmond, VA",
+      "location": "Laurel, MD",
       "date": "2026-07-14",
       "time": "",
       "delivered": false,
@@ -3497,7 +3497,7 @@
       "service": "UPS Ground",
       "status": "In Transit",
       "activity": "Departed from Facility",
-      "location": "Richmond, VA",
+      "location": "Middletown, PA",
       "date": "2026-07-14",
       "time": "",
       "delivered": false,
@@ -3515,8 +3515,8 @@
       "ship_to": "Canton, MA",
       "service": "UPS 2nd Day Air",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Atlanta, GA",
+      "activity": "Arrived at Facility",
+      "location": "Warwick, RI",
       "date": "2026-07-14",
       "time": "",
       "delivered": false,
@@ -3548,8 +3548,8 @@
       "ship_to": "Canton, MA",
       "service": "UPS 2nd Day Air",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Atlanta, GA",
+      "activity": "Arrived at Facility",
+      "location": "Warwick, RI",
       "date": "2026-07-14",
       "time": "",
       "delivered": false,
@@ -3581,13 +3581,106 @@
       "ship_to": "Annapolis, MD",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Charlotte, NC",
+      "activity": "Arrived at Facility",
+      "location": "Laurel, MD",
       "date": "2026-07-14",
       "time": "",
       "delivered": false,
       "ship_date": "2026-07-13",
       "items": []
+    },
+    {
+      "tracking": "874393788030",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Mercedes Scientific",
+      "contact": "Misty Mcwhorter",
+      "ship_to": "Bradenton, FL",
+      "order": "#1039",
+      "service": "FedEx",
+      "status": "",
+      "activity": "Label created",
+      "delivered": false,
+      "location": "",
+      "date": "2026-07-14",
+      "time": "",
+      "ship_date": "2026-07-14",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=874393788030",
+      "items": [
+        {
+          "name": "Beckman Coulter 33830 Access Total T3, 100 Determinations",
+          "sku": "33830",
+          "qty": 2
+        }
+      ]
+    },
+    {
+      "tracking": "1Z8W007Y0290366207",
+      "carrier": "UPS",
+      "source": "UPS My Choice (3rd Party)",
+      "view": "Third Party",
+      "shipper": "CONMED OUTBOUND",
+      "receiver": "Renew Art Aesthetic Medical Group",
+      "contact": "Reinel Romero Alvarez",
+      "ship_to": "Doral, FL",
+      "service": "UPS 2nd Day Air",
+      "status": "In Transit",
+      "activity": "Shipper created a label, UPS has not received the package yet. ",
+      "location": "",
+      "date": "2026-07-14",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-07-14",
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "sku": "VV120-DO",
+          "qty": 1
+        }
+      ],
+      "order": "#1100",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1100"
+    },
+    {
+      "tracking": "1Z8W007Y0291940790",
+      "carrier": "UPS",
+      "source": "UPS My Choice (3rd Party)",
+      "view": "Third Party",
+      "shipper": "CONMED OUTBOUND",
+      "receiver": "Renew Art Aesthetic Medical Group",
+      "contact": "Reinel Romero Alvarez",
+      "ship_to": "Doral, FL",
+      "service": "UPS 2nd Day Air",
+      "status": "In Transit",
+      "activity": "Shipper created a label, UPS has not received the package yet. ",
+      "location": "",
+      "date": "2026-07-14",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-07-14",
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "sku": "VV120-DO",
+          "qty": 1
+        }
+      ],
+      "order": "#1100",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1100"
     }
   ]
 }
