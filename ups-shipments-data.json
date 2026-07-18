@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-07-16 03:08 PM PT",
-  "last_status_refresh": "2026-07-16 02:40 PM PT",
+  "pulled_at": "2026-07-18 03:26 PM PT",
+  "last_status_refresh": "2026-07-18 03:24 PM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -3626,12 +3626,12 @@
       "contact": "Reinel Romero Alvarez",
       "ship_to": "Doral, FL",
       "service": "UPS 2nd Day Air",
-      "status": "Exception",
-      "activity": "The apartment number is either missing or incorrect. This may delay delivery. We're attempting to update the address.",
-      "location": "Miami, FL",
-      "date": "2026-07-16",
-      "time": "",
-      "delivered": false,
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "DORAL, FL",
+      "date": "2026-07-17",
+      "time": "4:25 PM",
+      "delivered": true,
       "ship_date": "2026-07-14",
       "items": [
         {
@@ -3659,12 +3659,12 @@
       "contact": "Reinel Romero Alvarez",
       "ship_to": "Doral, FL",
       "service": "UPS 2nd Day Air",
-      "status": "Exception",
-      "activity": "The apartment number is either missing or incorrect. This may delay delivery. We're attempting to update the address.",
-      "location": "Miami, FL",
-      "date": "2026-07-16",
-      "time": "",
-      "delivered": false,
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "DORAL, FL",
+      "date": "2026-07-17",
+      "time": "4:25 PM",
+      "delivered": true,
       "ship_date": "2026-07-14",
       "items": [
         {
@@ -3853,6 +3853,204 @@
           "qty": 2
         }
       ]
+    },
+    {
+      "tracking": "1Z8W007Y0295115666",
+      "carrier": "UPS",
+      "source": "UPS My Choice (3rd Party)",
+      "view": "Third Party",
+      "shipper": "CONMED OUTBOUND",
+      "receiver": "Alluring Image MedSpa",
+      "contact": "Elena Resuli",
+      "ship_to": "Delray Beach, FL",
+      "service": "UPS Ground",
+      "status": "In Transit",
+      "activity": "Processing at UPS Facility",
+      "location": "Riviera Beach, FL",
+      "date": "2026-07-18",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-07-16",
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "sku": "VV120-DO",
+          "qty": 1
+        }
+      ],
+      "order": "#1105",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1105"
+    },
+    {
+      "tracking": "1Z8W007Y0291460522",
+      "carrier": "UPS",
+      "source": "UPS My Choice (3rd Party)",
+      "view": "Third Party",
+      "shipper": "CONMED OUTBOUND",
+      "receiver": "Alluring Image MedSpa",
+      "contact": "Elena Resuli",
+      "ship_to": "Delray Beach, FL",
+      "service": "UPS Ground",
+      "status": "In Transit",
+      "activity": "Processing at UPS Facility",
+      "location": "Riviera Beach, FL",
+      "date": "2026-07-18",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-07-16",
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "sku": "VV120-DO",
+          "qty": 1
+        }
+      ],
+      "order": "#1105",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1105"
+    },
+    {
+      "tracking": "1Z8W007Y0390595904",
+      "carrier": "UPS",
+      "source": "UPS My Choice (3rd Party)",
+      "view": "Third Party",
+      "shipper": "CONMED OUTBOUND",
+      "receiver": "Pure Seoul Aesthetics",
+      "contact": "Lee",
+      "ship_to": "West Bloomfield, MI",
+      "service": "UPS Ground",
+      "status": "In Transit",
+      "activity": "Arrived at Facility",
+      "location": "Columbus, OH",
+      "date": "2026-07-18",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-07-17",
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "sku": "VV120-DO",
+          "qty": 1
+        }
+      ],
+      "order": "#1103",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1103"
+    },
+    {
+      "tracking": "1Z8W007Y0398391333",
+      "carrier": "UPS",
+      "source": "UPS My Choice (3rd Party)",
+      "view": "Third Party",
+      "shipper": "CONMED OUTBOUND",
+      "receiver": "Pure Seoul Aesthetics",
+      "contact": "Lee",
+      "ship_to": "West Bloomfield, MI",
+      "service": "UPS Ground",
+      "status": "In Transit",
+      "activity": "Arrived at Facility",
+      "location": "Columbus, OH",
+      "date": "2026-07-18",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-07-17",
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "sku": "VV120-DO",
+          "qty": 1
+        }
+      ],
+      "order": "#1103",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1103"
+    },
+    {
+      "tracking": "1Z8W007Y0396833994",
+      "carrier": "UPS",
+      "source": "UPS My Choice (3rd Party)",
+      "view": "Third Party",
+      "shipper": "CONMED OUTBOUND",
+      "receiver": "The Refined Wellness and Medspa",
+      "contact": "Linda Zahorchak",
+      "ship_to": "Frisco, TX",
+      "service": "UPS Ground",
+      "status": "In Transit",
+      "activity": "Departed from Facility",
+      "location": "Atlanta, GA",
+      "date": "2026-07-18",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-07-17",
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "sku": "VV120-DO",
+          "qty": 1
+        }
+      ],
+      "order": "#1102",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1102"
+    },
+    {
+      "tracking": "1Z8W007Y0398870940",
+      "carrier": "UPS",
+      "source": "UPS My Choice (3rd Party)",
+      "view": "Third Party",
+      "shipper": "CONMED OUTBOUND",
+      "receiver": "The Refined Wellness and Medspa",
+      "contact": "Linda Zahorchak",
+      "ship_to": "Frisco, TX",
+      "service": "UPS Ground",
+      "status": "In Transit",
+      "activity": "Departed from Facility",
+      "location": "Atlanta, GA",
+      "date": "2026-07-18",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-07-17",
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "sku": "VV120-DO",
+          "qty": 1
+        }
+      ],
+      "order": "#1102",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1102"
     }
   ]
 }
