@@ -76,7 +76,8 @@ def _is_excluded_customer(name):
 # whose button just reloads the latest snapshot (no live pull).
 # Fallback token below has Actions:write on this repo (used by the Refresh button to
 # workflow_dispatch). Embedded XOR-obfuscated in the published page. NOTE: replace with a
-# durable PAT before it expires (~2026-06-25), else the Refresh button reverts to snapshot-only.
+# durable PAT before it expires, else the Refresh button reverts to snapshot-only.
+# Rotated 2026-07-18 — previous PAT expired ~2026-06-25.
 GH_BUTTON_TOKEN = os.environ.get("GH_BUTTON_TOKEN", "")
 GH_WORKFLOW_FILE = os.environ.get("GH_WORKFLOW_FILE", "refresh-open-orders.yml")
 GH_BRANCH = os.environ.get("GH_PAGES_BRANCH", "main")
