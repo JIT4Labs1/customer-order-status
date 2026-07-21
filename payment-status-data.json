@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-20 06:56 AM PDT",
+  "generated_at": "2026-07-21 07:57 AM PDT",
   "year": 2026,
   "customers": [
     {
@@ -142,6 +142,26 @@
       "qb_id": "823",
       "invoices": [
         {
+          "number": "SO571",
+          "status": "Not Paid",
+          "amount": 2090.0,
+          "balance": 2090.0,
+          "date": "2026-07-21",
+          "link": "",
+          "invoice_link": "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-9368dbecb4e443c695e411fb9d0f5d90c6c879a742634cb291cc4c8b840367427551db1359da4a08895e147e58f8e762?locale=en_US&cta=v3invoicelink",
+          "so_num": "SO488",
+          "fulfillment": "Partially",
+          "so_date": "2026-07-21",
+          "open_items": [
+            {
+              "product": "Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations",
+              "open_qty": 22.0,
+              "po": "PO761",
+              "vendor": "PMA Services"
+            }
+          ]
+        },
+        {
           "number": "SO467",
           "status": "Paid",
           "amount": 1875.0,
@@ -169,10 +189,10 @@
         }
       ],
       "totals": {
-        "count": 2,
-        "amount": 5365.0,
+        "count": 3,
+        "amount": 7455.0,
         "paid": 5365.0,
-        "unpaid": 0.0
+        "unpaid": 2090.0
       }
     },
     {
@@ -417,18 +437,11 @@
           "balance": 4258.5,
           "date": "2026-07-16",
           "link": "",
-          "invoice_link": "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-97d863a59ff246b58671c0811a76d68e02c1e0d5b3ee4eecb40783f4de8564662edfad1c82714ea3a5b10a755599fbc9?locale=en_US&cta=v3invoicelink",
+          "invoice_link": "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-29f5d8d739994cfb849c33bdf58e1d11d039d24f5d2a499ab907ac0138f9f0812cfa6ada2e6e411da85b62b81ec3fe00?locale=en_US&cta=v3invoicelink",
           "so_num": "SO482",
-          "fulfillment": "Partially",
+          "fulfillment": "Fulfilled",
           "so_date": "2026-07-16",
-          "open_items": [
-            {
-              "product": "Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations",
-              "open_qty": 15.0,
-              "po": "PO755",
-              "vendor": "PMA Services"
-            }
-          ]
+          "open_items": []
         },
         {
           "number": "SO497",
@@ -1187,8 +1200,8 @@
         {
           "number": "SO509",
           "status": "Not Paid",
-          "amount": 630.0,
-          "balance": 420.0,
+          "amount": 840.0,
+          "balance": 630.0,
           "date": "2026-06-19",
           "link": "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-3aac8ef0a89f49f5a3eebb6829d7aa718a9f02534bb64fbc961924ad2c8742dc0d3e6b9c52ee4d0f9784aef87b39bc1a?locale=EN_US",
           "invoice_link": "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-304680e3f4ae4e1d8188a76ec4a93052a8c77642b9164e77b8189baa0e0d1dc200f5ed15e192437e8b1ebcc0fdeb9f6a?locale=en_US&cta=v3invoicelink",
@@ -1643,9 +1656,9 @@
       ],
       "totals": {
         "count": 41,
-        "amount": 94085.33,
+        "amount": 94295.33,
         "paid": 86931.53,
-        "unpaid": 7153.8
+        "unpaid": 7363.8
       }
     },
     {
@@ -2064,5 +2077,5 @@
       }
     }
   ],
-  "pulled_at": "2026-07-20 07:24 AM PT"
+  "pulled_at": "2026-07-21 07:57 AM PT"
 }
