@@ -1769,6 +1769,11 @@ function renderVendorPanel(){
 var PAY=null, payLoading=false, payCust='', payReadyOnly=false;
 // "Ready for payment" = still owed (Not Paid) AND has a customer pay link.
 function payInvoices(c){ var invs=(c&&c.invoices)||[]; return payReadyOnly ? invs.filter(function(v){ return v.status==='Not Paid' && v.fulfillment==='Fulfilled'; }) : invs; }
+// Balance cell: green $0 when fully paid; amber+bold when PARTIALLY paid (0<balance<amount) — the case to watch; plain when fully unpaid.
+function payBalanceCell(v){ var bal=Number(v.balance)||0, amt=Number(v.amount)||0;
+  if(bal<=0.005) return '<span style="color:#27ae60;">'+payMoney(0)+'</span>';
+  if(bal < amt-0.005) return '<span style="color:#e67e22;font-weight:700;" title="Partially paid — '+payMoney(amt-bal)+' of '+payMoney(amt)+' received">'+payMoney(bal)+'</span>';
+  return '<span style="color:#2c3e50;">'+payMoney(bal)+'</span>'; }
 function payTotals(invs){ var amt=0, unpaid=0; for(var i=0;i<invs.length;i++){ amt+=Number(invs[i].amount)||0; unpaid+=Number(invs[i].balance)||0; }
   return {count:invs.length, amount:Math.round(amt*100)/100, unpaid:Math.round(unpaid*100)/100}; }
 function payToggleReady(cb){ payReadyOnly=!!cb.checked; renderPayPanel(); }
@@ -1873,10 +1878,11 @@ function renderPayPanel(){
       '<td class="c">'+payFulfillCell(v)+'</td>'+
       '<td class="c">'+fmtDate(v.date)+'</td>'+
       '<td style="text-align:right;">'+payMoney(v.amount)+'</td>'+
+      '<td style="text-align:right;">'+payBalanceCell(v)+'</td>'+
       '<td class="c">'+(function(){var u=v.invoice_link||v.link; if(!u) return '<span style="color:#999;">'+(v.status==='Paid'?'&mdash;':'No link')+'</span>'; return '<a href="'+escapeHtml(u)+'" target="_blank" rel="noopener" title="'+(v.invoice_link?'Opens the full invoice (line items) with a Pay button':'Opens the payment page')+'">'+(v.invoice_link?'View invoice &amp; pay ':'Pay ')+payMoney(v.balance||v.amount)+' <span style="color:#008080;">↗</span></a>';})()+'</td>'+
       '</tr>';
   }
-  if(!invs.length){ body='<tr><td colspan="'+(allMode?8:7)+'" class="empty" style="padding:16px;">No invoices'+(payReadyOnly?' ready for payment':'')+' for this selection.</td></tr>'; }
+  if(!invs.length){ body='<tr><td colspan="'+(allMode?9:8)+'" class="empty" style="padding:16px;">No invoices'+(payReadyOnly?' ready for payment':'')+' for this selection.</td></tr>'; }
   var t=payTotals(invs);
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">'+
@@ -1892,9 +1898,11 @@ function renderPayPanel(){
         kpi(g.readyN+' / '+g.openN,'Invoices ready / open')+
       '</div>';})()+
     '<div class="ca-h" style="margin-top:6px;">'+escapeHtml(allMode?'All customers':c.name)+' &mdash; invoices</div>'+
-    '<table><thead><tr>'+(allMode?'<th>Customer</th>':'')+'<th>Invoice #</th><th>SO #</th><th class="c">Status</th><th class="c">Fulfillment</th><th class="c">Date</th><th style="text-align:right;">Amount</th><th class="c">Link</th></tr></thead><tbody>'+body+
+    '<table><thead><tr>'+(allMode?'<th>Customer</th>':'')+'<th>Invoice #</th><th>SO #</th><th class="c">Status</th><th class="c">Fulfillment</th><th class="c">Date</th><th style="text-align:right;">Amount</th><th style="text-align:right;">Balance</th><th class="c">Link</th></tr></thead><tbody>'+body+
     '<tr class="so-group"><td colspan="'+(allMode?6:5)+'" style="text-align:right;font-weight:700;">Total ('+t.count+')</td>'+
-    '<td style="text-align:right;font-weight:700;">'+payMoney(t.amount)+'</td><td class="c" style="font-weight:700;color:#c0392b;">'+payMoney(t.unpaid)+' unpaid</td></tr>'+
+    '<td style="text-align:right;font-weight:700;">'+payMoney(t.amount)+'</td>'+
+    '<td style="text-align:right;font-weight:700;color:'+(t.unpaid>0.005?'#c0392b':'#27ae60')+';">'+payMoney(t.unpaid)+'</td>'+
+    '<td class="c"></td></tr>'+
     '</tbody></table>';
 }
 // Standalone HTML invoice table for the selected customer — copies as a rendered table for email.
