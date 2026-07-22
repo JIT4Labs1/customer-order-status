@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-07-22 09:35 AM PT",
-  "last_status_refresh": "2026-07-22 09:08 AM PT",
+  "pulled_at": "2026-07-22 09:52 AM PT",
+  "last_status_refresh": "2026-07-22 09:51 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -4064,9 +4064,9 @@
       "ship_to": "Bradenton, FL",
       "order": "#1039",
       "service": "FedEx",
-      "status": "In Transit",
-      "activity": "Out for Delivery",
-      "delivered": false,
+      "status": "Delivered",
+      "activity": "",
+      "delivered": true,
       "location": "",
       "date": "2026-07-22",
       "time": "",
@@ -4867,9 +4867,9 @@
       "ship_to": "Las Vegas, NV",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Arrived at Facility",
+      "activity": "Departed from Facility",
       "location": "Atlanta, GA",
-      "date": "2026-07-21",
+      "date": "2026-07-22",
       "time": "",
       "delivered": false,
       "ship_date": "2026-07-21",
@@ -4971,7 +4971,18 @@
       "time": "",
       "delivered": false,
       "ship_date": "2026-07-21",
-      "items": [],
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "sku": "VV120-DO",
+          "qty": 1
+        }
+      ],
       "order": "#1112",
       "shopify_fulfilled": true,
       "shopify_order": "#1112",
@@ -5004,7 +5015,18 @@
       "time": "",
       "delivered": false,
       "ship_date": "2026-07-21",
-      "items": [],
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "sku": "VV120-DO",
+          "qty": 1
+        }
+      ],
       "order": "#1112",
       "shopify_fulfilled": true,
       "shopify_order": "#1112",
@@ -5037,7 +5059,18 @@
       "time": "",
       "delivered": false,
       "ship_date": "2026-07-21",
-      "items": [],
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "sku": "VV120-DO",
+          "qty": 1
+        }
+      ],
       "order": "#1111",
       "shopify_fulfilled": true,
       "shopify_order": "#1111",
@@ -5070,7 +5103,18 @@
       "time": "",
       "delivered": false,
       "ship_date": "2026-07-21",
-      "items": [],
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "sku": "VV120-DO",
+          "qty": 1
+        }
+      ],
       "order": "#1111",
       "shopify_fulfilled": true,
       "shopify_order": "#1111",
