@@ -1357,11 +1357,20 @@ function renderShipPanel(){
 function shipItems(i){ var s=((SHIP&&SHIP.shipments)||[])[i]; if(!s) return; var it=s.items||[];
   var rows='', tot=0;
   for(var k=0;k<it.length;k++){ tot+=it[k].qty||0; rows+='<tr><td class="c">'+(it[k].qty||0)+'</td><td>'+escapeHtml(it[k].sku||'')+'</td><td class="item-name">'+escapeHtml(it[k].name||'')+'</td></tr>'; }
-  // Sales Order # comes from the Shopify "Vtiger SO:" order tag.
-  var soHtml = s.so_num ? '<b>'+escapeHtml(s.so_num)+'</b>' : '<span style="color:#9aa7b4;">—</span>';
+  // Sales Order # comes from the Shopify "Vtiger SO:" order tag; PO(s) resolved from Vtiger.
+  // Each links to its Vtiger detail page when the record id is known.
+  var VT='https://jit4youinc.od2.vtiger.com/index.php?module=';
+  function vtLink(mod,num,id){ if(!num) return '<span style="color:#9aa7b4;">—</span>';
+    if(!id) return '<b>'+escapeHtml(num)+'</b>';
+    return '<a href="'+VT+mod+'&view=Detail&record='+encodeURIComponent(id)+'" target="_blank" rel="noopener" style="color:#1F4E79;font-weight:700;text-decoration:none;">'+escapeHtml(num)+' <span style="color:#008080;">↗</span></a>'; }
+  var soHtml = vtLink('SalesOrder', s.so_num, s.so_id);
+  var poArr = (s.pos&&s.pos.length) ? s.pos : (s.po?[{po:s.po,po_id:s.po_id,vendor:''}]:[]);
+  var poHtml = poArr.length ? poArr.map(function(p){ return vtLink('PurchaseOrder',p.po,p.po_id)+(p.vendor?' <span style="color:#7a8a99;font-size:11px;">('+escapeHtml(p.vendor)+')</span>':''); }).join('&nbsp; ') : '<span style="color:#9aa7b4;">—</span>';
+  var chip='background:#eef3f9;border:1px solid #d5e0ec;border-radius:6px;padding:3px 10px;font-size:12.5px;';
   var idLine =
     '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">'+
-      '<span style="background:#eef3f9;border:1px solid #d5e0ec;border-radius:6px;padding:3px 10px;font-size:12.5px;">Sales Order: '+soHtml+'</span>'+
+      '<span style="'+chip+'">Sales Order: '+soHtml+'</span>'+
+      '<span style="'+chip+'">Purchase Order: '+poHtml+'</span>'+
     '</div>';
   var h='<h2 style="margin:0 0 4px;">Packing list &middot; '+escapeHtml(s.tracking)+'</h2>'+
     '<div class="sub" style="margin-bottom:8px;">'+escapeHtml(s.receiver||'')+(s.order?' &middot; Order '+escapeHtml(s.order):'')+(s.ship_to?' &middot; '+escapeHtml(s.ship_to):'')+'</div>'+
