@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-21 09:26 AM PDT",
+  "generated_at": "2026-07-21 09:27 PM PDT",
   "year": 2026,
   "customers": [
     {
@@ -144,22 +144,15 @@
         {
           "number": "SO571",
           "status": "Not Paid",
-          "amount": 2090.0,
-          "balance": 2090.0,
+          "amount": 3892.96,
+          "balance": 3892.96,
           "date": "2026-07-21",
           "link": "",
-          "invoice_link": "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-9368dbecb4e443c695e411fb9d0f5d90c6c879a742634cb291cc4c8b840367427551db1359da4a08895e147e58f8e762?locale=en_US&cta=v3invoicelink",
+          "invoice_link": "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-12edc7613cd2403e8d8dafd33706c86f8fd86f1d2b5e43c09effa4bd8ad281866a7e1384c65b49b6b44c16911393d9cb?locale=en_US&cta=v3invoicelink",
           "so_num": "SO488",
-          "fulfillment": "Partially",
+          "fulfillment": "Fulfilled",
           "so_date": "2026-07-21",
-          "open_items": [
-            {
-              "product": "Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations",
-              "open_qty": 22.0,
-              "po": "PO761",
-              "vendor": "PMA Services"
-            }
-          ]
+          "open_items": []
         },
         {
           "number": "SO467",
@@ -190,9 +183,9 @@
       ],
       "totals": {
         "count": 3,
-        "amount": 7455.0,
+        "amount": 9257.96,
         "paid": 5365.0,
-        "unpaid": 2090.0
+        "unpaid": 3892.96
       }
     },
     {
@@ -1154,7 +1147,7 @@
               "product": "Beckman coulter 33545 Calibrator, Access, Estradiol (REF)",
               "open_qty": 1.0,
               "po": "PO738",
-              "vendor": "ALDX HOLDING CORPORATION"
+              "vendor": "PMA Services"
             }
           ]
         },
@@ -1213,7 +1206,7 @@
               "product": "Beckman Coulter 81906 Access Substrate",
               "open_qty": 20.0,
               "po": "PO666",
-              "vendor": "ClearChem Diagnostics, Inc"
+              "vendor": "PMA Services"
             }
           ]
         },
@@ -1259,7 +1252,7 @@
               "product": "Beckman Coulter 81906 Access Substrate",
               "open_qty": 20.0,
               "po": "PO666",
-              "vendor": "ClearChem Diagnostics, Inc"
+              "vendor": "PMA Services"
             }
           ]
         },
@@ -1742,6 +1735,44 @@
       "qb_id": "1418",
       "invoices": [
         {
+          "number": "SO572",
+          "status": "Not Paid",
+          "amount": 480.6,
+          "balance": 480.6,
+          "date": "2026-07-21",
+          "link": "",
+          "invoice_link": "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-7066305241644121829cadc1ff5f00fb941d6cdf107949ca8bfff07d7fb87b6d57b1eeeee60e4273b88cffdc82d342c2?locale=en_US&cta=v3invoicelink",
+          "so_num": "SO489",
+          "fulfillment": "Partially",
+          "so_date": "2026-07-21",
+          "open_items": [
+            {
+              "product": "Beckman Coulter B63284 Access TSH Stimulating Hormone (3rd IS) 2 x 100 Determinations",
+              "open_qty": 1.0,
+              "po": "PO762",
+              "vendor": "PMA Services"
+            },
+            {
+              "product": "Beckman Coulter 33000 Access Vitamin B12 Reagent, 100 Determinations",
+              "open_qty": 1.0,
+              "po": "PO762",
+              "vendor": "PMA Services"
+            },
+            {
+              "product": "Beckman Coulter 33600 Immunoassay Reagent Access Cortisol 100 Tests",
+              "open_qty": 1.0,
+              "po": "PO762",
+              "vendor": "PMA Services"
+            },
+            {
+              "product": "Beckman Coulter A98032 Access Folate Reagent, 100 Determinations",
+              "open_qty": 1.0,
+              "po": "PO762",
+              "vendor": "PMA Services"
+            }
+          ]
+        },
+        {
           "number": "SO528",
           "status": "Not Paid",
           "amount": 335.0,
@@ -1880,10 +1911,10 @@
         }
       ],
       "totals": {
-        "count": 10,
-        "amount": 17133.62,
+        "count": 11,
+        "amount": 17614.22,
         "paid": 10927.42,
-        "unpaid": 6206.2
+        "unpaid": 6686.8
       }
     },
     {
@@ -2077,5 +2108,5 @@
       }
     }
   ],
-  "pulled_at": "2026-07-21 09:27 AM PT"
+  "pulled_at": "2026-07-21 09:27 PM PT"
 }
