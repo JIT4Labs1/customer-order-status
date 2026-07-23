@@ -787,6 +787,21 @@ function vspMonthLabel(m){ if(!m) return ''; var p=m.split('-'); var names=['Jan
   var mi=parseInt(p[1],10)-1; return (names[mi]||p[1])+' '+p[0]; }
 function vspSetVendor(v){ vspVendor=v; renderVspendDetail(); }
 function vspSetMonth(m){ vspMonth=m; renderVspendDetail(); }
+var vspSort={key:'date', dir:-1};   // detail-table sort (default: newest PO date first)
+function vspSortBy(k){ var cols=vspCols(); var col=null; for(var i=0;i<cols.length;i++){ if(cols[i].key===k) col=cols[i]; }
+  if(!col) return;
+  if(vspSort.key===k){ vspSort.dir=-vspSort.dir; }
+  else { vspSort.key=k; vspSort.dir=(col.type==='str')?1:-1; }   // text A→Z, numbers/dates high→low first
+  renderVspendDetail(); }
+function vspCols(){ var c=[{key:'po',label:'PO #',type:'str',align:'left'},
+    {key:'date',label:'PO Date',type:'date',align:'left'},
+    {key:'amount',label:'Amount',type:'num',align:'right'},
+    {key:'customer',label:'Customer',type:'str',align:'left'}];
+  if(!vspVendor) c.push({key:'vendor',label:'Vendor',type:'str',align:'left'});
+  if(!vspMonth)  c.push({key:'month',label:'Month',type:'str',align:'left'});
+  return c; }
+function vspCmp(a,b,type){ if(type==='num'){ return (parseFloat(a)||0)-(parseFloat(b)||0); }
+  return String(a==null?'':a).toLowerCase().localeCompare(String(b==null?'':b).toLowerCase()); }
 function renderVspendPanel(){
   var VS=DATA.vendor_spend;
   var el=document.getElementById('panel');
@@ -807,7 +822,11 @@ function renderVspendPanel(){
   }
   h+='</tbody><tfoot><tr><td style="text-align:left;font-weight:700;">Total</td>';
   for(var t=0;t<vends.length;t++){ h+='<td style="text-align:right;font-weight:700;">'+vspMoney(tot[vends[t]]||0)+'</td>'; }
-  h+='<td style="text-align:right;font-weight:700;color:#1f3a5f;">'+vspMoney(VS.grand_total)+'</td></tr></tfoot></table>';
+  h+='<td style="text-align:right;font-weight:700;color:#1f3a5f;">'+vspMoney(VS.grand_total)+'</td></tr>';
+  var nM=months.length||1;
+  h+='<tr><td style="text-align:left;font-weight:600;color:#5a6b7b;">Average / month</td>';
+  for(var av=0;av<vends.length;av++){ h+='<td style="text-align:right;color:#5a6b7b;">'+vspMoney((tot[vends[av]]||0)/nM)+'</td>'; }
+  h+='<td style="text-align:right;font-weight:700;color:#5a6b7b;">'+vspMoney((VS.grand_total||0)/nM)+'</td></tr></tfoot></table>';
 
   // ── Drill-down: vendor + month selectors, then a PO list ──
   h+='<div style="margin:22px 0 8px;"><h3 style="margin:0 0 8px;">Purchase orders detail</h3>'+
@@ -828,24 +847,36 @@ function renderVspendPanel(){
 }
 function renderVspendDetail(){
   var VS=DATA.vendor_spend; var box=document.getElementById('vspDetail'); if(!box) return;
+  var cols=vspCols();
   var pos=(VS.pos||[]).filter(function(p){
     return (!vspVendor || p.vendor===vspVendor) && (!vspMonth || p.month===vspMonth); });
-  pos.sort(function(a,b){ if(a.month!==b.month) return a.month<b.month?1:-1; return (b.amount||0)-(a.amount||0); });
+  var sk=vspSort.key, sdir=vspSort.dir, styp='num';
+  for(var ci=0;ci<cols.length;ci++){ if(cols[ci].key===sk) styp=cols[ci].type; }
+  pos.sort(function(a,b){ var r=vspCmp(a[sk],b[sk],styp)*sdir; if(r) return r; return vspCmp(a.date,b.date,'date')*-1; });
   var sum=0; for(var i=0;i<pos.length;i++){ sum+=pos[i].amount||0; }
   var scope=(vspVendor||'All vendors')+' · '+(vspMonth?vspMonthLabel(vspMonth):'All months');
   var h='<div style="color:#7a8a99;font-size:12px;margin:0 0 6px;">'+escapeHtml(scope)+' &mdash; '+pos.length+' PO'+(pos.length===1?'':'s')+', '+vspMoney(sum)+'</div>';
   if(!pos.length){ box.innerHTML=h+'<div class="empty">No purchase orders for this selection.</div>'; return; }
-  h+='<table class="vsp-table"><thead><tr><th style="text-align:left;">PO #</th><th style="text-align:right;">Amount</th><th style="text-align:left;">Customer</th>'+
-     (vspVendor?'':'<th style="text-align:left;">Vendor</th>')+(vspMonth?'':'<th style="text-align:left;">Month</th>')+'</tr></thead><tbody>';
-  for(var j=0;j<pos.length;j++){ var p=pos[j];
-    h+='<tr><td style="text-align:left;font-weight:600;">'+escapeHtml(p.po||'—')+'</td>'+
-       '<td style="text-align:right;">'+vspMoney(p.amount)+'</td>'+
-       '<td style="text-align:left;">'+escapeHtml(p.customer||'—')+'</td>'+
-       (vspVendor?'':'<td style="text-align:left;">'+escapeHtml(p.vendor||'')+'</td>')+
-       (vspMonth?'':'<td style="text-align:left;">'+escapeHtml(vspMonthLabel(p.month))+'</td>')+'</tr>';
-  }
-  h+='</tbody><tfoot><tr><td style="text-align:left;font-weight:700;">Total</td><td style="text-align:right;font-weight:700;">'+vspMoney(sum)+'</td><td></td>'+
-     (vspVendor?'':'<td></td>')+(vspMonth?'':'<td></td>')+'</tr></tfoot></table>';
+  h+='<table class="vsp-table"><thead><tr>';
+  for(var c=0;c<cols.length;c++){ var col=cols[c];
+    var arr=(sk===col.key)?(' <span class="arr">'+(sdir>0?'&#9650;':'&#9660;')+'</span>'):'';
+    h+='<th class="sortable" onclick="vspSortBy(\\''+col.key+'\\')" style="text-align:'+col.align+';">'+escapeHtml(col.label)+arr+'</th>'; }
+  h+='</tr></thead><tbody>';
+  for(var j=0;j<pos.length;j++){ var p=pos[j]; h+='<tr>';
+    for(var k=0;k<cols.length;k++){ var ck=cols[k].key, al=cols[k].align, v;
+      if(ck==='amount') v=vspMoney(p.amount);
+      else if(ck==='date') v=escapeHtml(fmtDate(p.date));
+      else if(ck==='month') v=escapeHtml(vspMonthLabel(p.month));
+      else if(ck==='po') v='<b>'+escapeHtml(p.po||'—')+'</b>';
+      else v=escapeHtml(p[ck]||'—');
+      h+='<td style="text-align:'+al+';">'+v+'</td>'; }
+    h+='</tr>'; }
+  h+='</tbody><tfoot><tr>';
+  for(var f=0;f<cols.length;f++){ var fk=cols[f].key;
+    if(fk==='po') h+='<td style="text-align:left;font-weight:700;">Total</td>';
+    else if(fk==='amount') h+='<td style="text-align:right;font-weight:700;">'+vspMoney(sum)+'</td>';
+    else h+='<td></td>'; }
+  h+='</tr></tfoot></table>';
   box.innerHTML=h;
 }
 
@@ -2359,7 +2390,7 @@ def build_vendor_spend(vt):
         month_totals[month] = round(month_totals.get(month, 0.0) + amt, 2)
         details.append({"po": p.get("purchaseorder_no", ""), "amount": amt,
                         "customer": acct_name.get(p.get("accountid", ""), p.get("accountid", "") or "—"),
-                        "vendor": grp, "month": month})
+                        "vendor": grp, "month": month, "date": ct[:10]})
         n += 1
     return {
         "generated_at": datetime.now().strftime("%Y-%m-%d %I:%M:%S %p"),
