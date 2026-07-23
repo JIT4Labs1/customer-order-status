@@ -511,6 +511,9 @@ def build_html(page_data, embeds=None):
   .paidinv tbody td.pi-q { text-align:right; font-weight:700; color:#1F4E79; }
   .paidinv .pi-empty { font-size:11px; color:#888; margin-top:8px; }
   .paidinv .pi-pending td { color:#b9770e; }
+  .paidinv td.pi-x { text-align:right; width:20px; padding-right:0; }
+  .paidinv .pi-del { background:none; border:none; color:#c0392b; font-size:15px; line-height:1; cursor:pointer; padding:2px 4px; border-radius:4px; }
+  .paidinv .pi-del:hover { background:#fdecea; }
   .tab { display:block; width:100%; text-align:left; background:none; border:none; border-bottom:1px solid #eef2f6;
          padding:12px 16px; cursor:pointer; font-size:13px; color:#2c3e50; font-family:inherit; }
   .tab:hover { background:#f5f8fb; }
@@ -2317,18 +2320,19 @@ function renderPaidList(){
   var box=document.getElementById('pi-list'); if(!box) return;
   var srv=(_paidServer||[]), pend=_piLoadPending();
   var rows='';
-  function row(x,pending){
+  function row(x,pending,kind,idx){
     return '<tr'+(pending?' class="pi-pending"':'')+'>'+
       '<td>'+escapeHtml(x.sku||'')+(pending?' &middot; saving…':'')+'</td>'+
       '<td class="pi-q">'+escapeHtml(String(x.qty==null?'':x.qty))+'</td>'+
       '<td>'+escapeHtml(x.location||'')+'</td>'+
-      '<td>'+escapeHtml(x.exp||'')+'</td></tr>';
+      '<td>'+escapeHtml(x.exp||'')+'</td>'+
+      '<td class="pi-x"><button class="pi-del" title="Remove" onclick="removePaidInv('+kind+','+idx+')">&times;</button></td></tr>';
   }
-  srv.forEach(function(x){ rows+=row(x,false); });
-  pend.forEach(function(x){ rows+=row(x,true); });
+  srv.forEach(function(x,ix){ rows+=row(x,false,0,ix); });
+  pend.forEach(function(x,ix){ rows+=row(x,true,1,ix); });
   if(!rows){ box.innerHTML='<div class="pi-empty">No paid inventory logged yet.</div>'; return; }
   box.innerHTML='<div class="pi-list-h">Logged inventory ('+(srv.length+pend.length)+')</div>'+
-    '<table><thead><tr><td>SKU</td><td class="pi-q">Qty</td><td>Location</td><td>Exp.</td></tr></thead>'+
+    '<table><thead><tr><td>SKU</td><td class="pi-q">Qty</td><td>Location</td><td>Exp.</td><td></td></tr></thead>'+
     '<tbody>'+rows+'</tbody></table>';
 }
 function _piNote(cls,msg){ var n=document.getElementById('pi-note'); if(n){ n.className='pi-note '+cls; n.textContent=msg; } }
@@ -2359,6 +2363,28 @@ function addPaidInv(){
     .then(function(obj){ _paidServer=obj.items; _piReconcile(); renderPaidList(); _piNote('ok','Saved to shared inventory.'); })
     .catch(function(e){ _piNote('warn','Saved on this device; sync failed ('+e.message+'). Will retry on next add.'); })
     .finally(function(){ var b=document.getElementById('pi-add-btn'); if(b) b.disabled=false; });
+}
+// kind: 0 = server item (commit removal to repo), 1 = pending/local-only item
+function removePaidInv(kind, idx){
+  if(kind===1){ var p=_piLoadPending(); if(idx>=0&&idx<p.length){ p.splice(idx,1); _piSavePending(p); } renderPaidList(); return; }
+  var list=_paidServer||[]; if(idx<0||idx>=list.length) return;
+  var target=list[idx];
+  if(typeof confirm==='function' && !confirm('Remove '+(target.sku||'this item')+' from paid inventory?')) return;
+  _paidServer=list.slice(0,idx).concat(list.slice(idx+1)); renderPaidList();   // optimistic
+  if(!BTN||!BTN.token){ _piNote('warn','Removed on this device only (no sync token).'); return; }
+  _piNote('warn','Removing…');
+  var base='https://api.github.com/repos/'+BTN.repo+'/contents/'+PAID_URL;
+  var hdr={'Authorization':'Bearer '+BTN.token,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
+  fetch(base+'?ref='+encodeURIComponent(BTN.branch)+'&cb='+Date.now(),{headers:hdr,cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('read '+r.status); return r.json(); })
+    .then(function(j){ var o; try{ o=JSON.parse(_b64dec(j.content)); }catch(e){ o={items:[]}; } if(!o.items) o.items=[];
+      var k=_piKey(target), removed=false;
+      o.items=o.items.filter(function(it){ if(!removed && _piKey(it)===k){ removed=true; return false; } return true; });
+      return fetch(base,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},hdr),
+        body:JSON.stringify({message:'Remove paid inventory '+(target.sku||''), content:_b64enc(JSON.stringify(o,null,2)+'\\n'), sha:j.sha, branch:BTN.branch})})
+        .then(function(r){ if(!r.ok) return r.text().then(function(t){ throw new Error('save '+r.status+' '+t.slice(0,120)); }); return o; }); })
+    .then(function(o){ _paidServer=o.items; _piReconcile(); renderPaidList(); _piNote('ok','Removed from shared inventory.'); })
+    .catch(function(e){ _piNote('err','Remove failed ('+e.message+'). Refreshing…'); fetchPaidInv(); });
 }
 
 function renderAll(){ renderKpis(); renderTabs(); renderPanel(); renderAsOf(); }
