@@ -1488,9 +1488,12 @@ function renderVendorPanel(){
 }
 
 // ── Payment Status tab (QuickBooks 2026 invoices for Independent Diagnostic Lab customers) ──
-var PAY=null, payLoading=false, payCust='', payReadyOnly=false;
-// "Ready for payment" = still owed (Not Paid) AND has a customer pay link.
-function payInvoices(c){ var invs=(c&&c.invoices)||[]; return payReadyOnly ? invs.filter(function(v){ return v.status==='Not Paid' && v.fulfillment==='Fulfilled'; }) : invs; }
+var PAY=null, payLoading=false, payCust='', payReadyOnly=false, payNotReadyOnly=false;
+// "Ready for payment" = Not Paid AND Fulfilled.  "Not ready" = Not Paid AND NOT Fulfilled.
+function payInvoices(c){ var invs=(c&&c.invoices)||[];
+  if(payReadyOnly) return invs.filter(function(v){ return v.status==='Not Paid' && v.fulfillment==='Fulfilled'; });
+  if(payNotReadyOnly) return invs.filter(function(v){ return v.status==='Not Paid' && v.fulfillment!=='Fulfilled'; });
+  return invs; }
 // Balance cell: green $0 when fully paid; amber+bold when PARTIALLY paid (0<balance<amount) — the case to watch; plain when fully unpaid.
 function payBalanceCell(v){ var bal=Number(v.balance)||0, amt=Number(v.amount)||0;
   if(bal<=0.005) return '<span style="color:#27ae60;">'+payMoney(0)+'</span>';
@@ -1498,7 +1501,8 @@ function payBalanceCell(v){ var bal=Number(v.balance)||0, amt=Number(v.amount)||
   return '<span style="color:#2c3e50;">'+payMoney(bal)+'</span>'; }
 function payTotals(invs){ var amt=0, unpaid=0; for(var i=0;i<invs.length;i++){ amt+=Number(invs[i].amount)||0; unpaid+=Number(invs[i].balance)||0; }
   return {count:invs.length, amount:Math.round(amt*100)/100, unpaid:Math.round(unpaid*100)/100}; }
-function payToggleReady(cb){ payReadyOnly=!!cb.checked; renderPayPanel(); }
+function payToggleReady(cb){ payReadyOnly=!!cb.checked; if(payReadyOnly) payNotReadyOnly=false; renderPayPanel(); }
+function payToggleNotReady(cb){ payNotReadyOnly=!!cb.checked; if(payNotReadyOnly) payReadyOnly=false; renderPayPanel(); }
 function loadPay(){
   if(PAY_EMBED){ PAY=PAY_EMBED; payLoading=false; if(mode==='pay'){ renderPayPanel(); } return; }
   if(payLoading) return; payLoading=true;
@@ -1585,11 +1589,13 @@ function renderPayPanel(){
   // "Ready for payment only" also narrows the customer dropdown to customers who have
   // ready (Not Paid + Fulfilled) invoices, and shows the ready count per customer.
   function readyCount(cc){ var n=0,iv=(cc&&cc.invoices)||[]; for(var i=0;i<iv.length;i++){ if(iv[i].status==='Not Paid'&&iv[i].fulfillment==='Fulfilled') n++; } return n; }
-  var vcs = payReadyOnly ? cs.filter(function(cc){ return readyCount(cc)>0; }) : cs;
-  if(payCust!=='__ALL__' && payReadyOnly && !vcs.some(function(cc){return cc.name===payCust;})) payCust='__ALL__';
+  function notReadyCount(cc){ var n=0,iv=(cc&&cc.invoices)||[]; for(var i=0;i<iv.length;i++){ if(iv[i].status==='Not Paid'&&iv[i].fulfillment!=='Fulfilled') n++; } return n; }
+  var vcs = payReadyOnly ? cs.filter(function(cc){ return readyCount(cc)>0; })
+          : (payNotReadyOnly ? cs.filter(function(cc){ return notReadyCount(cc)>0; }) : cs);
+  if(payCust!=='__ALL__' && (payReadyOnly||payNotReadyOnly) && !vcs.some(function(cc){return cc.name===payCust;})) payCust='__ALL__';
   var c=payCurrentOrAll(); var allMode=!!(c&&c._all);
   var opts='<option value="__ALL__"'+(allMode?' selected':'')+'>All customers ('+vcs.length+')</option>';
-  for(var i=0;i<vcs.length;i++){ var cnt=payReadyOnly?readyCount(vcs[i]):vcs[i].totals.count; opts+='<option value="'+escapeHtml(vcs[i].name)+'"'+(vcs[i].name===payCust?' selected':'')+'>'+escapeHtml(vcs[i].name)+' ('+cnt+')</option>'; }
+  for(var i=0;i<vcs.length;i++){ var cnt=payReadyOnly?readyCount(vcs[i]):(payNotReadyOnly?notReadyCount(vcs[i]):vcs[i].totals.count); opts+='<option value="'+escapeHtml(vcs[i].name)+'"'+(vcs[i].name===payCust?' selected':'')+'>'+escapeHtml(vcs[i].name)+' ('+cnt+')</option>'; }
   var invs=payInvoices(c), body='';
   for(var j=0;j<invs.length;j++){ var v=invs[j];
     body+='<tr>'+
@@ -1604,15 +1610,16 @@ function renderPayPanel(){
       '<td class="c">'+(function(){var u=v.invoice_link||v.link; if(!u) return '<span style="color:#999;">'+(v.status==='Paid'?'&mdash;':'No link')+'</span>'; return '<a href="'+escapeHtml(u)+'" target="_blank" rel="noopener" title="'+(v.invoice_link?'Opens the full invoice (line items) with a Pay button':'Opens the payment page')+'">'+(v.invoice_link?'View invoice &amp; pay ':'Pay ')+payMoney(v.balance||v.amount)+' <span style="color:#008080;">↗</span></a>';})()+'</td>'+
       '</tr>';
   }
-  if(!invs.length){ body='<tr><td colspan="'+(allMode?9:8)+'" class="empty" style="padding:16px;">No invoices'+(payReadyOnly?' ready for payment':'')+' for this selection.</td></tr>'; }
+  if(!invs.length){ body='<tr><td colspan="'+(allMode?9:8)+'" class="empty" style="padding:16px;">No invoices'+(payReadyOnly?' ready for payment':(payNotReadyOnly?' not ready for payment':''))+' for this selection.</td></tr>'; }
   var t=payTotals(invs);
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">'+
     '<h2 style="margin:0;">Payment Status</h2>'+
     '<select id="paySelect" onchange="paySelectChange()" style="padding:7px 10px;border:1px solid #cdd9e6;border-radius:6px;font-size:13px;min-width:240px;">'+opts+'</select>'+
     '<label style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#2c3e50;cursor:pointer;white-space:nowrap;"><input type="checkbox" onchange="payToggleReady(this)"'+(payReadyOnly?' checked':'')+'> Ready for payment only</label>'+
+    '<label style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#2c3e50;cursor:pointer;white-space:nowrap;"><input type="checkbox" onchange="payToggleNotReady(this)"'+(payNotReadyOnly?' checked':'')+'> Not ready for payment</label>'+
     '<button class="copy-email-btn" onclick="copyPayTable()" title="Copy this invoice table — pastes as a formatted table into email/Word/Docs">📋 Copy table</button></div>'+
-    '<div class="sub">Independent Diagnostic Lab &middot; '+t.count+' invoice(s)'+(payReadyOnly?' ready for payment':'')+' &middot; '+payMoney(t.amount)+' total &middot; '+payMoney(t.unpaid)+' unpaid &middot; QuickBooks '+escapeHtml(''+(PAY.year||''))+' &middot; as of '+escapeHtml(PAY.generated_at||'')+'</div></div>'+
+    '<div class="sub">Independent Diagnostic Lab &middot; '+t.count+' invoice(s)'+(payReadyOnly?' ready for payment':(payNotReadyOnly?' not ready for payment':''))+' &middot; '+payMoney(t.amount)+' total &middot; '+payMoney(t.unpaid)+' unpaid &middot; QuickBooks '+escapeHtml(''+(PAY.year||''))+' &middot; as of '+escapeHtml(PAY.generated_at||'')+'</div></div>'+
     (function(){var g=payGrandTotals(), apTot=((PAY.payables&&PAY.payables.grand_total)||0), net=g.unpaid-apTot;
       return '<div class="ca-h" style="margin:2px 0 4px;">Portfolio summary &mdash; all Independent Diagnostic Labs ('+g.custN+' customers)</div>'+
       '<div class="kpis" style="padding:2px 0 12px;">'+
