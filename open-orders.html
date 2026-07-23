@@ -1613,11 +1613,14 @@ function renderPayPanel(){
     '<label style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#2c3e50;cursor:pointer;white-space:nowrap;"><input type="checkbox" onchange="payToggleReady(this)"'+(payReadyOnly?' checked':'')+'> Ready for payment only</label>'+
     '<button class="copy-email-btn" onclick="copyPayTable()" title="Copy this invoice table — pastes as a formatted table into email/Word/Docs">📋 Copy table</button></div>'+
     '<div class="sub">Independent Diagnostic Lab &middot; '+t.count+' invoice(s)'+(payReadyOnly?' ready for payment':'')+' &middot; '+payMoney(t.amount)+' total &middot; '+payMoney(t.unpaid)+' unpaid &middot; QuickBooks '+escapeHtml(''+(PAY.year||''))+' &middot; as of '+escapeHtml(PAY.generated_at||'')+'</div></div>'+
-    (function(){var g=payGrandTotals(); return '<div class="ca-h" style="margin:2px 0 4px;">Portfolio summary &mdash; all Independent Diagnostic Labs ('+g.custN+' customers)</div>'+
+    (function(){var g=payGrandTotals(), apTot=((PAY.payables&&PAY.payables.grand_total)||0), net=g.unpaid-apTot;
+      return '<div class="ca-h" style="margin:2px 0 4px;">Portfolio summary &mdash; all Independent Diagnostic Labs ('+g.custN+' customers)</div>'+
       '<div class="kpis" style="padding:2px 0 12px;">'+
-        kpi(payMoney(g.unpaid),'Outstanding')+
+        kpi(payMoney(g.unpaid),'Outstanding (A/R)')+
         kpi(payMoney(g.ready),'Ready for payment')+
         kpi(g.readyN+' / '+g.openN,'Invoices ready / open')+
+        kpi(payMoney(apTot),'Vendor payable (A/P)')+
+        kpi((net<0?'-':'')+payMoney(Math.abs(net)),'Net (A/R &minus; A/P)')+
       '</div>';})()+
     '<div class="ca-h" style="margin-top:6px;">'+escapeHtml(allMode?'All customers':c.name)+' &mdash; invoices</div>'+
     '<table><thead><tr>'+(allMode?'<th>Customer</th>':'')+'<th>Invoice #</th><th>SO #</th><th class="c">Status</th><th class="c">Fulfillment</th><th class="c">Date</th><th style="text-align:right;">Amount</th><th style="text-align:right;">Balance</th><th class="c">Link</th></tr></thead><tbody>'+body+
@@ -1625,6 +1628,39 @@ function renderPayPanel(){
     '<td style="text-align:right;font-weight:700;">'+payMoney(t.amount)+'</td>'+
     '<td style="text-align:right;font-weight:700;color:'+(t.unpaid>0.005?'#c0392b':'#27ae60')+';">'+payMoney(t.unpaid)+'</td>'+
     '<td class="c"></td></tr>'+
+    '</tbody></table>' +
+    payablesHtml();
+}
+// ── Accounts Payable section (vendors we owe, from QuickBooks open bills) ──
+function payablesHtml(){
+  var ap=PAY.payables;
+  if(!ap || !ap.vendors || !ap.vendors.length){
+    return '<div class="ca-h" style="margin-top:26px;">Accounts Payable &mdash; vendors you owe (QuickBooks)</div>'+
+      '<div class="empty" style="padding:12px;">No open vendor bills in QuickBooks.</div>';
+  }
+  var vs=ap.vendors.slice().sort(function(a,b){return b.balance-a.balance;});
+  var rows='';
+  for(var i=0;i<vs.length;i++){ var v=vs[i];
+    rows+='<tr>'+
+      '<td>'+escapeHtml(v.vendor||'')+'</td>'+
+      '<td class="c">'+(v.count||0)+'</td>'+
+      '<td style="text-align:right;color:'+((v.pastdue>0.005)?'#c0392b':'#7f8c8d')+';font-weight:'+((v.pastdue>0.005)?'700':'400')+';">'+payMoney(v.pastdue||0)+'</td>'+
+      '<td style="text-align:right;font-weight:700;color:#c0392b;">'+payMoney(v.balance||0)+'</td>'+
+      '</tr>';
+  }
+  return '<div class="ca-h" style="margin-top:26px;">Accounts Payable &mdash; vendors you owe (QuickBooks)</div>'+
+    '<div class="sub" style="margin:2px 0 8px;">'+(ap.count||0)+' open bill(s) &middot; '+payMoney(ap.grand_total||0)+' owed &middot; '+payMoney(ap.past_due||0)+' past due &middot; as of '+escapeHtml(ap.generated_at||PAY.generated_at||'')+'</div>'+
+    '<div class="kpis" style="padding:2px 0 12px;">'+
+      kpi(payMoney(ap.grand_total||0),'Total payable')+
+      kpi(payMoney(ap.past_due||0),'Past due')+
+      kpi((ap.count||0)+' / '+vs.length,'Bills / vendors')+
+    '</div>'+
+    '<table><thead><tr><th>Vendor</th><th class="c">Open bills</th><th style="text-align:right;">Past due</th><th style="text-align:right;">Balance owed</th></tr></thead><tbody>'+
+    rows+
+    '<tr class="so-group"><td style="font-weight:700;">Total ('+vs.length+' vendor'+(vs.length===1?'':'s')+')</td>'+
+    '<td class="c" style="font-weight:700;">'+(ap.count||0)+'</td>'+
+    '<td style="text-align:right;font-weight:700;color:'+((ap.past_due>0.005)?'#c0392b':'#7f8c8d')+';">'+payMoney(ap.past_due||0)+'</td>'+
+    '<td style="text-align:right;font-weight:700;color:#c0392b;">'+payMoney(ap.grand_total||0)+'</td></tr>'+
     '</tbody></table>';
 }
 // Standalone HTML invoice table for the selected customer — copies as a rendered table for email.
