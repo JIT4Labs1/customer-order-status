@@ -508,6 +508,11 @@ def build_html(page_data, embeds=None):
   thead th .arr { color:#7fd4d4; font-size:10px; margin-left:3px; }
   tbody td { padding:8px 10px; border-bottom:1px solid #eef2f6; vertical-align:top; }
   tbody td.c { text-align:center; }
+  /* Vendor Spend tables */
+  table.vsp-table { max-width:940px; margin:0 0 4px; }
+  table.vsp-table tbody tr:hover td { background:#f4f8fb; }
+  table.vsp-table tfoot td { padding:9px 10px; border-top:2px solid #0D2B45; background:#eef3f8; color:#1f3a5f; }
+  table.vsp-table th, table.vsp-table td { white-space:nowrap; }
   tbody tr:nth-child(even) { background:#f8fafc; }
   .so { font-weight:700; color:#1F4E79; white-space:nowrap; }
   .status { padding:2px 8px; border-radius:10px; font-size:10px; white-space:nowrap; }
@@ -632,6 +637,7 @@ def build_html(page_data, embeds=None):
   <button class="mode-btn mode-pnl active" data-mode="pnl" onclick="setMode('pnl')">P&amp;L Report</button>
   <button class="mode-btn" data-mode="cust" onclick="setMode('cust')">Customer Open SO's</button>
   <button class="mode-btn" data-mode="vendor" onclick="setMode('vendor')">Open Vendor POs</button>
+  <button class="mode-btn" data-mode="vspend" onclick="setMode('vspend')">Vendor Spend</button>
   <button class="mode-btn" data-mode="sku" onclick="setMode('sku')">High Demand SKUs</button>
   <button class="mode-btn mode-ship" data-mode="ship" onclick="setMode('ship')">Shipments</button>
   <button class="mode-btn mode-pay" data-mode="pay" onclick="setMode('pay')">Payment Status</button>
@@ -727,7 +733,7 @@ function kpi(v,l){ return '<div class="kpi"><div class="v">'+(v==null?'0':v)+'</
 
 function renderTabs(){
   var tabsEl=document.getElementById('tabs');
-  var fullWidth=(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay');
+  var fullWidth=(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay' || mode==='vspend');
   // Left-align: when a view has no left sidebar, collapse the side column so content aligns left (not centered).
   var sidecol=document.querySelector('.sidecol'); if(sidecol) sidecol.style.display = fullWidth ? 'none' : '';
   var pw=document.querySelector('.panel-wrap'); if(pw) pw.style.marginLeft = fullWidth ? '0' : '';
@@ -773,9 +779,80 @@ function renderHead(){
   }
   return h;
 }
+// ── Vendor Spend tab: 2026 PO spend by month × vendor + drill-down ──────────────
+var vspVendor = '';   // '' = All vendors
+var vspMonth  = '';   // '' = All months
+function vspMoney(v){ return '$'+Number(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function vspMonthLabel(m){ if(!m) return ''; var p=m.split('-'); var names=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var mi=parseInt(p[1],10)-1; return (names[mi]||p[1])+' '+p[0]; }
+function vspSetVendor(v){ vspVendor=v; renderVspendDetail(); }
+function vspSetMonth(m){ vspMonth=m; renderVspendDetail(); }
+function renderVspendPanel(){
+  var VS=DATA.vendor_spend;
+  var el=document.getElementById('panel');
+  if(!VS || !VS.months || !VS.months.length){ el.innerHTML='<div class="empty">No vendor spend data available.</div>'; return; }
+  var vends=VS.vendors, months=VS.months, mtx=VS.matrix||{}, tot=VS.totals||{}, mtot=VS.month_totals||{};
+  // ── Main table: months (rows) × vendors (columns) ──
+  var h='<div style="padding:6px 0 2px;"><h2 style="margin:0 0 2px;">Vendor Spend &mdash; '+escapeHtml(VS.year)+'</h2>'+
+        '<div style="color:#7a8a99;font-size:12px;margin:0 0 10px;">Sum of purchase-order grand totals by month (non-cancelled POs), for Allora, PMA, CLEARCHEM, ALDX and CONMED.</div></div>';
+  h+='<div class="kpis" style="padding:0 0 10px;">'+kpi(vspMoney(VS.grand_total),'Total spend')+kpi(VS.po_count,'POs')+kpi(months.length,'Months')+kpi(vends.length,'Vendors')+'</div>';
+  h+='<table class="vsp-table"><thead><tr><th style="text-align:left;">Month</th>';
+  for(var i=0;i<vends.length;i++){ h+='<th style="text-align:right;">'+escapeHtml(vends[i])+'</th>'; }
+  h+='<th style="text-align:right;font-weight:700;">Total</th></tr></thead><tbody>';
+  for(var r=0;r<months.length;r++){ var m=months[r], row=mtx[m]||{};
+    h+='<tr><td style="text-align:left;font-weight:600;">'+escapeHtml(vspMonthLabel(m))+'</td>';
+    for(var c=0;c<vends.length;c++){ var val=row[vends[c]]||0;
+      h+='<td style="text-align:right;'+(val?'':'color:#c3ccd4;')+'">'+(val?vspMoney(val):'—')+'</td>'; }
+    h+='<td style="text-align:right;font-weight:700;">'+vspMoney(mtot[m]||0)+'</td></tr>';
+  }
+  h+='</tbody><tfoot><tr><td style="text-align:left;font-weight:700;">Total</td>';
+  for(var t=0;t<vends.length;t++){ h+='<td style="text-align:right;font-weight:700;">'+vspMoney(tot[vends[t]]||0)+'</td>'; }
+  h+='<td style="text-align:right;font-weight:700;color:#1f3a5f;">'+vspMoney(VS.grand_total)+'</td></tr></tfoot></table>';
+
+  // ── Drill-down: vendor + month selectors, then a PO list ──
+  h+='<div style="margin:22px 0 8px;"><h3 style="margin:0 0 8px;">Purchase orders detail</h3>'+
+     '<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;">'+
+     '<label style="font-size:13px;color:#2c3e50;">Vendor '+
+     '<select id="vspVendorSel" onchange="vspSetVendor(this.value)" style="margin-left:5px;padding:4px 8px;border:1px solid #cfd8e0;border-radius:6px;font-size:13px;">'+
+     '<option value="">All vendors</option>';
+  for(var v2=0;v2<vends.length;v2++){ h+='<option value="'+escapeHtml(vends[v2])+'"'+(vspVendor===vends[v2]?' selected':'')+'>'+escapeHtml(vends[v2])+'</option>'; }
+  h+='</select></label>'+
+     '<label style="font-size:13px;color:#2c3e50;">Month '+
+     '<select id="vspMonthSel" onchange="vspSetMonth(this.value)" style="margin-left:5px;padding:4px 8px;border:1px solid #cfd8e0;border-radius:6px;font-size:13px;">'+
+     '<option value="">All months</option>';
+  for(var m2=0;m2<months.length;m2++){ h+='<option value="'+escapeHtml(months[m2])+'"'+(vspMonth===months[m2]?' selected':'')+'>'+escapeHtml(vspMonthLabel(months[m2]))+'</option>'; }
+  h+='</select></label></div></div>';
+  h+='<div id="vspDetail"></div>';
+  el.innerHTML=h;
+  renderVspendDetail();
+}
+function renderVspendDetail(){
+  var VS=DATA.vendor_spend; var box=document.getElementById('vspDetail'); if(!box) return;
+  var pos=(VS.pos||[]).filter(function(p){
+    return (!vspVendor || p.vendor===vspVendor) && (!vspMonth || p.month===vspMonth); });
+  pos.sort(function(a,b){ if(a.month!==b.month) return a.month<b.month?1:-1; return (b.amount||0)-(a.amount||0); });
+  var sum=0; for(var i=0;i<pos.length;i++){ sum+=pos[i].amount||0; }
+  var scope=(vspVendor||'All vendors')+' · '+(vspMonth?vspMonthLabel(vspMonth):'All months');
+  var h='<div style="color:#7a8a99;font-size:12px;margin:0 0 6px;">'+escapeHtml(scope)+' &mdash; '+pos.length+' PO'+(pos.length===1?'':'s')+', '+vspMoney(sum)+'</div>';
+  if(!pos.length){ box.innerHTML=h+'<div class="empty">No purchase orders for this selection.</div>'; return; }
+  h+='<table class="vsp-table"><thead><tr><th style="text-align:left;">PO #</th><th style="text-align:right;">Amount</th><th style="text-align:left;">Customer</th>'+
+     (vspVendor?'':'<th style="text-align:left;">Vendor</th>')+(vspMonth?'':'<th style="text-align:left;">Month</th>')+'</tr></thead><tbody>';
+  for(var j=0;j<pos.length;j++){ var p=pos[j];
+    h+='<tr><td style="text-align:left;font-weight:600;">'+escapeHtml(p.po||'—')+'</td>'+
+       '<td style="text-align:right;">'+vspMoney(p.amount)+'</td>'+
+       '<td style="text-align:left;">'+escapeHtml(p.customer||'—')+'</td>'+
+       (vspVendor?'':'<td style="text-align:left;">'+escapeHtml(p.vendor||'')+'</td>')+
+       (vspMonth?'':'<td style="text-align:left;">'+escapeHtml(vspMonthLabel(p.month))+'</td>')+'</tr>';
+  }
+  h+='</tbody><tfoot><tr><td style="text-align:left;font-weight:700;">Total</td><td style="text-align:right;font-weight:700;">'+vspMoney(sum)+'</td><td></td>'+
+     (vspVendor?'':'<td></td>')+(vspMonth?'':'<td></td>')+'</tr></tfoot></table>';
+  box.innerHTML=h;
+}
+
 function renderPanel(){
   if(mode==='pnl') renderPnlPanel();
   else if(mode==='vendor') renderVendorPanel();
+  else if(mode==='vspend') renderVspendPanel();
   else if(mode==='sku') renderSkuPanel();
   else if(mode==='ca') renderCaPanel();
   else if(mode==='gads') renderGadsPanel();
@@ -2225,6 +2302,73 @@ def push_file_to_github(local_path, repo_path):
 # ─────────────────────────────────────────────
 # MAIN
 # ─────────────────────────────────────────────
+# ── Vendor Spend: 2026 non-cancelled PO totals by month × vendor (5 alt-source vendors) ──
+# Each display column maps to one or more Vtiger Vendor record ids (the CRM holds
+# several vendor records per real vendor, e.g. "ALDX", "ALDX Holding", ...).
+VSPEND_YEAR = "2026"
+VSPEND_GROUPS = {
+    "Allora":    ["11x130659", "11x143741", "11x73970"],
+    "PMA":       ["11x130679", "11x108033"],
+    "CLEARCHEM": ["11x145501", "11x101534"],
+    "ALDX":      ["11x130577", "11x142607", "11x76607"],
+    "CONMED":    ["11x63346"],
+}
+VSPEND_ORDER = ["Allora", "PMA", "CLEARCHEM", "ALDX", "CONMED"]
+
+
+def build_vendor_spend(vt):
+    """Sum PurchaseOrder grand totals (2026, non-cancelled) by createdtime month,
+    grouped into the five alt-source vendor columns, plus a per-PO detail list
+    (po #, amount, customer) that powers the drill-down table. READ-ONLY."""
+    vid_to_group = {vid: g for g, ids in VSPEND_GROUPS.items() for vid in ids}
+    inlist = "('" + "','".join(vid_to_group.keys()) + "')"
+    try:
+        pos = vt.query_all(
+            "SELECT id, purchaseorder_no, hdnGrandTotal, createdtime, vendor_id, "
+            f"accountid, postatus FROM PurchaseOrder WHERE vendor_id IN {inlist}")
+    except Exception as e:
+        log(f"  vendor_spend: PO query failed ({e})")
+        return {}
+    acct_name = {}
+    try:
+        for a in vt.query_all("SELECT id, accountname FROM Accounts"):
+            acct_name[a["id"]] = a.get("accountname", "")
+    except Exception as e:
+        log(f"  vendor_spend: could not load accounts ({e})")
+
+    matrix, totals, month_totals, details, months = {}, {v: 0.0 for v in VSPEND_ORDER}, {}, [], set()
+    n = 0
+    for p in pos:
+        ct = str(p.get("createdtime", ""))
+        if not ct.startswith(VSPEND_YEAR):
+            continue
+        if "cancel" in str(p.get("postatus", "")).strip().lower():
+            continue
+        grp = vid_to_group.get(p.get("vendor_id", ""))
+        if not grp:
+            continue
+        month = ct[:7]
+        try:
+            amt = round(float(p.get("hdnGrandTotal") or 0), 2)
+        except (TypeError, ValueError):
+            amt = 0.0
+        months.add(month)
+        matrix.setdefault(month, {v: 0.0 for v in VSPEND_ORDER})
+        matrix[month][grp] = round(matrix[month][grp] + amt, 2)
+        totals[grp] = round(totals[grp] + amt, 2)
+        month_totals[month] = round(month_totals.get(month, 0.0) + amt, 2)
+        details.append({"po": p.get("purchaseorder_no", ""), "amount": amt,
+                        "customer": acct_name.get(p.get("accountid", ""), p.get("accountid", "") or "—"),
+                        "vendor": grp, "month": month})
+        n += 1
+    return {
+        "generated_at": datetime.now().strftime("%Y-%m-%d %I:%M:%S %p"),
+        "year": VSPEND_YEAR, "vendors": VSPEND_ORDER, "months": sorted(months),
+        "matrix": matrix, "month_totals": month_totals, "totals": totals,
+        "grand_total": round(sum(totals.values()), 2), "po_count": n, "pos": details,
+    }
+
+
 def main():
     parser = argparse.ArgumentParser(description="JIT4You Open Orders — tabbed page")
     parser.add_argument("--no-push", action="store_true", help="Build files locally, don't push to GitHub Pages")
@@ -2280,6 +2424,13 @@ def main():
     log("Building Alternative Sources cost map...")
     page_data["alt_sources"] = build_alt_sources(vt)
     log(f"  Alt sources: {len(page_data['alt_sources'])} Beckman Coulter products")
+
+    # Vendor Spend: 2026 PO spend by month × vendor (Allora/PMA/CLEARCHEM/ALDX/CONMED).
+    log("Building Vendor Spend...")
+    page_data["vendor_spend"] = build_vendor_spend(vt)
+    _vs = page_data["vendor_spend"]
+    log(f"  Vendor Spend: {_vs.get('po_count',0)} POs, {len(_vs.get('months',[]))} months, "
+        f"grand ${_vs.get('grand_total',0):,.2f}")
 
     out_dir = CONFIG["output_dir"]
     data_path = os.path.join(out_dir, DATA_FILENAME)
