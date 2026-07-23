@@ -48,6 +48,7 @@ GITHUB_PAGES_URL = os.environ.get("GH_PAGES_URL", "https://jit4labs1.github.io/c
 
 PAGE_FILENAME = "open-orders.html"
 DATA_FILENAME = "open-orders-data.json"
+PAID_INVENTORY_FILENAME = "paid_inventory.json"  # user-maintained "Paid Inventory" box store
 
 # Sales Orders to exclude from the report entirely (matched case-insensitively,
 # with or without the "SO" prefix). These never appear in any tab.
@@ -488,6 +489,28 @@ def build_html(page_data, embeds=None):
   .altsrc td.na { text-align:right; font-weight:600; color:#aaa; }
   .altsrc .as-hint { font-size:11px; color:#888; margin-top:10px; }
   .altsrc .as-none { font-size:12px; color:#c0392b; margin-top:11px; font-weight:600; }
+  /* Paid Inventory box (vendor tab, below Alternative Sources) */
+  .paidinv { margin-top:14px; }
+  .paidinv label { display:block; font-size:11px; color:#555; font-weight:600; margin:8px 0 3px; }
+  .paidinv input { width:100%; padding:7px 9px; border:1px solid #cdd9e6; border-radius:6px; font-size:13px; font-family:inherit; }
+  .paidinv input:focus { outline:none; border-color:#1F4E79; }
+  .paidinv input.pi-sku { text-transform:uppercase; }
+  .paidinv .pi-add { width:100%; margin-top:11px; padding:9px 10px; background:#1F4E79; color:#fff; border:none; border-radius:6px;
+                     font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; }
+  .paidinv .pi-add:hover { background:#173a5c; }
+  .paidinv .pi-add:disabled { background:#9db4cc; cursor:default; }
+  .paidinv .pi-note { font-size:11px; margin-top:8px; min-height:14px; }
+  .paidinv .pi-note.ok { color:#1e7e34; }
+  .paidinv .pi-note.warn { color:#b9770e; }
+  .paidinv .pi-note.err { color:#c0392b; }
+  .paidinv .pi-list { margin-top:12px; }
+  .paidinv .pi-list-h { font-size:11px; color:#0D2B45; text-transform:uppercase; letter-spacing:.5px; font-weight:700; margin-bottom:6px; }
+  .paidinv table { width:100%; border-collapse:collapse; font-size:12px; }
+  .paidinv thead td { color:#888; font-weight:600; border-bottom:1px solid #dee5ec; padding:5px 4px; font-size:10px; text-transform:uppercase; }
+  .paidinv tbody td { padding:6px 4px; border-bottom:1px solid #eef2f6; color:#333; vertical-align:top; }
+  .paidinv tbody td.pi-q { text-align:right; font-weight:700; color:#1F4E79; }
+  .paidinv .pi-empty { font-size:11px; color:#888; margin-top:8px; }
+  .paidinv .pi-pending td { color:#b9770e; }
   .tab { display:block; width:100%; text-align:left; background:none; border:none; border-bottom:1px solid #eef2f6;
          padding:12px 16px; cursor:pointer; font-size:13px; color:#2c3e50; font-family:inherit; }
   .tab:hover { background:#f5f8fb; }
@@ -651,6 +674,7 @@ def build_html(page_data, embeds=None):
   <div class="sidecol">
     <div class="tabs" id="tabs"></div>
     <div class="altsrc" id="altsrc" style="display:none;"></div>
+    <div class="altsrc paidinv" id="paidinv" style="display:none;"></div>
   </div>
   <div class="panel-wrap"><div class="panel" id="panel"></div></div>
 </div>
@@ -738,6 +762,7 @@ function renderTabs(){
   var sidecol=document.querySelector('.sidecol'); if(sidecol) sidecol.style.display = fullWidth ? 'none' : '';
   var pw=document.querySelector('.panel-wrap'); if(pw) pw.style.marginLeft = fullWidth ? '0' : '';
   showAltSrc(mode==='vendor');  // Alternative Sources box: vendor tab only
+  showPaidInv(mode==='vendor'); // Paid Inventory box: vendor tab only
   if(fullWidth){ tabsEl.style.display='none'; tabsEl.innerHTML=''; return; }  // full-width views, no per-entity tabs
   if(mode==='ship'){ renderShipTabs(tabsEl); return; }  // Shipments: sidebar of customers (receivers)
   tabsEl.style.display='';
@@ -2234,6 +2259,108 @@ function lookupAltSrc(){
     '<tr><td class="lbl">ClearChem</td>'+asCost(rec[4])+'</tr>'+
     '</tbody></table>';
 }
+
+// ── Paid Inventory box (vendor tab): add SKU / qty / location(vendor) / expiration ──
+// Source of truth is paid_inventory.json in the repo (served next to the data file).
+// Adds commit to that file via the GitHub contents API (durable across the Refresh
+// button, the scheduled task, and other devices). localStorage bridges the ~1 min
+// GitHub Pages redeploy lag so a just-added row never disappears on reload.
+var PAID_URL = 'paid_inventory.json';
+var _paidServer = null;   // authoritative list from the repo file (or baked fallback)
+function _piLoadPending(){ try { return JSON.parse(localStorage.getItem('jit4_paid_inv_pending')||'[]'); } catch(e){ return []; } }
+function _piSavePending(a){ try { localStorage.setItem('jit4_paid_inv_pending', JSON.stringify(a)); } catch(e){} }
+function _piKey(x){ return [String(x.sku||'').toUpperCase(), x.qty, String(x.location||''), String(x.exp||'')].join('|'); }
+function _b64enc(s){ return btoa(unescape(encodeURIComponent(s))); }
+function _b64dec(s){ return decodeURIComponent(escape(atob(String(s||'').replace(/\s+/g,'')))); }
+
+function showPaidInv(show){
+  var el=document.getElementById('paidinv'); if(!el) return;
+  if(!show){ el.style.display='none'; return; }
+  el.style.display='';
+  if(!el.getAttribute('data-built')){
+    var vlist=((DATA&&DATA.vendors)||[]).map(function(v){return v&&v.name;}).filter(Boolean);
+    ['PMA Services','Allora Biotech LLC','ALDX Holding Corporation','ClearChem Diagnostics Inc'].forEach(function(n){ if(vlist.indexOf(n)<0) vlist.push(n); });
+    var opts=vlist.map(function(n){return '<option value="'+escapeHtml(n)+'">';}).join('');
+    el.innerHTML='<h3>Paid Inventory</h3>'+
+      '<div class="as-sub">Log inventory already paid for</div>'+
+      '<label for="pi-sku">SKU / Part #</label>'+
+      '<input id="pi-sku" class="pi-sku" type="text" placeholder="Enter SKU" autocomplete="off" spellcheck="false">'+
+      '<label for="pi-qty">Quantity</label>'+
+      '<input id="pi-qty" type="number" min="0" step="1" placeholder="0" autocomplete="off">'+
+      '<label for="pi-loc">Location (vendor name)</label>'+
+      '<input id="pi-loc" type="text" placeholder="Vendor name" list="pi-vendors" autocomplete="off">'+
+      '<datalist id="pi-vendors">'+opts+'</datalist>'+
+      '<label for="pi-exp">Expiration date</label>'+
+      '<input id="pi-exp" type="date" autocomplete="off">'+
+      '<button class="pi-add" id="pi-add-btn" onclick="addPaidInv()">Add</button>'+
+      '<div class="pi-note" id="pi-note"></div>'+
+      '<div class="pi-list" id="pi-list"></div>';
+    el.setAttribute('data-built','1');
+    if(_paidServer==null){ _paidServer=((DATA&&DATA.paid_inventory)||[]).slice(); }
+    renderPaidList();
+    fetchPaidInv();
+  }
+}
+function fetchPaidInv(){
+  fetch(PAID_URL+'?cb='+Date.now(),{cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+    .then(function(j){ if(j&&j.items){ _paidServer=j.items; _piReconcile(); renderPaidList(); } })
+    .catch(function(){ /* keep baked fallback */ });
+}
+// Drop any pending rows that now appear in the server list.
+function _piReconcile(){
+  var srv={}; (_paidServer||[]).forEach(function(x){ srv[_piKey(x)]=1; });
+  var pend=_piLoadPending().filter(function(x){ return !srv[_piKey(x)]; });
+  _piSavePending(pend);
+}
+function renderPaidList(){
+  var box=document.getElementById('pi-list'); if(!box) return;
+  var srv=(_paidServer||[]), pend=_piLoadPending();
+  var rows='';
+  function row(x,pending){
+    return '<tr'+(pending?' class="pi-pending"':'')+'>'+
+      '<td>'+escapeHtml(x.sku||'')+(pending?' &middot; saving…':'')+'</td>'+
+      '<td class="pi-q">'+escapeHtml(String(x.qty==null?'':x.qty))+'</td>'+
+      '<td>'+escapeHtml(x.location||'')+'</td>'+
+      '<td>'+escapeHtml(x.exp||'')+'</td></tr>';
+  }
+  srv.forEach(function(x){ rows+=row(x,false); });
+  pend.forEach(function(x){ rows+=row(x,true); });
+  if(!rows){ box.innerHTML='<div class="pi-empty">No paid inventory logged yet.</div>'; return; }
+  box.innerHTML='<div class="pi-list-h">Logged inventory ('+(srv.length+pend.length)+')</div>'+
+    '<table><thead><tr><td>SKU</td><td class="pi-q">Qty</td><td>Location</td><td>Exp.</td></tr></thead>'+
+    '<tbody>'+rows+'</tbody></table>';
+}
+function _piNote(cls,msg){ var n=document.getElementById('pi-note'); if(n){ n.className='pi-note '+cls; n.textContent=msg; } }
+function addPaidInv(){
+  var sku=(document.getElementById('pi-sku').value||'').replace(/^\s+|\s+$/g,'').toUpperCase();
+  var qtyRaw=(document.getElementById('pi-qty').value||'').replace(/^\s+|\s+$/g,'');
+  var loc=(document.getElementById('pi-loc').value||'').replace(/^\s+|\s+$/g,'');
+  var exp=(document.getElementById('pi-exp').value||'').replace(/^\s+|\s+$/g,'');
+  if(!sku){ _piNote('err','Enter a SKU.'); return; }
+  if(qtyRaw===''||isNaN(Number(qtyRaw))){ _piNote('err','Enter a valid quantity.'); return; }
+  var entry={sku:sku, qty:Number(qtyRaw), location:loc, exp:exp, added:new Date().toISOString()};
+  // optimistic: add to pending + show immediately
+  var pend=_piLoadPending(); pend.push(entry); _piSavePending(pend); renderPaidList();
+  // clear inputs
+  document.getElementById('pi-sku').value=''; document.getElementById('pi-qty').value='';
+  document.getElementById('pi-loc').value=''; document.getElementById('pi-exp').value='';
+  if(!BTN||!BTN.token){ _piNote('warn','Saved on this device only (no sync token).'); return; }
+  var btn=document.getElementById('pi-add-btn'); if(btn) btn.disabled=true;
+  _piNote('warn','Saving…');
+  var base='https://api.github.com/repos/'+BTN.repo+'/contents/'+PAID_URL;
+  var hdr={'Authorization':'Bearer '+BTN.token,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
+  fetch(base+'?ref='+encodeURIComponent(BTN.branch)+'&cb='+Date.now(),{headers:hdr,cache:'no-store'})
+    .then(function(r){ if(r.status===404) return {obj:{items:[]}, sha:null}; if(!r.ok) throw new Error('read '+r.status); return r.json().then(function(j){ var o; try{ o=JSON.parse(_b64dec(j.content)); }catch(e){ o={items:[]}; } if(!o.items) o.items=[]; return {obj:o, sha:j.sha}; }); })
+    .then(function(st){ st.obj.items.push(entry);
+      return fetch(base,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},hdr),
+        body:JSON.stringify({message:'Add paid inventory '+entry.sku+' x'+entry.qty, content:_b64enc(JSON.stringify(st.obj,null,2)+'\\n'), sha:st.sha||undefined, branch:BTN.branch})})
+        .then(function(r){ if(!r.ok) return r.text().then(function(t){ throw new Error('save '+r.status+' '+t.slice(0,120)); }); return st.obj; }); })
+    .then(function(obj){ _paidServer=obj.items; _piReconcile(); renderPaidList(); _piNote('ok','Saved to shared inventory.'); })
+    .catch(function(e){ _piNote('warn','Saved on this device; sync failed ('+e.message+'). Will retry on next add.'); })
+    .finally(function(){ var b=document.getElementById('pi-add-btn'); if(b) b.disabled=false; });
+}
+
 function renderAll(){ renderKpis(); renderTabs(); renderPanel(); renderAsOf(); }
 
 function fetchData(){ return fetch(DATA_URL+'?cb='+Date.now(),{cache:'no-store'})
@@ -2455,6 +2582,17 @@ def main():
     log("Building Alternative Sources cost map...")
     page_data["alt_sources"] = build_alt_sources(vt)
     log(f"  Alt sources: {len(page_data['alt_sources'])} Beckman Coulter products")
+
+    # Paid Inventory: user-maintained list, source of truth is paid_inventory.json
+    # (served next to the data file; the page also live-fetches + commits to it).
+    # Bake the current contents so the local mirror / artifact show a baseline.
+    try:
+        with open(PAID_INVENTORY_FILENAME) as _pf:
+            _pi = json.load(_pf)
+        page_data["paid_inventory"] = _pi.get("items", []) if isinstance(_pi, dict) else (_pi or [])
+    except Exception:
+        page_data["paid_inventory"] = []
+    log(f"  Paid inventory: {len(page_data['paid_inventory'])} logged item(s)")
 
     # Vendor Spend: 2026 PO spend by month × vendor (Allora/PMA/CLEARCHEM/ALDX/CONMED).
     log("Building Vendor Spend...")
