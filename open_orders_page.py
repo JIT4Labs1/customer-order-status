@@ -2046,6 +2046,8 @@ function renderPayPanel(){
     (function(){var g=payGrandTotals(), apTot=((PAY.payables&&PAY.payables.grand_total)||0), net=g.unpaid-apTot;
       return '<div class="ca-h" style="margin:2px 0 4px;">Portfolio summary &mdash; all Independent Diagnostic Labs ('+g.custN+' customers)</div>'+
       '<div class="kpis" style="padding:2px 0 12px;">'+
+        (PAY.bank ? kpi(payMoney(PAY.bank.balance||0),'Bank balance &middot; '+escapeHtml(PAY.bank.name||''),
+            'background:linear-gradient(135deg,#eaf3fb,#bcd9f2);border-color:#2e6da4;') : '')+
         kpi(payMoney(g.unpaid),'Outstanding (A/R)')+
         kpi(payMoney(g.ready),'Ready for payment')+
         kpi(g.readyN+' / '+g.openN,'Invoices ready / open')+

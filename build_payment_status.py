@@ -24,6 +24,160 @@ REALM = "9341452706936433"
 BASE = "https://quickbooks.api.intuit.com/v3"
 TOKEN_URL = "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
 
+# Vtiger — maps each QuickBooks invoice (DocNumber) to its Vtiger Sales Order + fulfillment.
+# The Vtiger SO custom field cf_salesorder_invoiceid holds the QB invoice number (DocNumber).
+VTIGER_URL = "https://jit4youinc.od2.vtiger.com"
+VTIGER_USER = "customersupport@jit4you.com"
+VTIGER_ACCESS_KEY = "fIPkOulq0BaA5y2s"
+
+
+def vtiger_query(q):
+    auth = base64.b64encode(f"{VTIGER_USER}:{VTIGER_ACCESS_KEY}".encode()).decode()
+    url = VTIGER_URL + "/restapi/v1/vtiger/default/query?query=" + urllib.parse.quote(q)
+    req = urllib.request.Request(url)
+    req.add_header("Authorization", "Basic " + auth)
+    try:
+        with urllib.request.urlopen(req, timeout=40) as r:
+            return json.loads(r.read().decode()).get("result", []) or []
+    except Exception:
+        return []
+
+
+def so_fulfillment(sostatus):
+    s = (sostatus or "").strip().lower()
+    if "cancel" in s:
+        return "Cancelled"
+    if "fully delivered" in s or s == "delivered":
+        return "Fulfilled"
+    return "Partially"   # partially delivered / sent / approved / created -> still has open items
+
+
+def vtiger_retrieve(eid):
+    auth = base64.b64encode(f"{VTIGER_USER}:{VTIGER_ACCESS_KEY}".encode()).decode()
+    req = urllib.request.Request(VTIGER_URL + "/restapi/v1/vtiger/default/retrieve?id=" + eid)
+    req.add_header("Authorization", "Basic " + auth)
+    try:
+        with urllib.request.urlopen(req, timeout=40) as r:
+            return json.loads(r.read().decode()).get("result", {}) or {}
+    except Exception:
+        return {}
+
+
+def vtiger_so_map(docnumbers):
+    """DocNumber -> {so_num, so_id, sostatus, fulfillment}. The ONLY valid link between a QB invoice
+    and a Vtiger Sales Order is the SO custom field cf_salesorder_invoiceid — which may hold MULTIPLE
+    comma-separated invoice numbers (e.g. "SO509, SO490") when several invoices bill one SO. So we
+    fetch every SO whose Invoice ID field is populated and tokenize it on commas, matching each token
+    to a QB DocNumber. We NEVER match by salesorder_no. Empty field -> no match. Fulfillment computed
+    later from line items."""
+    docs = set(d for d in docnumbers if d)
+    rows, seen = [], set()
+    for pat in ("%SO%", "%INV%"):   # invoice numbers look like SO### / INV###
+        start = 0
+        while True:
+            b = vtiger_query("SELECT id, salesorder_no, cf_salesorder_invoiceid, sostatus, createdtime "
+                             f"FROM SalesOrder WHERE cf_salesorder_invoiceid LIKE '{pat}' LIMIT {start},100;")
+            if not isinstance(b, list):
+                b = []
+            for r in b:
+                if r.get("id") not in seen:
+                    seen.add(r.get("id")); rows.append(r)
+            if len(b) < 100:
+                break
+            start += 100
+    out = {}
+    for r in rows:
+        for tok in (r.get("cf_salesorder_invoiceid") or "").split(","):
+            tok = tok.strip()
+            if tok in docs and tok not in out:
+                out[tok] = {"so_num": r.get("salesorder_no", ""), "so_id": r.get("id", ""),
+                            "so_date": (r.get("createdtime", "") or "")[:10],
+                            "sostatus": r.get("sostatus", ""), "fulfillment": "", "open_items": []}
+    return out
+
+
+SKIP_LINE = {"restricted", "shipping", "discount", "freight", "handling", ""}
+
+
+def _fnum(x):
+    try:
+        return float(x or 0)
+    except Exception:
+        return 0.0
+
+
+def enrich_open_items(somap):
+    """For every mapped SO, compute fulfillment from actual line items (delivered vs ordered,
+    skipping non-product lines) — sostatus is unreliable. For SOs with genuinely open product
+    lines, attach open_items:[{product,open_qty,po,vendor}] resolved via linked POs."""
+    mapped = [v for v in somap.values() if v.get("so_id")]
+    if not mapped:
+        return
+    # Pass 1: retrieve each SO (parallel), compute real open lines (ignore fully-delivered + junk).
+    with ThreadPoolExecutor(max_workers=10) as ex:
+        li_map = dict(zip([v["so_id"] for v in mapped],
+                          ex.map(lambda sid: vtiger_retrieve(sid).get("LineItems", []) or [],
+                                 [v["so_id"] for v in mapped])))
+    for v in mapped:
+        opens = []
+        for it in li_map.get(v["so_id"], []):
+            pid = (it.get("productid") or "").strip()
+            name = (it.get("product_name") or "").strip()
+            if not pid or name.lower() in SKIP_LINE:
+                continue
+            oq = _fnum(it.get("quantity")) - _fnum(it.get("delivered_qty"))
+            if oq > 0.001:
+                opens.append({"product": name, "open_qty": round(oq, 2), "pid": pid, "po": "", "vendor": ""})
+        if "cancel" in (v.get("sostatus") or "").lower():
+            v["fulfillment"], v["open_items"] = "Cancelled", []
+        elif opens:
+            v["fulfillment"], v["open_items"] = "Partially", opens
+        else:
+            v["fulfillment"], v["open_items"] = "Fulfilled", []
+    # Pass 2: only for SOs with open lines, resolve PO # + vendor by product.
+    part = [v for v in mapped if v.get("open_items")]
+    if not part:
+        return
+    inlist = "','".join(v["so_id"] for v in part)
+    po_by_so, vendor_ids = {}, set()
+    for po in vtiger_query("SELECT purchaseorder_no, vendor_id, salesorder_id, id FROM "
+                           f"PurchaseOrder WHERE salesorder_id IN ('{inlist}') AND postatus != 'Cancelled';"):
+        po_by_so.setdefault(po.get("salesorder_id", ""), []).append(
+            (po.get("purchaseorder_no", ""), po.get("vendor_id", ""), po.get("id", "")))
+        if po.get("vendor_id"):
+            vendor_ids.add(po["vendor_id"])
+    vname = {}
+    if vendor_ids:
+        for v in vtiger_query("SELECT id, vendorname FROM Vendors WHERE id IN ('%s');" % "','".join(vendor_ids)):
+            vname[v.get("id", "")] = v.get("vendorname", "")
+    # Per-PO line items only needed for SOs with MULTIPLE POs (to match each item to its PO).
+    multi_po_ids = [po_id for v in part if len(po_by_so.get(v["so_id"], [])) > 1
+                    for (_n, _vi, po_id) in po_by_so.get(v["so_id"], []) if po_id]
+    po_li = {}
+    if multi_po_ids:
+        with ThreadPoolExecutor(max_workers=6) as ex:
+            po_li = dict(zip(multi_po_ids,
+                             ex.map(lambda pid: vtiger_retrieve(pid).get("LineItems", []) or [], multi_po_ids)))
+    for v in part:
+        pos = po_by_so.get(v["so_id"], [])
+        v["pos"] = [{"po": pn, "vendor": vname.get(vi, "")} for (pn, vi, _pid) in pos]
+        if len(pos) == 1:
+            pn, vi, _pid = pos[0]
+            for oi in v["open_items"]:
+                oi.pop("pid", None); oi["po"], oi["vendor"] = pn, vname.get(vi, "")
+        elif len(pos) > 1:
+            prod_po = {}
+            for pn, vi, po_id in pos:
+                for it in po_li.get(po_id, []):
+                    pid = (it.get("productid") or "").strip()
+                    if pid and pid not in prod_po:
+                        prod_po[pid] = (pn, vname.get(vi, ""))
+            for oi in v["open_items"]:
+                oi["po"], oi["vendor"] = prod_po.get(oi.pop("pid", ""), ("", ""))
+        else:
+            for oi in v["open_items"]:
+                oi.pop("pid", None); oi["po"], oi["vendor"] = "", ""
+
 # Independent Diagnostic Lab customers -> QB customer id (resolved via QB customer search)
 IDL = {
     "1288": "Mercedes Scientific", "1269": "LabX Diagnostic Systems",
@@ -86,6 +240,100 @@ def fetch_share_link(access, inv_id):
         return ""
 
 
+BANK_OVERRIDE = os.path.join(QB, "bank_balance.json")
+
+
+def build_bank(access):
+    """Bank balance card for Chase CHK (9219).
+
+    QuickBooks' API only exposes the *In-QuickBooks* book balance (Account.CurrentBalance);
+    it does NOT expose the *Bank balance* from the Chase feed shown on the QBO home screen.
+    So the card headline uses a manual bank-feed value from bank_balance.json (updated by the
+    user), and we also carry the live QB book balance for reference. If the override file is
+    missing, we fall back to the QB book balance."""
+    name, book = "Chase CHK (9219)", None
+    try:
+        r = qb_query(access, "SELECT * FROM Account WHERE AccountType = 'Bank'")
+        for a in r.get("QueryResponse", {}).get("Account", []) or []:
+            if "9219" in (a.get("Name") or ""):
+                name = a.get("Name", name)
+                book = _fnum(a.get("CurrentBalance"))
+                break
+    except Exception:
+        pass
+    feed, feed_asof = None, None
+    try:
+        with open(BANK_OVERRIDE) as f:
+            ov = json.load(f)
+        feed = _fnum(ov.get("balance"))
+        feed_asof = ov.get("as_of")
+    except Exception:
+        pass
+    headline = feed if feed is not None else book
+    if headline is None:
+        return None
+    return {
+        "name": name,
+        "balance": round(headline, 2),
+        "source": "Bank balance" if feed is not None else "In QuickBooks",
+        "book_balance": (round(book, 2) if book is not None else None),
+        "bank_asof": feed_asof,
+        "as_of": datetime.datetime.now().astimezone().strftime("%Y-%m-%d %I:%M %p %Z"),
+    }
+
+
+def build_payables(access):
+    """Accounts Payable: open vendor bills from QuickBooks (Balance > 0), aggregated
+    per vendor. Returns {generated_at, grand_total, past_due, count, vendors:[
+      {vendor, balance, count, pastdue, bills:[{num,date,due,amount,balance}]}]}."""
+    bills, start = [], 1
+    while True:
+        try:
+            r = qb_query(access, "SELECT * FROM Bill WHERE Balance > '0' "
+                                 f"ORDERBY TxnDate DESC STARTPOSITION {start} MAXRESULTS 100")
+        except Exception:
+            break
+        chunk = r.get("QueryResponse", {}).get("Bill", []) or []
+        bills += chunk
+        if len(chunk) < 100:
+            break
+        start += 100
+    today = datetime.date.today()
+    agg = {}
+    for b in bills:
+        v = (b.get("VendorRef") or {}).get("name", "(unknown)")
+        bal = _fnum(b.get("Balance"))
+        due = b.get("DueDate") or ""
+        pd = 0.0
+        if due:
+            try:
+                if datetime.date.fromisoformat(due) < today:
+                    pd = bal
+            except Exception:
+                pass
+        e = agg.setdefault(v, {"vendor": v, "balance": 0.0, "count": 0, "pastdue": 0.0, "bills": []})
+        e["balance"] += bal
+        e["count"] += 1
+        e["pastdue"] += pd
+        e["bills"].append({"num": b.get("DocNumber", ""), "date": (b.get("TxnDate") or "")[:10],
+                           "due": due, "amount": _fnum(b.get("TotalAmt")), "balance": bal})
+    vendors = sorted(agg.values(), key=lambda x: -x["balance"])
+    for v in vendors:
+        v["balance"] = round(v["balance"], 2)
+        v["pastdue"] = round(v["pastdue"], 2)
+        v["bills"].sort(key=lambda x: x["date"], reverse=True)
+        for bl in v["bills"]:
+            bl["amount"] = round(bl["amount"], 2)
+            bl["balance"] = round(bl["balance"], 2)
+    return {
+        "generated_at": datetime.datetime.now().astimezone().strftime("%Y-%m-%d %I:%M %p %Z"),
+        "grand_total": round(sum(v["balance"] for v in vendors), 2),
+        "past_due": round(sum(v["pastdue"] for v in vendors), 2),
+        "count": sum(v["count"] for v in vendors),
+        "vendors": vendors,
+    }
+
+
 def main():
     access = refresh_token()
     invoices = []
@@ -113,7 +361,18 @@ def main():
         except Exception:
             paylinks = {}
 
-    by_cust = {cid: [] for cid in IDL}
+    # Customer-facing INVOICE-VIEW links (show line items + Pay button, no QBO login).
+    # Keyed by invoice Id in qb_invoice_links.json; fetched on demand for any not cached.
+    invlinks = {}
+    if os.path.exists(LINK_CACHE):
+        try:
+            invlinks = json.load(open(LINK_CACHE))
+        except Exception:
+            invlinks = {}
+
+    # First pass: build rows + list unpaid invoices still missing an invoice-view link.
+    staged = []  # (cref, row, iid, status)
+    need = []
     for inv in idl_invs:
         cref = (inv.get("CustomerRef") or {}).get("value")
         iid = inv.get("Id", "")
@@ -122,16 +381,55 @@ def main():
         bal = float(inv.get("Balance", 0) or 0)
         voided = (total == 0 and "void" in (inv.get("PrivateNote", "") or "").lower())
         status = "Voided" if voided else ("Paid" if bal <= 0.005 else "Not Paid")
-        # Only unpaid invoices get a pay link (paid/voided have nothing to collect).
+        # Only unpaid invoices need a customer link (paid/voided have nothing to collect).
         link = paylinks.get(num, "") if status == "Not Paid" else ""
-        by_cust[cref].append({
-            "number": num,
-            "status": status,
-            "amount": round(total, 2),
-            "balance": round(bal, 2),
-            "date": inv.get("TxnDate", ""),
-            "link": link,
-        })
+        row = {"number": num, "status": status, "amount": round(total, 2),
+               "balance": round(bal, 2), "date": inv.get("TxnDate", ""), "link": link}
+        staged.append((cref, row, iid, status))
+        if status == "Not Paid" and iid and not invlinks.get(iid):
+            need.append(iid)
+
+    # Fetch any missing invoice-view links in parallel, then refresh the cache.
+    if need:
+        with ThreadPoolExecutor(max_workers=8) as ex:
+            for iid, il in zip(need, ex.map(lambda x: fetch_share_link(access, x), need)):
+                if il:
+                    invlinks[iid] = il
+        try:
+            json.dump(invlinks, open(LINK_CACHE, "w"), indent=1)
+        except Exception:
+            pass
+
+    # A QuickBooks invoice-view link opens a customer PORTAL that lists ALL of that customer's
+    # unpaid invoices (each viewable). QB only returns a direct link for some invoices, so use
+    # any one link per customer as the shared "portal" link for that customer's other invoices —
+    # every invoice then has a working view icon that reaches it inside the portal.
+    portal = {}
+    for cref, row, iid, status in staged:
+        il = invlinks.get(iid, "")
+        if il and cref not in portal:
+            portal[cref] = il
+
+    # Map each invoice DocNumber -> Vtiger Sales Order (number + fulfillment status),
+    # then enrich Partially-fulfilled SOs with their open line items + PO/vendor (from Vtiger).
+    somap = vtiger_so_map([row["number"] for cref, row, iid, status in staged])
+    enrich_open_items(somap)
+
+    by_cust = {cid: [] for cid in IDL}
+    for cref, row, iid, status in staged:
+        # invoice_link = customer-facing invoice portal (line items + Pay); own link, else the
+        # customer's portal link (still shows this invoice). Only unpaid invoices need it.
+        if status == "Not Paid":
+            row["invoice_link"] = invlinks.get(iid, "") or portal.get(cref, "")
+        else:
+            row["invoice_link"] = ""
+        # Vtiger SO match (field is new -> often empty). so_num "" when unlinked.
+        so = somap.get(row["number"], {})
+        row["so_num"] = so.get("so_num", "")
+        row["fulfillment"] = so.get("fulfillment", "")
+        row["so_date"] = so.get("so_date", "")
+        row["open_items"] = so.get("open_items", []) if so.get("fulfillment") == "Partially" else []
+        by_cust[cref].append(row)
 
     customers = []
     for cid, name in sorted(IDL.items(), key=lambda kv: kv[1].lower()):
@@ -144,10 +442,15 @@ def main():
                        "paid": round(amt - unpaid, 2), "unpaid": unpaid},
         })
 
+    payables = build_payables(access)
+    bank = build_bank(access)
+
     out = {
         "generated_at": datetime.datetime.now().astimezone().strftime("%Y-%m-%d %I:%M %p %Z"),
         "year": 2026,
         "customers": customers,
+        "payables": payables,
+        "bank": bank,
     }
     json.dump(out, open(OUT, "w"), indent=2)
     tot_inv = sum(c["totals"]["count"] for c in customers)
@@ -157,6 +460,12 @@ def main():
         if c["totals"]["count"]:
             print(f"  {c['name']}: {c['totals']['count']} inv, "
                   f"${c['totals']['amount']:.2f} (${c['totals']['unpaid']:.2f} unpaid)")
+    if bank:
+        print(f"Bank: {bank['name']} balance ${bank['balance']:.2f}")
+    print(f"Accounts Payable: {payables['count']} open bills, ${payables['grand_total']:.2f} owed "
+          f"(${payables['past_due']:.2f} past due) across {len(payables['vendors'])} vendor(s)")
+    for v in payables["vendors"]:
+        print(f"  {v['vendor']}: ${v['balance']:.2f} ({v['count']} bills, ${v['pastdue']:.2f} past due)")
 
 
 if __name__ == "__main__":
