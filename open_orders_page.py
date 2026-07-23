@@ -756,7 +756,7 @@ function renderKpis(){
   document.getElementById('kpis').innerHTML =
     kpi(t.customers,'Customers')+kpi(t.vendors,'Vendors')+kpi(t.open_sos,'Open SOs')+kpi(t.open_items,'Open Items')+kpi(t.high_demand_skus,'High-Demand');
 }
-function kpi(v,l){ return '<div class="kpi"><div class="v">'+(v==null?'0':v)+'</div><div class="l">'+l+'</div></div>'; }
+function kpi(v,l,style){ return '<div class="kpi"'+(style?' style="'+style+'"':'')+'><div class="v">'+(v==null?'0':v)+'</div><div class="l">'+l+'</div></div>'; }
 
 function renderTabs(){
   var tabsEl=document.getElementById('tabs');
@@ -2043,7 +2043,8 @@ function renderPayPanel(){
         kpi(payMoney(g.ready),'Ready for payment')+
         kpi(g.readyN+' / '+g.openN,'Invoices ready / open')+
         kpi(payMoney(apTot),'Vendor payable (A/P)')+
-        kpi((net<0?'-':'')+payMoney(Math.abs(net)),'Net (A/R &minus; A/P)')+
+        kpi((net<0?'-':'')+payMoney(Math.abs(net)),'Net (A/R &minus; A/P)',
+            'background:linear-gradient(135deg,'+(net<0?'#fdecea,#f1a9a0':'#e8f8ef,#a3dfbb')+');border-color:'+(net<0?'#c0392b':'#1e8449')+';')+
       '</div>';})()+
     '<div class="ca-h" style="margin-top:6px;">'+escapeHtml(allMode?'All customers':c.name)+' &mdash; invoices</div>'+
     '<table><thead><tr>'+(allMode?'<th>Customer</th>':'')+'<th>Invoice #</th><th>SO #</th><th class="c">Status</th><th class="c">Fulfillment</th><th class="c">Date</th><th style="text-align:right;">Amount</th><th style="text-align:right;">Balance</th><th class="c">Link</th></tr></thead><tbody>'+body+
@@ -2072,7 +2073,6 @@ function payablesHtml(){
       '</tr>';
   }
   return '<div class="ca-h" style="margin-top:26px;">Accounts Payable &mdash; vendors you owe (QuickBooks)</div>'+
-    '<div class="sub" style="margin:2px 0 8px;">'+(ap.count||0)+' open bill(s) &middot; '+payMoney(ap.grand_total||0)+' owed &middot; '+payMoney(ap.past_due||0)+' past due &middot; as of '+escapeHtml(ap.generated_at||PAY.generated_at||'')+'</div>'+
     '<div class="kpis" style="padding:2px 0 12px;">'+
       kpi(payMoney(ap.grand_total||0),'Total payable')+
       kpi(payMoney(ap.past_due||0),'Past due')+
