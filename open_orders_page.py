@@ -1747,12 +1747,15 @@ function renderCaPanel(){
 // ── Customer Prices tab (IDL customers: per-SO unit-selling-price matrix + COGS) ──
 var cpActive = 0;        // selected IDL customer index
 var cpWindow = 'ytd';    // 'ytd' or a 'YYYY-MM' month key
+var cpSku = '';          // SKU / product search filter
 function cpMoney(v){ v=Number(v)||0; return '$'+v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 function cpMonthKey(dateStr){ return (dateStr||'').slice(0,7); }
 function cpMonthLabel(mk){ if(!mk) return ''; var d=new Date(mk+'-01T00:00:00'); if(isNaN(d)) return mk;
   return d.toLocaleDateString('en-US',{month:'short',year:'numeric'}); }
-function cpSetOrg(v){ cpActive=parseInt(v,10)||0; cpWindow='ytd'; renderCpricesPanel(); }
+function cpSetOrg(v){ cpActive=parseInt(v,10)||0; cpWindow='ytd'; cpSku=''; renderCpricesPanel(); }
 function cpSetWindow(v){ cpWindow=v||'ytd'; renderCpricesPanel(); }
+function cpSetSku(v){ cpSku=v||''; renderCpricesPanel();
+  var el=document.getElementById('cpSkuSearch'); if(el){ el.focus(); try{ var n=el.value.length; el.setSelectionRange(n,n); }catch(e){} } }
 function renderCpricesPanel(){
   var CP=DATA.customer_prices||{customers:[]};
   var custs=CP.customers||[];
@@ -1780,11 +1783,12 @@ function renderCpricesPanel(){
     '<select onchange="cpSetOrg(this.value)" style="min-width:280px;padding:7px 10px;border:1px solid #cfd8e3;border-radius:8px;font-size:14px;background:#fff;">'+orgOpts+'</select></div>'+
     '<div><div style="font-size:11px;font-weight:700;color:#6b7a90;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Time window</div>'+
     '<select onchange="cpSetWindow(this.value)" style="min-width:170px;padding:7px 10px;border:1px solid #cfd8e3;border-radius:8px;font-size:14px;background:#fff;">'+winOpts+'</select></div>'+
+    '<div><div style="font-size:11px;font-weight:700;color:#6b7a90;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Search SKU</div>'+
+    '<input id="cpSkuSearch" type="text" value="'+escapeHtml(cpSku)+'" oninput="cpSetSku(this.value)" placeholder="Filter by SKU or product…" '+
+    'style="min-width:220px;padding:7px 10px;border:1px solid #cfd8e3;border-radius:8px;font-size:14px;background:#fff;"></div>'+
     '</div>';
 
-  var head='<div class="head"><div><h2 style="margin:0;">Customer Prices</h2>'+
-    '<div class="sub">'+escapeHtml(c.name)+' &middot; unit selling price per SO &middot; '+
-    sos.length+' SO'+(sos.length===1?'':'s')+' in view &middot; COGS from Vtiger product record &middot; as of '+escapeHtml(CP.generated_at||'')+'</div></div></div>';
+  var head='<div class="head"><div><h2 style="margin:0;">Customer Prices</h2></div></div>';
 
   if(!sos.length){ panel.innerHTML=head+controls+'<div class="empty">No Sales Orders for this organization in the selected window.</div>'; return; }
 
@@ -1801,6 +1805,10 @@ function renderCpricesPanel(){
     priceBySo.push(pm);
   }
   skuOrder.sort();
+
+  // SKU search filter (matches SKU code or product name).
+  var q=(cpSku||'').trim().toLowerCase();
+  if(q){ skuOrder=skuOrder.filter(function(sk){ var info=skuInfo[sk]||{}; return sk.toLowerCase().indexOf(q)>=0 || (info.product||'').toLowerCase().indexOf(q)>=0; }); }
 
   // Header: SKU | COGS | one column per SO (SO# + date).
   var thead='<tr>'+
@@ -1830,7 +1838,8 @@ function renderCpricesPanel(){
   }
 
   var table='<div class="cp-wrap"><table class="cp-table"><thead>'+thead+'</thead><tbody>'+body+'</tbody></table></div>';
-  var legend='<div style="font-size:12px;color:#7b8798;margin-top:8px;">'+skuOrder.length+' distinct SKU(s) &middot; each cell = unit selling price for that SKU on that SO ( · = not on that order). '+
+  if(!skuOrder.length){ table='<div class="empty">No SKU matches "'+escapeHtml(cpSku)+'" for this organization in the selected window.</div>'; }
+  var legend='<div style="font-size:12px;color:#7b8798;margin-top:8px;">'+skuOrder.length+' SKU(s)'+(q?' matching "'+escapeHtml(cpSku)+'"':'')+' &middot; each cell = unit selling price for that SKU on that SO ( · = not on that order). '+
     '<span style="color:#c0392b;font-weight:600;">Red</span> = sold below COGS.</div>';
   panel.innerHTML = head + controls + table + legend;
 }
