@@ -38,6 +38,7 @@ from open_orders_report import VtigerAPI, extract_open_orders, CONFIG, log, buil
 from pnl_report import build_pnl
 from customer_analysis import (build_customer_analysis, _build_email_doc as _email_draft_doc,
                                _wordmark, _esc, _qstr)
+from customer_prices import build_customer_prices
 
 # ─────────────────────────────────────────────
 # GitHub Pages publishing (same host/repo as the customer-order-status reports)
@@ -641,6 +642,25 @@ def build_html(page_data, embeds=None):
     /* small-multiples: single column on phones */
     .wt-mult{ grid-template-columns:1fr !important; }
   }
+  /* Customer Prices pivot: SO columns x SKU rows; SKU+COGS frozen at left */
+  .cp-wrap{ overflow-x:auto; border:1px solid #e3e9f0; border-radius:8px; }
+  table.cp-table{ border-collapse:separate; border-spacing:0; font-size:13px; width:auto; }
+  table.cp-table th, table.cp-table td{ border-right:1px solid #eef2f7; border-bottom:1px solid #eef2f7; padding:6px 10px; white-space:nowrap; }
+  table.cp-table thead th{ position:sticky; top:0; z-index:3; background:#101E3E; color:#fff; font-weight:600; text-align:center; vertical-align:bottom; }
+  table.cp-table th.cp-so{ min-width:78px; }
+  table.cp-table .cp-sonum{ font-weight:700; }
+  table.cp-table .cp-sodate{ font-size:10px; font-weight:400; color:#c7d2e0; }
+  table.cp-table th.cp-sticky, table.cp-table td.cp-sticky{ position:sticky; z-index:2; background:#fff; }
+  table.cp-table th.cp-sticky{ z-index:4; background:#101E3E; }
+  table.cp-table .cp-sku{ left:0; min-width:96px; text-align:left; font-weight:700; color:#101E3E; }
+  table.cp-table .cp-cogs{ left:96px; min-width:74px; text-align:right; color:#5a6b82; box-shadow:1px 0 0 #d7dee8; }
+  table.cp-table thead th.cp-cogs{ color:#fff; }
+  table.cp-table td.cp-cell{ text-align:right; font-variant-numeric:tabular-nums; }
+  table.cp-table td.cp-empty{ text-align:center; color:#c3ccd8; }
+  table.cp-table td.cp-below{ color:#c0392b; font-weight:700; background:#fdecea; }
+  table.cp-table tbody tr:nth-child(even) td.cp-sticky{ background:#f7f9fc; }
+  table.cp-table tbody tr:nth-child(even) td{ background:#f7f9fc; }
+  table.cp-table .cp-na{ color:#c3ccd8; }
 </style>
 </head>
 <body>
@@ -667,6 +687,7 @@ def build_html(page_data, embeds=None):
   <button class="mode-btn" data-mode="sku" onclick="setMode('sku')">High Demand SKUs</button>
   <button class="mode-btn mode-ship" data-mode="ship" onclick="setMode('ship')">Shipments</button>
   <button class="mode-btn mode-pay" data-mode="pay" onclick="setMode('pay')">Payment Status</button>
+  <button class="mode-btn" data-mode="cprices" onclick="setMode('cprices')">Customer Prices</button>
   <button class="mode-btn" data-mode="ca" onclick="setMode('ca')">Customer Analysis</button>
   <button class="mode-btn mode-mkt" data-mode="wt" onclick="setMode('wt')">Website Traffic</button>
   <button class="mode-btn mode-mkt" data-mode="gads" onclick="setMode('gads')">Google Ads</button>
@@ -760,7 +781,7 @@ function kpi(v,l,style){ return '<div class="kpi"'+(style?' style="'+style+'"':'
 
 function renderTabs(){
   var tabsEl=document.getElementById('tabs');
-  var fullWidth=(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay' || mode==='vspend');
+  var fullWidth=(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay' || mode==='vspend' || mode==='cprices');
   // Left-align: when a view has no left sidebar, collapse the side column so content aligns left (not centered).
   var sidecol=document.querySelector('.sidecol'); if(sidecol) sidecol.style.display = fullWidth ? 'none' : '';
   var pw=document.querySelector('.panel-wrap'); if(pw) pw.style.marginLeft = fullWidth ? '0' : '';
@@ -914,6 +935,7 @@ function renderPanel(){
   else if(mode==='vspend') renderVspendPanel();
   else if(mode==='sku') renderSkuPanel();
   else if(mode==='ca') renderCaPanel();
+  else if(mode==='cprices') renderCpricesPanel();
   else if(mode==='gads') renderGadsPanel();
   else if(mode==='li') renderLiPanel();
   else if(mode==='wt') renderWtPanel();
@@ -1720,6 +1742,97 @@ function renderCaPanel(){
 
   document.getElementById('panel').innerHTML = head + matrix +
     '<div class="ca-visuals">'+trend+tp+'</div>' + recHtml;
+}
+
+// ── Customer Prices tab (IDL customers: per-SO unit-selling-price matrix + COGS) ──
+var cpActive = 0;        // selected IDL customer index
+var cpWindow = 'ytd';    // 'ytd' or a 'YYYY-MM' month key
+function cpMoney(v){ v=Number(v)||0; return '$'+v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function cpMonthKey(dateStr){ return (dateStr||'').slice(0,7); }
+function cpMonthLabel(mk){ if(!mk) return ''; var d=new Date(mk+'-01T00:00:00'); if(isNaN(d)) return mk;
+  return d.toLocaleDateString('en-US',{month:'short',year:'numeric'}); }
+function cpSetOrg(v){ cpActive=parseInt(v,10)||0; cpWindow='ytd'; renderCpricesPanel(); }
+function cpSetWindow(v){ cpWindow=v||'ytd'; renderCpricesPanel(); }
+function renderCpricesPanel(){
+  var CP=DATA.customer_prices||{customers:[]};
+  var custs=CP.customers||[];
+  var panel=document.getElementById('panel');
+  if(!custs.length){ panel.innerHTML='<div class="empty">No Independent Diagnostic Lab customers with 2026 Sales Orders found.</div>'; return; }
+  if(cpActive>=custs.length) cpActive=0;
+  var c=custs[cpActive];
+  var allSos=(c.sos||[]).slice();
+
+  // Time-window selector: 2026 YTD (all) + one option per month that has SOs.
+  var monthSet={}; for(var i=0;i<allSos.length;i++){ var mk=cpMonthKey(allSos[i].date); if(mk) monthSet[mk]=1; }
+  var months=Object.keys(monthSet).sort();
+  var winOpts='<option value="ytd"'+(cpWindow==='ytd'?' selected':'')+'>'+escapeHtml(''+(CP.year||'2026'))+' YTD (all)</option>';
+  for(var m=0;m<months.length;m++){ winOpts+='<option value="'+months[m]+'"'+(cpWindow===months[m]?' selected':'')+'>'+escapeHtml(cpMonthLabel(months[m]))+'</option>'; }
+
+  // Organization selector (IDL customers only, already filtered server-side).
+  var orgOpts=''; for(var o=0;o<custs.length;o++){ orgOpts+='<option value="'+o+'"'+(o===cpActive?' selected':'')+'>'+escapeHtml(custs[o].name)+' ('+custs[o].so_count+' SO)</option>'; }
+
+  // Filter SOs by window.
+  var sos=allSos.filter(function(s){ return cpWindow==='ytd' ? true : cpMonthKey(s.date)===cpWindow; });
+  sos.sort(function(a,b){ return String(a.date).localeCompare(String(b.date)); });
+
+  var controls='<div style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin:2px 0 12px;">'+
+    '<div><div style="font-size:11px;font-weight:700;color:#6b7a90;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Organization (Independent Diagnostic Lab)</div>'+
+    '<select onchange="cpSetOrg(this.value)" style="min-width:280px;padding:7px 10px;border:1px solid #cfd8e3;border-radius:8px;font-size:14px;background:#fff;">'+orgOpts+'</select></div>'+
+    '<div><div style="font-size:11px;font-weight:700;color:#6b7a90;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Time window</div>'+
+    '<select onchange="cpSetWindow(this.value)" style="min-width:170px;padding:7px 10px;border:1px solid #cfd8e3;border-radius:8px;font-size:14px;background:#fff;">'+winOpts+'</select></div>'+
+    '</div>';
+
+  var head='<div class="head"><div><h2 style="margin:0;">Customer Prices</h2>'+
+    '<div class="sub">'+escapeHtml(c.name)+' &middot; unit selling price per SO &middot; '+
+    sos.length+' SO'+(sos.length===1?'':'s')+' in view &middot; COGS from Vtiger product record &middot; as of '+escapeHtml(CP.generated_at||'')+'</div></div></div>';
+
+  if(!sos.length){ panel.innerHTML=head+controls+'<div class="empty">No Sales Orders for this organization in the selected window.</div>'; return; }
+
+  // Build SKU rows: union across the filtered SOs (preserve first-seen order).
+  var skuOrder=[], skuInfo={};   // sku -> {product, cogs}
+  var priceBySo=[];              // per-SO map sku -> unit_price
+  for(var si=0;si<sos.length;si++){
+    var pm={}; var its=sos[si].items||[];
+    for(var it=0;it<its.length;it++){ var r=its[it]; var sk=r.sku||'(no sku)';
+      pm[sk]=r.unit_price;
+      if(!skuInfo[sk]){ skuInfo[sk]={product:r.product||'', cogs:r.cogs}; skuOrder.push(sk); }
+      else if((!skuInfo[sk].cogs) && r.cogs){ skuInfo[sk].cogs=r.cogs; }
+    }
+    priceBySo.push(pm);
+  }
+  skuOrder.sort();
+
+  // Header: SKU | COGS | one column per SO (SO# + date).
+  var thead='<tr>'+
+    '<th class="cp-sticky cp-sku">SKU</th>'+
+    '<th class="cp-sticky cp-cogs">COGS</th>';
+  for(var s2=0;s2<sos.length;s2++){
+    thead+='<th class="cp-so"><div class="cp-sonum">'+escapeHtml(sos[s2].so_num||'')+'</div>'+
+      '<div class="cp-sodate">'+escapeHtml(fmtDateShort(sos[s2].date))+'</div></th>';
+  }
+  thead+='</tr>';
+
+  var body='';
+  for(var k=0;k<skuOrder.length;k++){
+    var sk2=skuOrder[k]; var info=skuInfo[sk2];
+    body+='<tr>'+
+      '<td class="cp-sticky cp-sku" title="'+escapeHtml(info.product||'')+'">'+escapeHtml(sk2)+'</td>'+
+      '<td class="cp-sticky cp-cogs">'+(info.cogs?cpMoney(info.cogs):'<span class="cp-na">—</span>')+'</td>';
+    for(var s3=0;s3<sos.length;s3++){
+      var pv=priceBySo[s3][sk2];
+      if(pv===undefined || pv===null){ body+='<td class="cp-cell cp-empty">·</td>'; }
+      else {
+        var mark = (info.cogs && pv>0 && pv<info.cogs) ? ' cp-below' : '';   // sold below COGS = red flag
+        body+='<td class="cp-cell'+mark+'">'+cpMoney(pv)+'</td>';
+      }
+    }
+    body+='</tr>';
+  }
+
+  var table='<div class="cp-wrap"><table class="cp-table"><thead>'+thead+'</thead><tbody>'+body+'</tbody></table></div>';
+  var legend='<div style="font-size:12px;color:#7b8798;margin-top:8px;">'+skuOrder.length+' distinct SKU(s) &middot; each cell = unit selling price for that SKU on that SO ( · = not on that order). '+
+    '<span style="color:#c0392b;font-weight:600;">Red</span> = sold below COGS.</div>';
+  panel.innerHTML = head + controls + table + legend;
 }
 function renderPnlPanel(){
   var html=DATA.pnl_html||'';
@@ -2648,6 +2761,14 @@ def main():
     log("Building Customer Analysis...")
     page_data["customer_analysis"] = build_customer_analysis(vt)
     log(f"  Customer Analysis: {len(page_data['customer_analysis']['customers'])} IDL customers")
+
+    # Customer Prices (IDL customers) — per-SO unit-selling-price matrix (SO x SKU) + COGS.
+    log("Building Customer Prices...")
+    page_data["customer_prices"] = build_customer_prices(vt)
+    _cp = page_data["customer_prices"]
+    log(f"  Customer Prices: {len(_cp['customers'])} IDL customers, "
+        f"{sum(c['so_count'] for c in _cp['customers'])} SOs, "
+        f"{sum(c['line_count'] for c in _cp['customers'])} priced lines")
 
     # Alternative Sources: Beckman Coulter SKU -> 4-vendor cost map (vendor tab side box).
     log("Building Alternative Sources cost map...")
