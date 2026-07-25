@@ -1776,7 +1776,8 @@ function renderCpricesPanel(){
 
   // Filter SOs by window.
   var sos=allSos.filter(function(s){ return cpWindow==='ytd' ? true : cpMonthKey(s.date)===cpWindow; });
-  sos.sort(function(a,b){ return String(a.date).localeCompare(String(b.date)); });
+  // Most-recent SO first (column next to COGS), oldest on the right.
+  sos.sort(function(a,b){ return String(b.date).localeCompare(String(a.date)); });
 
   var controls='<div style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin:2px 0 12px;">'+
     '<div><div style="font-size:11px;font-weight:700;color:#6b7a90;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Organization (Independent Diagnostic Lab)</div>'+
