@@ -2585,6 +2585,8 @@ function showPaidInv(show){
       '<label for="pi-loc">Location (vendor name)</label>'+
       '<input id="pi-loc" type="text" placeholder="Vendor name" list="pi-vendors" autocomplete="off">'+
       '<datalist id="pi-vendors">'+opts+'</datalist>'+
+      '<label for="pi-sender">Sender</label>'+
+      '<input id="pi-sender" type="text" placeholder="Who sent the material" autocomplete="off">'+
       '<label for="pi-exp">Expiration date</label>'+
       '<input id="pi-exp" type="date" autocomplete="off">'+
       '<label for="pi-po">Allocated PO# (optional)</label>'+
@@ -2621,6 +2623,7 @@ function renderPaidList(){
         '<td><input id="pi-e-sku" class="pi-ein" value="'+escapeHtml(x.sku||'')+'" style="text-transform:uppercase"></td>'+
         '<td class="pi-q"><input id="pi-e-qty" class="pi-ein" type="number" min="0" step="1" value="'+escapeHtml(String(x.qty==null?'':x.qty))+'"></td>'+
         '<td><input id="pi-e-loc" class="pi-ein" value="'+escapeHtml(x.location||'')+'" list="pi-vendors"></td>'+
+        '<td><input id="pi-e-sender" class="pi-ein" value="'+escapeHtml(x.sender||'')+'"></td>'+
         '<td><input id="pi-e-exp" class="pi-ein" type="date" value="'+escapeHtml(x.exp||'')+'"></td>'+
         '<td><input id="pi-e-po" class="pi-ein" value="'+escapeHtml(x.po||'')+'" placeholder="PO#"></td>'+
         '<td class="pi-act"><button class="pi-save" onclick="savePaidInv('+kind+','+idx+')">Save</button>'+
@@ -2631,6 +2634,7 @@ function renderPaidList(){
       '<td>'+escapeHtml(x.sku||'')+(pending?' &middot; saving…':'')+'</td>'+
       '<td class="pi-q">'+escapeHtml(String(x.qty==null?'':x.qty))+'</td>'+
       '<td>'+escapeHtml(x.location||'')+'</td>'+
+      '<td>'+escapeHtml(x.sender||'')+'</td>'+
       '<td>'+escapeHtml(x.exp||'')+'</td>'+
       '<td class="pi-po">'+escapeHtml(x.po||'')+'</td>'+
       '<td class="pi-act">'+
@@ -2642,7 +2646,7 @@ function renderPaidList(){
   pend.forEach(function(x,ix){ rows+=row(x,true,1,ix); });
   if(!rows){ box.innerHTML='<div class="pi-empty">No paid inventory logged yet.</div>'; return; }
   box.innerHTML='<div class="pi-list-h">Logged inventory ('+(srv.length+pend.length)+')</div>'+
-    '<table><thead><tr><td>SKU</td><td class="pi-q">Qty</td><td>Location</td><td>Exp.</td><td>Allocated PO#</td><td></td></tr></thead>'+
+    '<table><thead><tr><td>SKU</td><td class="pi-q">Qty</td><td>Location</td><td>Sender</td><td>Exp.</td><td>Allocated PO#</td><td></td></tr></thead>'+
     '<tbody>'+rows+'</tbody></table>';
 }
 function _piNote(cls,msg){ var n=document.getElementById('pi-note'); if(n){ n.className='pi-note '+cls; n.textContent=msg; } }
@@ -2650,17 +2654,18 @@ function addPaidInv(){
   var sku=(document.getElementById('pi-sku').value||'').replace(/^\s+|\s+$/g,'').toUpperCase();
   var qtyRaw=(document.getElementById('pi-qty').value||'').replace(/^\s+|\s+$/g,'');
   var loc=(document.getElementById('pi-loc').value||'').replace(/^\s+|\s+$/g,'');
+  var sender=(document.getElementById('pi-sender').value||'').replace(/^\s+|\s+$/g,'');
   var exp=(document.getElementById('pi-exp').value||'').replace(/^\s+|\s+$/g,'');
   var po=(document.getElementById('pi-po').value||'').replace(/^\s+|\s+$/g,'');
   if(!sku){ _piNote('err','Enter a SKU.'); return; }
   if(qtyRaw===''||isNaN(Number(qtyRaw))){ _piNote('err','Enter a valid quantity.'); return; }
-  var entry={id:_piNewId(), sku:sku, qty:Number(qtyRaw), location:loc, exp:exp, po:po, added:new Date().toISOString()};
+  var entry={id:_piNewId(), sku:sku, qty:Number(qtyRaw), location:loc, sender:sender, exp:exp, po:po, added:new Date().toISOString()};
   // optimistic: add to pending + show immediately
   var pend=_piLoadPending(); pend.push(entry); _piSavePending(pend); renderPaidList();
   // clear inputs
   document.getElementById('pi-sku').value=''; document.getElementById('pi-qty').value='';
-  document.getElementById('pi-loc').value=''; document.getElementById('pi-exp').value='';
-  document.getElementById('pi-po').value='';
+  document.getElementById('pi-loc').value=''; document.getElementById('pi-sender').value='';
+  document.getElementById('pi-exp').value=''; document.getElementById('pi-po').value='';
   if(!BTN||!BTN.token){ _piNote('warn','Saved on this device only (no sync token).'); return; }
   var btn=document.getElementById('pi-add-btn'); if(btn) btn.disabled=true;
   _piNote('warn','Saving…');
@@ -2684,11 +2689,12 @@ function savePaidInv(kind, idx){
   var sku=(_piVal('pi-e-sku')||'').replace(/^\s+|\s+$/g,'').toUpperCase();
   var qtyRaw=(_piVal('pi-e-qty')||'').replace(/^\s+|\s+$/g,'');
   var loc=(_piVal('pi-e-loc')||'').replace(/^\s+|\s+$/g,'');
+  var sender=(_piVal('pi-e-sender')||'').replace(/^\s+|\s+$/g,'');
   var exp=(_piVal('pi-e-exp')||'').replace(/^\s+|\s+$/g,'');
   var po=(_piVal('pi-e-po')||'').replace(/^\s+|\s+$/g,'');
   if(!sku){ _piNote('err','Enter a SKU.'); return; }
   if(qtyRaw===''||isNaN(Number(qtyRaw))){ _piNote('err','Enter a valid quantity.'); return; }
-  var patch={sku:sku, qty:Number(qtyRaw), location:loc, exp:exp, po:po};
+  var patch={sku:sku, qty:Number(qtyRaw), location:loc, sender:sender, exp:exp, po:po};
   if(kind===1){
     var p=_piLoadPending(); if(idx>=0&&idx<p.length){ p[idx]=Object.assign({}, p[idx], patch); _piSavePending(p); }
     _piEdit=null; renderPaidList(); return;
