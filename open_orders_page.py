@@ -392,6 +392,72 @@ def build_alt_sources(vt):
     return out
 
 
+def build_po_prices(vt):
+    """Map each non-cancelled PurchaseOrder -> {sku: {unit, product, qty}} using the
+    PO line items already sitting in vt.retrieve_cache (ZERO extra Vtiger calls — the
+    main pass retrieves these POs). Powers the Invoice Check tab: the page compares an
+    uploaded invoice's unit price per SKU against the PO's unit (list) price.
+    unit = PO line item 'listprice' (the per-unit price we agreed to pay)."""
+    # productid -> SKU (productcode). Reuse the SAME query string build_customer_prices
+    # runs (immediately before this step) so it hits the warm query cache — no re-scan.
+    prod = {}
+    try:
+        for p in vt.query_all("SELECT id, productcode, purchase_cost, productname FROM Products"):
+            pid = p.get("id")
+            if pid:
+                prod[pid] = (p.get("productcode") or "").strip()
+    except Exception as e:
+        log(f"  PO prices: Products query failed: {e}")
+    # vendor_id -> vendor name (best effort, for display only)
+    ven = {}
+    try:
+        for v in vt.query_all("SELECT id, vendorname FROM Vendors"):
+            if v.get("id"):
+                ven[v["id"]] = (v.get("vendorname") or "").strip()
+    except Exception:
+        pass
+    out = {}
+    for _rid, rec in (getattr(vt, "retrieve_cache", {}) or {}).items():
+        if not isinstance(rec, dict):
+            continue
+        pono = rec.get("purchaseorder_no")
+        li = rec.get("LineItems", rec.get("lineItems"))
+        if not pono or not isinstance(li, list):
+            continue
+        status = (rec.get("postatus") or "").strip()
+        if status.lower() == "cancelled":
+            continue
+        skus = {}
+        for it in li:
+            if not isinstance(it, dict):
+                continue
+            pid = it.get("productid", "")
+            sku = (prod.get(pid, "") or "").strip()
+            if not sku:
+                continue
+            key = sku.upper()
+            try:
+                unit = float(it.get("listprice") or it.get("netprice") or 0)
+            except Exception:
+                unit = 0.0
+            try:
+                qty = float(it.get("quantity") or 0)
+            except Exception:
+                qty = 0.0
+            prev = skus.get(key)
+            # Keep first occurrence; upgrade only if the earlier one had no price.
+            if prev is None or (prev.get("unit", 0) == 0 and unit):
+                skus[key] = {"product": (it.get("product_name") or prod.get(pid, "") or ""),
+                             "unit": round(unit, 2), "qty": qty}
+        if skus:
+            out[str(pono).strip().upper()] = {
+                "vendor": ven.get(rec.get("vendor_id", ""), ""),
+                "status": status,
+                "skus": skus,
+            }
+    return out
+
+
 # ─────────────────────────────────────────────
 # HTML page (self-contained; tabs + Refresh button; renders from embedded JSON
 # and re-fetches the JSON snapshot on Refresh)
@@ -471,6 +537,42 @@ def build_html(page_data, embeds=None):
   .mode-btn.mode-pay { color:#0f766e; border-color:#99f6e4; background:#f0fdfa; }
   .mode-btn.mode-pay:hover { background:#ccfbf1; }
   .mode-btn.mode-pay.active { background:#0d9488; color:#fff; border-color:#0d9488; }
+  .mode-btn.mode-inv { color:#7c3aed; border-color:#ddd6fe; background:#f5f3ff; }
+  .mode-btn.mode-inv:hover { background:#ede9fe; }
+  .mode-btn.mode-inv.active { background:#7c3aed; color:#fff; border-color:#7c3aed; }
+  /* Invoice Check tab */
+  .invchk { max-width:1000px; }
+  .invchk .inv-form { display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end; background:#faf9ff; border:1px solid #e6e2f5;
+                      border-radius:10px; padding:16px 18px; margin-bottom:16px; }
+  .invchk .inv-fld { display:flex; flex-direction:column; gap:4px; }
+  .invchk .inv-fld label { font-size:11px; font-weight:700; color:#5a3e8e; text-transform:uppercase; letter-spacing:.4px; }
+  .invchk .inv-fld input[type=text] { padding:8px 10px; border:1px solid #cdc4ea; border-radius:6px; font-size:14px; font-family:inherit; min-width:160px; text-transform:uppercase; }
+  .invchk .inv-fld input[type=file] { font-size:12px; font-family:inherit; }
+  .invchk .inv-fld input:focus { outline:none; border-color:#7c3aed; }
+  .invchk .inv-go { padding:9px 18px; background:#7c3aed; color:#fff; border:none; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; }
+  .invchk .inv-go:hover { background:#6d28d9; }
+  .invchk .inv-go:disabled { background:#c4b5e8; cursor:default; }
+  .invchk .inv-note { font-size:12px; margin:4px 0 12px; min-height:16px; }
+  .invchk .inv-note.err { color:#c0392b; } .invchk .inv-note.ok { color:#1e7e34; } .invchk .inv-note.warn { color:#b9770e; }
+  .invchk .inv-sum { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
+  .invchk .inv-chip { font-size:12px; font-weight:600; padding:5px 11px; border-radius:14px; border:1px solid #e0e0e0; }
+  .invchk .inv-chip.ok { background:#e8f7ec; color:#1e7e34; border-color:#bfe3c9; }
+  .invchk .inv-chip.bad { background:#fdecea; color:#c0392b; border-color:#f5c6cb; }
+  .invchk .inv-chip.miss { background:#f1f3f5; color:#666; border-color:#dde2e6; }
+  .invchk table { width:100%; border-collapse:collapse; font-size:13px; }
+  .invchk thead td { color:#666; font-weight:700; border-bottom:2px solid #dee5ec; padding:7px 8px; font-size:10px; text-transform:uppercase; letter-spacing:.3px; }
+  .invchk tbody td { padding:7px 8px; border-bottom:1px solid #eef2f6; color:#333; vertical-align:top; }
+  .invchk td.num { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .invchk tr.inv-ok td { }
+  .invchk tr.inv-over td.num.delta { color:#c0392b; font-weight:700; }
+  .invchk tr.inv-under td.num.delta { color:#b9770e; font-weight:700; }
+  .invchk tr.inv-miss td { color:#9aa0a6; }
+  .invchk .inv-badge { display:inline-block; font-size:10px; font-weight:700; padding:2px 7px; border-radius:10px; text-transform:uppercase; letter-spacing:.3px; }
+  .invchk .inv-badge.ok { background:#e8f7ec; color:#1e7e34; }
+  .invchk .inv-badge.over { background:#fdecea; color:#c0392b; }
+  .invchk .inv-badge.under { background:#fff4e0; color:#b9770e; }
+  .invchk .inv-badge.miss { background:#f1f3f5; color:#777; }
+  .invchk .inv-hint { font-size:11px; color:#888; margin-top:10px; line-height:1.5; }
   .pnl-wrap { overflow-x:auto; padding:20px 22px; }
   .pnl-wrap h2, .pnl-wrap h3 { color:#2c3e50; }
 
@@ -698,6 +800,7 @@ def build_html(page_data, embeds=None):
   <button class="mode-btn" data-mode="cust" onclick="setMode('cust')">Customer Open SO's</button>
   <button class="mode-btn" data-mode="vendor" onclick="setMode('vendor')">Open Vendor POs</button>
   <button class="mode-btn" data-mode="vspend" onclick="setMode('vspend')">Vendor Spend</button>
+  <button class="mode-btn mode-inv" data-mode="inv" onclick="setMode('inv')">Invoice Check</button>
   <button class="mode-btn" data-mode="sku" onclick="setMode('sku')">High Demand SKUs</button>
   <button class="mode-btn mode-ship" data-mode="ship" onclick="setMode('ship')">Shipments</button>
   <button class="mode-btn mode-pay" data-mode="pay" onclick="setMode('pay')">Payment Status</button>
@@ -795,7 +898,7 @@ function kpi(v,l,style){ return '<div class="kpi"'+(style?' style="'+style+'"':'
 
 function renderTabs(){
   var tabsEl=document.getElementById('tabs');
-  var fullWidth=(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay' || mode==='vspend' || mode==='cprices');
+  var fullWidth=(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay' || mode==='vspend' || mode==='cprices' || mode==='inv');
   // Left-align: when a view has no left sidebar, collapse the side column so content aligns left (not centered).
   var sidecol=document.querySelector('.sidecol'); if(sidecol) sidecol.style.display = fullWidth ? 'none' : '';
   var pw=document.querySelector('.panel-wrap'); if(pw) pw.style.marginLeft = fullWidth ? '0' : '';
@@ -955,6 +1058,7 @@ function renderPanel(){
   else if(mode==='wt') renderWtPanel();
   else if(mode==='ship') renderShipPanel();
   else if(mode==='pay') renderPayPanel();
+  else if(mode==='inv') renderInvPanel();
   else renderCustPanel();
 }
 
@@ -2280,7 +2384,7 @@ function setMode(m){
   var btns=document.querySelectorAll('.mode-btn');
   for(var i=0;i<btns.length;i++){
     var dm=btns[i].getAttribute('data-mode');
-    var extra = dm==='pnl' ? ' mode-pnl' : (dm==='ship' ? ' mode-ship' : (dm==='pay' ? ' mode-pay' : ((dm==='wt'||dm==='gads'||dm==='li') ? ' mode-mkt' : '')));  // P&L green, marketing tabs orange, shipments/payment blue
+    var extra = dm==='pnl' ? ' mode-pnl' : (dm==='ship' ? ' mode-ship' : (dm==='pay' ? ' mode-pay' : (dm==='inv' ? ' mode-inv' : ((dm==='wt'||dm==='gads'||dm==='li') ? ' mode-mkt' : ''))));  // P&L green, marketing tabs orange, shipments/payment blue, invoice-check purple
     btns[i].className = 'mode-btn'+extra+(dm===m?' active':'');
   }
   renderTabs(); renderPanel();
@@ -2633,6 +2737,154 @@ function removePaidInv(kind, idx){
     .catch(function(e){ _piNote('err','Remove failed ('+e.message+'). Refreshing…'); fetchPaidInv(); });
 }
 
+// ── Invoice Check tab ────────────────────────────────────────────────────────
+// Upload a vendor PDF invoice + enter the PO#. Each SKU on the PO is located in the
+// invoice text and its unit price compared to the PO unit (list) price. All parsing
+// runs in the browser via pdf.js (lazy-loaded from cdnjs). PO prices come from
+// DATA.po_prices, baked at the last Vtiger refresh.
+var _pdfjsLoading=null;
+function _loadPdfJs(){
+  if(window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+  if(_pdfjsLoading) return _pdfjsLoading;
+  _pdfjsLoading=new Promise(function(res,rej){
+    var s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+    s.onload=function(){ try{ window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; }catch(e){} res(window.pdfjsLib); };
+    s.onerror=function(){ rej(new Error('Could not load the PDF reader (network blocked?)')); };
+    document.head.appendChild(s);
+  });
+  return _pdfjsLoading;
+}
+function _invNote(cls,msg){ var n=document.getElementById('inv-note'); if(n){ n.className='inv-note '+(cls||''); n.innerHTML=msg||''; } }
+function _invPoKey(raw){
+  var q=String(raw||'').replace(/^\s+|\s+$/g,'').toUpperCase().replace(/\s+/g,'');
+  if(!q) return '';
+  var pp=(DATA&&DATA.po_prices)||{};
+  var digits=q.replace(/[^0-9]/g,'');
+  var cands=[q, 'PO'+q.replace(/^#/,''), digits, 'PO'+digits];
+  for(var i=0;i<cands.length;i++){ if(cands[i] && pp[cands[i]]) return cands[i]; }
+  return '';
+}
+function _invIsAlnum(ch){ return (ch>='0'&&ch<='9')||(ch>='A'&&ch<='Z')||(ch>='a'&&ch<='z'); }
+// Find SKU as a bounded token in uppercased haystack; return index just after it, else -1.
+function _invFindSku(hayU, skuU){
+  var from=0;
+  while(true){
+    var idx=hayU.indexOf(skuU, from);
+    if(idx<0) return -1;
+    var before = idx>0 ? hayU.charAt(idx-1) : '';
+    var afterPos = idx+skuU.length;
+    var after = afterPos<hayU.length ? hayU.charAt(afterPos) : '';
+    if(!_invIsAlnum(before) && !_invIsAlnum(after)) return afterPos;
+    from=idx+1;
+  }
+}
+function _invAllMoney(s){
+  var re=/(\d{1,3}(?:,\d{3})+|\d+)\.\d{2}/g, out=[], m;
+  while((m=re.exec(s))!==null){ out.push(parseFloat(m[0].replace(/,/g,''))); }
+  return out;
+}
+function renderInvPanel(){
+  var pp=(DATA&&DATA.po_prices)||{}, npo=0; for(var k in pp){ if(pp.hasOwnProperty(k)) npo++; }
+  document.getElementById('panel').innerHTML=
+   '<div class="panel-head"><h2>Invoice Check</h2>'+
+   '<div class="sub">Upload a vendor PDF invoice and enter the PO#. Each SKU is matched to the PO and its unit price compared to the PO unit (list) price. '+npo+' PO'+(npo===1?'':'s')+' available as of the last refresh.</div></div>'+
+   '<div class="invchk">'+
+     '<div class="inv-form">'+
+       '<div class="inv-fld"><label for="inv-po">PO number</label><input id="inv-po" type="text" placeholder="e.g. PO776" autocomplete="off"></div>'+
+       '<div class="inv-fld"><label for="inv-file">Vendor invoice (PDF)</label><input id="inv-file" type="file" accept="application/pdf,.pdf"></div>'+
+       '<button class="inv-go" id="inv-go" onclick="runInvoiceCheck()">Check invoice</button>'+
+     '</div>'+
+     '<div class="inv-note" id="inv-note"></div>'+
+     '<div id="inv-results"></div>'+
+     '<div class="inv-hint">Works on normal text-based PDF invoices; scanned/photo (image-only) invoices can\\'t be read automatically. Only the unit price is compared, per SKU. Invoice lines whose SKU is not on this PO are not priced.</div>'+
+   '</div>';
+}
+function runInvoiceCheck(){
+  var poRaw=(document.getElementById('inv-po').value||'');
+  var fileEl=document.getElementById('inv-file');
+  var poKey=_invPoKey(poRaw);
+  if(!poKey){ _invNote('err','PO &ldquo;'+escapeHtml(poRaw.replace(/^\s+|\s+$/g,''))+'&rdquo; isn\\'t in the current data. It may be newer than the last refresh (click a tab\\'s Refresh), or check the number.'); return; }
+  if(!fileEl||!fileEl.files||!fileEl.files.length){ _invNote('err','Choose a PDF invoice to upload.'); return; }
+  var file=fileEl.files[0];
+  var go=document.getElementById('inv-go'); if(go) go.disabled=true;
+  _invNote('warn','Reading PDF…'); document.getElementById('inv-results').innerHTML='';
+  _loadPdfJs().then(function(){ return file.arrayBuffer(); })
+  .then(function(buf){ return pdfjsLib.getDocument({data:new Uint8Array(buf)}).promise; })
+  .then(function(pdf){
+    var pages=[]; for(var i=1;i<=pdf.numPages;i++) pages.push(i);
+    return pages.reduce(function(chain,pn){
+      return chain.then(function(acc){
+        return pdf.getPage(pn).then(function(page){ return page.getTextContent(); }).then(function(tc){
+          var byY={};
+          tc.items.forEach(function(it){ if(!it.str) return; var y=Math.round(it.transform[5]); (byY[y]=byY[y]||[]).push({x:it.transform[4], s:it.str}); });
+          Object.keys(byY).forEach(function(y){ var arr=byY[y].sort(function(a,b){ return a.x-b.x; }); acc.push(arr.map(function(o){ return o.s; }).join(' ')); });
+          return acc;
+        });
+      });
+    }, Promise.resolve([]));
+  })
+  .then(function(lines){ _invCompare(poKey, lines, file.name); })
+  .catch(function(e){ _invNote('err','Could not read invoice: '+escapeHtml(e.message||String(e))); })
+  .finally(function(){ var g=document.getElementById('inv-go'); if(g) g.disabled=false; });
+}
+function _invCompare(poKey, lines, fname){
+  var po=(DATA.po_prices||{})[poKey]||{skus:{}}, skus=po.skus||{};
+  var flat=lines.join('  |  '), flatU=flat.toUpperCase();
+  var rows=[], nOk=0, nBad=0, nMiss=0;
+  Object.keys(skus).forEach(function(sku){
+    var poUnit=skus[sku].unit, prod=skus[sku].product||'';
+    var afterPos=_invFindSku(flatU, sku.toUpperCase());
+    var invUnit=null;
+    if(afterPos>=0){
+      var cands=_invAllMoney(flat.substring(afterPos, afterPos+160));
+      if(cands.length){
+        invUnit=cands[0]; var best=Math.abs(cands[0]-poUnit);
+        for(var i=1;i<cands.length;i++){ var d=Math.abs(cands[i]-poUnit); if(d<best){ best=d; invUnit=cands[i]; } }
+      }
+    }
+    var status;
+    if(afterPos<0){ status='miss'; nMiss++; }
+    else if(invUnit===null){ status='noprice'; nMiss++; }
+    else if(Math.abs(invUnit-poUnit)<0.005){ status='ok'; nOk++; }
+    else if(invUnit>poUnit){ status='over'; nBad++; }
+    else { status='under'; nBad++; }
+    rows.push({sku:sku, prod:prod, poUnit:poUnit, invUnit:invUnit, status:status});
+  });
+  var order={over:0, under:1, noprice:2, miss:3, ok:4};
+  rows.sort(function(a,b){ return (order[a.status]-order[b.status]) || a.sku.localeCompare(b.sku); });
+  function money(v){ return v==null?'—':'$'+Number(v).toFixed(2); }
+  var body='';
+  rows.forEach(function(r){
+    var trcls, badge;
+    if(r.status==='ok'){ trcls='inv-ok'; badge='<span class="inv-badge ok">OK</span>'; }
+    else if(r.status==='over'){ trcls='inv-over'; badge='<span class="inv-badge over">Overbilled</span>'; }
+    else if(r.status==='under'){ trcls='inv-under'; badge='<span class="inv-badge under">Underbilled</span>'; }
+    else if(r.status==='noprice'){ trcls='inv-miss'; badge='<span class="inv-badge miss">Price not found</span>'; }
+    else { trcls='inv-miss'; badge='<span class="inv-badge miss">Not on invoice</span>'; }
+    var delta=(r.invUnit!=null)?(r.invUnit-r.poUnit):null;
+    var deltaTxt=(delta==null)?'—':((delta>0?'+':'')+'$'+delta.toFixed(2));
+    body+='<tr class="'+trcls+'">'+
+      '<td>'+escapeHtml(r.sku)+'</td>'+
+      '<td>'+escapeHtml(r.prod)+'</td>'+
+      '<td class="num">'+money(r.poUnit)+'</td>'+
+      '<td class="num">'+money(r.invUnit)+'</td>'+
+      '<td class="num delta">'+deltaTxt+'</td>'+
+      '<td>'+badge+'</td></tr>';
+  });
+  var head='<div class="inv-sum">'+
+    '<span class="inv-chip ok">'+nOk+' match'+(nOk===1?'':'es')+'</span>'+
+    '<span class="inv-chip bad">'+nBad+' discrepanc'+(nBad===1?'y':'ies')+'</span>'+
+    '<span class="inv-chip miss">'+nMiss+' not found</span></div>';
+  var meta='<div class="sub" style="margin-bottom:8px;">PO '+escapeHtml(poKey)+(po.vendor?' &middot; '+escapeHtml(po.vendor):'')+(po.status?' &middot; '+escapeHtml(po.status):'')+' &middot; invoice: '+escapeHtml(fname||'')+' &middot; '+rows.length+' PO SKU'+(rows.length===1?'':'s')+'</div>';
+  document.getElementById('inv-results').innerHTML=meta+head+
+    '<table><thead><tr><td>SKU</td><td>Product</td><td class="num">PO unit</td><td class="num">Invoice unit</td><td class="num">&Delta;</td><td>Status</td></tr></thead><tbody>'+body+'</tbody></table>';
+  if(nBad>0) _invNote('err', nBad+' price discrepanc'+(nBad===1?'y':'ies')+' found — see highlighted rows.');
+  else if(nOk>0 && nMiss>0) _invNote('warn','All matched SKUs are at the PO price. '+nMiss+' PO SKU'+(nMiss===1?'':'s')+' not found on the invoice.');
+  else if(nOk>0) _invNote('ok','All '+nOk+' invoice price'+(nOk===1?'':'s')+' match the PO.');
+  else _invNote('warn','No PO SKUs were located in this invoice — check that it matches PO '+escapeHtml(poKey)+'.');
+}
+
 function renderAll(){ renderKpis(); renderTabs(); renderPanel(); renderAsOf(); }
 
 function fetchData(){ return fetch(DATA_URL+'?cb='+Date.now(),{cache:'no-store'})
@@ -2862,6 +3114,14 @@ def main():
     log("Building Alternative Sources cost map...")
     page_data["alt_sources"] = build_alt_sources(vt)
     log(f"  Alt sources: {len(page_data['alt_sources'])} Beckman Coulter products")
+
+    # PO price map: PO -> {sku: {unit, product, qty}} for the Invoice Check tab
+    # (built from PO line items already in the retrieve cache — no extra Vtiger calls).
+    log("Building PO price map (Invoice Check)...")
+    page_data["po_prices"] = build_po_prices(vt)
+    _npo = len(page_data["po_prices"])
+    _nsku = sum(len(v.get("skus", {})) for v in page_data["po_prices"].values())
+    log(f"  PO prices: {_npo} POs, {_nsku} priced SKU lines")
 
     # Paid Inventory: user-maintained list, source of truth is paid_inventory.json
     # (served next to the data file; the page also live-fetches + commits to it).
