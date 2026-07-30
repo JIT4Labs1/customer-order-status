@@ -91,6 +91,20 @@
   .paidinv td.pi-x { text-align:right; width:20px; padding-right:0; }
   .paidinv .pi-del { background:none; border:none; color:#c0392b; font-size:15px; line-height:1; cursor:pointer; padding:2px 4px; border-radius:4px; }
   .paidinv .pi-del:hover { background:#fdecea; }
+  .paidinv td.pi-po { color:#1F4E79; font-weight:600; }
+  /* Once an Allocated PO# is set, gray out the whole row */
+  .paidinv tr.pi-alloc td { color:#9aa0a6 !important; }
+  .paidinv tr.pi-alloc td.pi-q { color:#9aa0a6 !important; }
+  .paidinv tr.pi-alloc td.pi-po { color:#9aa0a6 !important; font-weight:600; }
+  .paidinv td.pi-act { text-align:right; white-space:nowrap; width:46px; padding-right:0; }
+  .paidinv .pi-edit { background:none; border:none; color:#1F4E79; font-size:13px; line-height:1; cursor:pointer; padding:2px 4px; border-radius:4px; }
+  .paidinv .pi-edit:hover { background:#e8eef5; }
+  .paidinv .pi-ein { width:100%; padding:3px 5px; border:1px solid #cdd9e6; border-radius:4px; font-size:12px; font-family:inherit; box-sizing:border-box; }
+  .paidinv .pi-ein:focus { outline:none; border-color:#1F4E79; }
+  .paidinv .pi-save { background:#1e7e34; color:#fff; border:none; border-radius:4px; font-size:11px; font-weight:600; cursor:pointer; padding:3px 7px; margin-right:2px; }
+  .paidinv .pi-save:hover { background:#186429; }
+  .paidinv .pi-cancel { background:none; border:none; color:#888; font-size:12px; cursor:pointer; padding:3px 4px; }
+  .paidinv .pi-cancel:hover { color:#555; text-decoration:underline; }
   .tab { display:block; width:100%; text-align:left; background:none; border:none; border-bottom:1px solid #eef2f6;
          padding:12px 16px; cursor:pointer; font-size:13px; color:#2c3e50; font-family:inherit; }
   .tab:hover { background:#f5f8fb; }
@@ -2014,9 +2028,15 @@ function lookupAltSrc(){
 // GitHub Pages redeploy lag so a just-added row never disappears on reload.
 var PAID_URL = 'paid_inventory.json';
 var _paidServer = null;   // authoritative list from the repo file (or baked fallback)
+var _piEdit = null;       // {kind, idx} of the row currently being edited inline, or null
 function _piLoadPending(){ try { return JSON.parse(localStorage.getItem('jit4_paid_inv_pending')||'[]'); } catch(e){ return []; } }
 function _piSavePending(a){ try { localStorage.setItem('jit4_paid_inv_pending', JSON.stringify(a)); } catch(e){} }
 function _piKey(x){ return [String(x.sku||'').toUpperCase(), x.qty, String(x.location||''), String(x.exp||'')].join('|'); }
+// Match an item in a freshly-read file back to a target row: prefer stable id, else fall
+// back to the legacy composite key (sku/qty/location/exp). Lets us edit/remove reliably.
+function _piSameItem(it, target){ if(target && target.id && it && it.id) return it.id===target.id; return _piKey(it)===_piKey(target); }
+function _piVal(id){ var e=document.getElementById(id); return e?e.value:''; }
+function _piNewId(){ return Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8); }
 function _b64enc(s){ return btoa(unescape(encodeURIComponent(s))); }
 function _b64dec(s){ return decodeURIComponent(escape(atob(String(s||'').replace(/\s+/g,'')))); }
 
@@ -2039,6 +2059,8 @@ function showPaidInv(show){
       '<datalist id="pi-vendors">'+opts+'</datalist>'+
       '<label for="pi-exp">Expiration date</label>'+
       '<input id="pi-exp" type="date" autocomplete="off">'+
+      '<label for="pi-po">Allocated PO# (optional)</label>'+
+      '<input id="pi-po" type="text" placeholder="PO# this material is for" autocomplete="off">'+
       '<button class="pi-add" id="pi-add-btn" onclick="addPaidInv()">Add</button>'+
       '<div class="pi-note" id="pi-note"></div>'+
       '<div class="pi-list" id="pi-list"></div>';
@@ -2065,18 +2087,34 @@ function renderPaidList(){
   var srv=(_paidServer||[]), pend=_piLoadPending();
   var rows='';
   function row(x,pending,kind,idx){
-    return '<tr'+(pending?' class="pi-pending"':'')+'>'+
+    var editing = _piEdit && _piEdit.kind===kind && _piEdit.idx===idx;
+    if(editing){
+      return '<tr class="pi-editing">'+
+        '<td><input id="pi-e-sku" class="pi-ein" value="'+escapeHtml(x.sku||'')+'" style="text-transform:uppercase"></td>'+
+        '<td class="pi-q"><input id="pi-e-qty" class="pi-ein" type="number" min="0" step="1" value="'+escapeHtml(String(x.qty==null?'':x.qty))+'"></td>'+
+        '<td><input id="pi-e-loc" class="pi-ein" value="'+escapeHtml(x.location||'')+'" list="pi-vendors"></td>'+
+        '<td><input id="pi-e-exp" class="pi-ein" type="date" value="'+escapeHtml(x.exp||'')+'"></td>'+
+        '<td><input id="pi-e-po" class="pi-ein" value="'+escapeHtml(x.po||'')+'" placeholder="PO#"></td>'+
+        '<td class="pi-act"><button class="pi-save" onclick="savePaidInv('+kind+','+idx+')">Save</button>'+
+          '<button class="pi-cancel" onclick="cancelPaidEdit()">Cancel</button></td></tr>';
+    }
+    var cls=[]; if(pending) cls.push('pi-pending'); if(x.po) cls.push('pi-alloc');
+    return '<tr'+(cls.length?' class="'+cls.join(' ')+'"':'')+'>'+
       '<td>'+escapeHtml(x.sku||'')+(pending?' &middot; saving…':'')+'</td>'+
       '<td class="pi-q">'+escapeHtml(String(x.qty==null?'':x.qty))+'</td>'+
       '<td>'+escapeHtml(x.location||'')+'</td>'+
       '<td>'+escapeHtml(x.exp||'')+'</td>'+
-      '<td class="pi-x"><button class="pi-del" title="Remove" onclick="removePaidInv('+kind+','+idx+')">&times;</button></td></tr>';
+      '<td class="pi-po">'+escapeHtml(x.po||'')+'</td>'+
+      '<td class="pi-act">'+
+        '<button class="pi-edit" title="Edit" onclick="editPaidInv('+kind+','+idx+')">&#9998;</button>'+
+        '<button class="pi-del" title="Remove" onclick="removePaidInv('+kind+','+idx+')">&times;</button>'+
+      '</td></tr>';
   }
   srv.forEach(function(x,ix){ rows+=row(x,false,0,ix); });
   pend.forEach(function(x,ix){ rows+=row(x,true,1,ix); });
   if(!rows){ box.innerHTML='<div class="pi-empty">No paid inventory logged yet.</div>'; return; }
   box.innerHTML='<div class="pi-list-h">Logged inventory ('+(srv.length+pend.length)+')</div>'+
-    '<table><thead><tr><td>SKU</td><td class="pi-q">Qty</td><td>Location</td><td>Exp.</td><td></td></tr></thead>'+
+    '<table><thead><tr><td>SKU</td><td class="pi-q">Qty</td><td>Location</td><td>Exp.</td><td>Allocated PO#</td><td></td></tr></thead>'+
     '<tbody>'+rows+'</tbody></table>';
 }
 function _piNote(cls,msg){ var n=document.getElementById('pi-note'); if(n){ n.className='pi-note '+cls; n.textContent=msg; } }
@@ -2085,14 +2123,16 @@ function addPaidInv(){
   var qtyRaw=(document.getElementById('pi-qty').value||'').replace(/^\s+|\s+$/g,'');
   var loc=(document.getElementById('pi-loc').value||'').replace(/^\s+|\s+$/g,'');
   var exp=(document.getElementById('pi-exp').value||'').replace(/^\s+|\s+$/g,'');
+  var po=(document.getElementById('pi-po').value||'').replace(/^\s+|\s+$/g,'');
   if(!sku){ _piNote('err','Enter a SKU.'); return; }
   if(qtyRaw===''||isNaN(Number(qtyRaw))){ _piNote('err','Enter a valid quantity.'); return; }
-  var entry={sku:sku, qty:Number(qtyRaw), location:loc, exp:exp, added:new Date().toISOString()};
+  var entry={id:_piNewId(), sku:sku, qty:Number(qtyRaw), location:loc, exp:exp, po:po, added:new Date().toISOString()};
   // optimistic: add to pending + show immediately
   var pend=_piLoadPending(); pend.push(entry); _piSavePending(pend); renderPaidList();
   // clear inputs
   document.getElementById('pi-sku').value=''; document.getElementById('pi-qty').value='';
   document.getElementById('pi-loc').value=''; document.getElementById('pi-exp').value='';
+  document.getElementById('pi-po').value='';
   if(!BTN||!BTN.token){ _piNote('warn','Saved on this device only (no sync token).'); return; }
   var btn=document.getElementById('pi-add-btn'); if(btn) btn.disabled=true;
   _piNote('warn','Saving…');
@@ -2108,6 +2148,44 @@ function addPaidInv(){
     .catch(function(e){ _piNote('warn','Saved on this device; sync failed ('+e.message+'). Will retry on next add.'); })
     .finally(function(){ var b=document.getElementById('pi-add-btn'); if(b) b.disabled=false; });
 }
+// ── Inline edit: open a row for editing (incl. Allocated PO#), save, cancel ──
+function editPaidInv(kind, idx){ _piEdit={kind:kind, idx:idx}; renderPaidList(); }
+function cancelPaidEdit(){ _piEdit=null; renderPaidList(); _piNote('',''); }
+// kind: 0 = server item (commit edit to repo), 1 = pending/local-only item
+function savePaidInv(kind, idx){
+  var sku=(_piVal('pi-e-sku')||'').replace(/^\s+|\s+$/g,'').toUpperCase();
+  var qtyRaw=(_piVal('pi-e-qty')||'').replace(/^\s+|\s+$/g,'');
+  var loc=(_piVal('pi-e-loc')||'').replace(/^\s+|\s+$/g,'');
+  var exp=(_piVal('pi-e-exp')||'').replace(/^\s+|\s+$/g,'');
+  var po=(_piVal('pi-e-po')||'').replace(/^\s+|\s+$/g,'');
+  if(!sku){ _piNote('err','Enter a SKU.'); return; }
+  if(qtyRaw===''||isNaN(Number(qtyRaw))){ _piNote('err','Enter a valid quantity.'); return; }
+  var patch={sku:sku, qty:Number(qtyRaw), location:loc, exp:exp, po:po};
+  if(kind===1){
+    var p=_piLoadPending(); if(idx>=0&&idx<p.length){ p[idx]=Object.assign({}, p[idx], patch); _piSavePending(p); }
+    _piEdit=null; renderPaidList(); return;
+  }
+  var list=_paidServer||[]; if(idx<0||idx>=list.length) return;
+  var target=list[idx];
+  var updated=Object.assign({}, target, patch);
+  if(!updated.id) updated.id=_piNewId();   // stamp an id so future edits/removes match reliably
+  _paidServer=list.slice(); _paidServer[idx]=updated; _piEdit=null; renderPaidList();   // optimistic
+  if(!BTN||!BTN.token){ _piNote('warn','Updated on this device only (no sync token).'); return; }
+  _piNote('warn','Saving…');
+  var base='https://api.github.com/repos/'+BTN.repo+'/contents/'+PAID_URL;
+  var hdr={'Authorization':'Bearer '+BTN.token,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
+  fetch(base+'?ref='+encodeURIComponent(BTN.branch)+'&cb='+Date.now(),{headers:hdr,cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('read '+r.status); return r.json(); })
+    .then(function(j){ var o; try{ o=JSON.parse(_b64dec(j.content)); }catch(e){ o={items:[]}; } if(!o.items) o.items=[];
+      var done=false;
+      o.items=o.items.map(function(it){ if(!done && _piSameItem(it,target)){ done=true; return updated; } return it; });
+      if(!done) o.items.push(updated);   // not found (e.g. added elsewhere) → append the edited row
+      return fetch(base,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},hdr),
+        body:JSON.stringify({message:'Edit paid inventory '+(updated.sku||''), content:_b64enc(JSON.stringify(o,null,2)+'\n'), sha:j.sha, branch:BTN.branch})})
+        .then(function(r){ if(!r.ok) return r.text().then(function(t){ throw new Error('save '+r.status+' '+t.slice(0,120)); }); return o; }); })
+    .then(function(o){ _paidServer=o.items; _piReconcile(); renderPaidList(); _piNote('ok','Saved to shared inventory.'); })
+    .catch(function(e){ _piNote('err','Save failed ('+e.message+'). Refreshing…'); fetchPaidInv(); });
+}
 // kind: 0 = server item (commit removal to repo), 1 = pending/local-only item
 function removePaidInv(kind, idx){
   if(kind===1){ var p=_piLoadPending(); if(idx>=0&&idx<p.length){ p.splice(idx,1); _piSavePending(p); } renderPaidList(); return; }
@@ -2122,8 +2200,8 @@ function removePaidInv(kind, idx){
   fetch(base+'?ref='+encodeURIComponent(BTN.branch)+'&cb='+Date.now(),{headers:hdr,cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('read '+r.status); return r.json(); })
     .then(function(j){ var o; try{ o=JSON.parse(_b64dec(j.content)); }catch(e){ o={items:[]}; } if(!o.items) o.items=[];
-      var k=_piKey(target), removed=false;
-      o.items=o.items.filter(function(it){ if(!removed && _piKey(it)===k){ removed=true; return false; } return true; });
+      var removed=false;
+      o.items=o.items.filter(function(it){ if(!removed && _piSameItem(it,target)){ removed=true; return false; } return true; });
       return fetch(base,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},hdr),
         body:JSON.stringify({message:'Remove paid inventory '+(target.sku||''), content:_b64enc(JSON.stringify(o,null,2)+'\n'), sha:j.sha, branch:BTN.branch})})
         .then(function(r){ if(!r.ok) return r.text().then(function(t){ throw new Error('save '+r.status+' '+t.slice(0,120)); }); return o; }); })
