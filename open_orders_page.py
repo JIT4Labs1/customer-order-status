@@ -1661,6 +1661,16 @@ function shipCloseItems(e){ if(e&&e.target&&e.target.id!=='shipModal') return; v
 // ── Google Ads tab (data loaded from a separate google-ads-data.json file so the
 // Vtiger Refresh never overwrites it) ────────────────────────────────────────
 var GADS=null, gadsInterval='this_year', gadsLoading=false;
+// Sortable main table on the Google Ads tab (independent of the customer/vendor sortState).
+var gadsSort={key:null, dir:1};
+var GADS_COLS=[{k:'name',t:'str',lbl:'Campaign',c:false},{k:'status',t:'str',lbl:'Status',c:false},
+  {k:'type',t:'str',lbl:'Type',c:false},{k:'start_date',t:'str',lbl:'Started',c:false},
+  {k:'clicks',t:'num',lbl:'Clicks',c:true},{k:'impressions',t:'num',lbl:'Impr.',c:true},
+  {k:'ctr',t:'num',lbl:'CTR',c:true},{k:'cpc',t:'num',lbl:'Avg CPC',c:true},
+  {k:'cost',t:'num',lbl:'Spend',c:true},{k:'conversions',t:'num',lbl:'Conv.',c:true},
+  {k:'conv_value',t:'num',lbl:'Conv. value',c:true},{k:'roas',t:'num',lbl:'ROAS',c:true}];
+function gadsSortByIdx(i){ var c=GADS_COLS[i]; if(!c) return;
+  if(gadsSort.key===c.k){ gadsSort.dir=-gadsSort.dir; } else { gadsSort.key=c.k; gadsSort.dir=1; } renderGadsPanel(); }
 function loadGads(){
   if(GADS_EMBED){ GADS=GADS_EMBED; gadsLoading=false; if(mode==='gads') renderGadsPanel(); return; }
   if(gadsLoading) return; gadsLoading=true;
@@ -1683,7 +1693,14 @@ function renderGadsPanel(){
   var sel='<select onchange="gadsSetInterval(this.value)" style="padding:7px 10px;border:1px solid #cdd9e6;border-radius:6px;font-size:13px;font-family:inherit;">';
   for(var j=0;j<ivs.length;j++){ sel+='<option value="'+escapeHtml(ivs[j].id)+'"'+(ivs[j].id===gadsInterval?' selected':'')+'>'+escapeHtml(ivs[j].label)+'</option>'; }
   sel+='</select>';
-  var rows=(cur?cur.campaigns:[]), tc=0,ti=0,tcost=0,tconv=0,tval=0, body='';
+  var rows=(cur?cur.campaigns:[]).slice(), tc=0,ti=0,tcost=0,tconv=0,tval=0, body='';
+  if(gadsSort.key){
+    var _gc=null; for(var gi=0;gi<GADS_COLS.length;gi++){ if(GADS_COLS[gi].k===gadsSort.key){ _gc=GADS_COLS[gi]; break; } }
+    var _gt=_gc?_gc.t:'str';
+    rows.sort(function(a,b){ var av=a[gadsSort.key], bv=b[gadsSort.key];
+      if(_gt==='num'){ return gadsSort.dir*((Number(av)||0)-(Number(bv)||0)); }
+      return gadsSort.dir*String(av==null?'':av).localeCompare(String(bv==null?'':bv)); });
+  }
   for(var k=0;k<rows.length;k++){ var r=rows[k];
     tc+=r.clicks; ti+=r.impressions; tcost+=r.cost; tconv+=r.conversions; tval+=r.conv_value;
     var st=r.status, sc = st==='enabled'?['#d4edda','#155724']:(st==='paused'?['#fff3cd','#856404']:['#eee','#666']);
@@ -1712,10 +1729,16 @@ function renderGadsPanel(){
     '<div><h2>Google Ads — Campaign Performance</h2><div class="sub">Account: '+escapeHtml(GADS.account||'')+' &middot; data pulled '+escapeHtml(GADS.pulled_at||'')+' &middot; '+escapeHtml(GADS.currency||'USD')+'</div></div>'+
     '<div style="font-size:13px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">Time interval: '+sel+
     '<button class="refresh-btn" onclick="gadsRefresh()" title="Reload the latest Google Ads / GA4 snapshot (separate from the Vtiger Refresh)"><span class="lbl">↻ Refresh Google Ads</span></button></div></div></div>'+
-    '<div class="matrix-wrap"><table class="matrix"><thead><tr>'+
-    '<th>Campaign</th><th>Status</th><th>Type</th><th>Started</th><th class="c">Clicks</th><th class="c">Impr.</th><th class="c">CTR</th>'+
-    '<th class="c">Avg CPC</th><th class="c">Spend</th><th class="c">Conv.</th><th class="c">Conv. value</th><th class="c">ROAS</th>'+
+    '<div class="matrix-wrap"><table class="matrix"><thead><tr>'+ gadsHeadHtml() +
     '</tr></thead><tbody>'+body+'</tbody></table></div>'+ gadsJourneyHtml();
+}
+function gadsHeadHtml(){
+  var h='';
+  for(var i=0;i<GADS_COLS.length;i++){ var c=GADS_COLS[i];
+    var arr = gadsSort.key===c.k ? '<span class="arr">'+(gadsSort.dir>0?'▲':'▼')+'</span>' : '';
+    h+='<th class="'+(c.c?'c ':'')+'sortable" onclick="gadsSortByIdx('+i+')" title="Sort by '+escapeHtml(c.lbl)+'">'+escapeHtml(c.lbl)+arr+'</th>';
+  }
+  return h;
 }
 function gadsJourneyHtml(){
   var J=GADS.journey;
