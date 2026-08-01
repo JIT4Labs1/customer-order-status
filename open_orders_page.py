@@ -2320,6 +2320,43 @@ function renderPnlPanel(){
   document.getElementById('panel').innerHTML = html
     ? '<div class="pnl-wrap">'+html+'</div>'
     : '<div class="empty">P&amp;L report will appear after the next refresh.</div>';
+  try{ pnlCmApply(); }catch(e){}
+  try{ pnlDetApply(); }catch(e){}
+}
+// Sections 4 & 5 month filter: toggle the per-month blocks.
+function pnlCmApply(){
+  var mo=document.getElementById('pnlCmMonth'); if(!mo) return; var mv=mo.value;
+  var b=document.querySelectorAll('.pnl-cm-mo');
+  for(var i=0;i<b.length;i++){ b[i].style.display=(b[i].getAttribute('data-mo')===mv)?'':'none'; }
+}
+// Section 7 Detailed Report: month toggle + customer filter (All / IDL-only / a specific
+// IDL customer) with live-recomputed totals for the visible month.
+function pnlDetApply(){
+  var mo=document.getElementById('pnlDetMonth'); var cu=document.getElementById('pnlDetCust');
+  if(!mo) return; var mv=mo.value, cv=cu?cu.value:'__ALL__';
+  var blocks=document.querySelectorAll('.pnl-detail-mo');
+  for(var i=0;i<blocks.length;i++){
+    var show=(blocks[i].getAttribute('data-mo')===mv);
+    blocks[i].style.display=show?'':'none';
+    if(!show) continue;
+    var rows=blocks[i].querySelectorAll('tr.pnl-det-row');
+    var net=0,cost=0,qb=0,nd=0,vis=0;
+    for(var r=0;r<rows.length;r++){
+      var rc=rows[r].getAttribute('data-cust'), idl=(rows[r].getAttribute('data-idl')==='1');
+      var ok=(cv==='__ALL__')||(cv==='__IDL__'&&idl)||(rc===cv);
+      rows[r].style.display=ok?'':'none';
+      if(ok){ vis++; net+=parseFloat(rows[r].getAttribute('data-net'))||0; cost+=parseFloat(rows[r].getAttribute('data-cost'))||0; qb+=parseFloat(rows[r].getAttribute('data-qb'))||0; nd+=parseFloat(rows[r].getAttribute('data-netdep'))||0; }
+    }
+    var tot=blocks[i].querySelector('tr.pnl-det-total');
+    if(tot){ var pnl=net-cost, mg=(net!==0?(pnl/net*100):0);
+      function _set(cl,v){ var c=tot.querySelector('.'+cl); if(c) c.innerHTML=v; }
+      _set('t-net',payMoney(net)); _set('t-cost',payMoney(cost)); _set('t-pnl',payMoney(pnl));
+      _set('t-margin',(net!==0?mg.toFixed(1)+'%':'—')); _set('t-qb',payMoney(qb)); _set('t-netdep',payMoney(nd)); }
+    var em=blocks[i].querySelector('tr.pnl-det-filterempty'); if(em) em.parentNode.removeChild(em);
+    if(vis===0 && tot){ var tr=document.createElement('tr'); tr.className='pnl-det-filterempty';
+      tr.innerHTML='<td colspan="9" style="padding:12px;color:#7a8a99;">No sales orders match this customer filter for the selected month.</td>';
+      tot.parentNode.insertBefore(tr, tot); }
+  }
 }
 
 function renderCustPanel(){
