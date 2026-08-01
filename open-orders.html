@@ -1307,7 +1307,7 @@ function renderSpnlTabs(el){
 }
 function spnlMoney(v){ var n=Number(v)||0; var s='$'+Math.abs(n).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,','); return n<0?('-'+s):s; }
 // ── Discrepancy email to Conmed (per flagged line: PO items, trackings, matched QB bill) ──
-function spnlEmailList(){ var de=(SPNL&&SPNL.discrepancy_emails)||{}, out=[]; for(var k in de){ if(de.hasOwnProperty(k)) out.push(k); }
+function spnlEmailList(){ var de=(SPNL&&SPNL.discrepancy_emails)||{}, out=[]; for(var k in de){ if(de.hasOwnProperty(k)&&!spnlAccIs(k)) out.push(k); }
   out.sort(function(a,b){ return String(de[b].so_num||'').localeCompare(String(de[a].so_num||'')); }); return out; }
 function spnlEmailOpen(){
   var ids=spnlEmailList(); if(!ids.length){ alert('No discrepancy lines (Pkgs ≠ PO Rows) available to email.'); return; }
@@ -1338,8 +1338,7 @@ function spnlEmailHtml(e){
       return '<tr'+(isMine?' style="background:#fff5d6;font-weight:600;"':'')+'><td style="padding:4px 10px;border:1px solid #e0e0e0;">'+escapeHtml(l.desc||'—')+(isMine?' &larr; this order':'')+'</td><td style="padding:4px 10px;border:1px solid #e0e0e0;text-align:right;">$'+(Number(l.amount)||0).toFixed(2)+'</td></tr>'; }).join('');
     var others=(b.lines||[]).filter(function(l){ return mine.indexOf(String(l.desc||'').toUpperCase())<0; }).length;
     billHtml='<p style="margin:14px 0 6px;"><b>Associated invoice &mdash; QuickBooks Bill #'+escapeHtml(b.doc_number||'')+'</b> (dated '+escapeHtml(b.date||'')+', total $'+(Number(b.total)||0).toFixed(2)+((Number(b.balance)||0)>0?', balance $'+(Number(b.balance)).toFixed(2):', paid')+')'+(others>0?' &mdash; note this invoice also bills '+others+' other PO'+(others!=1?'s':''):'')+':</p>'+
-      '<table style="border-collapse:collapse;font-size:13px;"><thead><tr><th style="padding:4px 10px;border:1px solid #e0e0e0;background:#f4f7fb;text-align:left;">Charged (PO)</th><th style="padding:4px 10px;border:1px solid #e0e0e0;background:#f4f7fb;">Amount</th></tr></thead><tbody>'+lines+'</tbody></table>'+
-      '<p style="margin:6px 0;font-size:12px;"><a href="'+escapeHtml(b.view_url||'')+'">&#8599; Open / download this invoice in QuickBooks</a></p>';
+      '<table style="border-collapse:collapse;font-size:13px;"><thead><tr><th style="padding:4px 10px;border:1px solid #e0e0e0;background:#f4f7fb;text-align:left;">Charged (PO)</th><th style="padding:4px 10px;border:1px solid #e0e0e0;background:#f4f7fb;">Amount</th></tr></thead><tbody>'+lines+'</tbody></table>';
   } else { billHtml='<p style="margin:14px 0;color:#a06000;">No matching QuickBooks Conmed bill was found for this PO.</p>'; }
   return '<div style="font-family:Arial,Helvetica,sans-serif;color:#1f2d3d;font-size:14px;line-height:1.5;padding:18px 20px;background:#fff;">'+
     '<p style="margin:0 0 6px;color:#7a8a99;font-size:12px;">To: Conmed &nbsp;&middot;&nbsp; Subject: Shipping discrepancy &mdash; '+escapeHtml(e.so_num)+' ('+escapeHtml(poList)+')</p><hr style="border:none;border-top:1px solid #e3e8ef;margin:6px 0 14px;">'+
@@ -1361,6 +1360,25 @@ function spnlEmailCopy(){ var s=document.getElementById('spnlEmailSel'); var e=s
   spnlCopyFallback(html,done); }
 function spnlCopyFallback(text,done){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta); if(done)done(); }
 function spnlEmailClose(ev){ if(ev&&ev.target&&ev.target.id!=='spnlModal') return; var m=document.getElementById('spnlModal'); if(m) m.style.display='none'; }
+// ── Accept a discrepancy (excludes it from prepared emails). Persisted to the repo
+//    file spnl_accepted.json via the button token (so the scheduled build honours it). ──
+var SPNL_ACC=null;
+function spnlAccSet(){ if(SPNL_ACC) return SPNL_ACC; SPNL_ACC={}; var a=(SPNL&&SPNL.accepted)||[]; for(var i=0;i<a.length;i++) SPNL_ACC[a[i]]=1;
+  try{ var p=JSON.parse(localStorage.getItem('jit4_spnl_accepted')||'[]'); for(var j=0;j<p.length;j++) SPNL_ACC[p[j]]=1; }catch(e){} return SPNL_ACC; }
+function spnlAccIs(id){ return !!spnlAccSet()[id]; }
+function spnlToggleAccept(so_id){ var s=spnlAccSet(); if(s[so_id]) delete s[so_id]; else s[so_id]=1;
+  try{ localStorage.setItem('jit4_spnl_accepted', JSON.stringify(Object.keys(s))); }catch(e){}
+  spnlAccCommit(); renderTabs(); renderSpnlPanel();
+  if(document.getElementById('spnlModal') && document.getElementById('spnlModal').style.display!=='none') spnlEmailOpen(); }
+function spnlAccCommit(){ if(!BTN||!BTN.token) return; var arr=Object.keys(spnlAccSet());
+  var base='https://api.github.com/repos/'+BTN.repo+'/contents/spnl_accepted.json';
+  var hdr={'Authorization':'Bearer '+BTN.token,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
+  fetch(base+'?ref='+encodeURIComponent(BTN.branch)+'&cb='+Date.now(),{headers:hdr,cache:'no-store'})
+    .then(function(r){ if(r.status===404) return {sha:null}; if(!r.ok) throw new Error('read '+r.status); return r.json().then(function(j){ return {sha:j.sha}; }); })
+    .then(function(st){ return fetch(base,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},hdr),
+      body:JSON.stringify({message:'Update accepted shipment discrepancies ('+arr.length+')', content:_b64enc(JSON.stringify({accepted:arr},null,2)+'\n'), sha:st.sha||undefined, branch:BTN.branch})}); })
+    .then(function(r){ if(!r.ok) throw new Error('save '+r.status); })
+    .catch(function(e){ /* kept in localStorage; will sync on next toggle */ }); }
 function renderSpnlPanel(){
   if(!SPNL){ document.getElementById('panel').innerHTML='<div class="empty">Loading Shipments P&L…</div>'; loadSpnl(); return; }
   var base=spnlBaseRows();
@@ -1368,8 +1386,8 @@ function renderSpnlPanel(){
   // sort
   var col=null; for(var i=0;i<SPNL_COLS.length;i++){ if(SPNL_COLS[i].k===spnlSort.key) col=SPNL_COLS[i]; }
   rows.sort(function(a,b){ return spnlSort.dir*cmp(a[spnlSort.key],b[spnlSort.key],col?col.t:'str'); });
-  var tRev=0,tCost=0,tPkg=0,tPoRows=0,nDisc=0,anyCost=false;
-  for(var r=0;r<rows.length;r++){ tRev+=rows[r].revenue; tCost+=rows[r].cost; tPkg+=rows[r].packages; tPoRows+=rows[r].po_rows; if(rows[r].disc) nDisc++; if(rows[r].has_cost) anyCost=true; }
+  var tRev=0,tCost=0,tPkg=0,tPoRows=0,nDisc=0,nAcc=0,anyCost=false;
+  for(var r=0;r<rows.length;r++){ tRev+=rows[r].revenue; tCost+=rows[r].cost; tPkg+=rows[r].packages; tPoRows+=rows[r].po_rows; if(rows[r].disc){ if(spnlAccIs(rows[r].so_id)) nAcc++; else nDisc++; } if(rows[r].has_cost) anyCost=true; }
   var tMargin=tRev-tCost, tMp=tRev!==0?(tMargin/tRev*100):0;
   var VT='https://jit4youinc.od2.vtiger.com/index.php?module=';
   function soLink(r){ if(!r.so_id) return escapeHtml(r.so_num||'—'); return '<a href="'+VT+'SalesOrder&view=Detail&record='+encodeURIComponent(r.so_id)+'" target="_blank" rel="noopener" style="color:#1F4E79;text-decoration:none;font-weight:600;">'+escapeHtml(r.so_num)+' <span style="color:#008080;">↗</span></a>'; }
@@ -1385,9 +1403,10 @@ function renderSpnlPanel(){
     var mVal = x.has_cost ? spnlMoney(x.margin) : (pending?'<span style="color:#b0862a;">—</span>':'<span style="color:#9aa7b4;">—</span>');
     var mCol = x.margin<0?'#c0392b':'#1e7d34';
     var mPct = x.has_cost ? (x.margin_pct.toFixed(1)+'%') : '—';
-    var discDot = x.disc
-      ? '<span title="Pkgs ('+x.packages+') ≠ PO Rows ('+x.po_rows+')" style="color:#c0392b;font-size:15px;">●</span>'
-      : '<span title="Pkgs match PO Rows" style="color:#1e7d34;font-size:15px;">●</span>';
+    var discDot;
+    if(!x.disc){ discDot='<span title="Pkgs match PO Rows" style="color:#1e7d34;font-size:15px;">●</span>'; }
+    else if(spnlAccIs(x.so_id)){ discDot='<span onclick="spnlToggleAccept(\''+x.so_id+'\')" title="Accepted — excluded from emails. Click to re-open." style="cursor:pointer;color:#8a97a6;font-size:14px;">✓ accepted</span>'; }
+    else { discDot='<span onclick="spnlToggleAccept(\''+x.so_id+'\')" title="Discrepancy: Pkgs ('+x.packages+') ≠ PO Rows ('+x.po_rows+'). Click to accept (exclude from emails)." style="cursor:pointer;color:#c0392b;font-size:15px;">●</span>'; }
     body+='<tr>'+
       '<td class="item-name">'+escapeHtml(x.customer)+'</td>'+
       '<td>'+soLink(x)+'</td>'+
@@ -1420,7 +1439,7 @@ function renderSpnlPanel(){
     '<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">'+
     '<div><h2 style="margin:0;">Shipments P&amp;L &mdash; UPS (Conmed)</h2><div class="sub">Conmed drop-ships only &middot; shipping charged (SKU 999 on SO) vs. UPS billed cost, matched by PO/tracking &middot; '+escapeHtml(SPNL.generated_at||'')+'</div></div>'+
     '<button class="refresh-btn" onclick="spnlRefresh()" title="Reload the latest Shipments P&L snapshot"><span class="lbl">↻ Reload</span></button></div></div>'+
-    '<div class="kpis" style="padding:6px 0 2px;">'+kpi(spnlMoney(tRev),'Shipping charged')+kpi(anyCost?spnlMoney(tCost):'—','UPS cost')+kpi(anyCost?spnlMoney(tMargin):'—','Margin')+kpi(anyCost?tMp.toFixed(1)+'%':'—','Margin %')+kpi(rows.length,'Sales Orders')+kpi(tPkg,'UPS packages')+kpi(nDisc,'Discrepancies',(nDisc?'color:#c0392b;':''))+(uatt?kpi(spnlMoney(uatt),'UPS acct charges'):'')+'</div>'+
+    '<div class="kpis" style="padding:6px 0 2px;">'+kpi(spnlMoney(tRev),'Shipping charged')+kpi(anyCost?spnlMoney(tCost):'—','UPS cost')+kpi(anyCost?spnlMoney(tMargin):'—','Margin')+kpi(anyCost?tMp.toFixed(1)+'%':'—','Margin %')+kpi(rows.length,'Sales Orders')+kpi(tPkg,'UPS packages')+kpi(nDisc,'Open discrepancies',(nDisc?'color:#c0392b;':''))+(nAcc?kpi(nAcc,'Accepted'):'')+(uatt?kpi(spnlMoney(uatt),'UPS acct charges'):'')+'</div>'+
     '<div style="display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin:8px 2px 6px;font-size:12px;">'+ivb+'</div>'+
     banner+
     '<div class="matrix-wrap"><table class="matrix"><thead><tr>'+thead+'</tr></thead><tbody>'+body+
