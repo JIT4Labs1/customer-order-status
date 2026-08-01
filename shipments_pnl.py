@@ -53,93 +53,122 @@ def _load_json(path, default):
 
 
 def _load_billing():
-    """Return (lines, asof). lines = [{tracking, refs:[...], net}]."""
+    """Return (lines, asof, unatt_total, unatt_breakdown, source_file)."""
     d = _load_json(BILLING_FILE, None)
     if not d:
-        return [], ""
+        return [], "", 0.0, {}, ""
     if isinstance(d, dict):
-        return d.get("charges", d.get("lines", [])) or [], d.get("generated_at", d.get("asof", ""))
-    return d, ""
+        return (d.get("charges", d.get("lines", [])) or [],
+                d.get("generated_at", d.get("asof", "")),
+                _f(d.get("unattributed_total", 0)), d.get("unattributed", {}) or {},
+                d.get("source_file", ""))
+    return d, "", 0.0, {}, ""
+
+
+def _crmid(soid):
+    # Vtiger retrieve needs the module-prefixed crmid (SalesOrder module = 15),
+    # e.g. "156771" -> "15x156771". Shipments store the bare numeric id.
+    soid = str(soid or "")
+    return soid if ("x" in soid or not soid) else ("15x" + soid)
+
+
+def _bare(crmid):
+    # crmid "15x156771" -> numeric "156771" (used for the Vtiger detail-view link).
+    s = str(crmid or "")
+    return s.split("x", 1)[1] if "x" in s else s
 
 
 def build_shipments_pnl(vt):
     now = _pac_now()
     Y = now.year
 
-    # 1) UPS shipments -> per-SO metadata (SO id, POs, tracking numbers).
+    # 1) UPS shipments -> tracking/PO -> SO crmid (90-day window), + which SOs shipped UPS.
     ships = (_load_json(SHIPS_FILE, {}) or {}).get("shipments", [])
     ups = [s for s in ships if (s.get("carrier") == "UPS")]
-    so_meta = {}     # so_num -> {so_id, pos:set, trackings:set, receiver}
-    track2so = {}    # tracking -> so_num
-    po2so = {}       # PO# -> so_num
+    track2crmid = {}          # tracking -> SO crmid
+    ship_crmids = set()       # SO crmids that have a UPS shipment on file
+    ship_receiver = {}        # SO crmid -> receiver (fallback customer name)
+    ship_trk = {}             # SO crmid -> set of trackings
     for s in ups:
-        so = (s.get("so_num") or "").strip()
-        if not so:
+        cid = _crmid(s.get("so_id"))
+        if not cid:
             continue
-        m = so_meta.setdefault(so, {"so_id": s.get("so_id"), "pos": set(),
-                                    "trackings": set(), "receiver": s.get("receiver", "")})
-        if not m["so_id"] and s.get("so_id"):
-            m["so_id"] = s.get("so_id")
+        ship_crmids.add(cid)
+        ship_receiver.setdefault(cid, s.get("receiver", ""))
         tn = (s.get("tracking") or "").strip()
         if tn:
-            m["trackings"].add(tn)
-            track2so.setdefault(tn, so)
-        pos = s.get("pos") or ([{"po": s.get("po")}] if s.get("po") else [])
-        for p in pos:
-            po = (p.get("po") or "").strip()
-            if po:
-                m["pos"].add(po)
-                po2so.setdefault(po, so)
+            track2crmid.setdefault(tn, cid)
+            ship_trk.setdefault(cid, set()).add(tn)
 
-    # 2) UPS billing charges -> cost per SO (match by tracking, then by PO in refs).
-    billing, billing_asof = _load_billing()
+    # 2) Vtiger master maps (bulk, cached): PO# -> SO crmid; SO crmid -> meta; accounts; products.
+    po2crmid = {}
+    for po in vt.query_all("SELECT id, purchaseorder_no, salesorder_id FROM PurchaseOrder"):
+        pn = (po.get("purchaseorder_no") or "").strip().upper()
+        sid = (po.get("salesorder_id") or "").strip()
+        if pn and sid:
+            po2crmid[pn] = sid
+    so_master = {}   # crmid -> {no, account_id, date, status}
+    for s in vt.query_all(
+            "SELECT id, salesorder_no, account_id, createdtime, sostatus FROM SalesOrder "
+            "WHERE createdtime >= '%d-01-01' AND createdtime < '%d-01-01'" % (Y, Y + 1)):
+        so_master[s["id"]] = {
+            "no": (s.get("salesorder_no") or "").strip(),
+            "account_id": s.get("account_id", ""),
+            "date": str(s.get("createdtime", ""))[:10],
+            "status": (s.get("sostatus", "") or "").strip(),
+        }
+    accts = {a["id"]: (a.get("accountname", "") or "")
+             for a in vt.query_all("SELECT id, accountname FROM Accounts")}
+    pcode = {}
+    for p in vt.query_all("SELECT id, productcode FROM Products"):
+        pcode[p["id"]] = (p.get("productcode") or "").strip()
+
+    # 3) UPS billing charges -> cost per SO crmid. Match by tracking first, then by
+    #    PO (Reference 1/2) -> SO across the FULL year (not just the 90-day shipments file).
+    billing, billing_asof, unatt_total, unatt_breakdown, billing_src = _load_billing()
     so_cost = {}
+    so_billed_pos = {}     # crmid -> set of PO#s that produced a matched charge
+    so_billed_trk = {}     # crmid -> set of billed trackings
     matched_sos = set()
     unmatched_n = 0
     unmatched_cost = 0.0
     for bl in billing:
         net = _f(bl.get("net", bl.get("net_charge", bl.get("amount", 0))))
         tn = (bl.get("tracking") or "").strip()
-        refs = bl.get("refs") or [bl.get("ref1", ""), bl.get("ref2", "")]
-        so = track2so.get(tn)
-        if not so:
+        refs = [(r or "").strip() for r in (bl.get("refs") or [bl.get("ref1", ""), bl.get("ref2", "")])]
+        cid = track2crmid.get(tn)
+        matched_po = None
+        if not cid:
             for r in refs:
-                r = (r or "").strip()
-                if r and r in po2so:
-                    so = po2so[r]
+                ru = r.upper()
+                if ru in po2crmid:
+                    cid = po2crmid[ru]
+                    matched_po = ru
                     break
-        if so:
-            so_cost[so] = so_cost.get(so, 0.0) + net
-            matched_sos.add(so)
+        if cid:
+            so_cost[cid] = so_cost.get(cid, 0.0) + net
+            matched_sos.add(cid)
+            if matched_po:
+                so_billed_pos.setdefault(cid, set()).add(matched_po)
+            if tn:
+                so_billed_trk.setdefault(cid, set()).add(tn)
         else:
             unmatched_n += 1
             unmatched_cost += net
 
-    # 3) Vtiger: account names + SKU-999 shipping revenue per SO.
-    accts = {a["id"]: (a.get("accountname", "") or "")
-             for a in vt.query_all("SELECT id, accountname FROM Accounts")}
-    # productid -> productcode, to identify the shipping line
-    pcode = {}
-    for p in vt.query_all("SELECT id, productcode FROM Products"):
-        pcode[p["id"]] = (p.get("productcode") or "").strip()
-
-    def _crmid(soid):
-        # Vtiger retrieve needs the module-prefixed crmid (SalesOrder module = 15),
-        # e.g. "156771" -> "15x156771". Shipments store the bare numeric id.
-        soid = str(soid or "")
-        return soid if ("x" in soid or not soid) else ("15x" + soid)
-
+    # 4) Universe = SOs with a UPS shipment OR a matched UPS charge. Revenue from SKU 999.
+    universe = set(ship_crmids) | set(so_cost.keys())
     rows = []
-    for so_num, m in so_meta.items():
-        detail = vt.retrieve_with_retry(_crmid(m["so_id"]), label="SO-PNL") if m.get("so_id") else None
+    for cid in universe:
+        meta = so_master.get(cid, {})
+        status = meta.get("status", "")
+        if (status or "").lower() == "cancelled":
+            continue
+        detail = vt.retrieve_with_retry(cid, label="SO-PNL") if cid else None
         revenue = 0.0
         acct = ""
-        date = ""
-        status = ""
         if detail:
             acct = accts.get(detail.get("account_id", ""), "")
-            date = str(detail.get("createdtime", ""))[:10]
-            status = (detail.get("sostatus", "") or "").strip()
             for li in detail.get("LineItems", detail.get("lineItems", [])) or []:
                 pid = str(li.get("productid", "") or "")
                 name = (li.get("product_name") or li.get("productname")
@@ -154,31 +183,47 @@ def build_shipments_pnl(vt):
                 if unit == 0:
                     unit = _f(li.get("listprice", li.get("netprice", 0)))
                 revenue += unit * qty
-        if (status or "").lower() == "cancelled":
-            continue
-        customer = acct or m.get("receiver") or "(no customer)"
-        cost = round(so_cost.get(so_num, 0.0), 2)
+        if not acct:
+            acct = accts.get(meta.get("account_id", ""), "") or ship_receiver.get(cid, "") or "(no customer)"
+        so_num = meta.get("no", "") or (detail.get("salesorder_no", "") if detail else "")
+        date = meta.get("date", "") or (str(detail.get("createdtime", ""))[:10] if detail else "")
+        pos = sorted(so_billed_pos.get(cid, set()))
+        n_pkgs = len(so_billed_trk.get(cid) or ship_trk.get(cid) or set())
         rows.append({
-            "customer": customer,
+            "customer": acct,
             "so_num": so_num,
-            "so_id": m.get("so_id") or "",
+            "so_id": _bare(cid),
             "date": date,
-            "pos": sorted(m["pos"]),
-            "packages": len(m["trackings"]),
+            "pos": pos,
+            "packages": n_pkgs,
             "revenue": round(revenue, 2),
-            "cost": cost,
-            "has_cost": so_num in matched_sos,
+            "cost": round(so_cost.get(cid, 0.0), 2),
+            "has_cost": cid in matched_sos,
         })
 
     rows.sort(key=lambda r: (r["date"] or ""), reverse=True)
+
+    # Maps so the tab can re-match a newly uploaded UPS Billing CSV in the browser
+    # (tracking# / PO -> SO id) and look up each SO's shipping revenue + customer.
+    maps = {
+        "po2so": {po: _bare(cid) for po, cid in po2crmid.items()},
+        "track2so": {tn: _bare(cid) for tn, cid in track2crmid.items()},
+        "so_info": {r["so_id"]: {"customer": r["customer"], "so_num": r["so_num"],
+                                 "date": r["date"], "revenue": r["revenue"]} for r in rows},
+    }
     gen = now.strftime("%Y-%m-%d %I:%M %p PT")
     return {
+        "maps": maps,
         "generated_at": gen,
         "year": Y,
         "has_billing": bool(billing),
         "billing_asof": billing_asof,
         "unmatched_charges": unmatched_n,
         "unmatched_cost": round(unmatched_cost, 2),
+        "unattributed_total": round(unatt_total, 2),
+        "unattributed": unatt_breakdown,
+        "billing_source": billing_src,
+        "matched_cost": round(sum(r["cost"] for r in rows), 2),
         "rows": rows,
     }
 
