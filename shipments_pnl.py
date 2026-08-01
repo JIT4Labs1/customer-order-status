@@ -110,6 +110,7 @@ def build_shipments_pnl(vt):
     po2crmid = {}
     crmid_pos = {}          # SO crmid -> set of its Conmed PO#s (tab is Conmed-only)
     conmed_crmids = set()   # SO crmids that have at least one Conmed PO
+    po_crmid = {}           # Conmed PO# -> PO crmid (to retrieve its line items)
     for po in vt.query_all("SELECT id, purchaseorder_no, salesorder_id, vendor_id FROM PurchaseOrder"):
         pn = (po.get("purchaseorder_no") or "").strip().upper()
         sid = (po.get("salesorder_id") or "").strip()
@@ -119,6 +120,19 @@ def build_shipments_pnl(vt):
         if _is_conmed(po.get("vendor_id", "")):
             crmid_pos.setdefault(sid, set()).add(pn)
             conmed_crmids.add(sid)
+            po_crmid[pn] = po.get("id")
+
+    def _po_rows(po_numbers):
+        """Total number of line items across the given Conmed PO(s)."""
+        total = 0
+        for pn in po_numbers:
+            pc = po_crmid.get(pn)
+            if not pc:
+                continue
+            det = vt.retrieve_with_retry(pc, label="PO-PNL")
+            if det:
+                total += len(det.get("LineItems", det.get("lineItems", [])) or [])
+        return total
     so_master = {}   # crmid -> {no, account_id, date, status}
     for s in vt.query_all(
             "SELECT id, salesorder_no, account_id, createdtime, sostatus FROM SalesOrder "
@@ -204,12 +218,14 @@ def build_shipments_pnl(vt):
         # tracking-matched rows still display their PO. Prefer the actually-billed PO(s).
         pos = sorted(crmid_pos.get(cid, set()) or so_billed_pos.get(cid, set()))
         n_pkgs = len(so_billed_trk.get(cid) or ship_trk.get(cid) or set())
+        po_rows = _po_rows(pos)
         rows.append({
             "customer": acct,
             "so_num": so_num,
             "so_id": _bare(cid),
             "date": date,
             "pos": pos,
+            "po_rows": po_rows,
             "packages": n_pkgs,
             "revenue": round(revenue, 2),
             "cost": round(so_cost.get(cid, 0.0), 2),
@@ -224,7 +240,8 @@ def build_shipments_pnl(vt):
         "po2so": {po: _bare(cid) for cid, pos in crmid_pos.items() for po in pos},
         "track2so": {tn: _bare(cid) for tn, cid in track2crmid.items() if cid in conmed_crmids},
         "so_info": {r["so_id"]: {"customer": r["customer"], "so_num": r["so_num"],
-                                 "date": r["date"], "revenue": r["revenue"], "pos": r["pos"]} for r in rows},
+                                 "date": r["date"], "revenue": r["revenue"], "pos": r["pos"],
+                                 "po_rows": r["po_rows"]} for r in rows},
     }
     gen = now.strftime("%Y-%m-%d %I:%M %p PT")
     return {
