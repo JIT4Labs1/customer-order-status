@@ -101,14 +101,24 @@ def build_shipments_pnl(vt):
             ship_trk.setdefault(cid, set()).add(tn)
 
     # 2) Vtiger master maps (bulk, cached): PO# -> SO crmid; SO crmid -> meta; accounts; products.
+    # Vendor id -> name, to keep ONLY Conmed POs on this tab.
+    vend_name = {v["id"]: (v.get("vendorname", "") or "")
+                 for v in vt.query_all("SELECT id, vendorname FROM Vendors")}
+    def _is_conmed(vid):
+        return "conmed" in (vend_name.get(vid, "") or "").lower()
+
     po2crmid = {}
-    crmid_pos = {}   # SO crmid -> set of its PO#s (so every row can show its PO regardless of match path)
-    for po in vt.query_all("SELECT id, purchaseorder_no, salesorder_id FROM PurchaseOrder"):
+    crmid_pos = {}          # SO crmid -> set of its Conmed PO#s (tab is Conmed-only)
+    conmed_crmids = set()   # SO crmids that have at least one Conmed PO
+    for po in vt.query_all("SELECT id, purchaseorder_no, salesorder_id, vendor_id FROM PurchaseOrder"):
         pn = (po.get("purchaseorder_no") or "").strip().upper()
         sid = (po.get("salesorder_id") or "").strip()
-        if pn and sid:
-            po2crmid[pn] = sid
+        if not (pn and sid):
+            continue
+        po2crmid[pn] = sid
+        if _is_conmed(po.get("vendor_id", "")):
             crmid_pos.setdefault(sid, set()).add(pn)
+            conmed_crmids.add(sid)
     so_master = {}   # crmid -> {no, account_id, date, status}
     for s in vt.query_all(
             "SELECT id, salesorder_no, account_id, createdtime, sostatus FROM SalesOrder "
@@ -158,8 +168,9 @@ def build_shipments_pnl(vt):
             unmatched_n += 1
             unmatched_cost += net
 
-    # 4) Universe = SOs with a UPS shipment OR a matched UPS charge. Revenue from SKU 999.
-    universe = set(ship_crmids) | set(so_cost.keys())
+    # 4) Universe = SOs with a UPS shipment OR a matched UPS charge, RESTRICTED to SOs
+    #    whose PO vendor is Conmed (this tab is Conmed drop-ships only). Revenue from SKU 999.
+    universe = (set(ship_crmids) | set(so_cost.keys())) & conmed_crmids
     rows = []
     for cid in universe:
         meta = so_master.get(cid, {})
@@ -210,8 +221,8 @@ def build_shipments_pnl(vt):
     # Maps so the tab can re-match a newly uploaded UPS Billing CSV in the browser
     # (tracking# / PO -> SO id) and look up each SO's shipping revenue + customer.
     maps = {
-        "po2so": {po: _bare(cid) for po, cid in po2crmid.items()},
-        "track2so": {tn: _bare(cid) for tn, cid in track2crmid.items()},
+        "po2so": {po: _bare(cid) for cid, pos in crmid_pos.items() for po in pos},
+        "track2so": {tn: _bare(cid) for tn, cid in track2crmid.items() if cid in conmed_crmids},
         "so_info": {r["so_id"]: {"customer": r["customer"], "so_num": r["so_num"],
                                  "date": r["date"], "revenue": r["revenue"], "pos": r["pos"]} for r in rows},
     }
