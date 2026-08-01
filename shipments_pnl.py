@@ -102,11 +102,13 @@ def build_shipments_pnl(vt):
 
     # 2) Vtiger master maps (bulk, cached): PO# -> SO crmid; SO crmid -> meta; accounts; products.
     po2crmid = {}
+    crmid_pos = {}   # SO crmid -> set of its PO#s (so every row can show its PO regardless of match path)
     for po in vt.query_all("SELECT id, purchaseorder_no, salesorder_id FROM PurchaseOrder"):
         pn = (po.get("purchaseorder_no") or "").strip().upper()
         sid = (po.get("salesorder_id") or "").strip()
         if pn and sid:
             po2crmid[pn] = sid
+            crmid_pos.setdefault(sid, set()).add(pn)
     so_master = {}   # crmid -> {no, account_id, date, status}
     for s in vt.query_all(
             "SELECT id, salesorder_no, account_id, createdtime, sostatus FROM SalesOrder "
@@ -187,7 +189,9 @@ def build_shipments_pnl(vt):
             acct = accts.get(meta.get("account_id", ""), "") or ship_receiver.get(cid, "") or "(no customer)"
         so_num = meta.get("no", "") or (detail.get("salesorder_no", "") if detail else "")
         date = meta.get("date", "") or (str(detail.get("createdtime", ""))[:10] if detail else "")
-        pos = sorted(so_billed_pos.get(cid, set()))
+        # Show every PO linked to this SO in Vtiger (not only PO-matched charges), so
+        # tracking-matched rows still display their PO. Prefer the actually-billed PO(s).
+        pos = sorted(crmid_pos.get(cid, set()) or so_billed_pos.get(cid, set()))
         n_pkgs = len(so_billed_trk.get(cid) or ship_trk.get(cid) or set())
         rows.append({
             "customer": acct,
@@ -209,7 +213,7 @@ def build_shipments_pnl(vt):
         "po2so": {po: _bare(cid) for po, cid in po2crmid.items()},
         "track2so": {tn: _bare(cid) for tn, cid in track2crmid.items()},
         "so_info": {r["so_id"]: {"customer": r["customer"], "so_num": r["so_num"],
-                                 "date": r["date"], "revenue": r["revenue"]} for r in rows},
+                                 "date": r["date"], "revenue": r["revenue"], "pos": r["pos"]} for r in rows},
     }
     gen = now.strftime("%Y-%m-%d %I:%M %p PT")
     return {
