@@ -370,51 +370,79 @@ def build_pnl(vt):
              % (_money(cc_base), _money(cc_base * 0.03)))
     H.append('</div>')
 
-    # ── SECTION 4: Industry Breakdown (current month, NET) ────────────────────
-    H.append('<h3 style="color:#2c3e50;">4. Industry Breakdown (current month)</h3>')
-    ind = defaultdict(lambda: {"orders": 0, "rev": 0.0, "cost": 0.0})
-    for s in cur_sos:
-        k = s["industry"] or "(Unspecified)"
-        ind[k]["orders"] += 1; ind[k]["rev"] += s["net"]; ind[k]["cost"] += s["po_total"]
-    H.append('<table style="%s"><thead><tr><th style="%s">Industry</th><th style="%s">Orders</th>'
+    # Helpers producing the Section 4 / Section 5 tables for a given month's SOs.
+    def _industry_table(sos):
+        ind = defaultdict(lambda: {"orders": 0, "rev": 0.0, "cost": 0.0})
+        for s in sos:
+            k = s["industry"] or "(Unspecified)"
+            ind[k]["orders"] += 1; ind[k]["rev"] += s["net"]; ind[k]["cost"] += s["po_total"]
+        P = ['<table style="%s"><thead><tr><th style="%s">Industry</th><th style="%s">Orders</th>'
              '<th style="%s">SO Amount</th><th style="%s">PO Total</th><th style="%s">P&amp;L</th>'
-             '<th style="%s">Margin</th></tr></thead><tbody>' % (tbl, thl, th, th, th, th, th))
-    io = ir = ic = 0
-    for k in sorted(ind.keys(), key=lambda x: -ind[x]["rev"]):
-        v = ind[k]; pnl = v["rev"] - v["cost"]
-        io += v["orders"]; ir += v["rev"]; ic += v["cost"]
-        H.append('<tr><td style="%s">%s</td><td style="%s">%d</td><td style="%s">%s</td><td style="%s">%s</td>'
-                 '<td style="%s">%s</td><td style="%s">%s</td></tr>'
-                 % (tdl, _esc(k), td, v["orders"], td, _money(v["rev"]), td, _money(v["cost"]),
-                    td, _money(pnl), td, _pct(pnl, v["rev"])))
-    H.append('<tr><td style="%s">Total</td><td style="%s">%d</td><td style="%s">%s</td><td style="%s">%s</td>'
-             '<td style="%s">%s</td><td style="%s">%s</td></tr></tbody></table>'
-             % (btl, bt, io, bt, _money(ir), bt, _money(ic), bt, _money(ir - ic), bt, _pct(ir - ic, ir)))
+             '<th style="%s">Margin</th></tr></thead><tbody>' % (tbl, thl, th, th, th, th, th)]
+        io = ir = ic = 0
+        if not ind:
+            P.append('<tr><td colspan="6" style="%spadding:14px;color:#7a8a99;">No sales orders this month.</td></tr>' % tdl)
+        for k in sorted(ind.keys(), key=lambda x: -ind[x]["rev"]):
+            v = ind[k]; pnl = v["rev"] - v["cost"]
+            io += v["orders"]; ir += v["rev"]; ic += v["cost"]
+            P.append('<tr><td style="%s">%s</td><td style="%s">%d</td><td style="%s">%s</td><td style="%s">%s</td>'
+                     '<td style="%s">%s</td><td style="%s">%s</td></tr>'
+                     % (tdl, _esc(k), td, v["orders"], td, _money(v["rev"]), td, _money(v["cost"]),
+                        td, _money(pnl), td, _pct(pnl, v["rev"])))
+        P.append('<tr><td style="%s">Total</td><td style="%s">%d</td><td style="%s">%s</td><td style="%s">%s</td>'
+                 '<td style="%s">%s</td><td style="%s">%s</td></tr></tbody></table>'
+                 % (btl, bt, io, bt, _money(ir), bt, _money(ic), bt, _money(ir - ic), bt, _pct(ir - ic, ir)))
+        return "".join(P)
 
-    # ── SECTION 5: 90% Pareto (current month, NET) ───────────────────────────
-    H.append('<h3 style="color:#2c3e50;">5. Key Customers — 90%% Pareto (current month)</h3>')
-    par = defaultdict(lambda: {"orders": 0, "rev": 0.0, "cost": 0.0})
-    for s in cur_sos:
-        lead = s["lead"].strip().lower()
-        key = "Inmode*" if lead == "inmode" else ("GoogleAds**" if lead == "googleads" else s["customer"])
-        par[key]["orders"] += 1; par[key]["rev"] += s["net"]; par[key]["cost"] += s["po_total"]
-    par_total = sum(v["rev"] for v in par.values())
-    ranked = sorted(par.items(), key=lambda kv: -kv[1]["rev"])
-    H.append('<table style="%s"><thead><tr><th style="%s">#</th><th style="%s">Customer</th><th style="%s">Orders</th>'
+    def _pareto_table(sos):
+        par = defaultdict(lambda: {"orders": 0, "rev": 0.0, "cost": 0.0})
+        for s in sos:
+            lead = s["lead"].strip().lower()
+            key = "Inmode*" if lead == "inmode" else ("GoogleAds**" if lead == "googleads" else s["customer"])
+            par[key]["orders"] += 1; par[key]["rev"] += s["net"]; par[key]["cost"] += s["po_total"]
+        par_total = sum(v["rev"] for v in par.values())
+        ranked = sorted(par.items(), key=lambda kv: -kv[1]["rev"])
+        P = ['<table style="%s"><thead><tr><th style="%s">#</th><th style="%s">Customer</th><th style="%s">Orders</th>'
              '<th style="%s">SO Amount</th><th style="%s">PO Total</th><th style="%s">P&amp;L</th>'
              '<th style="%s">Margin</th><th style="%s">Cumul. %%</th></tr></thead><tbody>'
-             % (tbl, th, thl, th, th, th, th, th, th))
-    cum = 0.0; rank = 0
-    for name, v in ranked:
-        rank += 1; cum += v["rev"]; pnl = v["rev"] - v["cost"]
-        cumpct = (cum / par_total * 100.0) if par_total else 0
-        H.append('<tr><td style="%s">%d</td><td style="%s">%s</td><td style="%s">%d</td><td style="%s">%s</td>'
-                 '<td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td><td style="%s">%.1f%%</td></tr>'
-                 % (td, rank, tdl, _esc(name), td, v["orders"], td, _money(v["rev"]), td, _money(v["cost"]),
-                    td, _money(pnl), td, _pct(pnl, v["rev"]), td, cumpct))
-        if cumpct >= 90.0:
-            break
-    H.append('</tbody></table>')
+             % (tbl, th, thl, th, th, th, th, th, th)]
+        if not ranked:
+            P.append('<tr><td colspan="8" style="%spadding:14px;color:#7a8a99;">No sales orders this month.</td></tr>' % tdl)
+        cum = 0.0; rank = 0
+        for name, v in ranked:
+            rank += 1; cum += v["rev"]; pnl = v["rev"] - v["cost"]
+            cumpct = (cum / par_total * 100.0) if par_total else 0
+            P.append('<tr><td style="%s">%d</td><td style="%s">%s</td><td style="%s">%d</td><td style="%s">%s</td>'
+                     '<td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td><td style="%s">%.1f%%</td></tr>'
+                     % (td, rank, tdl, _esc(name), td, v["orders"], td, _money(v["rev"]), td, _money(v["cost"]),
+                        td, _money(pnl), td, _pct(pnl, v["rev"]), td, cumpct))
+            if cumpct >= 90.0:
+                break
+        P.append('</tbody></table>')
+        return "".join(P)
+
+    # Month selector shared by Sections 4 & 5 (default current month). onchange → pnlCmApply().
+    ss = "padding:4px 9px;font-size:13px;border:1px solid #cdd9e6;border-radius:6px;"
+    cm_sel = ('<div style="margin:4px 0 10px;font-size:13px;color:#2c3e50;">Month (sections 4 &amp; 5): '
+              '<select id="pnlCmMonth" onchange="pnlCmApply()" style="%s">' % ss)
+    for m in range(cur_month, 0, -1):
+        cm_sel += '<option value="%d"%s>%s %d</option>' % (m, (" selected" if m == cur_month else ""), MONTHS[m - 1], Y)
+    cm_sel += '</select></div>'
+
+    # ── SECTION 4: Industry Breakdown (selected month, NET) ───────────────────
+    H.append('<h3 style="color:#2c3e50;">4. Industry Breakdown (selected month)</h3>')
+    H.append(cm_sel)
+    for m in range(cur_month, 0, -1):
+        H.append('<div class="pnl-cm-mo" data-mo="%d" style="display:%s;">%s</div>'
+                 % (m, ("" if m == cur_month else "none"),
+                    _industry_table([s for s in main_sos if s["month"] == m])))
+
+    # ── SECTION 5: 90% Pareto (selected month, NET) ──────────────────────────
+    H.append('<h3 style="color:#2c3e50;">5. Key Customers — 90%% Pareto (selected month)</h3>')
+    for m in range(cur_month, 0, -1):
+        H.append('<div class="pnl-cm-mo" data-mo="%d" style="display:%s;">%s</div>'
+                 % (m, ("" if m == cur_month else "none"),
+                    _pareto_table([s for s in main_sos if s["month"] == m])))
     H.append('<div style="font-size:11px;color:#888;margin-bottom:16px;">* Inmode = SOs with Lead Source "InMode" '
              '(aggregated). ** GoogleAds = SOs with Lead Source "GoogleAds" (aggregated). SO Amount is net of shipping.</div>')
 
@@ -482,14 +510,24 @@ def build_pnl(vt):
                 return near[0]
         return None
 
-    # Month selector (default = current month). Inline onchange toggles the per-month blocks.
-    sel = ('<div style="margin:4px 0 10px;font-size:13px;color:#2c3e50;">Month: '
-           '<select onchange="var v=this.value;var b=document.querySelectorAll(&quot;.pnl-detail-mo&quot;);'
-           'for(var i=0;i&lt;b.length;i++){b[i].style.display=(b[i].getAttribute(&quot;data-mo&quot;)===v)?&quot;&quot;:&quot;none&quot;;}" '
-           'style="padding:4px 9px;font-size:13px;border:1px solid #cdd9e6;border-radius:6px;">')
+    # Month + Customer selectors (default = current month, all customers). onchange calls
+    # the global pnlDetApply() in the page (toggles month blocks, filters rows, recomputes totals).
+    # Customer filter lists Independent Diagnostic Lab customers (those with an SO in the
+    # selected month appear; others simply show no rows for that month).
+    idl_customers = sorted({s["customer"] for s in main_sos
+                            if s["industry"].strip().lower() == "independent diagnostic lab"})
+    ss = "padding:4px 9px;font-size:13px;border:1px solid #cdd9e6;border-radius:6px;"
+    sel = '<div style="margin:4px 0 10px;font-size:13px;color:#2c3e50;display:flex;gap:18px;flex-wrap:wrap;align-items:center;">'
+    sel += '<span>Month: <select id="pnlDetMonth" onchange="pnlDetApply()" style="%s">' % ss
     for m in range(cur_month, 0, -1):
         sel += '<option value="%d"%s>%s %d</option>' % (m, (" selected" if m == cur_month else ""), MONTHS[m - 1], Y)
-    sel += '</select></div>'
+    sel += '</select></span>'
+    sel += '<span>Customer: <select id="pnlDetCust" onchange="pnlDetApply()" style="%s">' % ss
+    sel += '<option value="__ALL__">All customers</option>'
+    sel += '<option value="__IDL__">Independent Diagnostic Lab — all</option>'
+    for c in idl_customers:
+        sel += '<option value="%s">%s</option>' % (_esc(c), _esc(c))
+    sel += '</select></span></div>'
     H.append(sel)
 
     # Green column group styles (QuickBooks columns).
@@ -511,6 +549,7 @@ def build_pnl(vt):
             pnl = s["net"] - s["po_total"]; dr += s["net"]; dc += s["po_total"]
             created = datetime.strptime(str(s["created"])[:10], "%Y-%m-%d").strftime("%-m/%-d/%Y") if s["created"] else ""
             rec = _qb_for(s)
+            paid = 0.0; netdep = 0.0
             if rec is not None:
                 paid = float(rec.get("paid", 0) or 0); dqb += paid
                 qbcell = _money(paid) if paid > 0 else '<span style="color:#c62828;">%s</span>' % _money(0)
@@ -519,17 +558,20 @@ def build_pnl(vt):
             else:
                 qbcell = '<span style="color:#c0cad4;">&mdash;</span>'; qb_note = True
                 netcell = '<span style="color:#c0cad4;">&mdash;</span>'
-            H.append('<tr><td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td>'
+            idlflag = "1" if s["industry"].strip().lower() == "independent diagnostic lab" else "0"
+            H.append('<tr class="pnl-det-row" data-cust="%s" data-idl="%s" data-net="%.2f" data-cost="%.2f" data-qb="%.2f" data-netdep="%.2f">'
+                     '<td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td>'
                      '<td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td>'
                      '<td style="%s">%s</td><td style="%s">%s</td></tr>'
-                     % (tdl, _esc(s["customer"]), tdl, _esc(s["no"]), tdl, created,
+                     % (_esc(s["customer"]), idlflag, s["net"], s["po_total"], paid, netdep,
+                        tdl, _esc(s["customer"]), tdl, _esc(s["no"]), tdl, created,
                         td, _money(s["net"]), td, _money(s["po_total"]), td, _money(pnl), td, _pct(pnl, s["net"]),
                         tdg, qbcell, tdg, netcell))
         if not msos:
             H.append('<tr><td colspan="9" style="%spadding:14px;color:#7a8a99;">No sales orders in %s %d.</td></tr>' % (tdl, MONTHS[m - 1], Y))
-        H.append('<tr><td colspan="3" style="%s">Total</td>'
-                 '<td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td>'
-                 '<td style="%s">%s</td><td style="%s">%s</td></tr></tbody></table>'
+        H.append('<tr class="pnl-det-total"><td colspan="3" style="%s">Total</td>'
+                 '<td class="t-net" style="%s">%s</td><td class="t-cost" style="%s">%s</td><td class="t-pnl" style="%s">%s</td><td class="t-margin" style="%s">%s</td>'
+                 '<td class="t-qb" style="%s">%s</td><td class="t-netdep" style="%s">%s</td></tr></tbody></table>'
                  % (btl, bt, _money(dr), bt, _money(dc), bt, _money(dr - dc), bt, _pct(dr - dc, dr),
                     btg, _money(dqb), btg, _money(dnet)))
         H.append('</div>')
