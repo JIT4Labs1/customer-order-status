@@ -1774,11 +1774,16 @@ function spnlBaseRows(){
   return out;
 }
 function spnlDeriv(r){
-  var rev=Number(r.revenue)||0, cost=Number(r.cost)||0, margin=rev-cost;
+  var ov=spnlOvr(r.so_id);
+  var rev=(ov&&ov.revenue!=null)?(Number(ov.revenue)||0):(Number(r.revenue)||0);
+  var cost=Number(r.cost)||0, margin=rev-cost;
   var mp = rev!==0 ? (margin/rev*100) : (cost!==0? -100 : 0);
   var poRows=Number(r.po_rows)||0, pkgs=Number(r.packages)||0;
+  var zeroRev=(rev===0);
   return {customer:r.customer, so_num:r.so_num, so_id:r.so_id, date:r.date,
-          pos:(r.pos||[]).join(', '), po_rows:poRows, packages:pkgs, disc:(pkgs!==poRows?1:0),
+          pos:(r.pos||[]).join(', '), po_rows:poRows, packages:pkgs,
+          disc:((pkgs!==poRows)||zeroRev)?1:0, zeroRev:zeroRev,
+          revEdited:!!ov, revComment:(ov&&ov.comment)||'',
           revenue:rev, cost:cost, has_cost:!!r.has_cost, margin:margin, margin_pct:mp};
 }
 function renderSpnlTabs(el){
@@ -1869,6 +1874,45 @@ function spnlAccCommit(){ if(!BTN||!BTN.token) return; var arr=Object.keys(spnlA
       body:JSON.stringify({message:'Update accepted shipment discrepancies ('+arr.length+')', content:_b64enc(JSON.stringify({accepted:arr},null,2)+'\\n'), sha:st.sha||undefined, branch:BTN.branch})}); })
     .then(function(r){ if(!r.ok) throw new Error('save '+r.status); })
     .catch(function(e){ /* kept in localStorage; will sync on next toggle */ }); }
+// ── Manual shipping-charge override (used when SKU-999 revenue is $0). Persisted to
+//    spnl_overrides.json via the button token; recalculates the row live. ──
+var SPNL_OVR=null;
+function spnlOvrMap(){ if(SPNL_OVR) return SPNL_OVR; SPNL_OVR={}; var o=(SPNL&&SPNL.overrides)||{}; for(var k in o){ if(o.hasOwnProperty(k)) SPNL_OVR[k]=o[k]; }
+  try{ var p=JSON.parse(localStorage.getItem('jit4_spnl_overrides')||'{}'); for(var k2 in p){ if(p.hasOwnProperty(k2)) SPNL_OVR[k2]=p[k2]; }}catch(e){} return SPNL_OVR; }
+function spnlOvr(id){ return spnlOvrMap()[id]||null; }
+function spnlEditOpen(so_id){
+  var e=null, rows=(SPNL&&SPNL.rows)||[]; for(var i=0;i<rows.length;i++){ if(rows[i].so_id===so_id){ e=rows[i]; break; } }
+  var ov=spnlOvr(so_id); var cur=(ov&&ov.revenue!=null)?ov.revenue:(e?e.revenue:0);
+  document.getElementById('spnlModalBody').innerHTML=
+    '<b style="font-size:15px;">Edit shipping charged — '+escapeHtml(e?e.so_num:so_id)+'</b>'+
+    '<div style="font-size:12px;color:#7a8a99;margin-bottom:10px;">'+escapeHtml(e?e.customer:'')+' &middot; SKU-999 value: '+spnlMoney(e?(e.revenue||0):0)+'</div>'+
+    '<label style="font-size:13px;display:block;margin-bottom:4px;">Shipping charged ($)</label>'+
+    '<input id="spnlEditRev" type="number" step="0.01" value="'+(cur||0)+'" style="padding:6px 10px;font-size:14px;border:1px solid #cdd9e6;border-radius:6px;width:180px;">'+
+    '<label style="font-size:13px;display:block;margin:12px 0 4px;">Comment (why this was changed)</label>'+
+    '<textarea id="spnlEditNote" rows="3" style="width:100%;box-sizing:border-box;padding:6px 10px;font-size:13px;border:1px solid #cdd9e6;border-radius:6px;">'+escapeHtml((ov&&ov.comment)||'')+'</textarea>'+
+    '<div style="display:flex;gap:8px;margin-top:12px;align-items:center;flex-wrap:wrap;">'+
+    '<button onclick="spnlEditSave(\\''+so_id+'\\')" class="mode-btn" style="padding:6px 16px;border:1px solid #cdd9e6;border-radius:6px;">Save</button>'+
+    (ov?'<button onclick="spnlEditClear(\\''+so_id+'\\')" class="mode-btn" style="padding:6px 12px;border:1px solid #cdd9e6;border-radius:6px;">Reset to SKU-999</button>':'')+
+    '<span id="spnlEditMsg" style="font-size:12px;color:#c0392b;"></span></div>';
+  document.getElementById('spnlModal').style.display='flex';
+}
+function spnlEditSave(so_id){
+  var v=parseFloat(document.getElementById('spnlEditRev').value);
+  if(isNaN(v)){ document.getElementById('spnlEditMsg').textContent='Enter a number.'; return; }
+  var note=(document.getElementById('spnlEditNote').value||'').replace(/^\\s+|\\s+$/g,'');
+  var m=spnlOvrMap(); m[so_id]={revenue:Math.round(v*100)/100, comment:note, at:new Date().toISOString().slice(0,10)};
+  try{ localStorage.setItem('jit4_spnl_overrides', JSON.stringify(m)); }catch(e){}
+  spnlOvrCommit(); document.getElementById('spnlModal').style.display='none'; renderTabs(); renderSpnlPanel(); }
+function spnlEditClear(so_id){ var m=spnlOvrMap(); delete m[so_id]; try{ localStorage.setItem('jit4_spnl_overrides', JSON.stringify(m)); }catch(e){}
+  spnlOvrCommit(); document.getElementById('spnlModal').style.display='none'; renderTabs(); renderSpnlPanel(); }
+function spnlOvrCommit(){ if(!BTN||!BTN.token) return; var m=spnlOvrMap();
+  var base='https://api.github.com/repos/'+BTN.repo+'/contents/spnl_overrides.json';
+  var hdr={'Authorization':'Bearer '+BTN.token,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
+  fetch(base+'?ref='+encodeURIComponent(BTN.branch)+'&cb='+Date.now(),{headers:hdr,cache:'no-store'})
+    .then(function(r){ if(r.status===404) return {sha:null}; if(!r.ok) throw new Error('read '+r.status); return r.json().then(function(j){ return {sha:j.sha}; }); })
+    .then(function(st){ return fetch(base,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},hdr),
+      body:JSON.stringify({message:'Update manual shipping-charge overrides ('+Object.keys(m).length+')', content:_b64enc(JSON.stringify({overrides:m},null,2)+'\\n'), sha:st.sha||undefined, branch:BTN.branch})}); })
+    .then(function(r){ if(!r.ok) throw new Error('save '+r.status); }).catch(function(e){}); }
 function renderSpnlPanel(){
   if(!SPNL){ document.getElementById('panel').innerHTML='<div class="empty">Loading Shipments P&L…</div>'; loadSpnl(); return; }
   var base=spnlBaseRows();
@@ -1893,10 +1937,11 @@ function renderSpnlPanel(){
     var mVal = x.has_cost ? spnlMoney(x.margin) : (pending?'<span style="color:#b0862a;">—</span>':'<span style="color:#9aa7b4;">—</span>');
     var mCol = x.margin<0?'#c0392b':'#1e7d34';
     var mPct = x.has_cost ? (x.margin_pct.toFixed(1)+'%') : '—';
+    var discWhy=((x.packages!==x.po_rows)?('Pkgs ('+x.packages+') ≠ PO Rows ('+x.po_rows+')'):'')+(x.zeroRev?(((x.packages!==x.po_rows)?'; ':'')+'shipping charged is $0'):'');
     var discDot;
     if(!x.disc){ discDot='<span title="Pkgs match PO Rows" style="color:#1e7d34;font-size:15px;">●</span>'; }
     else if(spnlAccIs(x.so_id)){ discDot='<span onclick="spnlToggleAccept(\\''+x.so_id+'\\')" title="Accepted — excluded from emails. Click to re-open." style="cursor:pointer;color:#8a97a6;font-size:14px;">✓ accepted</span>'; }
-    else { discDot='<span onclick="spnlToggleAccept(\\''+x.so_id+'\\')" title="Discrepancy: Pkgs ('+x.packages+') ≠ PO Rows ('+x.po_rows+'). Click to accept (exclude from emails)." style="cursor:pointer;color:#c0392b;font-size:15px;">●</span>'; }
+    else { discDot='<span onclick="spnlToggleAccept(\\''+x.so_id+'\\')" title="Discrepancy: '+discWhy+'. Click to accept (exclude from emails)." style="cursor:pointer;color:#c0392b;font-size:15px;">●</span>'; }
     body+='<tr>'+
       '<td class="item-name">'+escapeHtml(x.customer)+'</td>'+
       '<td>'+soLink(x)+'</td>'+
@@ -1905,7 +1950,7 @@ function renderSpnlPanel(){
       '<td class="c">'+(x.po_rows||0)+'</td>'+
       '<td class="c">'+(x.packages||0)+'</td>'+
       '<td class="c">'+discDot+'</td>'+
-      '<td class="c">'+spnlMoney(x.revenue)+'</td>'+
+      '<td class="c" style="cursor:pointer;white-space:nowrap;" onclick="spnlEditOpen(\\''+x.so_id+'\\')" title="'+(x.revEdited?('Manually set'+(x.revComment?(': '+escapeHtml(x.revComment)):'')):'Click to edit shipping charged')+'">'+spnlMoney(x.revenue)+(x.revEdited?' <span style="color:#b0862a;">✎</span>':(x.zeroRev?' <span style="color:#c0392b;">✎</span>':''))+'</td>'+
       '<td class="c">'+costCell+'</td>'+
       '<td class="c" style="font-weight:600;color:'+(x.has_cost?mCol:'#9aa7b4')+';">'+mVal+'</td>'+
       '<td class="c" style="color:'+(x.has_cost?mCol:'#9aa7b4')+';">'+mPct+'</td></tr>';
