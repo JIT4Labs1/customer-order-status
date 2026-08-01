@@ -1473,7 +1473,7 @@ function renderSpnlPanel(){
   ivb+='<span style="margin-left:14px;"></span><input type="file" id="spnlFile" accept=".csv,text/csv" style="display:none;" onchange="spnlOnFile(this)">'+
     '<button onclick="spnlTriggerUpload()" class="mode-btn" style="padding:5px 12px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;" title="Upload a UPS Billing Center CSV and re-match it in your browser (nothing leaves this page)">⬆ Upload UPS Billing CSV</button>'+
     (spnlUpRows?(' <span style="font-size:12px;color:#20603a;">using <b>'+escapeHtml(spnlUpName)+'</b> ('+spnlUpMatched+' matched'+(spnlUpUnmatched?', '+spnlUpUnmatched+' unmatched':'')+') <a onclick="spnlClearUpload()" style="cursor:pointer;color:#1F4E79;">clear</a></span>'):'');
-  var nEmail=Object.keys((SPNL&&SPNL.discrepancy_emails)||{}).length;
+  var nEmail=spnlEmailList().length;  // excludes accepted discrepancies
   ivb+='<span style="margin-left:14px;"></span><button onclick="spnlEmailOpen()" class="mode-btn"'+(nEmail?'':' disabled')+' style="padding:5px 12px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;'+(nEmail?'':'opacity:.5;')+'" title="Generate a discrepancy alert email to Conmed for a flagged line">✉ Discrepancy email'+(nEmail?' ('+nEmail+')':'')+'</button>';
   var uatt = spnlUpRows? spnlUpUnatt : (SPNL.unattributed_total||0);
   var srcLabel = spnlUpRows? spnlUpName : (SPNL.billing_source||SPNL.billing_asof||'');
