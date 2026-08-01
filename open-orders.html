@@ -307,6 +307,7 @@
 
 <div class="modebar">
   <button class="mode-btn mode-pnl active" data-mode="pnl" onclick="setMode('pnl')">P&amp;L Report</button>
+  <button class="mode-btn mode-ship" data-mode="spnl" onclick="setMode('spnl')">Shipments P&amp;L</button>
   <button class="mode-btn" data-mode="cust" onclick="setMode('cust')">Customer Open SO's</button>
   <button class="mode-btn" data-mode="vendor" onclick="setMode('vendor')">Open Vendor POs</button>
   <button class="mode-btn" data-mode="vspend" onclick="setMode('vspend')">Vendor Spend</button>
@@ -314,7 +315,6 @@
   <button class="mode-btn" data-mode="sku" onclick="setMode('sku')">High Demand SKUs</button>
   <button class="mode-btn mode-ship" data-mode="ship" onclick="setMode('ship')">Shipments</button>
   <button class="mode-btn mode-pay" data-mode="pay" onclick="setMode('pay')">Payment Status</button>
-  <button class="mode-btn mode-ship" data-mode="spnl" onclick="setMode('spnl')">Shipments P&amp;L</button>
   <button class="mode-btn" data-mode="cprices" onclick="setMode('cprices')">Customer Prices</button>
   <button class="mode-btn" data-mode="ca" onclick="setMode('ca')">Customer Analysis</button>
   <button class="mode-btn mode-mkt" data-mode="wt" onclick="setMode('wt')">Website Traffic</button>
@@ -1175,6 +1175,57 @@ function shipCloseItems(e){ if(e&&e.target&&e.target.id!=='shipModal') return; v
 // UPS bills us [net charge from the Billing Center export, matched by PO/tracking]) ──
 var SPNL=null, spnlLoading=false, spnlCust='', spnlCustList=[], spnlInterval='ytd';
 var SPNL_IVS=[['ytd','2026 YTD'],['month','This month'],['lastmonth','Last month']];
+// Client-side CSV upload override (re-matches a dropped UPS Billing CSV in the browser)
+var spnlUpRows=null, spnlUpUnatt=0, spnlUpUnattCat={}, spnlUpName='', spnlUpMatched=0, spnlUpUnmatched=0;
+function spnlNorm(h){ return String(h==null?'':h).toLowerCase().replace(/[^a-z0-9]/g,''); }
+function spnlFindCol(hdr,keys){ var i,k; for(i=0;i<hdr.length;i++){ var nh=spnlNorm(hdr[i]); for(k=0;k<keys.length;k++){ if(nh===keys[k]) return i; } } for(i=0;i<hdr.length;i++){ nh=spnlNorm(hdr[i]); for(k=0;k<keys.length;k++){ if(nh.indexOf(keys[k])>=0) return i; } } return -1; }
+function spnlMoneyParse(v){ if(v==null) return 0; var s=String(v).replace(/[$,\s]/g,''); var neg=/^\(.*\)$/.test(s); s=s.replace(/[()]/g,''); var n=parseFloat(s); if(isNaN(n)) return 0; return neg?-n:n; }
+function spnlNormPo(ref){ var m=/^P[O0](\d+)$/i.exec(String(ref==null?'':ref).trim()); return m?('PO'+m[1]):null; }
+function spnlParseCSV(text){ var rows=[],i=0,n=text.length,field='',row=[],inq=false;
+  while(i<n){ var ch=text.charAt(i);
+    if(inq){ if(ch=='"'){ if(text.charAt(i+1)=='"'){ field+='"'; i+=2; continue; } inq=false; i++; continue; } field+=ch; i++; continue; }
+    if(ch=='"'){ inq=true; i++; continue; }
+    if(ch==','){ row.push(field); field=''; i++; continue; }
+    if(ch=='\r'){ i++; continue; }
+    if(ch=='\n'){ row.push(field); rows.push(row); row=[]; field=''; i++; continue; }
+    field+=ch; i++; }
+  if(field.length||row.length){ row.push(field); rows.push(row); }
+  return rows; }
+function spnlTriggerUpload(){ var el=document.getElementById('spnlFile'); if(el) el.click(); }
+function spnlOnFile(input){ var f=input&&input.files&&input.files[0]; if(!f) return; var rd=new FileReader();
+  rd.onload=function(e){ try{ spnlApplyCsv(String(e.target.result||''), f.name); }catch(err){ alert('Could not parse CSV: '+err.message); } input.value=''; };
+  rd.readAsText(f); }
+function spnlClearUpload(){ spnlUpRows=null; spnlUpName=''; spnlUpUnatt=0; spnlUpUnattCat={}; spnlUpMatched=0; spnlUpUnmatched=0; renderTabs(); renderSpnlPanel(); }
+function spnlApplyCsv(text, fname){
+  if(!SPNL||!SPNL.maps){ alert('Match maps not loaded yet — try again in a moment.'); return; }
+  var t2s=SPNL.maps.track2so||{}, p2s=SPNL.maps.po2so||{}, si=SPNL.maps.so_info||{};
+  var data=spnlParseCSV(text); if(data.length<2){ alert('That CSV looks empty.'); return; }
+  var hdr=data[0];
+  var ciT=spnlFindCol(hdr,['trackingnumber','tracking']),
+      ciR1=spnlFindCol(hdr,['referencenumber1','reference1','packagereference1']),
+      ciR2=spnlFindCol(hdr,['referencenumber2','reference2']),
+      ciN=spnlFindCol(hdr,['netamountdue','netamount','netcharge','billedamount','amount']),
+      ciC=spnlFindCol(hdr,['shippingsystemadjustment','shippingsystem','chargecategory','adjustment']);
+  if(ciN<0 || (ciT<0&&ciR1<0)){ alert('Could not find the Net Amount and Tracking/Reference columns in this CSV. Headers: '+hdr.join(', ')); return; }
+  var costBySo={}, pkgs={}, unatt=0, unattCat={}, matched=0, unmatched=0;
+  for(var r=1;r<data.length;r++){ var rr=data[r]; if(!rr||(rr.length===1&&rr[0]==='')) continue;
+    var tn=(ciT>=0?(rr[ciT]||''):'').trim();
+    var r1=(ciR1>=0?(rr[ciR1]||''):'').trim();
+    var r2=(ciR2>=0?(rr[ciR2]||''):'').trim();
+    var net=spnlMoneyParse(ciN>=0?rr[ciN]:'');
+    var so=(tn&&t2s[tn])?t2s[tn]:null;
+    if(!so){ var cand=[r1,r2]; for(var c=0;c<2;c++){ var po=spnlNormPo(cand[c]); if(po&&p2s[po]){ so=p2s[po]; break; } } }
+    if(so){ costBySo[so]=(costBySo[so]||0)+net; if(tn) pkgs[so]=(pkgs[so]||0)+1; matched++; }
+    else if(!tn){ var cat=(ciC>=0?(rr[ciC]||''):'').trim()||'Other'; unatt+=net; unattCat[cat]=(unattCat[cat]||0)+net; }
+    else { unmatched++; }
+  }
+  var rows=[], soid;
+  for(soid in si){ if(!si.hasOwnProperty(soid)) continue; var info=si[soid];
+    rows.push({customer:info.customer,so_num:info.so_num,so_id:soid,date:info.date,pos:[],packages:pkgs[soid]||0,revenue:info.revenue||0,cost:Math.round((costBySo[soid]||0)*100)/100,has_cost:(soid in costBySo)}); }
+  for(soid in costBySo){ if(!si[soid]){ rows.push({customer:'SO '+soid,so_num:'',so_id:soid,date:'',pos:[],packages:pkgs[soid]||0,revenue:0,cost:Math.round(costBySo[soid]*100)/100,has_cost:true}); } }
+  spnlUpRows=rows; spnlUpUnatt=Math.round(unatt*100)/100; spnlUpUnattCat=unattCat; spnlUpName=fname; spnlUpMatched=matched; spnlUpUnmatched=unmatched;
+  renderTabs(); renderSpnlPanel();
+}
 var spnlSort={key:'date', dir:-1};
 var SPNL_COLS=[
   {k:'customer',   t:'str', lbl:'Customer',  c:false},
@@ -1211,7 +1262,7 @@ function spnlInInterval(ds){
   return true;
 }
 function spnlBaseRows(){
-  var all=(SPNL&&SPNL.rows)||[], out=[];
+  var all=spnlUpRows||((SPNL&&SPNL.rows)||[]), out=[];
   for(var i=0;i<all.length;i++){ var r=all[i];
     if(isExclCust(r.customer)) continue;
     if(!spnlInInterval(r.date)) continue;
@@ -1253,7 +1304,7 @@ function renderSpnlPanel(){
   var tMargin=tRev-tCost, tMp=tRev!==0?(tMargin/tRev*100):0;
   var VT='https://jit4youinc.od2.vtiger.com/index.php?module=';
   function soLink(r){ if(!r.so_id) return escapeHtml(r.so_num||'—'); return '<a href="'+VT+'SalesOrder&view=Detail&record='+encodeURIComponent(r.so_id)+'" target="_blank" rel="noopener" style="color:#1F4E79;text-decoration:none;font-weight:600;">'+escapeHtml(r.so_num)+' <span style="color:#008080;">↗</span></a>'; }
-  var pending=!(SPNL.has_billing);
+  var pending=!(SPNL.has_billing)&&!spnlUpRows;
   // header row (sortable)
   var thead='';
   for(var c=0;c<SPNL_COLS.length;c++){ var cc=SPNL_COLS[c]; var ar=(spnlSort.key===cc.k?(spnlSort.dir>0?' ▲':' ▼'):'');
@@ -1277,18 +1328,23 @@ function renderSpnlPanel(){
       '<td class="c" style="color:'+(x.has_cost?mCol:'#9aa7b4')+';">'+mPct+'</td></tr>';
   }
   if(!rows.length) body='<tr><td colspan="9" class="empty" style="padding:18px;">No SOs with UPS shipments in this selection.</td></tr>';
-  // interval buttons
+  // interval buttons + CSV upload
   var ivb='<span style="color:#7a8a99;">Period:</span>';
   for(var v=0;v<SPNL_IVS.length;v++){ var on=(spnlInterval===SPNL_IVS[v][0]);
     ivb+='<button onclick="spnlSetIntervalIdx('+v+')" class="mode-btn'+(on?' active':'')+'" style="padding:5px 12px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;">'+escapeHtml(SPNL_IVS[v][1])+'</button>'; }
+  ivb+='<span style="margin-left:14px;"></span><input type="file" id="spnlFile" accept=".csv,text/csv" style="display:none;" onchange="spnlOnFile(this)">'+
+    '<button onclick="spnlTriggerUpload()" class="mode-btn" style="padding:5px 12px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;" title="Upload a UPS Billing Center CSV and re-match it in your browser (nothing leaves this page)">⬆ Upload UPS Billing CSV</button>'+
+    (spnlUpRows?(' <span style="font-size:12px;color:#20603a;">using <b>'+escapeHtml(spnlUpName)+'</b> ('+spnlUpMatched+' matched'+(spnlUpUnmatched?', '+spnlUpUnmatched+' unmatched':'')+') <a onclick="spnlClearUpload()" style="cursor:pointer;color:#1F4E79;">clear</a></span>'):'');
+  var uatt = spnlUpRows? spnlUpUnatt : (SPNL.unattributed_total||0);
+  var srcLabel = spnlUpRows? spnlUpName : (SPNL.billing_source||SPNL.billing_asof||'');
   var banner = pending
-    ? '<div style="margin:8px 2px 12px;padding:11px 15px;background:#fff8e1;border-left:4px solid #ffc107;font-size:12.5px;border-radius:6px;color:#5c4a12;">UPS costs are <b>pending</b>. UPS does not expose invoiced charges via API, so drop your <b>UPS Billing Center CSV</b> (Tracking, Reference&nbsp;1/2 = PO, Net&nbsp;Amount) into the QB&nbsp;Files folder and I&rsquo;ll match each PO to its SO and fill the cost / margin columns. Shipping revenue below is live from SKU&nbsp;999.</div>'
-    : '<div style="margin:8px 2px 12px;padding:9px 14px;background:#eef7f0;border-left:4px solid #2e9e57;font-size:12px;border-radius:6px;color:#20603a;">UPS cost from Billing Center export as of '+escapeHtml(SPNL.billing_asof||'')+(SPNL.unmatched_charges?(' &middot; '+SPNL.unmatched_charges+' charge(s) '+spnlMoney(SPNL.unmatched_cost)+' unmatched to any SO'):'')+'.</div>';
+    ? '<div style="margin:8px 2px 12px;padding:11px 15px;background:#fff8e1;border-left:4px solid #ffc107;font-size:12.5px;border-radius:6px;color:#5c4a12;">UPS costs are <b>pending</b>. UPS does not expose invoiced charges via API, so <b>Upload a UPS Billing Center CSV</b> (button above) or drop it in the QB&nbsp;Files folder &mdash; I match each Tracking/PO to its SO and fill the cost / margin columns. Shipping revenue below is live from SKU&nbsp;999.</div>'
+    : '<div style="margin:8px 2px 12px;padding:9px 14px;background:#eef7f0;border-left:4px solid #2e9e57;font-size:12px;border-radius:6px;color:#20603a;">UPS cost matched by Tracking/PO from <b>'+escapeHtml(srcLabel)+'</b>'+(uatt?(' &middot; plus '+spnlMoney(uatt)+' in account-level charges (fees, adjustments, 3rd-party summaries) not tied to any SO &mdash; see &ldquo;UPS acct charges&rdquo; below'):'')+(SPNL.unmatched_charges&&!spnlUpRows?(' &middot; '+SPNL.unmatched_charges+' pkg charge(s) '+spnlMoney(SPNL.unmatched_cost)+' unmatched'):'')+'.</div>';
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">'+
     '<div><h2 style="margin:0;">Shipments P&amp;L &mdash; UPS</h2><div class="sub">Shipping charged (SKU 999 on SO) vs. UPS billed cost, matched by PO &middot; '+escapeHtml(SPNL.generated_at||'')+'</div></div>'+
     '<button class="refresh-btn" onclick="spnlRefresh()" title="Reload the latest Shipments P&L snapshot"><span class="lbl">↻ Reload</span></button></div></div>'+
-    '<div class="kpis" style="padding:6px 0 2px;">'+kpi(spnlMoney(tRev),'Shipping charged')+kpi(anyCost?spnlMoney(tCost):'—','UPS cost')+kpi(anyCost?spnlMoney(tMargin):'—','Margin')+kpi(anyCost?tMp.toFixed(1)+'%':'—','Margin %')+kpi(rows.length,'Sales Orders')+kpi(tPkg,'UPS packages')+'</div>'+
+    '<div class="kpis" style="padding:6px 0 2px;">'+kpi(spnlMoney(tRev),'Shipping charged')+kpi(anyCost?spnlMoney(tCost):'—','UPS cost')+kpi(anyCost?spnlMoney(tMargin):'—','Margin')+kpi(anyCost?tMp.toFixed(1)+'%':'—','Margin %')+kpi(rows.length,'Sales Orders')+kpi(tPkg,'UPS packages')+(uatt?kpi(spnlMoney(uatt),'UPS acct charges'):'')+'</div>'+
     '<div style="display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin:8px 2px 6px;font-size:12px;">'+ivb+'</div>'+
     banner+
     '<div class="matrix-wrap"><table class="matrix"><thead><tr>'+thead+'</tr></thead><tbody>'+body+
