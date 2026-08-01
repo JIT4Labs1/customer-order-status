@@ -31,7 +31,8 @@ QB = os.path.dirname(os.path.abspath(__file__))
 SHIPS_FILE = os.path.join(QB, "ups-shipments-data.json")
 BILLING_FILE = os.path.join(QB, "ups-billing-data.json")
 OUT_FILE = os.path.join(QB, "shipments-pnl-data.json")
-ACCEPTED_FILE = os.path.join(QB, "spnl_accepted.json")  # {accepted:[so_id,...]} user-accepted discrepancies
+ACCEPTED_FILE = os.path.join(QB, "spnl_accepted.json")   # {accepted:[so_id,...]} user-accepted discrepancies
+OVERRIDES_FILE = os.path.join(QB, "spnl_overrides.json")  # {overrides:{so_id:{revenue,comment,at}}} manual shipping-charge edits
 
 SHIP_PID = "6x56546"      # Vtiger product id for SKU 999 "Shipping"
 SHIP_CODE = "999"
@@ -290,6 +291,16 @@ def build_shipments_pnl(vt):
             "has_cost": cid in matched_sos,
         })
 
+    # Apply manual shipping-charge overrides (user-entered where SKU-999 revenue was 0).
+    _ovr = _load_json(OVERRIDES_FILE, {})
+    overrides = _ovr.get("overrides", {}) if isinstance(_ovr, dict) else {}
+    for r in rows:
+        o = overrides.get(r["so_id"])
+        if o and o.get("revenue") is not None:
+            r["revenue"] = round(_f(o.get("revenue")), 2)
+            r["rev_override"] = True
+            r["rev_comment"] = o.get("comment", "")
+
     rows.sort(key=lambda r: (r["date"] or ""), reverse=True)
 
     # Discrepancy emails: for each row where Pkgs != PO Rows, assemble a vendor
@@ -438,6 +449,7 @@ def build_shipments_pnl(vt):
         "matched_cost": round(sum(r["cost"] for r in rows), 2),
         "discrepancy_emails": disc_emails,
         "accepted": sorted(accepted),
+        "overrides": overrides,
         "rows": rows,
     }
 
