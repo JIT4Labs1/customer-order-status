@@ -1703,7 +1703,7 @@ function spnlApplyCsv(text, fname){
       ciN=spnlFindCol(hdr,['netamountdue','netamount','netcharge','billedamount','amount']),
       ciC=spnlFindCol(hdr,['shippingsystemadjustment','shippingsystem','chargecategory','adjustment']);
   if(ciN<0 || (ciT<0&&ciR1<0)){ alert('Could not find the Net Amount and Tracking/Reference columns in this CSV. Headers: '+hdr.join(', ')); return; }
-  var costBySo={}, pkgs={}, unatt=0, unattCat={}, matched=0, unmatched=0;
+  var costBySo={}, trkBySo={}, unatt=0, unattCat={}, matched=0, unmatched=0, seenTrk={};
   for(var r=1;r<data.length;r++){ var rr=data[r]; if(!rr||(rr.length===1&&rr[0]==='')) continue;
     var tn=(ciT>=0?(rr[ciT]||''):'').trim();
     var r1=(ciR1>=0?(rr[ciR1]||''):'').trim();
@@ -1711,14 +1711,18 @@ function spnlApplyCsv(text, fname){
     var net=spnlMoneyParse(ciN>=0?rr[ciN]:'');
     var so=(tn&&t2s[tn])?t2s[tn]:null;
     if(!so){ var cand=[r1,r2]; for(var c=0;c<2;c++){ var po=spnlNormPo(cand[c]); if(po&&p2s[po]){ so=p2s[po]; break; } } }
-    if(so){ costBySo[so]=(costBySo[so]||0)+net; if(tn) pkgs[so]=(pkgs[so]||0)+1; matched++; }
+    if(so){ costBySo[so]=(costBySo[so]||0)+net;              // cost sums every charge line
+      if(tn){ var st=trkBySo[so]||(trkBySo[so]={}); st[tn]=1; }  // Pkgs = UNIQUE tracking #s only
+      if(tn&&!seenTrk[tn]){ seenTrk[tn]=1; matched++; }       // count unique packages matched
+    }
     else if(!tn){ var cat=(ciC>=0?(rr[ciC]||''):'').trim()||'Other'; unatt+=net; unattCat[cat]=(unattCat[cat]||0)+net; }
     else { unmatched++; }
   }
+  function _pkgn(soid){ var o=trkBySo[soid]; return o?Object.keys(o).length:0; }
   var rows=[], soid;
   for(soid in si){ if(!si.hasOwnProperty(soid)) continue; var info=si[soid];
-    rows.push({customer:info.customer,so_num:info.so_num,so_id:soid,date:info.date,pos:info.pos||[],po_rows:info.po_rows||0,packages:pkgs[soid]||0,revenue:info.revenue||0,cost:Math.round((costBySo[soid]||0)*100)/100,has_cost:(soid in costBySo)}); }
-  for(soid in costBySo){ if(!si[soid]){ rows.push({customer:'SO '+soid,so_num:'',so_id:soid,date:'',pos:[],po_rows:0,packages:pkgs[soid]||0,revenue:0,cost:Math.round(costBySo[soid]*100)/100,has_cost:true}); } }
+    rows.push({customer:info.customer,so_num:info.so_num,so_id:soid,date:info.date,pos:info.pos||[],po_rows:info.po_rows||0,packages:_pkgn(soid),revenue:info.revenue||0,cost:Math.round((costBySo[soid]||0)*100)/100,has_cost:(soid in costBySo)}); }
+  for(soid in costBySo){ if(!si[soid]){ rows.push({customer:'SO '+soid,so_num:'',so_id:soid,date:'',pos:[],po_rows:0,packages:_pkgn(soid),revenue:0,cost:Math.round(costBySo[soid]*100)/100,has_cost:true}); } }
   spnlUpRows=rows; spnlUpUnatt=Math.round(unatt*100)/100; spnlUpUnattCat=unattCat; spnlUpName=fname; spnlUpMatched=matched; spnlUpUnmatched=unmatched;
   renderTabs(); renderSpnlPanel();
 }
