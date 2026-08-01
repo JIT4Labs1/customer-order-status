@@ -30,13 +30,15 @@
   .kpi .v { font-size:26px; font-weight:700; color:#1F4E79; }
   .kpi .l { font-size:11px; color:#666; font-weight:600; text-transform:uppercase; letter-spacing:.5px; margin-top:2px; }
 
-  .modebar { display:flex; gap:26px; padding:14px 28px 0; flex-wrap:wrap; border-bottom:1px solid #dee5ec; align-items:flex-end; }
-  .mode-group { display:flex; flex-direction:column; gap:6px; }
-  .mode-group + .mode-group { border-left:1px solid #e3e9ef; padding-left:26px; margin-left:-13px; }
-  .mode-group-label { font-size:10.5px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:#8a97a6; padding-left:3px; }
+  .modebar { display:flex; gap:16px; padding:14px 28px 16px; flex-wrap:wrap; border-bottom:1px solid #dee5ec; align-items:flex-start; }
+  .mode-group { display:flex; flex-direction:column; gap:8px; border:1.5px solid #d9e0e8; border-radius:10px; padding:8px 12px 11px; }
+  .mode-group-label { font-size:10.5px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:#8a97a6; padding-left:2px; }
   .mode-group-btns { display:flex; gap:8px; flex-wrap:wrap; }
-  .mode-btn { background:#fff; border:1px solid #cdd9e6; border-bottom:none; padding:10px 20px; border-radius:8px 8px 0 0;
-    font-size:13px; font-weight:700; color:#1F4E79; cursor:pointer; font-family:inherit; margin-bottom:-1px; }
+  .mode-group-fin { border-color:#bfe3c9; background:#f6fbf7; } .mode-group-fin .mode-group-label { color:#1b7a3d; }
+  .mode-group-ops { border-color:#bcd7f6; background:#f4f9ff; } .mode-group-ops .mode-group-label { color:#1d4ed8; }
+  .mode-group-mkt { border-color:#fed7aa; background:#fff8f1; } .mode-group-mkt .mode-group-label { color:#c2410c; }
+  .mode-btn { background:#fff; border:1px solid #cdd9e6; padding:9px 16px; border-radius:8px;
+    font-size:13px; font-weight:700; color:#1F4E79; cursor:pointer; font-family:inherit; }
   .mode-btn:hover { background:#f5f8fb; }
   .mode-btn.active { background:#0D2B45; color:#fff; border-color:#0D2B45; }
   .mode-btn.mode-pnl { color:#1b7a3d; border-color:#bfe3c9; }
@@ -246,10 +248,10 @@
     .kpi .l{ font-size:11px; }
     /* App-like mode nav: wrapped tile GRID that fills the width. Bigger tiles —
        ~3 columns on phones, more on tablets. */
-    .modebar{ display:flex; flex-direction:column; gap:14px; padding:14px 1.5%; border-bottom:none; overflow:visible; }
-    .mode-group{ gap:7px; }
-    .mode-group + .mode-group{ border-left:none; padding-left:0; margin-left:0; }
-    .mode-group-btns{ display:grid; grid-template-columns:repeat(auto-fit,minmax(102px,1fr)); gap:8px; }
+    .modebar{ display:flex; flex-direction:row; align-items:flex-start; gap:8px; padding:14px 1.5%; border-bottom:none; overflow:visible; }
+    .mode-group{ flex:1 1 0; min-width:0; gap:7px; padding:7px 7px 9px; }
+    .mode-group-btns{ display:flex; flex-direction:column; gap:7px; }
+    .mode-group-btns .mode-btn{ width:100%; }
     .mode-btn{ margin:0; border:1px solid #cdd9e6; border-radius:12px; padding:13px 8px;
       font-size:12.5px; line-height:1.18; white-space:normal; text-align:center;
       min-height:56px; display:flex; align-items:center; justify-content:center; }
@@ -312,33 +314,33 @@
 <div class="kpis" id="kpis"></div>
 
 <div class="modebar">
-  <div class="mode-group">
+  <div class="mode-group mode-group-fin">
     <div class="mode-group-label">Financials</div>
     <div class="mode-group-btns">
       <button class="mode-btn mode-pnl active" data-mode="pnl" onclick="setMode('pnl')">P&amp;L Report</button>
-      <button class="mode-btn mode-ship" data-mode="spnl" onclick="setMode('spnl')">Shipments P&amp;L</button>
-      <button class="mode-btn mode-inv" data-mode="inv" onclick="setMode('inv')">Invoice Check</button>
-      <button class="mode-btn mode-pay" data-mode="pay" onclick="setMode('pay')">Payment Status</button>
+      <button class="mode-btn" data-mode="spnl" onclick="setMode('spnl')">Shipments P&amp;L</button>
+      <button class="mode-btn" data-mode="inv" onclick="setMode('inv')">Invoice Check</button>
+      <button class="mode-btn" data-mode="pay" onclick="setMode('pay')">Payment Status</button>
     </div>
   </div>
-  <div class="mode-group">
+  <div class="mode-group mode-group-ops">
     <div class="mode-group-label">Operations</div>
     <div class="mode-group-btns">
       <button class="mode-btn" data-mode="cust" onclick="setMode('cust')">Customer Open SO's</button>
       <button class="mode-btn" data-mode="vendor" onclick="setMode('vendor')">Open Vendor POs</button>
-      <button class="mode-btn mode-ship" data-mode="ship" onclick="setMode('ship')">Shipments</button>
+      <button class="mode-btn" data-mode="ship" onclick="setMode('ship')">Shipments</button>
       <button class="mode-btn" data-mode="cprices" onclick="setMode('cprices')">Customer Prices</button>
       <button class="mode-btn" data-mode="vspend" onclick="setMode('vspend')">Vendor Spend</button>
       <button class="mode-btn" data-mode="sku" onclick="setMode('sku')">High Demand SKUs</button>
     </div>
   </div>
-  <div class="mode-group">
+  <div class="mode-group mode-group-mkt">
     <div class="mode-group-label">Marketing</div>
     <div class="mode-group-btns">
       <button class="mode-btn" data-mode="ca" onclick="setMode('ca')">Customer Analysis</button>
-      <button class="mode-btn mode-mkt" data-mode="wt" onclick="setMode('wt')">Website Traffic</button>
-      <button class="mode-btn mode-mkt" data-mode="gads" onclick="setMode('gads')">Google Ads</button>
-      <button class="mode-btn mode-mkt" data-mode="li" onclick="setMode('li')">LinkedIn</button>
+      <button class="mode-btn" data-mode="wt" onclick="setMode('wt')">Website Traffic</button>
+      <button class="mode-btn" data-mode="gads" onclick="setMode('gads')">Google Ads</button>
+      <button class="mode-btn" data-mode="li" onclick="setMode('li')">LinkedIn</button>
     </div>
   </div>
 </div>
@@ -2305,7 +2307,7 @@ function setMode(m){
   var btns=document.querySelectorAll('.mode-btn');
   for(var i=0;i<btns.length;i++){
     var dm=btns[i].getAttribute('data-mode');
-    var extra = dm==='pnl' ? ' mode-pnl' : ((dm==='ship'||dm==='spnl') ? ' mode-ship' : (dm==='pay' ? ' mode-pay' : (dm==='inv' ? ' mode-inv' : ((dm==='wt'||dm==='gads'||dm==='li') ? ' mode-mkt' : ''))));  // P&L green, marketing tabs orange, shipments/payment blue, invoice-check purple
+    var extra = dm==='pnl' ? ' mode-pnl' : '';  // only P&L keeps a tinted button; group frames carry the colour coding
     btns[i].className = 'mode-btn'+extra+(dm===m?' active':'');
   }
   renderTabs(); renderPanel();
