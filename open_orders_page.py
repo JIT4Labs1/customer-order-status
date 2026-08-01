@@ -520,7 +520,11 @@ def build_html(page_data, embeds=None):
   .kpi .v { font-size:26px; font-weight:700; color:#1F4E79; }
   .kpi .l { font-size:11px; color:#666; font-weight:600; text-transform:uppercase; letter-spacing:.5px; margin-top:2px; }
 
-  .modebar { display:flex; gap:8px; padding:16px 28px 0; flex-wrap:wrap; border-bottom:1px solid #dee5ec; }
+  .modebar { display:flex; gap:26px; padding:14px 28px 0; flex-wrap:wrap; border-bottom:1px solid #dee5ec; align-items:flex-end; }
+  .mode-group { display:flex; flex-direction:column; gap:6px; }
+  .mode-group + .mode-group { border-left:1px solid #e3e9ef; padding-left:26px; margin-left:-13px; }
+  .mode-group-label { font-size:10.5px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:#8a97a6; padding-left:3px; }
+  .mode-group-btns { display:flex; gap:8px; flex-wrap:wrap; }
   .mode-btn { background:#fff; border:1px solid #cdd9e6; border-bottom:none; padding:10px 20px; border-radius:8px 8px 0 0;
     font-size:13px; font-weight:700; color:#1F4E79; cursor:pointer; font-family:inherit; margin-bottom:-1px; }
   .mode-btn:hover { background:#f5f8fb; }
@@ -732,8 +736,10 @@ def build_html(page_data, embeds=None):
     .kpi .l{ font-size:11px; }
     /* App-like mode nav: wrapped tile GRID that fills the width. Bigger tiles —
        ~3 columns on phones, more on tablets. */
-    .modebar{ display:grid; grid-template-columns:repeat(auto-fit,minmax(102px,1fr));
-      gap:8px; padding:14px 1.5%; border-bottom:none; overflow:visible; }
+    .modebar{ display:flex; flex-direction:column; gap:14px; padding:14px 1.5%; border-bottom:none; overflow:visible; }
+    .mode-group{ gap:7px; }
+    .mode-group + .mode-group{ border-left:none; padding-left:0; margin-left:0; }
+    .mode-group-btns{ display:grid; grid-template-columns:repeat(auto-fit,minmax(102px,1fr)); gap:8px; }
     .mode-btn{ margin:0; border:1px solid #cdd9e6; border-radius:12px; padding:13px 8px;
       font-size:12.5px; line-height:1.18; white-space:normal; text-align:center;
       min-height:56px; display:flex; align-items:center; justify-content:center; }
@@ -796,20 +802,35 @@ def build_html(page_data, embeds=None):
 <div class="kpis" id="kpis"></div>
 
 <div class="modebar">
-  <button class="mode-btn mode-pnl active" data-mode="pnl" onclick="setMode('pnl')">P&amp;L Report</button>
-  <button class="mode-btn mode-ship" data-mode="spnl" onclick="setMode('spnl')">Shipments P&amp;L</button>
-  <button class="mode-btn" data-mode="cust" onclick="setMode('cust')">Customer Open SO's</button>
-  <button class="mode-btn" data-mode="vendor" onclick="setMode('vendor')">Open Vendor POs</button>
-  <button class="mode-btn" data-mode="vspend" onclick="setMode('vspend')">Vendor Spend</button>
-  <button class="mode-btn mode-inv" data-mode="inv" onclick="setMode('inv')">Invoice Check</button>
-  <button class="mode-btn" data-mode="sku" onclick="setMode('sku')">High Demand SKUs</button>
-  <button class="mode-btn mode-ship" data-mode="ship" onclick="setMode('ship')">Shipments</button>
-  <button class="mode-btn mode-pay" data-mode="pay" onclick="setMode('pay')">Payment Status</button>
-  <button class="mode-btn" data-mode="cprices" onclick="setMode('cprices')">Customer Prices</button>
-  <button class="mode-btn" data-mode="ca" onclick="setMode('ca')">Customer Analysis</button>
-  <button class="mode-btn mode-mkt" data-mode="wt" onclick="setMode('wt')">Website Traffic</button>
-  <button class="mode-btn mode-mkt" data-mode="gads" onclick="setMode('gads')">Google Ads</button>
-  <button class="mode-btn mode-mkt" data-mode="li" onclick="setMode('li')">LinkedIn</button>
+  <div class="mode-group">
+    <div class="mode-group-label">Financials</div>
+    <div class="mode-group-btns">
+      <button class="mode-btn mode-pnl active" data-mode="pnl" onclick="setMode('pnl')">P&amp;L Report</button>
+      <button class="mode-btn mode-ship" data-mode="spnl" onclick="setMode('spnl')">Shipments P&amp;L</button>
+      <button class="mode-btn mode-inv" data-mode="inv" onclick="setMode('inv')">Invoice Check</button>
+      <button class="mode-btn mode-pay" data-mode="pay" onclick="setMode('pay')">Payment Status</button>
+    </div>
+  </div>
+  <div class="mode-group">
+    <div class="mode-group-label">Operations</div>
+    <div class="mode-group-btns">
+      <button class="mode-btn" data-mode="cust" onclick="setMode('cust')">Customer Open SO's</button>
+      <button class="mode-btn" data-mode="vendor" onclick="setMode('vendor')">Open Vendor POs</button>
+      <button class="mode-btn mode-ship" data-mode="ship" onclick="setMode('ship')">Shipments</button>
+      <button class="mode-btn" data-mode="cprices" onclick="setMode('cprices')">Customer Prices</button>
+      <button class="mode-btn" data-mode="vspend" onclick="setMode('vspend')">Vendor Spend</button>
+      <button class="mode-btn" data-mode="sku" onclick="setMode('sku')">High Demand SKUs</button>
+    </div>
+  </div>
+  <div class="mode-group">
+    <div class="mode-group-label">Marketing</div>
+    <div class="mode-group-btns">
+      <button class="mode-btn" data-mode="ca" onclick="setMode('ca')">Customer Analysis</button>
+      <button class="mode-btn mode-mkt" data-mode="wt" onclick="setMode('wt')">Website Traffic</button>
+      <button class="mode-btn mode-mkt" data-mode="gads" onclick="setMode('gads')">Google Ads</button>
+      <button class="mode-btn mode-mkt" data-mode="li" onclick="setMode('li')">LinkedIn</button>
+    </div>
+  </div>
 </div>
 
 <div class="layout">
