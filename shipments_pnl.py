@@ -16,7 +16,10 @@ Cost:    ups-billing-data.json (produced by ups_billing_ingest.py from the UPS
 UPS only (per requirement); FedEx / Pirate Ship excluded.
 READ-ONLY on Vtiger.
 """
-import os, json, datetime, re
+import os, json, datetime, re, time, urllib.request
+
+PAGES_URL = os.environ.get("GH_PAGES_URL", "https://jit4labs1.github.io/customer-order-status")
+INVOICE_DIR = "invoices"  # re-hosted bill PDFs (public, for the vendor email link)
 
 try:
     from zoneinfo import ZoneInfo
@@ -28,6 +31,7 @@ QB = os.path.dirname(os.path.abspath(__file__))
 SHIPS_FILE = os.path.join(QB, "ups-shipments-data.json")
 BILLING_FILE = os.path.join(QB, "ups-billing-data.json")
 OUT_FILE = os.path.join(QB, "shipments-pnl-data.json")
+ACCEPTED_FILE = os.path.join(QB, "spnl_accepted.json")  # {accepted:[so_id,...]} user-accepted discrepancies
 
 SHIP_PID = "6x56546"      # Vtiger product id for SKU 999 "Shipping"
 SHIP_CODE = "999"
@@ -143,9 +147,16 @@ def build_shipments_pnl(vt):
                               "qty": _f(li.get("quantity", 1))})
         return total, items, odate
 
+    _today = _pac_now().strftime("%Y-%m-%d")
+
     def _qb_conmed_bills():
         """PO# -> matched QuickBooks Conmed vendor bill (the invoice for that PO).
-        Conmed bills store the Vtiger PO number in each Line's Description."""
+        Conmed bills store the Vtiger PO number in each Line's Description.
+        Cached per-day so repeated resumable passes don't re-query QB."""
+        cache = os.path.join(QB, f"_qb_bills_{_today}.json")
+        cached = _load_json(cache, None)
+        if cached is not None:
+            return cached
         try:
             import build_payment_status as _qb
             acc = _qb.refresh_token()
@@ -171,6 +182,10 @@ def build_shipments_pnl(vt):
                 m = re.match(r"(PO\d+)", (ln["desc"] or "").upper())
                 if m:
                     po_map[m.group(1)] = info
+        try:
+            json.dump(po_map, open(cache, "w"))
+        except Exception:
+            pass
         return po_map
     so_master = {}   # crmid -> {no, account_id, date, status}
     for s in vt.query_all(
@@ -281,7 +296,102 @@ def build_shipments_pnl(vt):
     # (Conmed) alert package — PO items + date, UPS packages/trackings, and the
     # matching QuickBooks Conmed bill (the invoice for that PO, incl. other POs
     # billed on the same invoice).
+    def _qb_bill_pdfs(bill_ids):
+        """{bill_id -> public Pages URL of the invoice PDF}. Downloads each bill's
+        attached PDF from QuickBooks and saves it under invoices/ so it can be
+        published and opened by the vendor without a QuickBooks login."""
+        out = {}
+        if not bill_ids:
+            return out
+        try:
+            import build_payment_status as _qb
+            acc = _qb.refresh_token()
+            base = f"{_qb.BASE}/company/{_qb.REALM}"
+        except Exception as e:
+            print("  QB invoice PDFs unavailable:", e)
+            return out
+
+        def _get(url, as_json=True, auth=True):
+            last = None
+            for attempt in range(6):
+                try:
+                    req = urllib.request.Request(url)
+                    if auth:
+                        req.add_header("Authorization", "Bearer " + acc)
+                        req.add_header("Accept", "application/json")
+                    data = urllib.request.urlopen(req, timeout=40).read()
+                    return json.loads(data.decode()) if as_json else data
+                except Exception as e:
+                    last = e
+                    time.sleep(2 * (attempt + 1))
+            raise last
+
+        # bill_id -> attachable id. Cached (attachment ids are stable); only scan
+        # if some needed bill isn't already mapped. Saved incrementally so a
+        # timed-out scan resumes on the next pass.
+        att_cache = os.path.join(QB, "_qb_att_map.json")
+        scan_file = os.path.join(QB, "_qb_att_scan.json")
+        att = _load_json(att_cache, {}) or {}
+        scan = _load_json(scan_file, {"pos": 1, "done": False})
+        if not scan.get("done") and any(b not in att for b in bill_ids):
+            try:
+                pos = scan.get("pos", 1)
+                while True:
+                    r = _qb.qb_query(acc, f"SELECT * FROM Attachable STARTPOSITION {pos} MAXRESULTS 100")
+                    ats = r.get("QueryResponse", {}).get("Attachable", []) or []
+                    if not ats:
+                        scan["done"] = True
+                        break
+                    for a in ats:
+                        if a.get("ContentType") != "application/pdf":
+                            continue
+                        for rf in (a.get("AttachableRef", []) or []):
+                            bid = str((rf.get("EntityRef") or {}).get("value"))
+                            att.setdefault(bid, a.get("Id"))
+                    pos += 100
+                    scan["pos"] = pos
+                    if len(ats) < 100:
+                        scan["done"] = True
+                    try:
+                        json.dump(att, open(att_cache, "w"))
+                        json.dump(scan, open(scan_file, "w"))
+                    except Exception:
+                        pass
+                    if scan["done"] or all(b in att for b in bill_ids):
+                        break
+            except Exception as e:
+                print("  QB attachable scan (partial, will resume):", e)
+
+        os.makedirs(os.path.join(QB, INVOICE_DIR), exist_ok=True)
+        for bid, doc in bill_ids.items():
+            safe = re.sub(r"[^A-Za-z0-9._-]", "", "CONMED-" + str(doc) + ".pdf")
+            dest = os.path.join(QB, INVOICE_DIR, safe)
+            if os.path.exists(dest) and os.path.getsize(dest) > 100:
+                out[bid] = f"{PAGES_URL}/{INVOICE_DIR}/{safe}"
+                continue
+            aid = att.get(bid)
+            if not aid:
+                continue
+            try:
+                a = _get(f"{base}/attachable/{aid}?minorversion=65").get("Attachable", {})
+                tu = a.get("TempDownloadUri")
+                if not tu:
+                    continue
+                pdf = _get(tu, as_json=False, auth=False)
+                if pdf[:4] != b"%PDF":
+                    continue
+                with open(dest, "wb") as f:
+                    f.write(pdf)
+                out[bid] = f"{PAGES_URL}/{INVOICE_DIR}/{safe}"
+            except Exception as e:
+                print(f"  PDF for bill {bid} failed:", e)
+        return out
+
+    _acc = _load_json(ACCEPTED_FILE, {})
+    accepted = set(_acc.get("accepted", []) if isinstance(_acc, dict) else (_acc or []))
     disc_emails = {}
+    # Build emails for ALL discrepancies; the tab filters accepted ones (so accept/un-accept
+    # takes effect immediately without a server rebuild).
     disc_rows = [r for r in rows if r["packages"] != r["po_rows"]]
     if disc_rows:
         po_bill = _qb_conmed_bills()
@@ -327,6 +437,7 @@ def build_shipments_pnl(vt):
         "billing_source": billing_src,
         "matched_cost": round(sum(r["cost"] for r in rows), 2),
         "discrepancy_emails": disc_emails,
+        "accepted": sorted(accepted),
         "rows": rows,
     }
 
