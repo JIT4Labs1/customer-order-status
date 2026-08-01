@@ -16,7 +16,7 @@ Cost:    ups-billing-data.json (produced by ups_billing_ingest.py from the UPS
 UPS only (per requirement); FedEx / Pirate Ship excluded.
 READ-ONLY on Vtiger.
 """
-import os, json, datetime
+import os, json, datetime, re
 
 try:
     from zoneinfo import ZoneInfo
@@ -122,17 +122,56 @@ def build_shipments_pnl(vt):
             conmed_crmids.add(sid)
             po_crmid[pn] = po.get("id")
 
-    def _po_rows(po_numbers):
-        """Total number of line items across the given Conmed PO(s)."""
+    def _po_info(po_numbers):
+        """(row_count, items[{product,qty}], order_date) across the given Conmed PO(s)."""
         total = 0
+        items = []
+        odate = ""
         for pn in po_numbers:
             pc = po_crmid.get(pn)
             if not pc:
                 continue
             det = vt.retrieve_with_retry(pc, label="PO-PNL")
-            if det:
-                total += len(det.get("LineItems", det.get("lineItems", [])) or [])
-        return total
+            if not det:
+                continue
+            lis = det.get("LineItems", det.get("lineItems", [])) or []
+            total += len(lis)
+            if not odate:
+                odate = str(det.get("orderdate") or det.get("createdtime", ""))[:10]
+            for li in lis:
+                items.append({"product": (li.get("product_name") or li.get("productname") or "").strip(),
+                              "qty": _f(li.get("quantity", 1))})
+        return total, items, odate
+
+    def _qb_conmed_bills():
+        """PO# -> matched QuickBooks Conmed vendor bill (the invoice for that PO).
+        Conmed bills store the Vtiger PO number in each Line's Description."""
+        try:
+            import build_payment_status as _qb
+            acc = _qb.refresh_token()
+            realm = getattr(_qb, "REALM", "")
+            r = _qb.qb_query(acc, "SELECT * FROM Bill WHERE VendorRef='450' MAXRESULTS 1000")
+            bills = r.get("QueryResponse", {}).get("Bill", []) or []
+        except Exception as e:
+            print("  QB Conmed bills unavailable:", e)
+            return {}
+        po_map = {}
+        for b in bills:
+            lines = []
+            for ln in b.get("Line", []) or []:
+                lines.append({"desc": (ln.get("Description") or "").strip(),
+                              "amount": round(_f(ln.get("Amount")), 2)})
+            bid = b.get("Id", "")
+            info = {"doc_number": b.get("DocNumber", ""), "date": b.get("TxnDate", ""),
+                    "total": round(_f(b.get("TotalAmt")), 2), "balance": round(_f(b.get("Balance")), 2),
+                    "id": bid, "lines": lines,
+                    "view_url": ("https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D"
+                                 + str(bid) + "&deeplinkcompanyid=" + str(realm))}
+            for ln in lines:
+                m = re.match(r"(PO\d+)", (ln["desc"] or "").upper())
+                if m:
+                    po_map[m.group(1)] = info
+        return po_map
     so_master = {}   # crmid -> {no, account_id, date, status}
     for s in vt.query_all(
             "SELECT id, salesorder_no, account_id, createdtime, sostatus FROM SalesOrder "
@@ -186,6 +225,7 @@ def build_shipments_pnl(vt):
     #    whose PO vendor is Conmed (this tab is Conmed drop-ships only). Revenue from SKU 999.
     universe = (set(ship_crmids) | set(so_cost.keys())) & conmed_crmids
     rows = []
+    disc_src = {}   # so_id -> {po_items, po_date, trackings} for discrepancy-email building
     for cid in universe:
         meta = so_master.get(cid, {})
         status = meta.get("status", "")
@@ -217,8 +257,11 @@ def build_shipments_pnl(vt):
         # Show every PO linked to this SO in Vtiger (not only PO-matched charges), so
         # tracking-matched rows still display their PO. Prefer the actually-billed PO(s).
         pos = sorted(crmid_pos.get(cid, set()) or so_billed_pos.get(cid, set()))
-        n_pkgs = len(so_billed_trk.get(cid) or ship_trk.get(cid) or set())
-        po_rows = _po_rows(pos)
+        trk_set = so_billed_trk.get(cid) or ship_trk.get(cid) or set()
+        n_pkgs = len(trk_set)
+        po_rows, po_items, po_date = _po_info(pos)
+        disc_src[_bare(cid)] = {"po_items": po_items, "po_date": po_date,
+                                "trackings": sorted(trk_set)}
         rows.append({
             "customer": acct,
             "so_num": so_num,
@@ -233,6 +276,33 @@ def build_shipments_pnl(vt):
         })
 
     rows.sort(key=lambda r: (r["date"] or ""), reverse=True)
+
+    # Discrepancy emails: for each row where Pkgs != PO Rows, assemble a vendor
+    # (Conmed) alert package — PO items + date, UPS packages/trackings, and the
+    # matching QuickBooks Conmed bill (the invoice for that PO, incl. other POs
+    # billed on the same invoice).
+    disc_emails = {}
+    disc_rows = [r for r in rows if r["packages"] != r["po_rows"]]
+    if disc_rows:
+        po_bill = _qb_conmed_bills()
+        for r in disc_rows:
+            src = disc_src.get(r["so_id"], {})
+            bill = None
+            bill_po = None
+            for pn in r["pos"]:
+                if pn.upper() in po_bill:
+                    bill = po_bill[pn.upper()]
+                    bill_po = pn.upper()
+                    break
+            disc_emails[r["so_id"]] = {
+                "so_num": r["so_num"], "customer": r["customer"], "pos": r["pos"],
+                "po_date": src.get("po_date", ""), "po_items": src.get("po_items", []),
+                "po_rows": r["po_rows"], "packages": r["packages"],
+                "trackings": src.get("trackings", []),
+                "bill_po": bill_po, "bill": bill,
+            }
+        print(f"  Discrepancy emails: {len(disc_emails)} (with QB bill matched: "
+              f"{sum(1 for v in disc_emails.values() if v['bill'])})")
 
     # Maps so the tab can re-match a newly uploaded UPS Billing CSV in the browser
     # (tracking# / PO -> SO id) and look up each SO's shipping revenue + customer.
@@ -256,6 +326,7 @@ def build_shipments_pnl(vt):
         "unattributed": unatt_breakdown,
         "billing_source": billing_src,
         "matched_cost": round(sum(r["cost"] for r in rows), 2),
+        "discrepancy_emails": disc_emails,
         "rows": rows,
     }
 
