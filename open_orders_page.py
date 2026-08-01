@@ -471,7 +471,7 @@ def build_html(page_data, embeds=None):
         if embeds and embeds.get(key) is not None:
             return json.dumps(embeds[key]).replace("</", "<\\/").replace("<!--", "<\\!--")
         return "null"
-    gads_embed, li_embed, wt_embed, ship_embed, pay_embed = _emb("gads"), _emb("li"), _emb("wt"), _emb("ship"), _emb("pay")
+    gads_embed, li_embed, wt_embed, ship_embed, pay_embed, spnl_embed = _emb("gads"), _emb("li"), _emb("wt"), _emb("ship"), _emb("pay"), _emb("spnl")
     # The button token is XOR-obfuscated (then base64'd) in the page so GitHub
     # secret scanning / push protection does not detect a `github_pat_` token —
     # plain base64 is NOT enough (GitHub decodes it), so the commit would be
@@ -804,6 +804,7 @@ def build_html(page_data, embeds=None):
   <button class="mode-btn" data-mode="sku" onclick="setMode('sku')">High Demand SKUs</button>
   <button class="mode-btn mode-ship" data-mode="ship" onclick="setMode('ship')">Shipments</button>
   <button class="mode-btn mode-pay" data-mode="pay" onclick="setMode('pay')">Payment Status</button>
+  <button class="mode-btn mode-ship" data-mode="spnl" onclick="setMode('spnl')">Shipments P&amp;L</button>
   <button class="mode-btn" data-mode="cprices" onclick="setMode('cprices')">Customer Prices</button>
   <button class="mode-btn" data-mode="ca" onclick="setMode('ca')">Customer Analysis</button>
   <button class="mode-btn mode-mkt" data-mode="wt" onclick="setMode('wt')">Website Traffic</button>
@@ -832,7 +833,7 @@ function normData(d){ if(d&&d.customers){ d.customers=d.customers.filter(functio
 DATA=normData(DATA);
 var BTN = __BTN_CFG__;
 // Offline mirror: when built as the local copy these hold the data inline (no fetch needed). Online build leaves them null so the page fetches fresh each load.
-var GADS_EMBED = __GADS_EMBED__, LI_EMBED = __LI_EMBED__, WT_EMBED = __WT_EMBED__, SHIP_EMBED = __SHIP_EMBED__, PAY_EMBED = __PAY_EMBED__;
+var GADS_EMBED = __GADS_EMBED__, LI_EMBED = __LI_EMBED__, WT_EMBED = __WT_EMBED__, SHIP_EMBED = __SHIP_EMBED__, PAY_EMBED = __PAY_EMBED__, SPNL_EMBED = __SPNL_EMBED__;
 function _deobf(s,key){ if(!s) return ''; var raw=atob(s), out=''; for(var i=0;i<raw.length;i++){ out+=String.fromCharCode(raw.charCodeAt(i) ^ key.charCodeAt(i%key.length)); } return out; }
 BTN.token = _deobf(BTN.token_obf, BTN.k || '');
 var active = 0;     // selected customer index (Customer Open SO's view)
@@ -906,6 +907,7 @@ function renderTabs(){
   showPaidInv(mode==='vendor'); // Paid Inventory box: vendor tab only
   if(fullWidth){ tabsEl.style.display='none'; tabsEl.innerHTML=''; return; }  // full-width views, no per-entity tabs
   if(mode==='ship'){ renderShipTabs(tabsEl); return; }  // Shipments: sidebar of customers (receivers)
+  if(mode==='spnl'){ renderSpnlTabs(tabsEl); return; }  // Shipments P&L: sidebar of customers
   tabsEl.style.display='';
   var list = mode==='vendor' ? (DATA.vendors||[]) : (mode==='ca' ? ((DATA.customer_analysis||{}).customers||[]) : (DATA.customers||[]));
   var cur = mode==='vendor' ? vactive : (mode==='ca' ? caactive : active);
@@ -1057,6 +1059,7 @@ function renderPanel(){
   else if(mode==='li') renderLiPanel();
   else if(mode==='wt') renderWtPanel();
   else if(mode==='ship') renderShipPanel();
+  else if(mode==='spnl') renderSpnlPanel();
   else if(mode==='pay') renderPayPanel();
   else if(mode==='inv') renderInvPanel();
   else renderCustPanel();
@@ -1657,6 +1660,134 @@ function shipItems(i){ var s=((SHIP&&SHIP.shipments)||[])[i]; if(!s) return; var
   document.getElementById('shipModal').style.display='flex';
 }
 function shipCloseItems(e){ if(e&&e.target&&e.target.id!=='shipModal') return; var m=document.getElementById('shipModal'); if(m) m.style.display='none'; }
+
+// ── Shipments P&L tab (shipping charged to customer [SKU 999 on the SO] vs. what
+// UPS bills us [net charge from the Billing Center export, matched by PO/tracking]) ──
+var SPNL=null, spnlLoading=false, spnlCust='', spnlCustList=[], spnlInterval='ytd';
+var SPNL_IVS=[['ytd','2026 YTD'],['month','This month'],['lastmonth','Last month']];
+var spnlSort={key:'date', dir:-1};
+var SPNL_COLS=[
+  {k:'customer',   t:'str', lbl:'Customer',  c:false},
+  {k:'so_num',     t:'str', lbl:'SO #',      c:false},
+  {k:'date',       t:'date',lbl:'SO date',   c:false},
+  {k:'pos',        t:'str', lbl:'PO(s)',     c:false},
+  {k:'packages',   t:'num', lbl:'Pkgs',      c:true},
+  {k:'revenue',    t:'num', lbl:'Shipping charged (SKU 999)', c:true},
+  {k:'cost',       t:'num', lbl:'UPS cost',  c:true},
+  {k:'margin',     t:'num', lbl:'Margin',    c:true},
+  {k:'margin_pct', t:'num', lbl:'Margin %',  c:true}
+];
+function loadSpnl(){
+  if(SPNL_EMBED){ SPNL=SPNL_EMBED; spnlLoading=false; if(mode==='spnl'){ renderTabs(); renderSpnlPanel(); } return; }
+  if(spnlLoading) return; spnlLoading=true;
+  fetch('shipments-pnl-data.json?cb='+Date.now(),{cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(d){ SPNL=d; spnlLoading=false; if(mode==='spnl'){ renderTabs(); renderSpnlPanel(); } })
+    .catch(function(e){ spnlLoading=false; if(mode==='spnl') document.getElementById('panel').innerHTML='<div class="empty">Could not load Shipments P&L data: '+escapeHtml(e.message)+'</div>'; });
+}
+function spnlRefresh(){ SPNL=SPNL_EMBED||null; spnlLoading=false; document.getElementById('panel').innerHTML='<div class="empty">Reloading Shipments P&L…</div>'; loadSpnl(); }
+function spnlSetInterval(v){ spnlInterval=v; renderTabs(); renderSpnlPanel(); }
+function spnlSetIntervalIdx(i){ if(SPNL_IVS[i]) spnlSetInterval(SPNL_IVS[i][0]); }
+function spnlSelectCust(i){ spnlCust=(i<0?'':(spnlCustList[i]||'')); renderTabs(); renderSpnlPanel(); }
+function spnlSortByIdx(i){ var c=SPNL_COLS[i]; if(!c) return;
+  if(spnlSort.key===c.k){ spnlSort.dir=-spnlSort.dir; } else { spnlSort.key=c.k; spnlSort.dir=(c.t==='num'?-1:1); } renderSpnlPanel(); }
+function spnlInInterval(ds){
+  if(spnlInterval==='ytd') return true;   // data is already this-year, non-cancelled
+  if(!ds) return false;
+  var now=new Date(), y=now.getFullYear(), m=now.getMonth();
+  var d=new Date(ds+'T00:00:00'); if(isNaN(d)) return false;
+  if(spnlInterval==='month') return d.getFullYear()===y && d.getMonth()===m;
+  if(spnlInterval==='lastmonth'){ var lm=(m===0?11:m-1), ly=(m===0?y-1:y); return d.getFullYear()===ly && d.getMonth()===lm; }
+  return true;
+}
+function spnlBaseRows(){
+  var all=(SPNL&&SPNL.rows)||[], out=[];
+  for(var i=0;i<all.length;i++){ var r=all[i];
+    if(isExclCust(r.customer)) continue;
+    if(!spnlInInterval(r.date)) continue;
+    out.push(r);
+  }
+  return out;
+}
+function spnlDeriv(r){
+  var rev=Number(r.revenue)||0, cost=Number(r.cost)||0, margin=rev-cost;
+  var mp = rev!==0 ? (margin/rev*100) : (cost!==0? -100 : 0);
+  return {customer:r.customer, so_num:r.so_num, so_id:r.so_id, date:r.date,
+          pos:(r.pos||[]).join(', '), packages:Number(r.packages)||0,
+          revenue:rev, cost:cost, has_cost:!!r.has_cost, margin:margin, margin_pct:mp};
+}
+function renderSpnlTabs(el){
+  el.style.display='';
+  if(!SPNL){ el.innerHTML='<div class="empty">Loading…</div>'; return; }
+  var base=spnlBaseRows(), cnt={}, names=[], total=0;
+  for(var i=0;i<base.length;i++){ total++; var c=base[i].customer||'(no customer)'; if(!(c in cnt)){ cnt[c]=0; names.push(c); } cnt[c]++; }
+  names.sort(function(a,b){ return a.toLowerCase().localeCompare(b.toLowerCase()); });
+  spnlCustList=names;
+  if(spnlCust && names.indexOf(spnlCust)<0){ spnlCust=''; }
+  var h='<button class="tab'+(spnlCust===''?' active':'')+'" onclick="spnlSelectCust(-1)">All customers<span class="cnt">'+total+'</span></button>';
+  for(var j=0;j<names.length;j++){
+    h+='<button class="tab'+(spnlCust===names[j]?' active':'')+'" onclick="spnlSelectCust('+j+')">'+escapeHtml(names[j])+'<span class="cnt">'+cnt[names[j]]+'</span></button>';
+  }
+  el.innerHTML=h;
+}
+function spnlMoney(v){ var n=Number(v)||0; var s='$'+Math.abs(n).toFixed(2).replace(/\\B(?=(\\d{3})+(?!\\d))/g,','); return n<0?('-'+s):s; }
+function renderSpnlPanel(){
+  if(!SPNL){ document.getElementById('panel').innerHTML='<div class="empty">Loading Shipments P&L…</div>'; loadSpnl(); return; }
+  var base=spnlBaseRows();
+  var rows=base.map(spnlDeriv).filter(function(r){ return !spnlCust || r.customer===spnlCust; });
+  // sort
+  var col=null; for(var i=0;i<SPNL_COLS.length;i++){ if(SPNL_COLS[i].k===spnlSort.key) col=SPNL_COLS[i]; }
+  rows.sort(function(a,b){ return spnlSort.dir*cmp(a[spnlSort.key],b[spnlSort.key],col?col.t:'str'); });
+  var tRev=0,tCost=0,tPkg=0,anyCost=false;
+  for(var r=0;r<rows.length;r++){ tRev+=rows[r].revenue; tCost+=rows[r].cost; tPkg+=rows[r].packages; if(rows[r].has_cost) anyCost=true; }
+  var tMargin=tRev-tCost, tMp=tRev!==0?(tMargin/tRev*100):0;
+  var VT='https://jit4youinc.od2.vtiger.com/index.php?module=';
+  function soLink(r){ if(!r.so_id) return escapeHtml(r.so_num||'—'); return '<a href="'+VT+'SalesOrder&view=Detail&record='+encodeURIComponent(r.so_id)+'" target="_blank" rel="noopener" style="color:#1F4E79;text-decoration:none;font-weight:600;">'+escapeHtml(r.so_num)+' <span style="color:#008080;">↗</span></a>'; }
+  var pending=!(SPNL.has_billing);
+  // header row (sortable)
+  var thead='';
+  for(var c=0;c<SPNL_COLS.length;c++){ var cc=SPNL_COLS[c]; var ar=(spnlSort.key===cc.k?(spnlSort.dir>0?' ▲':' ▼'):'');
+    thead+='<th'+(cc.c?' class="c"':'')+' style="cursor:pointer;white-space:nowrap;" onclick="spnlSortByIdx('+c+')">'+escapeHtml(cc.lbl)+ar+'</th>'; }
+  var body='';
+  for(var k=0;k<rows.length;k++){ var x=rows[k];
+    var costCell = (!x.has_cost && pending) ? '<span style="color:#b0862a;" title="Awaiting UPS Billing Center CSV">pending</span>'
+                   : (x.has_cost ? spnlMoney(x.cost) : '<span style="color:#9aa7b4;" title="No UPS charge matched this SO">—</span>');
+    var mVal = x.has_cost ? spnlMoney(x.margin) : (pending?'<span style="color:#b0862a;">—</span>':'<span style="color:#9aa7b4;">—</span>');
+    var mCol = x.margin<0?'#c0392b':'#1e7d34';
+    var mPct = x.has_cost ? (x.margin_pct.toFixed(1)+'%') : '—';
+    body+='<tr>'+
+      '<td class="item-name">'+escapeHtml(x.customer)+'</td>'+
+      '<td>'+soLink(x)+'</td>'+
+      '<td>'+(x.date?fmtDate(x.date):'—')+'</td>'+
+      '<td>'+escapeHtml(x.pos||'—')+'</td>'+
+      '<td class="c">'+(x.packages||0)+'</td>'+
+      '<td class="c">'+spnlMoney(x.revenue)+'</td>'+
+      '<td class="c">'+costCell+'</td>'+
+      '<td class="c" style="font-weight:600;color:'+(x.has_cost?mCol:'#9aa7b4')+';">'+mVal+'</td>'+
+      '<td class="c" style="color:'+(x.has_cost?mCol:'#9aa7b4')+';">'+mPct+'</td></tr>';
+  }
+  if(!rows.length) body='<tr><td colspan="9" class="empty" style="padding:18px;">No SOs with UPS shipments in this selection.</td></tr>';
+  // interval buttons
+  var ivb='<span style="color:#7a8a99;">Period:</span>';
+  for(var v=0;v<SPNL_IVS.length;v++){ var on=(spnlInterval===SPNL_IVS[v][0]);
+    ivb+='<button onclick="spnlSetIntervalIdx('+v+')" class="mode-btn'+(on?' active':'')+'" style="padding:5px 12px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;">'+escapeHtml(SPNL_IVS[v][1])+'</button>'; }
+  var banner = pending
+    ? '<div style="margin:8px 2px 12px;padding:11px 15px;background:#fff8e1;border-left:4px solid #ffc107;font-size:12.5px;border-radius:6px;color:#5c4a12;">UPS costs are <b>pending</b>. UPS does not expose invoiced charges via API, so drop your <b>UPS Billing Center CSV</b> (Tracking, Reference&nbsp;1/2 = PO, Net&nbsp;Amount) into the QB&nbsp;Files folder and I&rsquo;ll match each PO to its SO and fill the cost / margin columns. Shipping revenue below is live from SKU&nbsp;999.</div>'
+    : '<div style="margin:8px 2px 12px;padding:9px 14px;background:#eef7f0;border-left:4px solid #2e9e57;font-size:12px;border-radius:6px;color:#20603a;">UPS cost from Billing Center export as of '+escapeHtml(SPNL.billing_asof||'')+(SPNL.unmatched_charges?(' &middot; '+SPNL.unmatched_charges+' charge(s) '+spnlMoney(SPNL.unmatched_cost)+' unmatched to any SO'):'')+'.</div>';
+  document.getElementById('panel').innerHTML =
+    '<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">'+
+    '<div><h2 style="margin:0;">Shipments P&amp;L &mdash; UPS</h2><div class="sub">Shipping charged (SKU 999 on SO) vs. UPS billed cost, matched by PO &middot; '+escapeHtml(SPNL.generated_at||'')+'</div></div>'+
+    '<button class="refresh-btn" onclick="spnlRefresh()" title="Reload the latest Shipments P&L snapshot"><span class="lbl">↻ Reload</span></button></div></div>'+
+    '<div class="kpis" style="padding:6px 0 2px;">'+kpi(spnlMoney(tRev),'Shipping charged')+kpi(anyCost?spnlMoney(tCost):'—','UPS cost')+kpi(anyCost?spnlMoney(tMargin):'—','Margin')+kpi(anyCost?tMp.toFixed(1)+'%':'—','Margin %')+kpi(rows.length,'Sales Orders')+kpi(tPkg,'UPS packages')+'</div>'+
+    '<div style="display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin:8px 2px 6px;font-size:12px;">'+ivb+'</div>'+
+    banner+
+    '<div class="matrix-wrap"><table class="matrix"><thead><tr>'+thead+'</tr></thead><tbody>'+body+
+    '</tbody><tfoot><tr style="font-weight:700;background:#f4f7fb;">'+
+    '<td colspan="4" style="text-align:right;">Totals ('+escapeHtml((SPNL_IVS.filter(function(z){return z[0]===spnlInterval;})[0]||['',''])[1])+(spnlCust?' &middot; '+escapeHtml(spnlCust):'')+')</td>'+
+    '<td class="c">'+tPkg+'</td><td class="c">'+spnlMoney(tRev)+'</td><td class="c">'+(anyCost?spnlMoney(tCost):'—')+'</td>'+
+    '<td class="c" style="color:'+(tMargin<0?'#c0392b':'#1e7d34')+';">'+(anyCost?spnlMoney(tMargin):'—')+'</td>'+
+    '<td class="c" style="color:'+(tMargin<0?'#c0392b':'#1e7d34')+';">'+(anyCost?tMp.toFixed(1)+'%':'—')+'</td></tr></tfoot></table></div>';
+}
 
 // ── Google Ads tab (data loaded from a separate google-ads-data.json file so the
 // Vtiger Refresh never overwrites it) ────────────────────────────────────────
@@ -2407,7 +2538,7 @@ function setMode(m){
   var btns=document.querySelectorAll('.mode-btn');
   for(var i=0;i<btns.length;i++){
     var dm=btns[i].getAttribute('data-mode');
-    var extra = dm==='pnl' ? ' mode-pnl' : (dm==='ship' ? ' mode-ship' : (dm==='pay' ? ' mode-pay' : (dm==='inv' ? ' mode-inv' : ((dm==='wt'||dm==='gads'||dm==='li') ? ' mode-mkt' : ''))));  // P&L green, marketing tabs orange, shipments/payment blue, invoice-check purple
+    var extra = dm==='pnl' ? ' mode-pnl' : ((dm==='ship'||dm==='spnl') ? ' mode-ship' : (dm==='pay' ? ' mode-pay' : (dm==='inv' ? ' mode-inv' : ((dm==='wt'||dm==='gads'||dm==='li') ? ' mode-mkt' : ''))));  // P&L green, marketing tabs orange, shipments/payment blue, invoice-check purple
     btns[i].className = 'mode-btn'+extra+(dm===m?' active':'');
   }
   renderTabs(); renderPanel();
@@ -2971,7 +3102,7 @@ function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(
 renderAll();
 </script>
 </body>
-</html>""".replace("__DATA_JSON__", data_json).replace("__DATA_URL__", data_url).replace("__BTN_CFG__", btn_cfg).replace("__GADS_EMBED__", gads_embed).replace("__LI_EMBED__", li_embed).replace("__WT_EMBED__", wt_embed).replace("__SHIP_EMBED__", ship_embed).replace("__PAY_EMBED__", pay_embed)
+</html>""".replace("__DATA_JSON__", data_json).replace("__DATA_URL__", data_url).replace("__BTN_CFG__", btn_cfg).replace("__GADS_EMBED__", gads_embed).replace("__LI_EMBED__", li_embed).replace("__WT_EMBED__", wt_embed).replace("__SHIP_EMBED__", ship_embed).replace("__PAY_EMBED__", pay_embed).replace("__SPNL_EMBED__", spnl_embed)
 
 
 # ─────────────────────────────────────────────
