@@ -1796,6 +1796,61 @@ function renderSpnlTabs(el){
   el.innerHTML=h;
 }
 function spnlMoney(v){ var n=Number(v)||0; var s='$'+Math.abs(n).toFixed(2).replace(/\\B(?=(\\d{3})+(?!\\d))/g,','); return n<0?('-'+s):s; }
+// ── Discrepancy email to Conmed (per flagged line: PO items, trackings, matched QB bill) ──
+function spnlEmailList(){ var de=(SPNL&&SPNL.discrepancy_emails)||{}, out=[]; for(var k in de){ if(de.hasOwnProperty(k)) out.push(k); }
+  out.sort(function(a,b){ return String(de[b].so_num||'').localeCompare(String(de[a].so_num||'')); }); return out; }
+function spnlEmailOpen(){
+  var ids=spnlEmailList(); if(!ids.length){ alert('No discrepancy lines (Pkgs ≠ PO Rows) available to email.'); return; }
+  var de=SPNL.discrepancy_emails;
+  var sel='<select id="spnlEmailSel" onchange="spnlEmailRender(this.value)" style="padding:6px 10px;font-size:13px;border:1px solid #cdd9e6;border-radius:6px;max-width:100%;">';
+  for(var i=0;i<ids.length;i++){ var e=de[ids[i]]; sel+='<option value="'+escapeHtml(ids[i])+'">'+escapeHtml(e.so_num+' · '+e.customer+' — '+e.packages+' pkgs vs '+e.po_rows+' PO rows')+'</option>'; }
+  sel+='</select>';
+  document.getElementById('spnlModalBody').innerHTML=
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:10px;">'+
+    '<div><b style="font-size:15px;">Discrepancy email &rarr; Conmed</b><div style="font-size:12px;color:#7a8a99;">Pick a flagged line, then copy the HTML into your email client.</div></div>'+
+    '<div>'+sel+'</div></div>'+
+    '<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">'+
+    '<button onclick="spnlEmailCopy()" class="mode-btn" style="padding:6px 14px;border:1px solid #cdd9e6;border-radius:6px;">📋 Copy email HTML</button>'+
+    '<span id="spnlEmailMsg" style="font-size:12px;color:#1e7d34;"></span></div>'+
+    '<div id="spnlEmailBody" style="border:1px solid #e3e8ef;border-radius:8px;overflow:auto;max-height:60vh;"></div>';
+  document.getElementById('spnlModal').style.display='flex';
+  spnlEmailRender(ids[0]);
+}
+function spnlEmailRender(so_id){ var e=(SPNL.discrepancy_emails||{})[so_id]; if(e) document.getElementById('spnlEmailBody').innerHTML=spnlEmailHtml(e); }
+function spnlEmailHtml(e){
+  var poList=(e.pos||[]).join(', '), one=(e.po_rows==1);
+  var items=(e.po_items||[]).map(function(it){ return '<tr><td style="padding:4px 10px;border:1px solid #e0e0e0;">'+escapeHtml(it.product)+'</td><td style="padding:4px 10px;border:1px solid #e0e0e0;text-align:center;">'+fmtQty(it.qty)+'</td></tr>'; }).join('')||'<tr><td colspan="2" style="padding:4px 10px;border:1px solid #e0e0e0;color:#888;">(no PO line items)</td></tr>';
+  var trk=(e.trackings||[]).map(function(t){ return '<li><a href="https://www.ups.com/track?loc=en_US&tracknum='+encodeURIComponent(t)+'">'+escapeHtml(t)+'</a></li>'; }).join('')||'<li>(none on file)</li>';
+  var b=e.bill, billHtml;
+  if(b){
+    var mine=(e.pos||[]).map(function(p){return String(p).toUpperCase();});
+    var lines=(b.lines||[]).map(function(l){ var isMine=mine.indexOf(String(l.desc||'').toUpperCase())>=0;
+      return '<tr'+(isMine?' style="background:#fff5d6;font-weight:600;"':'')+'><td style="padding:4px 10px;border:1px solid #e0e0e0;">'+escapeHtml(l.desc||'—')+(isMine?' &larr; this order':'')+'</td><td style="padding:4px 10px;border:1px solid #e0e0e0;text-align:right;">$'+(Number(l.amount)||0).toFixed(2)+'</td></tr>'; }).join('');
+    var others=(b.lines||[]).filter(function(l){ return mine.indexOf(String(l.desc||'').toUpperCase())<0; }).length;
+    billHtml='<p style="margin:14px 0 6px;"><b>Associated invoice &mdash; QuickBooks Bill #'+escapeHtml(b.doc_number||'')+'</b> (dated '+escapeHtml(b.date||'')+', total $'+(Number(b.total)||0).toFixed(2)+((Number(b.balance)||0)>0?', balance $'+(Number(b.balance)).toFixed(2):', paid')+')'+(others>0?' &mdash; note this invoice also bills '+others+' other PO'+(others!=1?'s':''):'')+':</p>'+
+      '<table style="border-collapse:collapse;font-size:13px;"><thead><tr><th style="padding:4px 10px;border:1px solid #e0e0e0;background:#f4f7fb;text-align:left;">Charged (PO)</th><th style="padding:4px 10px;border:1px solid #e0e0e0;background:#f4f7fb;">Amount</th></tr></thead><tbody>'+lines+'</tbody></table>'+
+      '<p style="margin:6px 0;font-size:12px;"><a href="'+escapeHtml(b.view_url||'')+'">&#8599; Open / download this invoice in QuickBooks</a></p>';
+  } else { billHtml='<p style="margin:14px 0;color:#a06000;">No matching QuickBooks Conmed bill was found for this PO.</p>'; }
+  return '<div style="font-family:Arial,Helvetica,sans-serif;color:#1f2d3d;font-size:14px;line-height:1.5;padding:18px 20px;background:#fff;">'+
+    '<p style="margin:0 0 6px;color:#7a8a99;font-size:12px;">To: Conmed &nbsp;&middot;&nbsp; Subject: Shipping discrepancy &mdash; '+escapeHtml(e.so_num)+' ('+escapeHtml(poList)+')</p><hr style="border:none;border-top:1px solid #e3e8ef;margin:6px 0 14px;">'+
+    '<p>Hi Conmed team,</p>'+
+    '<p>We spotted a discrepancy on the order below &mdash; the number of UPS packages does not match the line items on our purchase order &mdash; and wanted to flag it for reconciliation.</p>'+
+    '<p style="margin:10px 0;"><b>Order:</b> '+escapeHtml(e.so_num)+' &nbsp;&middot;&nbsp; <b>PO:</b> '+escapeHtml(poList)+' &nbsp;&middot;&nbsp; <b>PO date:</b> '+escapeHtml(e.po_date||'—')+'<br><b>Ship-to:</b> '+escapeHtml(e.customer)+'</p>'+
+    '<p style="margin:12px 0 4px;"><b>Items we ordered ('+e.po_rows+' line item'+(one?'':'s')+'):</b></p>'+
+    '<table style="border-collapse:collapse;font-size:13px;"><thead><tr><th style="padding:4px 10px;border:1px solid #e0e0e0;background:#f4f7fb;text-align:left;">Item</th><th style="padding:4px 10px;border:1px solid #e0e0e0;background:#f4f7fb;">Qty</th></tr></thead><tbody>'+items+'</tbody></table>'+
+    '<p style="margin:12px 0 4px;"><b>UPS packages: '+e.packages+'</b> (vs '+e.po_rows+' ordered line item'+(one?'':'s')+') &mdash; tracking numbers:</p>'+
+    '<ul style="margin:4px 0 4px 18px;padding:0;">'+trk+'</ul>'+
+    billHtml+
+    '<p style="margin:14px 0 4px;">Could you please help us reconcile why '+e.packages+' packages were shipped/billed against '+e.po_rows+' ordered line item'+(one?'':'s')+'? Happy to share any additional detail.</p>'+
+    '<p style="margin:10px 0 0;">Thank you,<br>JIT4You</p></div>';
+}
+function spnlEmailCopy(){ var s=document.getElementById('spnlEmailSel'); var e=s?(SPNL.discrepancy_emails||{})[s.value]:null; if(!e) return;
+  var html=spnlEmailHtml(e);
+  var done=function(){ var m=document.getElementById('spnlEmailMsg'); if(m){ m.textContent='Copied HTML to clipboard.'; setTimeout(function(){m.textContent='';},2500);} };
+  try{ if(navigator.clipboard&&navigator.clipboard.write&&window.ClipboardItem){ navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([html],{type:'text/plain'})})]).then(done,function(){spnlCopyFallback(html,done);}); return; } }catch(err){}
+  spnlCopyFallback(html,done); }
+function spnlCopyFallback(text,done){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta); if(done)done(); }
+function spnlEmailClose(ev){ if(ev&&ev.target&&ev.target.id!=='spnlModal') return; var m=document.getElementById('spnlModal'); if(m) m.style.display='none'; }
 function renderSpnlPanel(){
   if(!SPNL){ document.getElementById('panel').innerHTML='<div class="empty">Loading Shipments P&L…</div>'; loadSpnl(); return; }
   var base=spnlBaseRows();
@@ -1844,6 +1899,8 @@ function renderSpnlPanel(){
   ivb+='<span style="margin-left:14px;"></span><input type="file" id="spnlFile" accept=".csv,text/csv" style="display:none;" onchange="spnlOnFile(this)">'+
     '<button onclick="spnlTriggerUpload()" class="mode-btn" style="padding:5px 12px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;" title="Upload a UPS Billing Center CSV and re-match it in your browser (nothing leaves this page)">⬆ Upload UPS Billing CSV</button>'+
     (spnlUpRows?(' <span style="font-size:12px;color:#20603a;">using <b>'+escapeHtml(spnlUpName)+'</b> ('+spnlUpMatched+' matched'+(spnlUpUnmatched?', '+spnlUpUnmatched+' unmatched':'')+') <a onclick="spnlClearUpload()" style="cursor:pointer;color:#1F4E79;">clear</a></span>'):'');
+  var nEmail=Object.keys((SPNL&&SPNL.discrepancy_emails)||{}).length;
+  ivb+='<span style="margin-left:14px;"></span><button onclick="spnlEmailOpen()" class="mode-btn"'+(nEmail?'':' disabled')+' style="padding:5px 12px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;'+(nEmail?'':'opacity:.5;')+'" title="Generate a discrepancy alert email to Conmed for a flagged line">✉ Discrepancy email'+(nEmail?' ('+nEmail+')':'')+'</button>';
   var uatt = spnlUpRows? spnlUpUnatt : (SPNL.unattributed_total||0);
   var srcLabel = spnlUpRows? spnlUpName : (SPNL.billing_source||SPNL.billing_asof||'');
   var banner = pending
@@ -1863,7 +1920,8 @@ function renderSpnlPanel(){
     '<td class="c"'+(nDisc?' style="color:#c0392b;"':'')+'>'+(nDisc?nDisc+' ●':'✓')+'</td>'+
     '<td class="c">'+spnlMoney(tRev)+'</td><td class="c">'+(anyCost?spnlMoney(tCost):'—')+'</td>'+
     '<td class="c" style="color:'+(tMargin<0?'#c0392b':'#1e7d34')+';">'+(anyCost?spnlMoney(tMargin):'—')+'</td>'+
-    '<td class="c" style="color:'+(tMargin<0?'#c0392b':'#1e7d34')+';">'+(anyCost?tMp.toFixed(1)+'%':'—')+'</td></tr></tfoot></table></div>';
+    '<td class="c" style="color:'+(tMargin<0?'#c0392b':'#1e7d34')+';">'+(anyCost?tMp.toFixed(1)+'%':'—')+'</td></tr></tfoot></table></div>'+
+    '<div id="spnlModal" onclick="spnlEmailClose(event)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;align-items:center;justify-content:center;"><div onclick="event.stopPropagation()" style="background:#fff;max-width:760px;width:94%;max-height:88vh;overflow:auto;border-radius:10px;padding:20px 22px;box-shadow:0 12px 44px rgba(0,0,0,.32);"><div id="spnlModalBody"></div><div style="text-align:right;margin-top:14px;"><button onclick="spnlEmailClose()" class="mode-btn" style="padding:6px 16px;border-radius:6px;border:1px solid #cdd9e6;">Close</button></div></div></div>';
 }
 
 // ── Google Ads tab (data loaded from a separate google-ads-data.json file so the
