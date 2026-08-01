@@ -1711,7 +1711,7 @@ function spnlApplyCsv(text, fname){
   }
   var rows=[], soid;
   for(soid in si){ if(!si.hasOwnProperty(soid)) continue; var info=si[soid];
-    rows.push({customer:info.customer,so_num:info.so_num,so_id:soid,date:info.date,pos:[],packages:pkgs[soid]||0,revenue:info.revenue||0,cost:Math.round((costBySo[soid]||0)*100)/100,has_cost:(soid in costBySo)}); }
+    rows.push({customer:info.customer,so_num:info.so_num,so_id:soid,date:info.date,pos:info.pos||[],packages:pkgs[soid]||0,revenue:info.revenue||0,cost:Math.round((costBySo[soid]||0)*100)/100,has_cost:(soid in costBySo)}); }
   for(soid in costBySo){ if(!si[soid]){ rows.push({customer:'SO '+soid,so_num:'',so_id:soid,date:'',pos:[],packages:pkgs[soid]||0,revenue:0,cost:Math.round(costBySo[soid]*100)/100,has_cost:true}); } }
   spnlUpRows=rows; spnlUpUnatt=Math.round(unatt*100)/100; spnlUpUnattCat=unattCat; spnlUpName=fname; spnlUpMatched=matched; spnlUpUnmatched=unmatched;
   renderTabs(); renderSpnlPanel();
