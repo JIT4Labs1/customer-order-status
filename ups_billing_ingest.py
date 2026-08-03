@@ -149,7 +149,10 @@ def main():
     charges, detected, rows, headers, unattributed, unatt_total = parse_csv(path)
     total = round(sum(c["net"] for c in charges), 2)
     now = datetime.datetime.now().strftime("%Y-%m-%d %I:%M %p")
-    out = {"generated_at": now, "source_file": os.path.basename(path),
+    import hashlib
+    with open(path, "rb") as _f:
+        csv_sha = hashlib.sha256(_f.read()).hexdigest()
+    out = {"generated_at": now, "source_file": os.path.basename(path), "csv_sha": csv_sha,
            "detected_columns": detected, "row_count": rows,
            "package_count": len(charges), "total_net": total,
            "unattributed_total": unatt_total, "unattributed": unattributed,
