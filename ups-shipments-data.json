@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-08-03 09:39 AM PT",
-  "last_status_refresh": "2026-08-03 09:06 AM PT",
+  "pulled_at": "2026-08-03 07:00 PM PT",
+  "last_status_refresh": "2026-08-03 06:56 PM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -6282,12 +6282,12 @@
       "contact": "Krista Zanine",
       "ship_to": "Alpharetta, GA",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Roswell, GA",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "ALPHARETTA, GA",
       "date": "2026-08-03",
-      "time": "",
-      "delivered": false,
+      "time": "1:04 PM",
+      "delivered": true,
       "ship_date": "2026-07-30",
       "items": [
         {
@@ -6326,12 +6326,12 @@
       "contact": "Krista Zanine",
       "ship_to": "Alpharetta, GA",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Roswell, GA",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "ALPHARETTA, GA",
       "date": "2026-08-03",
-      "time": "",
-      "delivered": false,
+      "time": "1:04 PM",
+      "delivered": true,
       "ship_date": "2026-07-30",
       "items": [
         {
@@ -6359,6 +6359,59 @@
       ],
       "po": "PO782",
       "po_id": "168691"
+    },
+    {
+      "tracking": "875256759845",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Radiance Diagnostics",
+      "contact": "Siva Kumar",
+      "ship_to": "Naperville, IL",
+      "order": "#1125",
+      "service": "FedEx",
+      "status": "In Transit",
+      "activity": "",
+      "delivered": false,
+      "location": "",
+      "date": "2026-08-03",
+      "time": "",
+      "ship_date": "2026-08-03",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=875256759845",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6127 Olympus LDH Reagent (Olympus Lactate Dehydogenase)",
+          "sku": "OSR6127",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B24839 Access 25OH Vitamin D Calibrators",
+          "sku": "B24839",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33830 Access Total T3, 100 Determinations",
+          "sku": "33830",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B63284 Access TSH Stimulating Hormone (3rd IS) 2 x 100 Determinations",
+          "sku": "B63284",
+          "qty": 5
+        }
+      ],
+      "so_num": "SO499",
+      "so_id": "168444",
+      "pos": [
+        {
+          "po": "PO778",
+          "vendor": "PMA Services",
+          "po_id": "168445"
+        }
+      ],
+      "po": "PO778",
+      "po_id": "168445"
     }
   ]
 }
