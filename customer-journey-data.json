@@ -1,0 +1,19 @@
+{
+  "pulled_at": "2026-08-04 02:55 PM PT",
+  "property": "JIT4You.com - GA4 (433514600)",
+  "link_date": "2026-08-01",
+  "data_from": "2026-08-01",
+  "data_through": "2026-08-03",
+  "days_of_data": 3,
+  "excluded_cities": [
+    "Belgrade"
+  ],
+  "totals": {
+    "abandoner_sessions": 0,
+    "atc_sessions": 5,
+    "purchaser_sessions": 2,
+    "dev_excluded_sessions": 3
+  },
+  "abandoners": [],
+  "note": "Per-visitor journeys from the GA4\u2192BigQuery event export. A session is a 'cart abandoner' if it fired add_to_cart but never purchase. Belgrade (site developer) is excluded. The export is not retroactive \u2014 it only holds data from the link date (Aug 1 2026) forward and builds history from there."
+}
