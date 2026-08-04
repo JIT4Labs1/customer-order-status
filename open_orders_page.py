@@ -1150,8 +1150,9 @@ function liGa4Html(){
 // ── Website Traffic tab (GA4 daily visitors by source + sales by source) ──────
 var WT=null, wtLoading=false, wtWin='last_30_days', wtLabels=true, wtTrend=true, wtVisible={};
 var wtCampVisible={};   // item 3: which Google Ads campaigns show as series in the bar chart
-var wtMetricImpr=false, wtMetricClk=false;   // bar-chart ad-metric view (Google Ads impressions / clicks)
-var WT_WIN_ORDER=['today','last_7_days','last_30_days','this_month','last_month','this_quarter','last_quarter','this_year'];
+var wtMetricImpr=false, wtMetricClk=false, wtMetricAtc=true;   // ad-metric view: Google Ads impressions (area) / clicks (line) / add-to-cart (cart icons)
+var wtCustFrom='', wtCustTo='';   // custom date-range picker (drives the whole tab via WT.daily)
+var WT_WIN_ORDER=['today','yesterday','last_7_days','last_30_days','this_month','last_month','this_quarter','last_quarter','this_year'];
 var WT_COLORS={ 'Direct':'#6b7a8f','Google Ads':'#1a73e8','Organic Search':'#34a853','Email':'#f59e0b','LinkedIn':'#0a66c2','Other':'#aab4bf' };
 function loadWT(){
   if(WT_EMBED){ WT=WT_EMBED; wtLoading=false; if(mode==='wt') renderWtPanel(); return; }
@@ -1162,7 +1163,13 @@ function loadWT(){
     .catch(function(e){ wtLoading=false; if(mode==='wt') document.getElementById('panel').innerHTML='<div class="empty">Could not load website-traffic data: '+escapeHtml(e.message)+'</div>'; });
 }
 function wtRefresh(){ WT=null; wtLoading=false; document.getElementById('panel').innerHTML='<div class="empty">Reloading website-traffic snapshot…</div>'; loadWT(); }
-function wtSetWin(v){ wtWin=v; renderWtPanel(); }
+function wtSetWin(v){
+  wtWin=v;
+  if(v==='__custom__'){ var dly=WT&&WT.daily; if(dly){ if(!wtCustTo) wtCustTo=dly.end;
+    if(!wtCustFrom){ var e=new Date((wtCustTo||dly.end)+'T00:00:00'); e.setDate(e.getDate()-29);
+      var f=e.toISOString().slice(0,10); wtCustFrom=(f<dly.start?dly.start:f); } } }
+  renderWtPanel();
+}
 function wtToggleLabels(c){ wtLabels=!!c; renderWtPanel(); }
 function wtToggleTrend(c){ wtTrend=!!c; renderWtPanel(); }
 function wtToggleSource(bk,c){ wtVisible[bk]=!!c; renderWtPanel(); }
@@ -1171,7 +1178,8 @@ function wtAllSources(c){ var bs=(WT&&WT.buckets)||[]; for(var i=0;i<bs.length;i
 function wtVisBuckets(){ var bs=(WT&&WT.buckets)||[], v=[]; for(var i=0;i<bs.length;i++) if(wtVisible[bs[i]]) v.push(bs[i]); return v; }
 // ── item 3: active-campaign checkboxes that add campaign series to the visitors BAR CHART ──
 var WT_CAMP_PALETTE=['#7e57c2','#26a69a','#ef6c00','#42a5f5','#ec407a','#9ccc65','#5c6bc0','#8d6e63','#26c6da','#c2185b'];
-function wtCampList(){ var w=(WT&&WT.windows&&WT.windows[wtWin])||{}; return (w.gads_active&&w.gads_active.length)?w.gads_active:(w.gads_campaigns||[]); }
+var wtCurWin=null;   // the window object currently being rendered (preset or custom)
+function wtCampList(){ var w=wtCurWin||(WT&&WT.windows&&WT.windows[wtWin])||{}; return (w.gads_active&&w.gads_active.length)?w.gads_active:(w.gads_campaigns||[]); }
 function wtInitCamps(){ var cs=wtCampList(); for(var i=0;i<cs.length;i++){ if(!(cs[i] in wtCampVisible)) wtCampVisible[cs[i]]=false; } }  // default OFF: chart starts on source buckets
 function wtCampColor(name){ var cs=wtCampList(), i=cs.indexOf(name); if(i<0){ i=0; for(var j=0;j<name.length;j++) i+=name.charCodeAt(j); } return WT_CAMP_PALETTE[i%WT_CAMP_PALETTE.length]; }
 function wtVisCampaigns(){ var cs=wtCampList(), v=[]; for(var i=0;i<cs.length;i++) if(wtCampVisible[cs[i]]) v.push(cs[i]); return v; }
@@ -1179,6 +1187,54 @@ function wtToggleCampIdx(i,c){ var cs=wtCampList(); if(cs[i]!=null){ wtCampVisib
 function wtAllCamps(c){ var cs=wtCampList(); for(var i=0;i<cs.length;i++) wtCampVisible[cs[i]]=!!c; renderWtPanel(); }
 function wtToggleImpr(c){ wtMetricImpr=!!c; renderWtPanel(); }
 function wtToggleClk(c){ wtMetricClk=!!c; renderWtPanel(); }
+function wtToggleAtc(c){ wtMetricAtc=!!c; renderWtPanel(); }
+// ── custom date range: reconstruct a full window object from WT.daily for [from,to] ──
+function wtIsCustom(){ return wtWin==='__custom__'; }
+function wtApplyCustom(){
+  var f=document.getElementById('wtCustFrom'), t=document.getElementById('wtCustTo');
+  if(!f||!t) return;
+  if(!f.value||!t.value){ alert('Pick both a start and end date.'); return; }
+  if(f.value>t.value){ var tmp=f.value; f.value=t.value; t.value=tmp; }
+  wtCustFrom=f.value; wtCustTo=t.value; wtWin='__custom__'; renderWtPanel();
+}
+function wtBuildCustomWin(from,to){
+  var dly=WT&&WT.daily; if(!dly) return null;
+  var buckets=dly.buckets||WT.buckets||[];
+  var inR=function(t){ return t>=from && t<=to; };
+  // points (daily channel + camp:: sessions), filtered
+  var points=[]; var camps=dly.campaigns||[];
+  for(var i=0;i<(dly.points||[]).length;i++){ var p=dly.points[i]; if(inR(p.t)) points.push(p); }
+  // sales-by-source: aggregate sday [sessions,conversions,revenue,transactions] per bucket
+  var agg={}; for(var b=0;b<buckets.length;b++) agg[buckets[b]]={sessions:0,conversions:0,revenue:0,transactions:0};
+  var sd=dly.sday||{};
+  for(var t in sd){ if(!sd.hasOwnProperty(t)||!inR(t)) continue; var row=sd[t];
+    for(var b=0;b<buckets.length;b++){ var bk=buckets[b], v=row[bk]||[0,0,0,0], a=agg[bk];
+      a.sessions+=v[0]||0; a.conversions+=v[1]||0; a.revenue+=v[2]||0; a.transactions+=v[3]||0; } }
+  var sales=[]; for(var b=0;b<buckets.length;b++){ var bk=buckets[b], a=agg[bk];
+    sales.push({source:bk,sessions:a.sessions,conversions:a.conversions,revenue:Math.round(a.revenue*100)/100,transactions:a.transactions}); }
+  var totals={sessions:0,conversions:0,revenue:0,transactions:0};
+  for(var s=0;s<sales.length;s++){ totals.sessions+=sales[s].sessions; totals.conversions+=sales[s].conversions; totals.revenue+=sales[s].revenue; totals.transactions+=sales[s].transactions; }
+  totals.revenue=Math.round(totals.revenue*100)/100;
+  // per-campaign gads: series (impr/clicks/atc), cost, events, detail
+  var gday=dly.gday||{}, gads_series={}, gads_cost={}, gads_events={}, gads_detail=[], itot={};
+  for(var ci=0;ci<camps.length;ci++){ var c=camps[ci], arr=gday[c]||[], ser=[], cost=0, atc=0, pur=0, se=0,cv=0,rv=0,tr=0, im=0;
+    for(var j=0;j<arr.length;j++){ var g=arr[j]; if(!inR(g.t)) continue;
+      ser.push({t:g.t,impr:g.impr||0,clicks:g.clicks||0,atc:g.atc||0});
+      cost+=g.cost||0; atc+=g.atc||0; pur+=g.purchase||0; im+=g.impr||0;
+      se+=g.sessions||0; cv+=g.conversions||0; rv+=g.revenue||0; tr+=g.transactions||0; }
+    gads_series[c]=ser; gads_cost[c]=Math.round(cost*100)/100; gads_events[c]={add_to_cart:atc,purchase:pur}; itot[c]=im;
+    if(se>0||im>0){ var disp=(c.indexOf('(untagged')===0)?c:c;
+      gads_detail.push({name:c,campaign:(c.indexOf('(untagged')===0?null:c),sessions:se,conversions:cv,revenue:Math.round(rv*100)/100,transactions:tr}); } }
+  var gads_campaigns=camps.slice().filter(function(c){ return (itot[c]||0)>0 || (gads_series[c]&&gads_series[c].length); });
+  gads_campaigns.sort(function(a,b){ return (itot[b]||0)-(itot[a]||0); });
+  gads_detail.sort(function(a,b){ return b.sessions-a.sessions; });
+  var lab=from+' → '+to;
+  return {label:lab,granularity:'day',points:points,sales:sales,totals:totals,
+    email_detail:[],gads_detail:gads_detail,gads_campaigns:gads_campaigns,gads_series:gads_series,
+    gads_cost:gads_cost,gads_start:dly.gads_start||{},gads_events:gads_events,
+    gads_types:dly.gads_types||{},gads_status:dly.gads_status||{},gads_active:gads_campaigns,
+    klaviyo_flows:[],_custom:true};
+}
 // ── items 4 & 5: Klaviyo email-flow clicks (bar chart of clicks per flow) ──
 function wtFlowChart(win){
   var flows=win.klaviyo_flows||[], k=(WT.klaviyo||{});
@@ -1262,51 +1318,71 @@ function wtBarSvg(win){
   return '<div style="overflow-x:auto;padding:4px 0;">'+svg+'</div>';
 }
 function wtBarSvgAd(win){
-  // Google Ads impressions / clicks as GROUPED bars per period, summed over selected campaigns
+  // Google Ads: Impressions as AREA (left axis), Clicks as LINE (right axis),
+  // Add-to-cart as CART ICONS on the periods the event occurred. Summed over selected campaigns.
   var pts=win.points||[], n=pts.length;
   var camps=wtVisCampaigns(); if(!camps.length) camps=wtCampList();
-  var metrics=[]; if(wtMetricImpr) metrics.push({key:'impr',color:WT_IMPR_COLOR,label:'Impressions'}); if(wtMetricClk) metrics.push({key:'clicks',color:WT_CLK_COLOR,label:'Clicks'});
   if(!camps.length) return '<div class="empty">No Google Ads campaigns in this window.</div>';
-  if(!metrics.length) return '<div class="empty">Select Impressions and/or Clicks above.</div>';
+  if(!(wtMetricImpr||wtMetricClk||wtMetricAtc)) return '<div class="empty">Select Impressions, Clicks and/or Add-to-cart above.</div>';
   if(!n) return '<div class="empty">No data in this window.</div>';
-  // lookup: campaign -> time key -> {impr,clicks}
+  // lookup: campaign -> time key -> {impr,clicks,atc}
   var gs=win.gads_series||{}, lut={};
   for(var ci=0;ci<camps.length;ci++){ var arr=gs[camps[ci]]||[], m={}; for(var k=0;k<arr.length;k++){ m[arr[k].t]=arr[k]; } lut[camps[ci]]=m; }
-  var vals=[], maxV=0;
-  for(var i=0;i<n;i++){ var t=pts[i].t, mv={};
-    for(var mi=0;mi<metrics.length;mi++){ var mk=metrics[mi].key, s=0;
-      for(var cj=0;cj<camps.length;cj++){ var rec=lut[camps[cj]][t]; if(rec) s+=rec[mk]||0; }
-      mv[mk]=s; if(s>maxV) maxV=s; }
-    vals.push(mv);
+  var impr=[],clk=[],atc=[], imprMax=0,clkMax=0, imprTot=0,clkTot=0,atcTot=0;
+  for(var i=0;i<n;i++){ var t=pts[i].t, si=0,sc=0,sa=0;
+    for(var cj=0;cj<camps.length;cj++){ var rec=lut[camps[cj]][t]; if(rec){ si+=rec.impr||0; sc+=rec.clicks||0; sa+=rec.atc||0; } }
+    impr.push(si); clk.push(sc); atc.push(sa); imprTot+=si; clkTot+=sc; atcTot+=sa;
+    if(si>imprMax) imprMax=si; if(sc>clkMax) clkMax=sc;
   }
-  if(maxV<=0) maxV=1;
-  function niceMax(m){ var pow=Math.pow(10,Math.floor(Math.log(m)/Math.LN10)); var f=m/pow; var nf=f<=1?1:f<=2?2:f<=5?5:10; return nf*pow; }
-  var yMax=niceMax(maxV*1.08);
-  var padL=52,padR=14,padT=18,padB=52, plotH=250;
-  var minStep=Math.max(26, metrics.length*12+8), plotW=Math.max(660-padL-padR, n*minStep);
+  function niceMax(m){ if(m<=0) return 1; var pow=Math.pow(10,Math.floor(Math.log(m)/Math.LN10)); var f=m/pow; var nf=f<=1?1:f<=2?2:f<=5?5:10; return nf*pow; }
+  var iMax=niceMax(imprMax*1.08), cMax=niceMax(clkMax*1.12);
+  var padL=52,padR=(wtMetricClk?52:16),padT=24,padB=52, plotH=250;
+  var minStep=26, plotW=Math.max(660-padL-padR, n*minStep);
   var W=padL+plotW+padR, H=padT+plotH+padB, step=plotW/n;
-  var groupW=Math.min(38, step*0.7), bw=groupW/metrics.length;
-  function yOf(v){ return padT+plotH-(plotH*v/yMax); }
+  function X(i){ return padL+step*i+step/2; }
+  function Yi(v){ v=Math.max(0,v); return padT+plotH-(plotH*v/iMax); }
+  function Yc(v){ v=Math.max(0,v); return padT+plotH-(plotH*v/cMax); }
   var svg='<svg viewBox="0 0 '+W+' '+H+'" width="100%" preserveAspectRatio="xMinYMin meet" style="max-width:'+W+'px;font-family:inherit;">';
   var gl=4;
-  for(var g=0;g<=gl;g++){ var yv=yMax*g/gl, yy=padT+plotH-(plotH*g/gl);
+  for(var g=0;g<=gl;g++){ var yy=padT+plotH-(plotH*g/gl);
     svg+='<line x1="'+padL+'" y1="'+yy.toFixed(1)+'" x2="'+(padL+plotW)+'" y2="'+yy.toFixed(1)+'" stroke="#e6ecf2" stroke-width="1"/>';
-    svg+='<text x="'+(padL-6)+'" y="'+(yy+3.5).toFixed(1)+'" text-anchor="end" font-size="10" fill="#7a8a99">'+Math.round(yv).toLocaleString()+'</text>';
+    if(wtMetricImpr){ svg+='<text x="'+(padL-6)+'" y="'+(yy+3.5).toFixed(1)+'" text-anchor="end" font-size="10" fill="'+WT_IMPR_COLOR+'">'+Math.round(iMax*g/gl).toLocaleString()+'</text>'; }
+    if(wtMetricClk){ svg+='<text x="'+(padL+plotW+6)+'" y="'+(yy+3.5).toFixed(1)+'" text-anchor="start" font-size="10" fill="'+WT_CLK_COLOR+'">'+Math.round(cMax*g/gl).toLocaleString()+'</text>'; }
+  }
+  // axis titles
+  if(wtMetricImpr){ svg+='<text x="'+padL+'" y="'+(padT-10)+'" text-anchor="start" font-size="10" font-weight="700" fill="'+WT_IMPR_COLOR+'">Impressions ▧</text>'; }
+  if(wtMetricClk){ svg+='<text x="'+(padL+plotW)+'" y="'+(padT-10)+'" text-anchor="end" font-size="10" font-weight="700" fill="'+WT_CLK_COLOR+'">Clicks —</text>'; }
+  // impressions AREA
+  if(wtMetricImpr){
+    var ap='M '+X(0).toFixed(1)+' '+(padT+plotH).toFixed(1);
+    for(var i=0;i<n;i++){ ap+=' L '+X(i).toFixed(1)+' '+Yi(impr[i]).toFixed(1); }
+    ap+=' L '+X(n-1).toFixed(1)+' '+(padT+plotH).toFixed(1)+' Z';
+    svg+='<path d="'+ap+'" fill="'+WT_IMPR_COLOR+'" fill-opacity="0.16" stroke="none"/>';
+    var lp=''; for(var i=0;i<n;i++){ lp+=X(i).toFixed(1)+','+Yi(impr[i]).toFixed(1)+' '; }
+    svg+='<polyline points="'+lp+'" fill="none" stroke="'+WT_IMPR_COLOR+'" stroke-width="2" stroke-linejoin="round"/>';
+    for(var i=0;i<n;i++){ svg+='<circle cx="'+X(i).toFixed(1)+'" cy="'+Yi(impr[i]).toFixed(1)+'" r="1.6" fill="'+WT_IMPR_COLOR+'"><title>'+escapeHtml(wtLabel(pts[i].t,win.granularity))+' · Impressions: '+impr[i].toLocaleString()+'</title></circle>'; }
+  }
+  // clicks LINE (right axis)
+  if(wtMetricClk){
+    var cp=''; for(var i=0;i<n;i++){ cp+=X(i).toFixed(1)+','+Yc(clk[i]).toFixed(1)+' '; }
+    svg+='<polyline points="'+cp+'" fill="none" stroke="'+WT_CLK_COLOR+'" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>';
+    for(var i=0;i<n;i++){ svg+='<circle cx="'+X(i).toFixed(1)+'" cy="'+Yc(clk[i]).toFixed(1)+'" r="2.2" fill="#fff" stroke="'+WT_CLK_COLOR+'" stroke-width="1.4"><title>'+escapeHtml(wtLabel(pts[i].t,win.granularity))+' · Clicks: '+clk[i].toLocaleString()+'</title></circle>'; }
+  }
+  // add-to-cart CART ICONS on periods where atc>0 (placed near the top of the plot)
+  if(wtMetricAtc){
+    for(var i=0;i<n;i++){ if((atc[i]||0)<=0) continue;
+      var iconY=padT+10;
+      svg+='<text x="'+X(i).toFixed(1)+'" y="'+iconY.toFixed(1)+'" text-anchor="middle" font-size="13">🛒<title>'+escapeHtml(wtLabel(pts[i].t,win.granularity))+' · Add to cart: '+atc[i].toLocaleString()+'</title></text>';
+      if(wtLabels){ svg+='<text x="'+X(i).toFixed(1)+'" y="'+(iconY+11).toFixed(1)+'" text-anchor="middle" font-size="8" font-weight="700" fill="#8a6d1a">'+atc[i].toLocaleString()+'</text>'; }
+    }
   }
   var labEvery=Math.ceil(n/12);
-  for(var i=0;i<n;i++){
-    var gx=padL+step*i+(step-groupW)/2;
-    for(var mi=0;mi<metrics.length;mi++){ var mk=metrics[mi].key, v=vals[i][mk]||0; if(v<0) v=0;
-      var hh=plotH*v/yMax, bx=gx+bw*mi, by=padT+plotH-hh;
-      svg+='<rect x="'+bx.toFixed(1)+'" y="'+by.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+hh.toFixed(1)+'" fill="'+metrics[mi].color+'"><title>'+escapeHtml(wtLabel(pts[i].t,win.granularity))+' · '+metrics[mi].label+': '+v.toLocaleString()+'</title></rect>';
-      if(wtLabels && v>0){ svg+='<text x="'+(bx+bw/2).toFixed(1)+'" y="'+(by-3).toFixed(1)+'" text-anchor="middle" font-size="8" font-weight="600" fill="'+metrics[mi].color+'">'+v.toLocaleString()+'</text>'; }
-    }
-    if(i%labEvery===0){ var lx=gx+groupW/2, ly=padT+plotH+14;
-      svg+='<text x="'+lx.toFixed(1)+'" y="'+ly+'" text-anchor="end" font-size="9.5" fill="#5a6b7a" transform="rotate(-45 '+lx.toFixed(1)+' '+ly+')">'+escapeHtml(wtLabel(pts[i].t,win.granularity))+'</text>';
-    }
+  for(var i=0;i<n;i++){ if(i%labEvery!==0) continue; var lx=X(i), ly=padT+plotH+14;
+    svg+='<text x="'+lx.toFixed(1)+'" y="'+ly+'" text-anchor="end" font-size="9.5" fill="#5a6b7a" transform="rotate(-45 '+lx.toFixed(1)+' '+ly+')">'+escapeHtml(wtLabel(pts[i].t,win.granularity))+'</text>';
   }
   svg+='<line x1="'+padL+'" y1="'+(padT+plotH)+'" x2="'+(padL+plotW)+'" y2="'+(padT+plotH)+'" stroke="#cdd9e6" stroke-width="1"/></svg>';
-  var note='<div style="font-size:11px;color:#7a8a99;margin:2px 2px 0;">Google Ads '+metrics.map(function(m){return m.label;}).join(' &amp; ')+' &middot; summed over '+(wtVisCampaigns().length?('the '+camps.length+' selected campaign'+(camps.length>1?'s':'')):('all '+camps.length+' active campaigns'))+' &middot; source buckets don’t apply to ad metrics.</div>';
+  var parts=[]; if(wtMetricImpr) parts.push('Impressions '+imprTot.toLocaleString()+' (area)'); if(wtMetricClk) parts.push('Clicks '+clkTot.toLocaleString()+' (line)'); if(wtMetricAtc) parts.push('🛒 Add-to-cart '+atcTot.toLocaleString()+' (icon on event days)');
+  var note='<div style="font-size:11px;color:#7a8a99;margin:2px 2px 0;">Google Ads '+parts.join(' &middot; ')+' &middot; summed over '+(wtVisCampaigns().length?('the '+camps.length+' selected campaign'+(camps.length>1?'s':'')):('all '+camps.length+' active campaigns'))+' &middot; source buckets don’t apply to ad metrics.</div>';
   return '<div style="overflow-x:auto;padding:4px 0;">'+svg+'</div>'+note;
 }
 function wtLegend(){
@@ -1324,9 +1400,11 @@ function wtLegend(){
   // ad-metric checkboxes — Google Ads impressions / clicks (grouped-bar view; both can be on)
   h+='<div style="display:flex;flex-wrap:wrap;gap:6px 14px;margin:0 2px 8px;font-size:12px;color:#2c3e50;align-items:center;">';
   h+='<span style="color:#7a8a99;">Ad metric:</span>';
-  h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;"><input type="checkbox" onchange="wtToggleImpr(this.checked)"'+(wtMetricImpr?' checked':'')+'><span style="width:12px;height:12px;border-radius:2px;background:'+WT_IMPR_COLOR+';display:inline-block;"></span>Impressions</label>';
-  h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;"><input type="checkbox" onchange="wtToggleClk(this.checked)"'+(wtMetricClk?' checked':'')+'><span style="width:12px;height:12px;border-radius:2px;background:'+WT_CLK_COLOR+';display:inline-block;"></span>Clicks</label>';
-  if(wtMetricImpr||wtMetricClk){ h+='<span style="font-size:11px;color:#9aa7b4;">showing Google Ads campaign '+((wtMetricImpr&&wtMetricClk)?'impressions &amp; clicks':(wtMetricImpr?'impressions':'clicks'))+' (grouped per period) — Visitors view paused</span>'; }
+  h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;" title="Impressions shown as a filled area (left axis)"><input type="checkbox" onchange="wtToggleImpr(this.checked)"'+(wtMetricImpr?' checked':'')+'><span style="width:14px;height:9px;border-radius:2px;background:'+WT_IMPR_COLOR+';opacity:.55;display:inline-block;"></span>Impressions <span style="font-size:10px;color:#9aa7b4;">(area)</span></label>';
+  h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;" title="Clicks shown as a line (right axis)"><input type="checkbox" onchange="wtToggleClk(this.checked)"'+(wtMetricClk?' checked':'')+'><span style="width:14px;height:0;border-top:2.4px solid '+WT_CLK_COLOR+';display:inline-block;"></span>Clicks <span style="font-size:10px;color:#9aa7b4;">(line)</span></label>';
+  h+='<label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;" title="🛒 icon marks each day an add-to-cart event happened"><input type="checkbox" onchange="wtToggleAtc(this.checked)"'+(wtMetricAtc?' checked':'')+'>🛒 Add to cart <span style="font-size:10px;color:#9aa7b4;">(day icon)</span></label>';
+  if(wtMetricImpr||wtMetricClk){ h+='<span style="font-size:11px;color:#9aa7b4;">Impressions area &amp; clicks line (dual axis)'+(wtMetricAtc?', 🛒 on add-to-cart days':'')+' — Visitors view paused</span>'; }
+  else if(wtMetricAtc){ h+='<span style="font-size:11px;color:#9aa7b4;">turn on Impressions or Clicks to see the chart with 🛒 add-to-cart day markers</span>'; }
   h+='</div>';
   // campaign series checkboxes — break the Google Ads bucket into its active campaigns
   var cs=wtCampList();
@@ -1453,12 +1531,37 @@ function wtGadsGrid(win){
 function renderWtPanel(){
   if(!WT){ document.getElementById('panel').innerHTML='<div class="empty">Loading website-traffic data…</div>'; loadWT(); return; }
   var allb=WT.buckets||[]; for(var z=0;z<allb.length;z++){ if(!(allb[z] in wtVisible)) wtVisible[allb[z]]=true; }
-  wtInitCamps();
-  var wins=WT.windows||{}, ids=WT_WIN_ORDER;
-  var win=wins[wtWin]||wins['last_30_days']||wins[ids[0]];
+  var wins=WT.windows||{}, ids=WT_WIN_ORDER, hasDaily=!!(WT&&WT.daily);
+  var custWin=null, custErr='';
+  if(wtIsCustom()){
+    if(!hasDaily){ custErr='Custom ranges need the latest snapshot (daily history not found in this data). Reload, or pick a preset window.'; }
+    else { custWin=wtBuildCustomWin(wtCustFrom,wtCustTo); if(!custWin||!(custWin.points&&custWin.points.length)) custErr='No data in the selected range ('+escapeHtml(wtCustFrom)+' → '+escapeHtml(wtCustTo)+').'; }
+  }
+  var win = wtIsCustom() ? (custWin||wins['last_30_days']||wins[ids[0]]) : (wins[wtWin]||wins['last_30_days']||wins[ids[0]]);
+  wtCurWin=win; wtInitCamps();
   var sel='<select onchange="wtSetWin(this.value)" style="padding:7px 10px;border:1px solid #cdd9e6;border-radius:6px;font-size:13px;font-family:inherit;">';
   for(var i=0;i<ids.length;i++){ var w=wins[ids[i]]; if(!w) continue; sel+='<option value="'+ids[i]+'"'+(ids[i]===wtWin?' selected':'')+'>'+escapeHtml(w.label)+'</option>'; }
+  sel+='<option value="__custom__"'+(wtIsCustom()?' selected':'')+'>Custom range…</option>';
   sel+='</select>';
+  if(wtIsCustom()){
+    var dmin=hasDaily?WT.daily.start:'', dmax=hasDaily?WT.daily.end:'';
+    sel+=' <span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#5a6b7a;">'+
+      '<input type="date" id="wtCustFrom" value="'+escapeHtml(wtCustFrom||'')+'"'+(dmin?' min="'+dmin+'"':'')+(dmax?' max="'+dmax+'"':'')+' style="padding:5px 7px;border:1px solid #cdd9e6;border-radius:6px;font-size:12px;font-family:inherit;">'+
+      '<span>→</span>'+
+      '<input type="date" id="wtCustTo" value="'+escapeHtml(wtCustTo||'')+'"'+(dmin?' min="'+dmin+'"':'')+(dmax?' max="'+dmax+'"':'')+' style="padding:5px 7px;border:1px solid #cdd9e6;border-radius:6px;font-size:12px;font-family:inherit;">'+
+      '<button class="refresh-btn" style="padding:6px 12px;" onclick="wtApplyCustom()"><span class="lbl">Apply</span></button>'+
+      (hasDaily?'<span style="color:#9aa7b4;font-size:11px;">history '+escapeHtml(dmin)+' → '+escapeHtml(dmax)+'</span>':'')+
+    '</span>';
+  }
+  if(custErr){
+    document.getElementById('panel').innerHTML =
+      '<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">'+
+      '<div><h2>Website Traffic — Visitors by Source</h2><div class="sub">GA4 '+escapeHtml(WT.property||'')+' &middot; pulled '+escapeHtml(WT.pulled_at||'')+'</div></div>'+
+      '<div style="font-size:13px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">Time window: '+sel+
+      '<button class="refresh-btn" onclick="wtRefresh()" title="Reload the latest website-traffic snapshot"><span class="lbl">↻ Reload</span></button></div></div></div>'+
+      '<div class="empty" style="margin:16px 2px;">'+custErr+'</div>';
+    return;
+  }
   var tot=win.totals||{sessions:0,conversions:0,revenue:0,transactions:0};
   // marketing visitors = Google Ads + LinkedIn + Email
   var mkt=0, smap={}; for(var s=0;s<(win.sales||[]).length;s++){ smap[win.sales[s].source]=win.sales[s]; }
