@@ -1,5 +1,5 @@
 {
-  "pulled_at": "2026-08-04 02:55 PM PT",
+  "pulled_at": "2026-08-04 03:06 PM PT",
   "property": "JIT4You.com - GA4 (433514600)",
   "link_date": "2026-08-01",
   "data_from": "2026-08-01",
@@ -8,12 +8,248 @@
   "excluded_cities": [
     "Belgrade"
   ],
-  "totals": {
+  "totals_all_window": {
+    "purchaser_sessions": 1,
     "abandoner_sessions": 0,
-    "atc_sessions": 5,
-    "purchaser_sessions": 2,
     "dev_excluded_sessions": 3
   },
-  "abandoners": [],
-  "note": "Per-visitor journeys from the GA4\u2192BigQuery event export. A session is a 'cart abandoner' if it fired add_to_cart but never purchase. Belgrade (site developer) is excluded. The export is not retroactive \u2014 it only holds data from the link date (Aug 1 2026) forward and builds history from there."
+  "sessions": [
+    {
+      "user": "374555626.1778060846",
+      "session_id": 1785792176,
+      "city": "Belgrade",
+      "region": "Vojvodina",
+      "country": "Serbia",
+      "session_start": "2026-08-03T21:22:56.483074+00:00",
+      "page_views": 4,
+      "class": "dev",
+      "atc_items": [
+        "Alinity 0L10501 SGM ALINITY RAME",
+        "Alinity 0L1156009 FOB GOLD NG SENTINEL WIDE REAGENT",
+        "Alinity 0L11561H FOB GOLD SENTINEL TUBE SCREEN",
+        "Alinity 0L1157103 FOB GOLD SENTINEL CONTROL SET WIDE"
+      ],
+      "purchase_items": [],
+      "revenue": null,
+      "journey": [
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/"
+        },
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/a/search/all?filter_category%5B0%5D=Chemistry"
+        },
+        {
+          "type": "cart",
+          "label": "Alinity 0L10501 SGM ALINITY RAME"
+        },
+        {
+          "type": "cart",
+          "label": "Alinity 0L1156009 FOB GOLD NG SENTINEL WIDE REAGENT"
+        },
+        {
+          "type": "cart",
+          "label": "Alinity 0L11561H FOB GOLD SENTINEL TUBE SCREEN"
+        },
+        {
+          "type": "cart",
+          "label": "Alinity 0L1157103 FOB GOLD SENTINEL CONTROL SET WIDE"
+        }
+      ]
+    },
+    {
+      "user": "2057027763.1785757354",
+      "session_id": 1785757353,
+      "city": "Belgrade",
+      "region": "Vojvodina",
+      "country": "Serbia",
+      "session_start": "2026-08-03T11:42:33.033596+00:00",
+      "page_views": 4,
+      "class": "dev",
+      "atc_items": [
+        "Siemens Atellica 10732998  aCCP"
+      ],
+      "purchase_items": [],
+      "revenue": null,
+      "journey": [
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/?srsltid=ChAI8PjA0wYQw7Tho5XAktF2ElEAanxS4AWHMQn1ncag0GgW6Ay%2BPpd9C6bgkPJ%2B%2F55%2F4TKFJp9B1BcIDsQpsQBR0EocZmxonzs%2FCC2AkandUVxsizGUwtnjtLLrTBJmGXDAWjQaAp6m"
+        },
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/?srsltid=ChAI8PjA0wYQw7Tho5XAktF2ElEAanxS4NKFZRliO%2BmzRGdFdZNjne4OUyjtY8WK2H6AYVaOO0DHSaF0kI5iJRpMSjCsIPaIEFhSAaH%2FVnkvrWvkQqVl4P6R%2BiYbk5PuPzzERSoaAuKq"
+        },
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/a/search/all?filter_brands=Siemens"
+        },
+        {
+          "type": "cart",
+          "label": "Siemens Atellica 10732998  aCCP"
+        },
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/a/search/all?filter_brands=Siemens"
+        },
+        {
+          "type": "cart",
+          "label": "Siemens Atellica 10732998  aCCP"
+        }
+      ]
+    },
+    {
+      "user": "12777369.1778075133",
+      "session_id": 1785756865,
+      "city": "Belgrade",
+      "region": "Vojvodina",
+      "country": "Serbia",
+      "session_start": "2026-08-03T11:34:25.331742+00:00",
+      "page_views": 22,
+      "class": "dev",
+      "atc_items": [
+        "Alinity 8P1401I FOLATO CALIBRATOR",
+        "Alinity 8P1410I FOLATO CONTROL",
+        "Alinity 8P1440I FOLATO RBC DILUENTE DI LISI",
+        "Architect 1P7425 ARC FOLATE RGT 100 T (REF)",
+        "Beckman Coulter A98033 Access Folate Calibrator",
+        "Alinity 0L10501 SGM ALINITY RAME"
+      ],
+      "purchase_items": [],
+      "revenue": null,
+      "journey": [
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/"
+        },
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/a/search/all?filter_tests=Folate"
+        },
+        {
+          "type": "cart",
+          "label": "Alinity 8P1401I FOLATO CALIBRATOR"
+        },
+        {
+          "type": "cart",
+          "label": "Alinity 8P1410I FOLATO CONTROL"
+        },
+        {
+          "type": "cart",
+          "label": "Alinity 8P1440I FOLATO RBC DILUENTE DI LISI"
+        },
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/cart"
+        },
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/a/search/all?filter_tests=Folate"
+        },
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/cart"
+        },
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/pages/request-a-quote?from=cart"
+        },
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/a/search/all?filter_tests=Folate"
+        },
+        {
+          "type": "cart",
+          "label": "Architect 1P7425 ARC FOLATE RGT 100 T (REF)"
+        },
+        {
+          "type": "cart",
+          "label": "Beckman Coulter A98033 Access Folate Calibrator"
+        },
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/cart"
+        },
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/"
+        },
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/a/search/all?filter_brands=Abbott"
+        },
+        {
+          "type": "cart",
+          "label": "Alinity 0L10501 SGM ALINITY RAME"
+        }
+      ]
+    },
+    {
+      "user": "1633167527.1785681283",
+      "session_id": 1785681218,
+      "city": "Cook",
+      "region": "Minnesota",
+      "country": "United States",
+      "session_start": "2026-08-02T14:34:42.901830+00:00",
+      "page_views": 8,
+      "class": "purchaser",
+      "atc_items": [
+        "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+        "Conmed ViroVac VV120 Surgical Smoke Evacuator Startup Package"
+      ],
+      "purchase_items": [
+        "Conmed ViroVac VV120 Surgical Smoke Evacuator Startup Package"
+      ],
+      "revenue": 1500.0,
+      "journey": [
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/collections/frontpage?country=US&shop_sign_in=true"
+        },
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/products/conmed-virovac-vv120-surgical-smoke-evacuator-device-only"
+        },
+        {
+          "type": "cart",
+          "label": "Conmed ViroVac VV120 Surgical Smoke Evacuator."
+        },
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/checkouts/cn/hWNFC1hPh1UG2lS5hu0GCIRF/en-us?_r=AQABTHR72Hxkn2gA31__3fqaP9z89Zl7syND37EfLwat6Tk"
+        },
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/collections/frontpage?country=US"
+        },
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/products/conmed-virovac-vv120-surgical-smoke-evacuator-startup-package"
+        },
+        {
+          "type": "cart",
+          "label": "Conmed ViroVac VV120 Surgical Smoke Evacuator Startup Package"
+        },
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/cart"
+        },
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/checkouts/cn/hWNFC1hPh1UG2lS5hu0GCIRF/en-us?_r=AQAB2spJWA_7jckMVXTBNt2JLW4xTKNrxERuqt8dEVKxoJI"
+        },
+        {
+          "type": "page",
+          "label": "https://jit4labs.com/checkouts/cn/hWNFC1hPh1UG2lS5hu0GCIRF/en-us/thank-you?_r=AQAB2spJWA_7jckMVXTBNt2JLW4xTKNrxERuqt8dEVKxoJI"
+        },
+        {
+          "type": "buy",
+          "label": "Conmed ViroVac VV120 Surgical Smoke Evacuator Startup Package",
+          "value": 1500.0
+        }
+      ]
+    }
+  ],
+  "note": "Per-visitor journeys from the GA4\u2192BigQuery event export \u2014 page path plus the two commerce events (add_to_cart and purchase). A session is a 'purchaser' if it ended in a purchase, an 'abandoner' if it added to cart but never purchased. Belgrade (site developer) is hidden. The export is not retroactive \u2014 it holds data from the link date (Aug 1 2026) forward and builds history from there."
 }
