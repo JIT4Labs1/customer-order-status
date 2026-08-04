@@ -472,6 +472,7 @@ def build_html(page_data, embeds=None):
             return json.dumps(embeds[key]).replace("</", "<\\/").replace("<!--", "<\\!--")
         return "null"
     gads_embed, li_embed, wt_embed, ship_embed, pay_embed, spnl_embed = _emb("gads"), _emb("li"), _emb("wt"), _emb("ship"), _emb("pay"), _emb("spnl")
+    cj_embed = _emb("cj")
     # The button token is XOR-obfuscated (then base64'd) in the page so GitHub
     # secret scanning / push protection does not detect a `github_pat_` token —
     # plain base64 is NOT enough (GitHub decodes it), so the commit would be
@@ -829,6 +830,7 @@ def build_html(page_data, embeds=None):
     <div class="mode-group-btns">
       <button class="mode-btn" data-mode="ca" onclick="setMode('ca')">Customer Analysis</button>
       <button class="mode-btn" data-mode="wt" onclick="setMode('wt')">Website Traffic</button>
+      <button class="mode-btn" data-mode="cj" onclick="setMode('cj')">Customer Journey</button>
       <button class="mode-btn" data-mode="gads" onclick="setMode('gads')">Google Ads</button>
       <button class="mode-btn" data-mode="li" onclick="setMode('li')">LinkedIn</button>
     </div>
@@ -856,7 +858,7 @@ function normData(d){ if(d&&d.customers){ d.customers=d.customers.filter(functio
 DATA=normData(DATA);
 var BTN = __BTN_CFG__;
 // Offline mirror: when built as the local copy these hold the data inline (no fetch needed). Online build leaves them null so the page fetches fresh each load.
-var GADS_EMBED = __GADS_EMBED__, LI_EMBED = __LI_EMBED__, WT_EMBED = __WT_EMBED__, SHIP_EMBED = __SHIP_EMBED__, PAY_EMBED = __PAY_EMBED__, SPNL_EMBED = __SPNL_EMBED__;
+var GADS_EMBED = __GADS_EMBED__, LI_EMBED = __LI_EMBED__, WT_EMBED = __WT_EMBED__, SHIP_EMBED = __SHIP_EMBED__, PAY_EMBED = __PAY_EMBED__, SPNL_EMBED = __SPNL_EMBED__, CJ_EMBED = __CJ_EMBED__;
 function _deobf(s,key){ if(!s) return ''; var raw=atob(s), out=''; for(var i=0;i<raw.length;i++){ out+=String.fromCharCode(raw.charCodeAt(i) ^ key.charCodeAt(i%key.length)); } return out; }
 BTN.token = _deobf(BTN.token_obf, BTN.k || '');
 var active = 0;     // selected customer index (Customer Open SO's view)
@@ -1081,6 +1083,7 @@ function renderPanel(){
   else if(mode==='gads') renderGadsPanel();
   else if(mode==='li') renderLiPanel();
   else if(mode==='wt') renderWtPanel();
+  else if(mode==='cj') renderCjPanel();
   else if(mode==='ship') renderShipPanel();
   else if(mode==='spnl') renderSpnlPanel();
   else if(mode==='pay') renderPayPanel();
@@ -1145,6 +1148,69 @@ function liGa4Html(){
   for(var j=0;j<g.length;j++){ rows+='<tr><td class="item-name">'+escapeHtml(g[j].path)+'</td><td class="c open">'+(g[j].sessions||0)+'</td></tr>'; }
   return '<div class="ca-h">Website clicks from LinkedIn (GA4) — '+tot+' YTD, by landing page</div>'+
     '<div class="matrix-wrap" style="max-width:580px;"><table class="matrix"><thead><tr><th>Landing page on jit4you.com</th><th class="c">Sessions</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+}
+
+// ── Customer Journey tab (GA4→BigQuery event export: cart-abandoner journeys) ──
+var CJ=null, cjLoading=false;
+function loadCJ(){
+  if(CJ_EMBED){ CJ=CJ_EMBED; cjLoading=false; if(mode==='cj') renderCjPanel(); return; }
+  if(cjLoading) return; cjLoading=true;
+  fetch('customer-journey-data.json?cb='+Date.now(),{cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(d){ CJ=d; cjLoading=false; if(mode==='cj') renderCjPanel(); })
+    .catch(function(e){ cjLoading=false; if(mode==='cj') document.getElementById('panel').innerHTML='<div class="empty">Could not load Customer Journey data: '+escapeHtml(e.message)+'</div>'; });
+}
+function cjRefresh(){ CJ=CJ_EMBED||null; cjLoading=false; document.getElementById('panel').innerHTML='<div class="empty">Reloading customer-journey snapshot…</div>'; loadCJ(); }
+function cjShortUrl(u){
+  if(!u) return '';
+  try{ var a=document.createElement('a'); a.href=u; var p=a.pathname||'/'; if(a.search) p+=a.search; return p||'/'; }
+  catch(e){ return String(u).replace(/^https?:\/\/[^\/]+/,'')||'/'; }
+}
+function cjWhen(iso){
+  if(!iso) return '—';
+  var d=new Date(iso); if(isNaN(d)) return escapeHtml(iso);
+  return d.toLocaleDateString(undefined,{month:'short',day:'numeric'})+' '+d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
+}
+function renderCjPanel(){
+  if(!CJ){ document.getElementById('panel').innerHTML='<div class="empty">Loading Customer Journey data…</div>'; loadCJ(); return; }
+  var t=CJ.totals||{}, ab=CJ.abandoners||[];
+  var head='<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">'+
+    '<div><h2>Customer Journey — Cart Abandoners</h2><div class="sub">GA4→BigQuery event export &middot; '+escapeHtml(CJ.property||'')+' &middot; data '+escapeHtml(CJ.data_from||'')+' → '+escapeHtml(CJ.data_through||'')+' ('+(CJ.days_of_data||0)+' days) &middot; pulled '+escapeHtml(CJ.pulled_at||'')+'</div></div>'+
+    '<button class="refresh-btn" onclick="cjRefresh()" title="Reload the latest Customer Journey snapshot"><span class="lbl">↻ Reload</span></button></div></div>';
+  var cards='<div class="kpis" style="padding:6px 0 0;">'+
+    kpi(Number(t.abandoner_sessions||0).toLocaleString(),'Cart abandoners')+
+    kpi(Number(t.atc_sessions||0).toLocaleString(),'Add-to-cart sessions')+
+    kpi(Number(t.purchaser_sessions||0).toLocaleString(),'…of which purchased')+
+    kpi(Number(t.dev_excluded_sessions||0).toLocaleString(),'Dev traffic excluded')+'</div>';
+  var bodyHtml;
+  if(!ab.length){
+    bodyHtml='<div class="empty" style="margin:14px 16px;line-height:1.6;">'+
+      '<div style="font-size:15px;font-weight:600;color:#2c3e50;margin-bottom:6px;">No cart-abandoners in this window yet.</div>'+
+      'Every visitor who added to cart in the tracked window either purchased or is excluded developer traffic. '+
+      'The GA4→BigQuery export only holds data from the link date ('+escapeHtml(CJ.link_date||'')+') forward and is not retroactive, '+
+      'so this view builds history from there — a genuine abandoner (added to cart, no purchase) will appear here automatically on the next refresh.'+
+      '</div>';
+  } else {
+    var rows='';
+    for(var i=0;i<ab.length;i++){ var s=ab[i];
+      var loc=[s.city,s.region,s.country].filter(function(x){return x;}).join(', ');
+      var items=(s.items_added||[]);
+      var itemChips = items.length ? items.map(function(it){ return '<span class="status" style="background:#fdecea;color:#a1362c;margin:1px 3px 1px 0;display:inline-block;">'+escapeHtml(it)+'</span>'; }).join('') : '<span class="po-none">—</span>';
+      var path=(s.page_path||[]);
+      var pathHtml = path.length ? path.map(function(u,idx){ return '<span style="white-space:nowrap;">'+(idx?'<span style="color:#aab4bf;">  →  </span>':'')+'<span title="'+escapeHtml(u)+'">'+escapeHtml(cjShortUrl(u))+'</span></span>'; }).join('') : '<span class="po-none">—</span>';
+      rows+='<tr>'+
+        '<td class="so" style="white-space:nowrap;">'+cjWhen(s.session_start)+'</td>'+
+        '<td>'+escapeHtml(loc||'—')+'</td>'+
+        '<td class="c">'+(s.page_views||0)+'</td>'+
+        '<td class="item-name" style="max-width:340px;">'+itemChips+'</td>'+
+        '<td class="item-name" style="max-width:520px;font-size:11px;line-height:1.7;">'+pathHtml+'</td></tr>';
+    }
+    bodyHtml='<div class="matrix-wrap"><table class="matrix"><thead><tr>'+
+      '<th>Session</th><th>Location</th><th class="c">Pages</th><th>Left in cart</th><th>Journey (first → last page)</th>'+
+      '</tr></thead><tbody>'+rows+'</tbody></table></div>';
+  }
+  var note='<div style="margin:14px 16px;padding:12px 16px;background:#eef4fb;border-left:4px solid #1a73e8;font-size:12px;border-radius:6px;line-height:1.55;color:#2c3e50;">'+escapeHtml(CJ.note||'')+'</div>';
+  document.getElementById('panel').innerHTML = head + cards + bodyHtml + note;
 }
 
 // ── Website Traffic tab (GA4 daily visitors by source + sales by source) ──────
@@ -3464,7 +3530,7 @@ function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(
 renderAll();
 </script>
 </body>
-</html>""".replace("__DATA_JSON__", data_json).replace("__DATA_URL__", data_url).replace("__BTN_CFG__", btn_cfg).replace("__GADS_EMBED__", gads_embed).replace("__LI_EMBED__", li_embed).replace("__WT_EMBED__", wt_embed).replace("__SHIP_EMBED__", ship_embed).replace("__PAY_EMBED__", pay_embed).replace("__SPNL_EMBED__", spnl_embed)
+</html>""".replace("__DATA_JSON__", data_json).replace("__DATA_URL__", data_url).replace("__BTN_CFG__", btn_cfg).replace("__GADS_EMBED__", gads_embed).replace("__LI_EMBED__", li_embed).replace("__WT_EMBED__", wt_embed).replace("__SHIP_EMBED__", ship_embed).replace("__PAY_EMBED__", pay_embed).replace("__SPNL_EMBED__", spnl_embed).replace("__CJ_EMBED__", cj_embed)
 
 
 # ─────────────────────────────────────────────
