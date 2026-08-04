@@ -704,23 +704,28 @@ function cjWinSessions(){   // non-dev sessions within the window (no facet filt
   out.sort(function(a,b){ return (b.session_start||'').localeCompare(a.session_start||''); });
   return out;
 }
-function cjSessions(){   // window sessions with the active search-term / product facet filters applied
+function cjBaseSessions(){   // window + outcome filter (drives the sidebar facet boxes)
   return cjWinSessions().filter(function(s){
-    if(cjTermFilter && (s.search_terms||[]).indexOf(cjTermFilter)<0) return false;
-    if(cjProdFilter && cjSessProducts(s).indexOf(cjProdFilter)<0) return false;
     if(cjOutcome==='cart' && !(s.class==='abandoner'||s.class==='purchaser')) return false;
     if(cjOutcome==='left' && s.class!=='browser') return false;
     return true;
   });
 }
-function cjWinTerms(){   // [{v,count}] search terms across window sessions, most used first
-  var ws=cjWinSessions(), m={}, order=[];
+function cjSessions(){   // base sessions with the active search-term / product facet filters applied
+  return cjBaseSessions().filter(function(s){
+    if(cjTermFilter && (s.search_terms||[]).indexOf(cjTermFilter)<0) return false;
+    if(cjProdFilter && cjSessProducts(s).indexOf(cjProdFilter)<0) return false;
+    return true;
+  });
+}
+function cjWinTerms(){   // [{v,count}] search terms across base (window+outcome) sessions, most used first
+  var ws=cjBaseSessions(), m={}, order=[];
   for(var i=0;i<ws.length;i++){ var ts=ws[i].search_terms||[]; for(var j=0;j<ts.length;j++){ var t=ts[j]; if(!(t in m)){ m[t]=0; order.push(t); } m[t]++; } }
   order.sort(function(a,b){ return m[b]-m[a] || a.toLowerCase().localeCompare(b.toLowerCase()); });
   return order.map(function(t){ return {v:t, count:m[t]}; });
 }
-function cjWinProducts(){   // [{v,count}] products added or purchased across window sessions
-  var ws=cjWinSessions(), m={}, order=[];
+function cjWinProducts(){   // [{v,count}] products added or purchased across base (window+outcome) sessions
+  var ws=cjBaseSessions(), m={}, order=[];
   for(var i=0;i<ws.length;i++){ var ps=cjSessProducts(ws[i]); var seen={}; for(var j=0;j<ps.length;j++){ var p=ps[j]; if(seen[p]) continue; seen[p]=1; if(!(p in m)){ m[p]=0; order.push(p); } m[p]++; } }
   order.sort(function(a,b){ return m[b]-m[a] || a.toLowerCase().localeCompare(b.toLowerCase()); });
   return order.map(function(p){ return {v:p, count:m[p]}; });
@@ -743,8 +748,9 @@ function cjSetCustom(){
   var a=document.getElementById('cjStart'), b=document.getElementById('cjEnd');
   if(a) cjCustStart=a.value; if(b) cjCustEnd=b.value; cjWin='custom'; cjSel=''; renderTabs(); renderCjPanel();
 }
-function cjFacetBox(title, items, activeVal, fn){
-  var h='<div style="margin-top:12px;border-top:1px solid #e3e8ee;padding-top:8px;">'+
+function cjFacetBox(title, items, activeVal, fn, first){
+  var top = first ? '' : 'margin-top:12px;border-top:1px solid #e3e8ee;padding-top:8px;';
+  var h='<div style="'+top+'">'+
     '<div style="font-size:11px;font-weight:700;color:#7a8a99;text-transform:uppercase;letter-spacing:.03em;margin:0 2px 5px;display:flex;justify-content:space-between;">'+
     '<span>'+escapeHtml(title)+'</span>'+(activeVal?('<a href="javascript:void(0)" onclick="'+fn+'(-1)" style="color:#1a73e8;text-transform:none;font-weight:600;">clear</a>'):'')+'</div>';
   if(!items.length){ return h+'<div class="empty" style="font-size:12px;margin:2px;">none in this window</div></div>'; }
@@ -757,20 +763,10 @@ function cjFacetBox(title, items, activeVal, fn){
 function renderCjTabs(el){
   el.style.display='';
   if(!CJ){ el.innerHTML='<div class="empty">Loading…</div>'; loadCJ(); return; }
-  var vis=cjVisitors(), total=cjSessions().length;
-  cjVisList=vis;
-  var h='<div style="max-height:230px;overflow:auto;">';
-  h+='<button class="tab'+(cjSel===''?' active':'')+'" onclick="cjSelectVisitor(-1)">All customers<span class="cnt">'+total+'</span></button>';
-  for(var i=0;i<vis.length;i++){
-    var badge = vis[i].purchased ? ' 🛒✓' : '';
-    h+='<button class="tab'+(cjSel===vis[i].user?' active':'')+'" onclick="cjSelectVisitor('+i+')" title="'+escapeHtml(vis[i].label)+'">'+escapeHtml(vis[i].label)+badge+'<span class="cnt">'+vis[i].sessions.length+'</span></button>';
-  }
-  if(!vis.length){ h+='<div class="empty" style="margin-top:8px;">No visitors match.</div>'; }
-  h+='</div>';
-  // ── facet filter boxes ──
-  cjTermList=cjWinTerms(); cjProdList=cjWinProducts();
-  h+=cjFacetBox('Search terms', cjTermList, cjTermFilter, 'cjToggleTermIdx');
-  h+=cjFacetBox('Products added / purchased', cjProdList, cjProdFilter, 'cjToggleProdIdx');
+  // ── facet filter boxes: Products first, Search terms below (react to the outcome filter) ──
+  cjProdList=cjWinProducts(); cjTermList=cjWinTerms();
+  var h=cjFacetBox('Products added / purchased', cjProdList, cjProdFilter, 'cjToggleProdIdx', true);
+  h+=cjFacetBox('Search terms', cjTermList, cjTermFilter, 'cjToggleTermIdx', false);
   el.innerHTML=h;
 }
 var cjVisList=[];
