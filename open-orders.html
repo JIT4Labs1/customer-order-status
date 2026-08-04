@@ -743,16 +743,48 @@ function cjStepHtml(step){
   }
   return '<div style="padding:2px 0 2px 20px;color:#5a6b7b;font-size:12px;"><span style="color:#aab4bf;">▸</span> <span title="'+escapeHtml(step.label||'')+'">'+escapeHtml(cjShortUrl(step.label))+'</span></div>';
 }
+function cjEntryIcon(kind){
+  var k=(kind||'').toLowerCase();
+  if(k.indexOf('paid')>=0) return '📣';
+  if(k.indexOf('organic')>=0) return '🔍';
+  if(k.indexOf('referral')>=0) return '↗';
+  if(k.indexOf('email')>=0) return '✉';
+  if(k.indexOf('social')>=0) return '👥';
+  if(k.indexOf('direct')>=0) return '•';
+  return '🌐';
+}
+function cjEntryColor(kind){
+  var k=(kind||'').toLowerCase();
+  if(k.indexOf('paid')>=0) return ['#e8f0fe','#1a56c4'];
+  if(k.indexOf('organic')>=0) return ['#e6f4ea','#1e7e34'];
+  if(k.indexOf('referral')>=0) return ['#f3e8fd','#6b3fa0'];
+  if(k.indexOf('email')>=0) return ['#fff3cd','#7a5b00'];
+  return ['#eef2f6','#4a5b6b'];
+}
 function cjJourneyCard(s){
   var loc=[s.city,s.region,s.country].filter(function(x){return x;}).join(', ');
   var outcome = s.class==='purchaser'
     ? '<span class="status" style="background:#e6f4ea;color:#1e7e34;">Purchased'+(s.revenue!=null?' · $'+Number(s.revenue).toLocaleString():'')+'</span>'
     : '<span class="status" style="background:#fdecea;color:#a1362c;">Abandoned cart</span>';
+  // ── entry point + search term ──
+  var e=s.entry||{}, ec=cjEntryColor(e.kind);
+  var entryTxt=escapeHtml(e.kind||'Direct')+((e.detail)?(' · '+escapeHtml(e.detail)):'');
+  var entryPill='<span class="status" style="background:'+ec[0]+';color:'+ec[1]+';" title="'+escapeHtml((e.source||'')+' / '+(e.medium||''))+'">'+cjEntryIcon(e.kind)+' Entry: '+entryTxt+'</span>';
+  var terms=(s.search_terms||[]);
+  var searchPill = terms.length
+    ? '<span class="status" style="background:#fff8e1;color:#8a6d00;">🔎 Search: '+terms.map(escapeHtml).join(', ')+'</span>'
+    : (String((e.kind||'')).toLowerCase().indexOf('organic')>=0 || String((e.kind||'')).toLowerCase().indexOf('paid')>=0
+        ? '<span class="status" style="background:#f4f6f8;color:#8a97a5;" title="Google withholds the exact keyword for most organic/paid clicks">🔎 keyword not provided</span>' : '');
+  var atc=(s.atc_items||[]);
+  var atcLine = atc.length ? '<div style="font-size:11px;color:#a1362c;margin-top:4px;">In cart: '+atc.map(escapeHtml).join(', ')+'</div>' : '';
   var steps=(s.journey||[]).map(cjStepHtml).join('');
   return '<div style="border:1px solid #e3e8ee;border-radius:8px;padding:12px 14px;margin:10px 16px;background:#fff;">'+
     '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px;">'+
       '<div style="font-weight:600;color:#2c3e50;">'+escapeHtml(loc||'Unknown location')+' <span style="font-weight:400;color:#7a8a99;font-size:12px;">· '+cjWhen(s.session_start)+' · '+(s.page_views||0)+' pages</span></div>'+
       outcome+'</div>'+
+    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;">'+entryPill+searchPill+'</div>'+
+    atcLine+
+    '<div style="font-size:11px;color:#7a8a99;margin:8px 0 2px;font-weight:600;">Page sequence</div>'+
     '<div style="border-left:2px solid #eef2f6;margin-left:6px;">'+steps+'</div></div>';
 }
 function renderCjPanel(){
