@@ -2391,7 +2391,8 @@ var GADS_COLS=[{k:'name',t:'str',lbl:'Campaign',c:false},{k:'status',t:'str',lbl
   {k:'type',t:'str',lbl:'Type',c:false},{k:'start_date',t:'str',lbl:'Started',c:false},
   {k:'clicks',t:'num',lbl:'Clicks',c:true},{k:'impressions',t:'num',lbl:'Impr.',c:true},
   {k:'ctr',t:'num',lbl:'CTR',c:true},{k:'cpc',t:'num',lbl:'Avg CPC',c:true},
-  {k:'cost',t:'num',lbl:'Spend',c:true},{k:'conversions',t:'num',lbl:'Conv.',c:true},
+  {k:'cost',t:'num',lbl:'Spend',c:true},
+  {k:'page_views',t:'num',lbl:'Page views',c:true},{k:'add_to_cart',t:'num',lbl:'Add to cart',c:true},{k:'purchases',t:'num',lbl:'Purchases',c:true},
   {k:'conv_value',t:'num',lbl:'Conv. value',c:true},{k:'roas',t:'num',lbl:'ROAS',c:true}];
 function gadsSortByIdx(i){ var c=GADS_COLS[i]; if(!c) return;
   if(gadsSort.key===c.k){ gadsSort.dir=-gadsSort.dir; } else { gadsSort.key=c.k; gadsSort.dir=1; } renderGadsPanel(); }
@@ -2417,7 +2418,7 @@ function renderGadsPanel(){
   var sel='<select onchange="gadsSetInterval(this.value)" style="padding:7px 10px;border:1px solid #cdd9e6;border-radius:6px;font-size:13px;font-family:inherit;">';
   for(var j=0;j<ivs.length;j++){ sel+='<option value="'+escapeHtml(ivs[j].id)+'"'+(ivs[j].id===gadsInterval?' selected':'')+'>'+escapeHtml(ivs[j].label)+'</option>'; }
   sel+='</select>';
-  var rows=(cur?cur.campaigns:[]).slice(), tc=0,ti=0,tcost=0,tconv=0,tval=0, body='';
+  var rows=(cur?cur.campaigns:[]).slice(), tc=0,ti=0,tcost=0,tconv=0,tval=0,tpv=0,tatc=0,tpur=0, body='';
   if(gadsSort.key){
     var _gc=null; for(var gi=0;gi<GADS_COLS.length;gi++){ if(GADS_COLS[gi].k===gadsSort.key){ _gc=GADS_COLS[gi]; break; } }
     var _gt=_gc?_gc.t:'str';
@@ -2427,6 +2428,7 @@ function renderGadsPanel(){
   }
   for(var k=0;k<rows.length;k++){ var r=rows[k];
     tc+=r.clicks; ti+=r.impressions; tcost+=r.cost; tconv+=r.conversions; tval+=r.conv_value;
+    tpv+=r.page_views||0; tatc+=r.add_to_cart||0; tpur+=r.purchases||0;
     var st=r.status, sc = st==='enabled'?['#d4edda','#155724']:(st==='paused'?['#fff3cd','#856404']:['#eee','#666']);
     body+='<tr>'+
       '<td class="item-name">'+escapeHtml(r.name)+'</td>'+
@@ -2438,7 +2440,9 @@ function renderGadsPanel(){
       '<td class="c">'+(r.ctr*100).toFixed(2)+'%</td>'+
       '<td class="c">'+money2(r.cpc)+'</td>'+
       '<td class="c open">'+money2(r.cost)+'</td>'+
-      '<td class="c">'+fmtQty(r.conversions)+'</td>'+
+      '<td class="c">'+Number(r.page_views||0).toLocaleString()+'</td>'+
+      '<td class="c">'+Number(r.add_to_cart||0).toLocaleString()+'</td>'+
+      '<td class="c open">'+Number(r.purchases||0).toLocaleString()+'</td>'+
       '<td class="c">'+money0(r.conv_value)+'</td>'+
       '<td class="c">'+(r.roas?Number(r.roas).toFixed(1)+'x':'—')+'</td>'+
       '</tr>';
@@ -2446,7 +2450,8 @@ function renderGadsPanel(){
   var tctr=ti?(tc/ti*100).toFixed(2)+'%':'—', tcpc=tc?money2(tcost/tc):'—', troas=tcost?(tval/tcost).toFixed(1)+'x':'—';
   body+='<tr class="so-group"><td>Total ('+escapeHtml(cur?cur.label:'')+')</td><td></td><td></td><td></td>'+
     '<td class="c">'+tc.toLocaleString()+'</td><td class="c">'+ti.toLocaleString()+'</td><td class="c">'+tctr+'</td>'+
-    '<td class="c">'+tcpc+'</td><td class="c open">'+money2(tcost)+'</td><td class="c">'+fmtQty(tconv)+'</td>'+
+    '<td class="c">'+tcpc+'</td><td class="c open">'+money2(tcost)+'</td>'+
+    '<td class="c">'+tpv.toLocaleString()+'</td><td class="c">'+tatc.toLocaleString()+'</td><td class="c open">'+tpur.toLocaleString()+'</td>'+
     '<td class="c">'+money0(tval)+'</td><td class="c">'+troas+'</td></tr>';
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">'+
