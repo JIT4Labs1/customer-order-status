@@ -691,8 +691,14 @@ var cjCustStart='', cjCustEnd='';
 var cjSel='';             // selected visitor (user_pseudo_id); '' = All customers
 var cjTermFilter='', cjProdFilter='';   // active facet filters (search term / product)
 var cjOutcome='all';                     // 'all' | 'cart' (added to cart or purchased) | 'left' (browsed, no cart)
+var cjEntry='all';                       // 'all' | 'organic' | 'paid'  (entry-source filter)
+var cjLine='all';                        // 'all' | conmed | beckman | siemens | abbott | diazyme  (product-line filter)
+var cjLineOrder=['all','conmed','beckman','siemens','abbott','diazyme'];
+var cjLineDefs=[['conmed','Conmed',/conmed|virovac|vv120|vs35302|armstand/i],['beckman','Beckman Coulter',/beckman/i],['siemens','Siemens',/siemens/i],['abbott','Abbott',/abbott/i],['diazyme','Diazyme',/diazyme|DZ\d/i]];
 var cjTermList=[], cjProdList=[];        // facet lists (index -> value) for onclick handlers
 function cjSessProducts(s){ return (s.atc_items||[]).concat(s.purchase_items||[]); }
+function cjSessionText(s){ var t=[],j=s.journey||[]; for(var i=0;i<j.length;i++){ if(j[i]&&j[i].label) t.push(j[i].label); } return t.concat(s.atc_items||[],s.purchase_items||[]).join(' || '); }
+function cjSessionLines(s){ var txt=cjSessionText(s),out=[]; for(var i=0;i<cjLineDefs.length;i++){ if(cjLineDefs[i][2].test(txt)) out.push(cjLineDefs[i][0]); } return out; }
 function loadCJ(){
   if(CJ_EMBED){ CJ=CJ_EMBED; cjLoading=false; cjInitCustom(); if(mode==='cj'){ renderTabs(); renderCjPanel(); } return; }
   if(cjLoading) return; cjLoading=true;
@@ -732,6 +738,10 @@ function cjBaseSessions(){   // window + outcome filter (drives the sidebar face
   return cjWinSessions().filter(function(s){
     if(cjOutcome==='cart' && !(s.class==='abandoner'||s.class==='purchaser')) return false;
     if(cjOutcome==='left' && s.class!=='browser') return false;
+    if(cjEntry!=='all'){ var ek=String((s.entry||{}).kind||'').toLowerCase();
+      if(cjEntry==='organic' && ek.indexOf('organic')<0) return false;
+      if(cjEntry==='paid' && ek.indexOf('paid')<0) return false; }
+    if(cjLine!=='all' && cjSessionLines(s).indexOf(cjLine)<0) return false;
     return true;
   });
 }
@@ -803,9 +813,13 @@ var cjVisList=[];
 function cjSelectVisitor(i){ cjSel = (i<0 ? '' : ((cjVisList[i]||{}).user||'')); renderTabs(); renderCjPanel(); }
 function cjToggleTermIdx(i){ var v=(i<0?'':((cjTermList[i]||{}).v||'')); cjTermFilter=(cjTermFilter===v?'':v); cjSel=''; renderTabs(); renderCjPanel(); }
 function cjToggleProdIdx(i){ var v=(i<0?'':((cjProdList[i]||{}).v||'')); cjProdFilter=(cjProdFilter===v?'':v); cjSel=''; renderTabs(); renderCjPanel(); }
-function cjClearFilters(){ cjTermFilter=''; cjProdFilter=''; cjOutcome='all'; cjSel=''; renderTabs(); renderCjPanel(); }
+function cjClearFilters(){ cjTermFilter=''; cjProdFilter=''; cjOutcome='all'; cjEntry='all'; cjLine='all'; cjSel=''; renderTabs(); renderCjPanel(); }
 function cjSetOutcome(o){ cjOutcome=o; cjSel=''; renderTabs(); renderCjPanel(); }
 function cjSetOutcomeIdx(i){ cjSetOutcome(['all','cart','left'][i]||'all'); }
+function cjSetEntry(o){ cjEntry=o; cjSel=''; renderTabs(); renderCjPanel(); }
+function cjSetEntryIdx(i){ cjSetEntry(['all','organic','paid'][i]||'all'); }
+function cjSetLine(o){ cjLine=o; cjSel=''; renderTabs(); renderCjPanel(); }
+function cjSetLineIdx(i){ cjSetLine(cjLineOrder[i]||'all'); }
 function cjStepHtml(step){
   if(step.type==='cart'){
     return '<div style="padding:3px 0 3px 20px;"><span style="color:#a1362c;font-weight:600;">🛒 Added to cart:</span> <span style="color:#a1362c;">'+escapeHtml(step.label||'')+'</span></div>';
@@ -879,6 +893,14 @@ function renderCjPanel(){
   sel+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 4px;">'+
     '<span style="font-size:12px;color:#7a8a99;margin-right:2px;">Outcome:</span>'+
     ob('all','All',0)+ob('cart','🛒 Added to cart / Purchased',1)+ob('left','Left without cart',2)+'</div>';
+  function eb(o,lbl,idx){ return '<button class="mode-btn'+(cjEntry===o?' active':'')+'" style="padding:5px 11px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;" onclick="cjSetEntryIdx('+idx+')">'+lbl+'</button>'; }
+  sel+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 4px;">'+
+    '<span style="font-size:12px;color:#7a8a99;margin-right:2px;">Source:</span>'+
+    eb('all','All',0)+eb('organic','🔍 Organic search',1)+eb('paid','📣 Paid search',2)+'</div>';
+  function lb(o,lbl,idx){ return '<button class="mode-btn'+(cjLine===o?' active':'')+'" style="padding:5px 11px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;" onclick="cjSetLineIdx('+idx+')">'+lbl+'</button>'; }
+  sel+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 4px;">'+
+    '<span style="font-size:12px;color:#7a8a99;margin-right:2px;">Product line:</span>'+
+    lb('all','All',0)+lb('conmed','Conmed',1)+lb('beckman','Beckman Coulter',2)+lb('siemens','Siemens',3)+lb('abbott','Abbott',4)+lb('diazyme','Diazyme',5)+'</div>';
   var head='<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">'+
     '<div><h2>Customer Journey</h2><div class="sub">GA4→BigQuery event export &middot; '+escapeHtml(CJ.property||'')+' &middot; entry source, search term &amp; page path (add-to-cart &amp; purchase mapped) &middot; data '+escapeHtml(CJ.data_from||'')+' → '+escapeHtml(CJ.data_through||'')+' ('+(CJ.days_of_data||0)+' days) &middot; pulled '+escapeHtml(CJ.pulled_at||'')+'</div></div>'+
     '<button class="refresh-btn" onclick="cjRefresh()" title="Reload the latest Customer Journey snapshot"><span class="lbl">↻ Reload</span></button></div>'+sel+'</div>';
@@ -895,8 +917,11 @@ function renderCjPanel(){
     kpi(rev?('$'+Number(rev).toLocaleString()):'$0','Revenue')+'</div>';
   // active filter banner
   var fnote='';
-  if(cjTermFilter||cjProdFilter||cjOutcome!=='all'){
+  if(cjTermFilter||cjProdFilter||cjOutcome!=='all'||cjEntry!=='all'||cjLine!=='all'){
     var parts=[];
+    if(cjEntry==='organic') parts.push('source: organic search');
+    if(cjEntry==='paid') parts.push('source: paid search');
+    if(cjLine!=='all'){ for(var li=0;li<cjLineDefs.length;li++){ if(cjLineDefs[li][0]===cjLine) parts.push('product line: '+cjLineDefs[li][1]); } }
     if(cjOutcome==='cart') parts.push('outcome: added to cart / purchased');
     if(cjOutcome==='left') parts.push('outcome: left without cart');
     if(cjTermFilter) parts.push('search term “'+escapeHtml(cjTermFilter)+'”');
