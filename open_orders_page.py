@@ -584,7 +584,7 @@ def build_html(page_data, embeds=None):
   .pnl-wrap h2, .pnl-wrap h3 { color:#2c3e50; }
 
   .layout { display:flex; gap:0; padding:18px 28px 40px; align-items:flex-start; }
-  .sidecol { flex:0 0 270px; display:flex; flex-direction:column; gap:14px; }
+  .sidecol { flex:0 0 270px; display:flex; flex-direction:column; gap:14px; min-width:0; max-width:270px; overflow:hidden; }
   .tabs { flex:0 0 auto; width:100%; background:#fff; border:1px solid #dee5ec; border-radius:10px; overflow:hidden; max-height:78vh; overflow-y:auto; }
   .altsrc { background:#fff; border:1px solid #dee5ec; border-radius:10px; padding:14px 14px 16px; }
   .altsrc h3 { font-size:12px; color:#0D2B45; text-transform:uppercase; letter-spacing:.6px; margin-bottom:4px; }
@@ -656,13 +656,13 @@ def build_html(page_data, embeds=None):
   .cjfacet-clear { font-size:11px; font-weight:600; color:#1a73e8; text-transform:none; letter-spacing:0; cursor:pointer; text-decoration:none; }
   .cjfacet-clear:hover { text-decoration:underline; }
   .cjfacet-list { max-height:224px; overflow:auto; padding:5px; }
-  .cjrow { display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%;
+  .cjrow { display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%; min-width:0; max-width:100%;
     text-align:left; background:none; border:none; cursor:pointer; font-family:inherit;
     font-size:12.5px; line-height:1.3; color:#33475b; padding:7px 9px; border-radius:8px;
     border-left:3px solid transparent; transition:background .12s; }
   .cjrow:hover { background:#f2f6fb; }
   .cjrow.active { background:#eaf1fa; border-left-color:#1F4E79; color:#1F4E79; font-weight:600; }
-  .cjrow .lbl { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .cjrow .lbl { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; flex:1 1 auto; }
   .cjpill { flex:0 0 auto; min-width:22px; text-align:center; font-size:11px; font-weight:700;
     color:#5a6b7b; background:#eef2f7; border-radius:999px; padding:1px 8px; }
   .cjrow:hover .cjpill { background:#e3ebf3; }
