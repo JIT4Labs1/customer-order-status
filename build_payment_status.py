@@ -415,6 +415,16 @@ def main():
     somap = vtiger_so_map([row["number"] for cref, row, iid, status in staged])
     enrich_open_items(somap)
 
+    # SO -> Shopify order name, inverted from _ship_so_tags.json (order_name -> SOxxx).
+    so2ship = {}
+    try:
+        _tags = json.load(open(os.path.join(QB, "_ship_so_tags.json")))
+        for order_name, sonum in (_tags or {}).items():
+            if sonum and sonum not in so2ship:
+                so2ship[sonum] = order_name
+    except Exception:
+        so2ship = {}
+
     by_cust = {cid: [] for cid in IDL}
     for cref, row, iid, status in staged:
         # invoice_link = customer-facing invoice portal (line items + Pay); own link, else the
@@ -426,6 +436,7 @@ def main():
         # Vtiger SO match (field is new -> often empty). so_num "" when unlinked.
         so = somap.get(row["number"], {})
         row["so_num"] = so.get("so_num", "")
+        row["shopify_order"] = so2ship.get(row["so_num"], "") if row.get("so_num") else ""
         row["fulfillment"] = so.get("fulfillment", "")
         row["so_date"] = so.get("so_date", "")
         row["open_items"] = so.get("open_items", []) if so.get("fulfillment") == "Partially" else []
