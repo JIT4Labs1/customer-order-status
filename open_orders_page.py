@@ -2966,27 +2966,70 @@ function renderVendorPanel(){
 }
 
 // ── Payment Status tab (QuickBooks 2026 invoices for Independent Diagnostic Lab customers) ──
-var PAY=null, payLoading=false, payCust='', payReadyOnly=false, payNotReadyOnly=false;
+var PAY=null, payLoading=false, payCust='', payReadyOnly=false, payNotReadyOnly=false, payShowManual=false;
 // "Ready for payment" = Not Paid AND Fulfilled.  "Not ready" = Not Paid AND NOT Fulfilled.
+// ── Manual payment overrides ──────────────────────────────────────────────
+// When a payment has come in but the accountant hasn't marked the QuickBooks invoice yet,
+// the user records the amount received here. Balance and every KPI recompute live from the
+// EFFECTIVE balance, and the override persists to payment-overrides.json via the button token
+// (so it survives page reloads, other devices, and the nightly rebuild). QuickBooks stays the
+// source of truth: once the accountant marks it paid, the invoice drops out on its own.
+var PAYOVR=null;
+function _payToday(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+function payOvrMap(){ if(PAYOVR==null){ PAYOVR={}; try{ var p=JSON.parse(localStorage.getItem('jit4_pay_ovr')||'{}'); for(var k in p){ if(p.hasOwnProperty(k)) PAYOVR[k]=p[k]; } }catch(e){} } return PAYOVR; }
+function paySaveLocal(m){ PAYOVR=m; try{ localStorage.setItem('jit4_pay_ovr', JSON.stringify(m)); }catch(e){} }
+function payOvrOf(v){ var m=payOvrMap(); return (v&&m[v.number])||null; }
+function payHasOvr(v){ return !!payOvrOf(v); }
+function payEffBalance(v){ var o=payOvrOf(v); var amt=Number(v.amount)||0;
+  if(o&&o.paid!=null){ var b=amt-Number(o.paid); return Math.round((b>0?b:0)*100)/100; }
+  return Number(v.balance)||0; }
+function payEffStatus(v){ if(v.status==='Voided') return 'Voided'; return payEffBalance(v)<=0.005?'Paid':'Not Paid'; }
+function payOvrFetch(){ fetch('payment-overrides.json?cb='+Date.now(),{cache:'no-store'})
+  .then(function(r){ return r.ok?r.json():null; })
+  .then(function(j){ if(j&&j.overrides){ var m=payOvrMap(),ch=false; for(var k in j.overrides){ if(j.overrides.hasOwnProperty(k)&&!m.hasOwnProperty(k)){ m[k]=j.overrides[k]; ch=true; } } if(ch){ paySaveLocal(m); if(mode==='pay') renderPayPanel(); } } })
+  .catch(function(){}); }
+function payOvrCommit(){ if(!BTN||!BTN.token) return; var m=payOvrMap();
+  var base='https://api.github.com/repos/'+BTN.repo+'/contents/payment-overrides.json';
+  var hdr={'Authorization':'Bearer '+BTN.token,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
+  fetch(base+'?ref='+encodeURIComponent(BTN.branch)+'&cb='+Date.now(),{headers:hdr,cache:'no-store'})
+    .then(function(r){ return r.ok?r.json():{}; })
+    .then(function(st){ return fetch(base,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},hdr),
+      body:JSON.stringify({message:'Update manual payment overrides ('+Object.keys(m).length+')', content:_b64enc(JSON.stringify({overrides:m},null,2)+'\\n'), sha:st.sha||undefined, branch:BTN.branch})}); })
+    .catch(function(){}); }
+function payRecord(number, amount){ var m=payOvrMap(), cur=m[number];
+  var def=(cur&&cur.paid!=null)?cur.paid:amount;
+  var inp=window.prompt('Record payment for invoice '+number+'\\nInvoice total: '+payMoney(amount)+'\\nEnter TOTAL amount received on this invoice (set 0 to undo):', String(def));
+  if(inp===null) return; inp=String(inp).replace(/[^0-9.]/g,''); var paid=Number(inp);
+  if(isNaN(paid)) return;
+  if(paid<=0){ delete m[number]; } else { m[number]={paid:Math.round(paid*100)/100, at:_payToday()}; }
+  paySaveLocal(m); renderPayPanel(); payOvrCommit(); }
+function payMarkFull(number, amount){ var m=payOvrMap(); m[number]={paid:Math.round((Number(amount)||0)*100)/100, at:_payToday()}; paySaveLocal(m); renderPayPanel(); payOvrCommit(); }
+function payUndo(number){ var m=payOvrMap(); delete m[number]; paySaveLocal(m); renderPayPanel(); payOvrCommit(); }
+function payActMark(a){ payMarkFull(a.getAttribute('data-num'), Number(a.getAttribute('data-amt'))); }
+function payActRecord(a){ payRecord(a.getAttribute('data-num'), Number(a.getAttribute('data-amt'))); }
+function payActUndo(a){ payUndo(a.getAttribute('data-num')); }
 function payInvoices(c){ var invs=(c&&c.invoices)||[];
-  if(payReadyOnly) return invs.filter(function(v){ return v.status==='Not Paid' && v.fulfillment==='Fulfilled'; });
-  if(payNotReadyOnly) return invs.filter(function(v){ return v.status==='Not Paid' && v.fulfillment!=='Fulfilled'; });
-  return invs.filter(function(v){ return v.status!=='Paid'; }); }   // hide fully-paid invoices from the table
+  if(payReadyOnly) return invs.filter(function(v){ return payEffStatus(v)==='Not Paid' && v.fulfillment==='Fulfilled'; });
+  if(payNotReadyOnly) return invs.filter(function(v){ return payEffStatus(v)==='Not Paid' && v.fulfillment!=='Fulfilled'; });
+  if(payShowManual) return invs.filter(function(v){ return payHasOvr(v); });
+  return invs.filter(function(v){ return payEffStatus(v)!=='Paid'; }); }   // hide fully-paid (incl. manually recorded)
 // Balance cell: green $0 when fully paid; amber+bold when PARTIALLY paid (0<balance<amount) — the case to watch; plain when fully unpaid.
-function payBalanceCell(v){ var bal=Number(v.balance)||0, amt=Number(v.amount)||0;
-  if(bal<=0.005) return '<span style="color:#27ae60;">'+payMoney(0)+'</span>';
-  if(bal < amt-0.005) return '<span style="color:#e67e22;font-weight:700;" title="Partially paid — '+payMoney(amt-bal)+' of '+payMoney(amt)+' received">'+payMoney(bal)+'</span>';
-  return '<span style="color:#2c3e50;">'+payMoney(bal)+'</span>'; }
-function payTotals(invs){ var amt=0, unpaid=0; for(var i=0;i<invs.length;i++){ amt+=Number(invs[i].amount)||0; unpaid+=Number(invs[i].balance)||0; }
+function payBalanceCell(v){ var bal=payEffBalance(v), amt=Number(v.amount)||0, man=payHasOvr(v);
+  var tag = man? ' <span title="Manually recorded — '+payMoney(amt-bal)+' received on '+((payOvrOf(v)||{}).at||'')+'" style="font-size:10px;color:#8a6d00;background:#fff8e1;border-radius:6px;padding:0 5px;">manual</span>':'';
+  if(bal<=0.005) return '<span style="color:#27ae60;">'+payMoney(0)+'</span>'+tag;
+  if(bal < amt-0.005) return '<span style="color:#e67e22;font-weight:700;" title="Partially paid — '+payMoney(amt-bal)+' of '+payMoney(amt)+' received">'+payMoney(bal)+'</span>'+tag;
+  return '<span style="color:#2c3e50;">'+payMoney(bal)+'</span>'+tag; }
+function payTotals(invs){ var amt=0, unpaid=0; for(var i=0;i<invs.length;i++){ amt+=Number(invs[i].amount)||0; unpaid+=payEffBalance(invs[i]); }
   return {count:invs.length, amount:Math.round(amt*100)/100, unpaid:Math.round(unpaid*100)/100}; }
-function payToggleReady(cb){ payReadyOnly=!!cb.checked; if(payReadyOnly) payNotReadyOnly=false; renderPayPanel(); }
-function payToggleNotReady(cb){ payNotReadyOnly=!!cb.checked; if(payNotReadyOnly) payReadyOnly=false; renderPayPanel(); }
+function payToggleReady(cb){ payReadyOnly=!!cb.checked; if(payReadyOnly){ payNotReadyOnly=false; payShowManual=false; } renderPayPanel(); }
+function payToggleNotReady(cb){ payNotReadyOnly=!!cb.checked; if(payNotReadyOnly){ payReadyOnly=false; payShowManual=false; } renderPayPanel(); }
+function payToggleManual(cb){ payShowManual=!!cb.checked; if(payShowManual){ payReadyOnly=false; payNotReadyOnly=false; } renderPayPanel(); }
 function loadPay(){
-  if(PAY_EMBED){ PAY=PAY_EMBED; payLoading=false; if(mode==='pay'){ renderPayPanel(); } return; }
+  if(PAY_EMBED){ PAY=PAY_EMBED; payLoading=false; payOvrFetch(); if(mode==='pay'){ renderPayPanel(); } return; }
   if(payLoading) return; payLoading=true;
   fetch('payment-status-data.json?cb='+Date.now(),{cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
-    .then(function(d){ PAY=d; payLoading=false; if(mode==='pay'){ renderPayPanel(); } })
+    .then(function(d){ PAY=d; payLoading=false; payOvrFetch(); if(mode==='pay'){ renderPayPanel(); } })
     .catch(function(e){ payLoading=false; if(mode==='pay') document.getElementById('panel').innerHTML='<div class="empty">Could not load payment data: '+escapeHtml(e.message)+'</div>'; });
 }
 function payCustomers(){ return ((PAY&&PAY.customers)||[]).filter(function(c){ return (c.invoices||[]).length>0; }); }
@@ -3052,9 +3095,9 @@ function showFulfill(soNum){
 function payGrandTotals(){
   var cs=payCustomers(), amt=0,unpaid=0,ready=0,readyN=0,openN=0,paid=0;
   for(var i=0;i<cs.length;i++){ var iv=cs[i].invoices||[];
-    for(var j=0;j<iv.length;j++){ var v=iv[j], bal=Number(v.balance)||0;
+    for(var j=0;j<iv.length;j++){ var v=iv[j], bal=payEffBalance(v);
       amt+=Number(v.amount)||0; unpaid+=bal;
-      if(v.status==='Not Paid'){ openN++; if(v.fulfillment==='Fulfilled'){ ready+=bal; readyN++; } }
+      if(payEffStatus(v)==='Not Paid'){ openN++; if(v.fulfillment==='Fulfilled'){ ready+=bal; readyN++; } }
     }
   }
   paid=amt-unpaid;
@@ -3066,30 +3109,40 @@ function renderPayPanel(){
   if(!cs.length){ document.getElementById('panel').innerHTML='<div class="empty">No 2026 invoices found for Independent Diagnostic Lab customers.</div>'; return; }
   // "Ready for payment only" also narrows the customer dropdown to customers who have
   // ready (Not Paid + Fulfilled) invoices, and shows the ready count per customer.
-  function readyCount(cc){ var n=0,iv=(cc&&cc.invoices)||[]; for(var i=0;i<iv.length;i++){ if(iv[i].status==='Not Paid'&&iv[i].fulfillment==='Fulfilled') n++; } return n; }
-  function notReadyCount(cc){ var n=0,iv=(cc&&cc.invoices)||[]; for(var i=0;i<iv.length;i++){ if(iv[i].status==='Not Paid'&&iv[i].fulfillment!=='Fulfilled') n++; } return n; }
-  function notPaidCount(cc){ var n=0,iv=(cc&&cc.invoices)||[]; for(var i=0;i<iv.length;i++){ if(iv[i].status!=='Paid') n++; } return n; }
+  function readyCount(cc){ var n=0,iv=(cc&&cc.invoices)||[]; for(var i=0;i<iv.length;i++){ if(payEffStatus(iv[i])==='Not Paid'&&iv[i].fulfillment==='Fulfilled') n++; } return n; }
+  function notReadyCount(cc){ var n=0,iv=(cc&&cc.invoices)||[]; for(var i=0;i<iv.length;i++){ if(payEffStatus(iv[i])==='Not Paid'&&iv[i].fulfillment!=='Fulfilled') n++; } return n; }
+  function notPaidCount(cc){ var n=0,iv=(cc&&cc.invoices)||[]; for(var i=0;i<iv.length;i++){ if(payEffStatus(iv[i])!=='Paid') n++; } return n; }
+  function manualCount(cc){ var n=0,iv=(cc&&cc.invoices)||[]; for(var i=0;i<iv.length;i++){ if(payHasOvr(iv[i])) n++; } return n; }
   var vcs = payReadyOnly ? cs.filter(function(cc){ return readyCount(cc)>0; })
-          : (payNotReadyOnly ? cs.filter(function(cc){ return notReadyCount(cc)>0; }) : cs.filter(function(cc){ return notPaidCount(cc)>0; }));
+          : (payNotReadyOnly ? cs.filter(function(cc){ return notReadyCount(cc)>0; })
+          : (payShowManual ? cs.filter(function(cc){ return manualCount(cc)>0; })
+          : cs.filter(function(cc){ return notPaidCount(cc)>0; })));
   if(payCust!=='__ALL__' && (payReadyOnly||payNotReadyOnly) && !vcs.some(function(cc){return cc.name===payCust;})) payCust='__ALL__';
   var c=payCurrentOrAll(); var allMode=!!(c&&c._all);
   var opts='<option value="__ALL__"'+(allMode?' selected':'')+'>All customers ('+vcs.length+')</option>';
-  for(var i=0;i<vcs.length;i++){ var cnt=payReadyOnly?readyCount(vcs[i]):(payNotReadyOnly?notReadyCount(vcs[i]):notPaidCount(vcs[i])); opts+='<option value="'+escapeHtml(vcs[i].name)+'"'+(vcs[i].name===payCust?' selected':'')+'>'+escapeHtml(vcs[i].name)+' ('+cnt+')</option>'; }
+  for(var i=0;i<vcs.length;i++){ var cnt=payReadyOnly?readyCount(vcs[i]):(payNotReadyOnly?notReadyCount(vcs[i]):(payShowManual?manualCount(vcs[i]):notPaidCount(vcs[i]))); opts+='<option value="'+escapeHtml(vcs[i].name)+'"'+(vcs[i].name===payCust?' selected':'')+'>'+escapeHtml(vcs[i].name)+' ('+cnt+')</option>'; }
   var invs=payInvoices(c), body='';
-  for(var j=0;j<invs.length;j++){ var v=invs[j];
+  for(var j=0;j<invs.length;j++){ var v=invs[j]; var est=payEffStatus(v), man=payHasOvr(v); var amtN=Number(v.amount)||0;
+    var sob=v.shopify_order||'';
+    var soCell = sob? '<a href="https://admin.shopify.com/store/jit4you/orders?query='+encodeURIComponent(sob.replace(/^#/,''))+'" target="_blank" rel="noopener" title="Open in Shopify admin" style="color:#1f6f43;text-decoration:none;white-space:nowrap;">'+escapeHtml(sob)+' ↗</a>' : '<span style="color:#c8d0d8;">—</span>';
+    var actions = (v.status==='Voided') ? '<span style="color:#c8d0d8;">—</span>' :
+      (man? '<a href="#" data-num="'+escapeHtml(v.number)+'" data-amt="'+amtN+'" onclick="payActRecord(this);return false;" style="color:#1a73e8;text-decoration:none;">✎ Edit</a> &middot; <a href="#" data-num="'+escapeHtml(v.number)+'" onclick="payActUndo(this);return false;" style="color:#b54708;text-decoration:none;">↩ Undo</a>'
+          : '<a href="#" data-num="'+escapeHtml(v.number)+'" data-amt="'+amtN+'" onclick="payActMark(this);return false;" title="Mark fully paid" style="color:#188038;text-decoration:none;">✓ Mark paid</a> &middot; <a href="#" data-num="'+escapeHtml(v.number)+'" data-amt="'+amtN+'" onclick="payActRecord(this);return false;" title="Record a specific amount received" style="color:#1a73e8;text-decoration:none;">$…</a>');
     body+='<tr>'+
       (allMode?'<td style="white-space:nowrap;">'+escapeHtml(v._cust||'')+'</td>':'')+
       '<td>'+escapeHtml(v.number)+'</td>'+
       '<td>'+(v.so_num?escapeHtml(v.so_num):'<span style="color:#c8d0d8;">—</span>')+'</td>'+
-      '<td class="c">'+payBadge(v.status)+'</td>'+
+      '<td>'+soCell+'</td>'+
+      '<td class="c">'+payBadge(est)+(man&&est==='Paid'?' <span style="font-size:10px;color:#8a6d00;">(manual)</span>':'')+'</td>'+
       '<td class="c">'+payFulfillCell(v)+'</td>'+
       '<td class="c">'+fmtDate(v.date)+'</td>'+
       '<td style="text-align:right;">'+payMoney(v.amount)+'</td>'+
       '<td style="text-align:right;">'+payBalanceCell(v)+'</td>'+
-      '<td class="c">'+(function(){var u=v.invoice_link||v.link; if(!u) return '<span style="color:#999;">'+(v.status==='Paid'?'&mdash;':'No link')+'</span>'; return '<a href="'+escapeHtml(u)+'" target="_blank" rel="noopener" title="'+(v.invoice_link?'Opens the full invoice (line items) with a Pay button':'Opens the payment page')+'">'+(v.invoice_link?'View invoice &amp; pay ':'Pay ')+payMoney(v.balance||v.amount)+' <span style="color:#008080;">↗</span></a>';})()+'</td>'+
+      '<td class="c" style="white-space:nowrap;font-size:12px;">'+actions+'</td>'+
+      '<td class="c">'+(function(){var u=v.invoice_link||v.link; if(!u) return '<span style="color:#999;">'+(est==='Paid'?'&mdash;':'No link')+'</span>'; return '<a href="'+escapeHtml(u)+'" target="_blank" rel="noopener" title="'+(v.invoice_link?'Opens the full invoice (line items) with a Pay button':'Opens the payment page')+'">'+(v.invoice_link?'View invoice &amp; pay ':'Pay ')+payMoney(payEffBalance(v)||v.amount)+' <span style="color:#008080;">↗</span></a>';})()+'</td>'+
       '</tr>';
   }
-  if(!invs.length){ body='<tr><td colspan="'+(allMode?9:8)+'" class="empty" style="padding:16px;">No invoices'+(payReadyOnly?' ready for payment':(payNotReadyOnly?' not ready for payment':''))+' for this selection.</td></tr>'; }
+  if(!invs.length){ body='<tr><td colspan="'+(allMode?11:10)+'" class="empty" style="padding:16px;">No invoices'+(payReadyOnly?' ready for payment':(payNotReadyOnly?' not ready for payment':(payShowManual?' manually recorded as paid':'')))+' for this selection.</td></tr>'; }
   var t=payTotals(invs);
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">'+
@@ -3097,8 +3150,9 @@ function renderPayPanel(){
     '<select id="paySelect" onchange="paySelectChange()" style="padding:7px 10px;border:1px solid #cdd9e6;border-radius:6px;font-size:13px;min-width:240px;">'+opts+'</select>'+
     '<label style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#2c3e50;cursor:pointer;white-space:nowrap;"><input type="checkbox" onchange="payToggleReady(this)"'+(payReadyOnly?' checked':'')+'> Ready for payment only</label>'+
     '<label style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#2c3e50;cursor:pointer;white-space:nowrap;"><input type="checkbox" onchange="payToggleNotReady(this)"'+(payNotReadyOnly?' checked':'')+'> Not ready for payment</label>'+
+    '<label style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#2c3e50;cursor:pointer;white-space:nowrap;" title="Invoices you manually recorded a payment on"><input type="checkbox" onchange="payToggleManual(this)"'+(payShowManual?' checked':'')+'> Manually recorded</label>'+
     '<button class="copy-email-btn" onclick="copyPayTable()" title="Copy this invoice table — pastes as a formatted table into email/Word/Docs">📋 Copy table</button></div>'+
-    '<div class="sub">Independent Diagnostic Lab &middot; '+t.count+' invoice(s)'+(payReadyOnly?' ready for payment':(payNotReadyOnly?' not ready for payment':''))+' &middot; '+payMoney(t.amount)+' total &middot; '+payMoney(t.unpaid)+' unpaid &middot; QuickBooks '+escapeHtml(''+(PAY.year||''))+' &middot; as of '+escapeHtml(PAY.generated_at||'')+'</div></div>'+
+    '<div class="sub">Independent Diagnostic Lab &middot; '+t.count+' invoice(s)'+(payReadyOnly?' ready for payment':(payNotReadyOnly?' not ready for payment':(payShowManual?' manually recorded as paid':'')))+' &middot; '+payMoney(t.amount)+' total &middot; '+payMoney(t.unpaid)+' unpaid &middot; QuickBooks '+escapeHtml(''+(PAY.year||''))+' &middot; as of '+escapeHtml(PAY.generated_at||'')+'</div></div>'+
     (function(){var g=payGrandTotals(), apTot=((PAY.payables&&PAY.payables.grand_total)||0), net=g.unpaid-apTot;
       return '<div class="ca-h" style="margin:2px 0 4px;">Portfolio summary &mdash; all Independent Diagnostic Labs ('+g.custN+' customers)</div>'+
       '<div class="kpis" style="padding:2px 0 12px;">'+
@@ -3112,11 +3166,11 @@ function renderPayPanel(){
             'background:linear-gradient(135deg,'+(net<0?'#fdecea,#f1a9a0':'#e8f8ef,#a3dfbb')+');border-color:'+(net<0?'#c0392b':'#1e8449')+';')+
       '</div>';})()+
     '<div class="ca-h" style="margin-top:6px;">'+escapeHtml(allMode?'All customers':c.name)+' &mdash; invoices</div>'+
-    '<table><thead><tr>'+(allMode?'<th>Customer</th>':'')+'<th>Invoice #</th><th>SO #</th><th class="c">Status</th><th class="c">Fulfillment</th><th class="c">Date</th><th style="text-align:right;">Amount</th><th style="text-align:right;">Balance</th><th class="c">Link</th></tr></thead><tbody>'+body+
-    '<tr class="so-group"><td colspan="'+(allMode?6:5)+'" style="text-align:right;font-weight:700;">Total ('+t.count+')</td>'+
+    '<table><thead><tr>'+(allMode?'<th>Customer</th>':'')+'<th>Invoice #</th><th>SO #</th><th>Shopify</th><th class="c">Status</th><th class="c">Fulfillment</th><th class="c">Date</th><th style="text-align:right;">Amount</th><th style="text-align:right;">Balance</th><th class="c">Actions</th><th class="c">Link</th></tr></thead><tbody>'+body+
+    '<tr class="so-group"><td colspan="'+(allMode?7:6)+'" style="text-align:right;font-weight:700;">Total ('+t.count+')</td>'+
     '<td style="text-align:right;font-weight:700;">'+payMoney(t.amount)+'</td>'+
     '<td style="text-align:right;font-weight:700;color:'+(t.unpaid>0.005?'#c0392b':'#27ae60')+';">'+payMoney(t.unpaid)+'</td>'+
-    '<td class="c"></td></tr>'+
+    '<td class="c"></td><td class="c"></td></tr>'+
     '</tbody></table>' +
     payablesHtml();
 }
