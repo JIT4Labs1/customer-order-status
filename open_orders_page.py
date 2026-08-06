@@ -2971,7 +2971,7 @@ var PAY=null, payLoading=false, payCust='', payReadyOnly=false, payNotReadyOnly=
 function payInvoices(c){ var invs=(c&&c.invoices)||[];
   if(payReadyOnly) return invs.filter(function(v){ return v.status==='Not Paid' && v.fulfillment==='Fulfilled'; });
   if(payNotReadyOnly) return invs.filter(function(v){ return v.status==='Not Paid' && v.fulfillment!=='Fulfilled'; });
-  return invs; }
+  return invs.filter(function(v){ return v.status!=='Paid'; }); }   // hide fully-paid invoices from the table
 // Balance cell: green $0 when fully paid; amber+bold when PARTIALLY paid (0<balance<amount) — the case to watch; plain when fully unpaid.
 function payBalanceCell(v){ var bal=Number(v.balance)||0, amt=Number(v.amount)||0;
   if(bal<=0.005) return '<span style="color:#27ae60;">'+payMoney(0)+'</span>';
@@ -3068,12 +3068,13 @@ function renderPayPanel(){
   // ready (Not Paid + Fulfilled) invoices, and shows the ready count per customer.
   function readyCount(cc){ var n=0,iv=(cc&&cc.invoices)||[]; for(var i=0;i<iv.length;i++){ if(iv[i].status==='Not Paid'&&iv[i].fulfillment==='Fulfilled') n++; } return n; }
   function notReadyCount(cc){ var n=0,iv=(cc&&cc.invoices)||[]; for(var i=0;i<iv.length;i++){ if(iv[i].status==='Not Paid'&&iv[i].fulfillment!=='Fulfilled') n++; } return n; }
+  function notPaidCount(cc){ var n=0,iv=(cc&&cc.invoices)||[]; for(var i=0;i<iv.length;i++){ if(iv[i].status!=='Paid') n++; } return n; }
   var vcs = payReadyOnly ? cs.filter(function(cc){ return readyCount(cc)>0; })
-          : (payNotReadyOnly ? cs.filter(function(cc){ return notReadyCount(cc)>0; }) : cs);
+          : (payNotReadyOnly ? cs.filter(function(cc){ return notReadyCount(cc)>0; }) : cs.filter(function(cc){ return notPaidCount(cc)>0; }));
   if(payCust!=='__ALL__' && (payReadyOnly||payNotReadyOnly) && !vcs.some(function(cc){return cc.name===payCust;})) payCust='__ALL__';
   var c=payCurrentOrAll(); var allMode=!!(c&&c._all);
   var opts='<option value="__ALL__"'+(allMode?' selected':'')+'>All customers ('+vcs.length+')</option>';
-  for(var i=0;i<vcs.length;i++){ var cnt=payReadyOnly?readyCount(vcs[i]):(payNotReadyOnly?notReadyCount(vcs[i]):vcs[i].totals.count); opts+='<option value="'+escapeHtml(vcs[i].name)+'"'+(vcs[i].name===payCust?' selected':'')+'>'+escapeHtml(vcs[i].name)+' ('+cnt+')</option>'; }
+  for(var i=0;i<vcs.length;i++){ var cnt=payReadyOnly?readyCount(vcs[i]):(payNotReadyOnly?notReadyCount(vcs[i]):notPaidCount(vcs[i])); opts+='<option value="'+escapeHtml(vcs[i].name)+'"'+(vcs[i].name===payCust?' selected':'')+'>'+escapeHtml(vcs[i].name)+' ('+cnt+')</option>'; }
   var invs=payInvoices(c), body='';
   for(var j=0;j<invs.length;j++){ var v=invs[j];
     body+='<tr>'+
