@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-08-05 09:23 AM PT",
-  "last_status_refresh": "2026-08-05 09:20 AM PT",
+  "pulled_at": "2026-08-06 08:15 AM PT",
+  "last_status_refresh": "2026-08-06 07:42 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -6420,12 +6420,12 @@
       "receiver": "Superior Med Spa",
       "ship_to": "Superior, WI",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Duluth, MN",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "SUPERIOR, WI",
       "date": "2026-08-05",
-      "time": "",
-      "delivered": false,
+      "time": "1:18 PM",
+      "delivered": true,
       "source": "UPS My Choice (3rd Party)",
       "carrier": "UPS",
       "ship_date": "2026-08-03",
@@ -6463,12 +6463,12 @@
       "receiver": "Superior Med Spa",
       "ship_to": "Superior, WI",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Duluth, MN",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "SUPERIOR, WI",
       "date": "2026-08-05",
-      "time": "",
-      "delivered": false,
+      "time": "1:18 PM",
+      "delivered": true,
       "source": "UPS My Choice (3rd Party)",
       "carrier": "UPS",
       "ship_date": "2026-08-03",
@@ -6506,12 +6506,12 @@
       "receiver": "Ibeauty Med Spa",
       "ship_to": "Oak Brook, IL",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Addison, IL",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "OAK BROOK, IL",
       "date": "2026-08-05",
-      "time": "",
-      "delivered": false,
+      "time": "11:30 AM",
+      "delivered": true,
       "source": "UPS My Choice (3rd Party)",
       "carrier": "UPS",
       "ship_date": "2026-08-03",
@@ -6549,12 +6549,12 @@
       "receiver": "Ibeauty Med Spa",
       "ship_to": "Oak Brook, IL",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Addison, IL",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "OAK BROOK, IL",
       "date": "2026-08-05",
-      "time": "",
-      "delivered": false,
+      "time": "11:30 AM",
+      "delivered": true,
       "source": "UPS My Choice (3rd Party)",
       "carrier": "UPS",
       "ship_date": "2026-08-03",
@@ -6593,9 +6593,9 @@
       "ship_to": "Joshua, TX",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Atlanta, GA",
-      "date": "2026-08-05",
+      "activity": "Out For Delivery Today",
+      "location": "Fort Worth, TX",
+      "date": "2026-08-06",
       "time": "",
       "delivered": false,
       "source": "UPS My Choice (3rd Party)",
@@ -6636,9 +6636,9 @@
       "ship_to": "Joshua, TX",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Atlanta, GA",
-      "date": "2026-08-05",
+      "activity": "Out For Delivery Today",
+      "location": "Fort Worth, TX",
+      "date": "2026-08-06",
       "time": "",
       "delivered": false,
       "source": "UPS My Choice (3rd Party)",
@@ -6670,6 +6670,199 @@
       ],
       "po": "PO787",
       "po_id": "169747"
+    },
+    {
+      "tracking": "875378897489",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "MEDICAL HEALTH LAB",
+      "contact": "SYED RIZVI",
+      "ship_to": "Sugar Land, TX",
+      "order": "#1132",
+      "status": "In Transit",
+      "activity": "Out for Delivery",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-08-04",
+      "items": [
+        {
+          "name": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
+          "sku": "37200",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B63284 Access TSH Stimulating Hormone (3rd IS) 2 x 100 Determinations",
+          "sku": "B63284",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A13422 Access Free T3 Reagent, 100 Determinations",
+          "sku": "A13422",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81906 Access Substrate",
+          "sku": "81906",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33830 Access Total T3, 100 Determinations",
+          "sku": "33830",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33000 Access Vitamin B12 Reagent, 100 Determinations",
+          "sku": "33000",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 2
+        }
+      ],
+      "so_num": "SO505",
+      "so_id": "170113",
+      "pos": [
+        {
+          "po": "PO788",
+          "vendor": "PMA Services",
+          "po_id": "170114"
+        },
+        {
+          "po": "PO789",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "170115"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "875388483839",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "MEDICAL HEALTH LAB",
+      "contact": "SYED RIZVI",
+      "ship_to": "Sugar Land, TX",
+      "order": "#1132",
+      "status": "",
+      "activity": "Label created",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-08-04",
+      "items": [
+        {
+          "name": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
+          "sku": "37200",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B63284 Access TSH Stimulating Hormone (3rd IS) 2 x 100 Determinations",
+          "sku": "B63284",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A13422 Access Free T3 Reagent, 100 Determinations",
+          "sku": "A13422",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81906 Access Substrate",
+          "sku": "81906",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33830 Access Total T3, 100 Determinations",
+          "sku": "33830",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33000 Access Vitamin B12 Reagent, 100 Determinations",
+          "sku": "33000",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 2
+        }
+      ],
+      "so_num": "SO505",
+      "so_id": "170113",
+      "pos": [
+        {
+          "po": "PO788",
+          "vendor": "PMA Services",
+          "po_id": "170114"
+        },
+        {
+          "po": "PO789",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "170115"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "875414161907",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Doctors General Laboratory",
+      "contact": "Mahemdra Patel",
+      "ship_to": "Clarendon Hills, IL",
+      "order": "#1133",
+      "status": "",
+      "activity": "Label created",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-08-04",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6199 C-reactive Protein High sensitive CRP",
+          "sku": "OSR6199",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations",
+          "sku": "A98856",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
+          "sku": "37200",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO506",
+      "so_id": "170160",
+      "pos": [
+        {
+          "po": "PO790",
+          "vendor": "PMA Services",
+          "po_id": "170161"
+        }
+      ],
+      "po": "PO790",
+      "po_id": "170161"
     }
   ]
 }
