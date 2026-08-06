@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-08-06 08:15 AM PT",
-  "last_status_refresh": "2026-08-06 07:42 AM PT",
+  "pulled_at": "2026-08-06 09:12 AM PT",
+  "last_status_refresh": "2026-08-06 09:07 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -6684,7 +6684,7 @@
       "status": "In Transit",
       "activity": "Out for Delivery",
       "location": "",
-      "date": "",
+      "date": "2026-08-06",
       "time": "",
       "delivered": false,
       "ship_date": "2026-08-04",
@@ -6740,7 +6740,8 @@
         }
       ],
       "po": "",
-      "po_id": ""
+      "po_id": "",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=875378897489"
     },
     {
       "tracking": "875388483839",
@@ -6755,7 +6756,7 @@
       "status": "",
       "activity": "Label created",
       "location": "",
-      "date": "",
+      "date": "2026-08-05",
       "time": "",
       "delivered": false,
       "ship_date": "2026-08-04",
@@ -6811,7 +6812,8 @@
         }
       ],
       "po": "",
-      "po_id": ""
+      "po_id": "",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=875388483839"
     },
     {
       "tracking": "875414161907",
@@ -6826,7 +6828,7 @@
       "status": "",
       "activity": "Label created",
       "location": "",
-      "date": "",
+      "date": "2026-08-06",
       "time": "",
       "delivered": false,
       "ship_date": "2026-08-04",
@@ -6862,7 +6864,104 @@
         }
       ],
       "po": "PO790",
-      "po_id": "170161"
+      "po_id": "170161",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=875414161907"
+    },
+    {
+      "tracking": "383030389239",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "OM Diagnostic Laboratories",
+      "contact": "Karan Mehta",
+      "ship_to": "Norwood, MA",
+      "order": "#1134",
+      "service": "FedEx",
+      "status": "",
+      "activity": "Label created",
+      "delivered": false,
+      "location": "",
+      "date": "2026-08-06",
+      "time": "",
+      "ship_date": "2026-08-06",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=383030389239",
+      "items": [
+        {
+          "name": "Beckman Coulter 33000 Access Vitamin B12 Reagent, 100 Determinations",
+          "sku": "33000",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO507",
+      "so_id": "170537",
+      "pos": [
+        {
+          "po": "PO792",
+          "vendor": "PMA Services",
+          "po_id": "170538"
+        }
+      ],
+      "po": "PO792",
+      "po_id": "170538"
+    },
+    {
+      "tracking": "383031879915",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Radiance Diagnostics",
+      "contact": "Siva Kumar",
+      "ship_to": "Naperville, IL",
+      "order": "#1125",
+      "service": "FedEx",
+      "status": "",
+      "activity": "Label created",
+      "delivered": false,
+      "location": "",
+      "date": "2026-08-06",
+      "time": "",
+      "ship_date": "2026-08-06",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=383031879915",
+      "items": [
+        {
+          "name": "Beckman Coulter 33600 Immunoassay Reagent Access Cortisol 100 Tests",
+          "sku": "33600",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A18227 Access TPO Antibody Calibrator",
+          "sku": "A18227",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6198 Olympus Uric Acid Reagent 4x625 tests",
+          "sku": "OSR6198",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A13430 Access Free T3 Calibrator",
+          "sku": "A13430",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO499",
+      "so_id": "168444",
+      "pos": [
+        {
+          "po": "PO778",
+          "vendor": "PMA Services",
+          "po_id": "168445"
+        }
+      ],
+      "po": "PO778",
+      "po_id": "168445"
     }
   ]
 }
