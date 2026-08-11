@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-08-10 09:45 AM PT",
-  "last_status_refresh": "2026-08-10 09:08 AM PT",
+  "pulled_at": "2026-08-10 06:17 PM PT",
+  "last_status_refresh": "2026-08-10 06:13 PM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -6055,11 +6055,11 @@
       "ship_to": "Norwood, MA",
       "order": "#1127",
       "service": "FedEx",
-      "status": "",
-      "activity": "Label created",
+      "status": "In Transit",
+      "activity": "",
       "delivered": false,
       "location": "",
-      "date": "2026-07-30",
+      "date": "2026-08-11",
       "time": "",
       "ship_date": "2026-07-30",
       "url": "https://www.fedex.com/fedextrack/?trknbr=875127665220",
@@ -6093,11 +6093,11 @@
       "ship_to": "Norwood, MA",
       "order": "#1127",
       "service": "FedEx",
-      "status": "",
-      "activity": "Label created",
+      "status": "In Transit",
+      "activity": "",
       "delivered": false,
       "location": "",
-      "date": "2026-07-30",
+      "date": "2026-08-11",
       "time": "",
       "ship_date": "2026-07-30",
       "url": "https://www.fedex.com/fedextrack/?trknbr=875127650147",
@@ -6131,11 +6131,11 @@
       "ship_to": "Norwood, MA",
       "order": "#1127",
       "service": "FedEx",
-      "status": "",
-      "activity": "Label created",
+      "status": "In Transit",
+      "activity": "",
       "delivered": false,
       "location": "",
-      "date": "2026-07-30",
+      "date": "2026-08-11",
       "time": "",
       "ship_date": "2026-07-30",
       "url": "https://www.fedex.com/fedextrack/?trknbr=382912257803",
@@ -6169,11 +6169,11 @@
       "ship_to": "Norwood, MA",
       "order": "#1127",
       "service": "FedEx",
-      "status": "",
-      "activity": "Label created",
+      "status": "In Transit",
+      "activity": "",
       "delivered": false,
       "location": "",
-      "date": "2026-07-30",
+      "date": "2026-08-11",
       "time": "",
       "ship_date": "2026-07-30",
       "url": "https://www.fedex.com/fedextrack/?trknbr=875127617870",
@@ -6207,11 +6207,11 @@
       "ship_to": "Norwood, MA",
       "order": "#1127",
       "service": "FedEx",
-      "status": "",
-      "activity": "Label created",
+      "status": "In Transit",
+      "activity": "",
       "delivered": false,
       "location": "",
-      "date": "2026-07-30",
+      "date": "2026-08-11",
       "time": "",
       "ship_date": "2026-07-30",
       "url": "https://www.fedex.com/fedextrack/?trknbr=875127550350",
@@ -7106,11 +7106,11 @@
       "ship_to": "Ashburn, VA",
       "order": "#1121",
       "service": "FedEx",
-      "status": "In Transit",
-      "activity": "In Transit",
-      "delivered": false,
+      "status": "Delivered",
+      "activity": "Delivered",
+      "delivered": true,
       "location": "",
-      "date": "2026-08-07",
+      "date": "2026-08-10",
       "time": "",
       "ship_date": "2026-08-06",
       "url": "https://www.fedex.com/fedextrack/?trknbr=383028955101",
@@ -7133,10 +7133,15 @@
           "po": "PO775",
           "vendor": "PMA Services",
           "po_id": "167332"
+        },
+        {
+          "po": "PO797",
+          "vendor": "PMA Services",
+          "po_id": "172169"
         }
       ],
-      "po": "PO775",
-      "po_id": "167332"
+      "po": "",
+      "po_id": ""
     },
     {
       "tracking": "383039735362",
@@ -7149,11 +7154,11 @@
       "ship_to": "Clarendon Hills, IL",
       "order": "#1135",
       "service": "FedEx",
-      "status": "",
-      "activity": "Label created",
+      "status": "In Transit",
+      "activity": "",
       "delivered": false,
       "location": "",
-      "date": "2026-08-06",
+      "date": "2026-08-10",
       "time": "",
       "ship_date": "2026-08-06",
       "url": "https://www.fedex.com/fedextrack/?trknbr=383039735362",
@@ -7175,6 +7180,64 @@
       ],
       "po": "PO793",
       "po_id": "170929"
+    },
+    {
+      "tracking": "875571722710",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Mercedes Scientific",
+      "contact": "Misty Mcwhorter",
+      "ship_to": "Bradenton, FL",
+      "order": "#1118",
+      "service": "FedEx",
+      "status": "In Transit",
+      "activity": "",
+      "delivered": false,
+      "location": "",
+      "date": "2026-08-10",
+      "time": "",
+      "ship_date": "2026-08-10",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=875571722710",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR61205 UIBC unsaturated reagent iron binding capacity",
+          "sku": "OSR61205",
+          "qty": 3
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 9
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations",
+          "sku": "A98856",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter OSR6106 Olympus Amylase Reagent 4x40mL",
+          "sku": "OSR6106",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO493",
+      "so_id": "167019",
+      "pos": [
+        {
+          "po": "PO767",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "167026"
+        }
+      ],
+      "po": "PO767",
+      "po_id": "167026"
     }
   ]
 }
