@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-08-11 09:45 AM PT",
-  "last_status_refresh": "2026-08-11 09:10 AM PT",
+  "pulled_at": "2026-08-12 09:45 AM PT",
+  "last_status_refresh": "2026-08-12 09:08 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -5697,10 +5697,15 @@
           "po": "PO778",
           "vendor": "PMA Services",
           "po_id": "168445"
+        },
+        {
+          "po": "PO791",
+          "vendor": "ALDX HOLDING CORPORATION",
+          "po_id": "170412"
         }
       ],
-      "po": "PO778",
-      "po_id": "168445"
+      "po": "",
+      "po_id": ""
     },
     {
       "tracking": "875072379402",
@@ -5735,10 +5740,15 @@
           "po": "PO778",
           "vendor": "PMA Services",
           "po_id": "168445"
+        },
+        {
+          "po": "PO791",
+          "vendor": "ALDX HOLDING CORPORATION",
+          "po_id": "170412"
         }
       ],
-      "po": "PO778",
-      "po_id": "168445"
+      "po": "",
+      "po_id": ""
     },
     {
       "tracking": "382891043648",
@@ -7192,11 +7202,11 @@
       "ship_to": "Bradenton, FL",
       "order": "#1118",
       "service": "FedEx",
-      "status": "In Transit",
-      "activity": "",
-      "delivered": false,
+      "status": "Delivered",
+      "activity": "Delivered",
+      "delivered": true,
       "location": "",
-      "date": "2026-08-10",
+      "date": "2026-08-11",
       "time": "",
       "ship_date": "2026-08-10",
       "url": "https://www.fedex.com/fedextrack/?trknbr=875571722710",
@@ -7249,9 +7259,9 @@
       "order": "#1137",
       "service": "",
       "status": "In Transit",
-      "activity": "",
+      "activity": "Out for Delivery",
       "location": "",
-      "date": "",
+      "date": "2026-08-12",
       "time": "",
       "delivered": false,
       "carrier": "FedEx",
@@ -7266,6 +7276,78 @@
       ],
       "po": "PO798",
       "po_id": "172407"
+    },
+    {
+      "tracking": "1Z23C2X7YW01596840",
+      "carrier": "UPS",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "LabX Diagnotic Systems",
+      "contact": "Brook Delnista",
+      "ship_to": "Tampa, FL",
+      "order": "#1138",
+      "status": "In Transit",
+      "activity": "Departed from Facility",
+      "location": "Nashville, TN",
+      "date": "2026-08-12",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-08-11",
+      "items": [
+        {
+          "name": "Beckman coulter ODR2000 Wash Solution, Olympus",
+          "sku": "ODR2000",
+          "qty": 2
+        }
+      ],
+      "so_num": "SO511",
+      "so_id": "172606",
+      "pos": [
+        {
+          "po": "PO799",
+          "vendor": "PMA Services",
+          "po_id": "172607"
+        }
+      ],
+      "po": "PO799",
+      "po_id": "172607"
+    },
+    {
+      "tracking": "1Z23C2X71310546035",
+      "carrier": "UPS",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "OM Diagnostic Laboratories",
+      "contact": "Karan Mehta",
+      "ship_to": "Norwood, MA",
+      "order": "#1140",
+      "status": "In Transit",
+      "activity": "Out For Delivery Today",
+      "location": "Norwood, MA",
+      "date": "2026-08-12",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-08-11",
+      "items": [
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO513",
+      "so_id": "172764",
+      "pos": [
+        {
+          "po": "PO801",
+          "vendor": "PMA Services",
+          "po_id": "172765"
+        }
+      ],
+      "po": "PO801",
+      "po_id": "172765"
     }
   ]
 }
