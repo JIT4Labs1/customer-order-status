@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-08-12 09:45 AM PT",
-  "last_status_refresh": "2026-08-12 09:08 AM PT",
+  "pulled_at": "2026-08-13 09:43 AM PT",
+  "last_status_refresh": "2026-08-13 09:06 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -7082,7 +7082,7 @@
       "activity": "Delivered",
       "delivered": true,
       "location": "",
-      "date": "2026-08-06",
+      "date": "2026-08-07",
       "time": "",
       "ship_date": "2026-08-06",
       "url": "https://www.fedex.com/fedextrack/?trknbr=875415155209",
@@ -7164,11 +7164,11 @@
       "ship_to": "Clarendon Hills, IL",
       "order": "#1135",
       "service": "FedEx",
-      "status": "In Transit",
-      "activity": "",
-      "delivered": false,
+      "status": "Delivered",
+      "activity": "Delivered",
+      "delivered": true,
       "location": "",
-      "date": "2026-08-10",
+      "date": "2026-08-11",
       "time": "",
       "ship_date": "2026-08-06",
       "url": "https://www.fedex.com/fedextrack/?trknbr=383039735362",
@@ -7258,12 +7258,12 @@
       "ship_to": "Milledgeville, GA",
       "order": "#1137",
       "service": "",
-      "status": "In Transit",
-      "activity": "Out for Delivery",
+      "status": "Delivered",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-08-12",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "carrier": "FedEx",
       "so_num": "SO510",
       "so_id": "172406",
@@ -7275,7 +7275,14 @@
         }
       ],
       "po": "PO798",
-      "po_id": "172407"
+      "po_id": "172407",
+      "items": [
+        {
+          "name": "Siemens Atellica 10995584 FT3",
+          "sku": "10995584",
+          "qty": 1
+        }
+      ]
     },
     {
       "tracking": "1Z23C2X7YW01596840",
@@ -7287,12 +7294,12 @@
       "contact": "Brook Delnista",
       "ship_to": "Tampa, FL",
       "order": "#1138",
-      "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Nashville, TN",
-      "date": "2026-08-12",
-      "time": "",
-      "delivered": false,
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "TAMPA, FL",
+      "date": "2026-08-13",
+      "time": "9:40 AM",
+      "delivered": true,
       "ship_date": "2026-08-11",
       "items": [
         {
@@ -7323,12 +7330,12 @@
       "contact": "Karan Mehta",
       "ship_to": "Norwood, MA",
       "order": "#1140",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Norwood, MA",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "NORWOOD, MA",
       "date": "2026-08-12",
-      "time": "",
-      "delivered": false,
+      "time": "12:58 PM",
+      "delivered": true,
       "ship_date": "2026-08-11",
       "items": [
         {
@@ -7348,6 +7355,71 @@
       ],
       "po": "PO801",
       "po_id": "172765"
+    },
+    {
+      "tracking": "1Z23C2X7D904842051",
+      "carrier": "UPS",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Sabag Wolstein Law Office",
+      "contact": "Sabag Wolstein",
+      "ship_to": "Kiryat Motzkin, ",
+      "order": "#1141",
+      "status": "In Transit",
+      "activity": "Arrived at Facility",
+      "location": "Lod",
+      "date": "2026-08-13",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-08-11",
+      "items": [
+        {
+          "name": "Beckman Coulter 33000 Access Vitamin B12 Reagent, 100 Determinations",
+          "sku": "33000",
+          "qty": 1
+        }
+      ],
+      "so_num": "",
+      "so_id": ""
+    },
+    {
+      "tracking": "383140167530",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Well Health Labs",
+      "contact": "Joy Rivarez",
+      "ship_to": "Stafford, TX",
+      "order": "#1101",
+      "service": "FedEx",
+      "status": "Delivered",
+      "activity": "Delivered",
+      "delivered": true,
+      "location": "",
+      "date": "2026-08-13",
+      "time": "",
+      "ship_date": "2026-08-12",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=383140167530",
+      "items": [
+        {
+          "name": "Beckman Coulter B12396 HbA1c Extend Sure Control Kit",
+          "sku": "B12396",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO477",
+      "so_id": "164668",
+      "pos": [
+        {
+          "po": "PO750",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "164671"
+        }
+      ],
+      "po": "PO750",
+      "po_id": "164671"
     }
   ]
 }
