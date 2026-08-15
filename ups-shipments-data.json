@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-08-13 09:58 AM PT",
-  "last_status_refresh": "2026-08-13 09:55 AM PT",
+  "pulled_at": "2026-08-15 04:17 PM PT",
+  "last_status_refresh": "2026-08-15 03:49 PM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -1611,16 +1611,10 @@
         }
       ],
       "so_num": "SO408",
-      "pos": [
-        {
-          "po": "PO647",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "150063"
-        }
-      ],
-      "po": "PO647",
+      "pos": [],
+      "po": "",
       "so_id": "150060",
-      "po_id": "150063"
+      "po_id": ""
     },
     {
       "tracking": "1ZXG9979YW12835812",
@@ -6065,9 +6059,9 @@
       "ship_to": "Norwood, MA",
       "order": "#1127",
       "service": "FedEx",
-      "status": "In Transit",
-      "activity": "Out for Delivery",
-      "delivered": false,
+      "status": "Delivered",
+      "activity": "Delivered",
+      "delivered": true,
       "location": "",
       "date": "2026-08-13",
       "time": "",
@@ -6103,9 +6097,9 @@
       "ship_to": "Norwood, MA",
       "order": "#1127",
       "service": "FedEx",
-      "status": "In Transit",
-      "activity": "Out for Delivery",
-      "delivered": false,
+      "status": "Delivered",
+      "activity": "Delivered",
+      "delivered": true,
       "location": "",
       "date": "2026-08-13",
       "time": "",
@@ -6141,9 +6135,9 @@
       "ship_to": "Norwood, MA",
       "order": "#1127",
       "service": "FedEx",
-      "status": "In Transit",
-      "activity": "Out for Delivery",
-      "delivered": false,
+      "status": "Delivered",
+      "activity": "Delivered",
+      "delivered": true,
       "location": "",
       "date": "2026-08-13",
       "time": "",
@@ -6179,9 +6173,9 @@
       "ship_to": "Norwood, MA",
       "order": "#1127",
       "service": "FedEx",
-      "status": "In Transit",
-      "activity": "Out for Delivery",
-      "delivered": false,
+      "status": "Delivered",
+      "activity": "Delivered",
+      "delivered": true,
       "location": "",
       "date": "2026-08-13",
       "time": "",
@@ -6217,9 +6211,9 @@
       "ship_to": "Norwood, MA",
       "order": "#1127",
       "service": "FedEx",
-      "status": "In Transit",
-      "activity": "Out for Delivery",
-      "delivered": false,
+      "status": "Delivered",
+      "activity": "Delivered",
+      "delivered": true,
       "location": "",
       "date": "2026-08-13",
       "time": "",
@@ -7366,8 +7360,8 @@
       "contact": "Sabag Wolstein",
       "ship_to": "Kiryat Motzkin, ",
       "order": "#1141",
-      "status": "In Transit",
-      "activity": "Arrived at Facility",
+      "status": "Exception",
+      "activity": "Your package is pending release from a Government Agency. Once they release it, your package will be on its way. / We've contacted the receiver.",
       "location": "Lod",
       "date": "2026-08-13",
       "time": "",
@@ -7420,6 +7414,42 @@
       ],
       "po": "PO750",
       "po_id": "164671"
+    },
+    {
+      "tracking": "1Z23C2X7YW33619247",
+      "carrier": "UPS",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Clinical Diagnostic Laboratories, LLC",
+      "contact": "ibtihaj@clinicaldiagnosticlab.com",
+      "ship_to": "Ashburn, VA",
+      "order": "#1142",
+      "status": "In Transit",
+      "activity": "Arrived at Facility",
+      "location": "New Stanton, PA",
+      "date": "2026-08-15",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-08-14",
+      "items": [
+        {
+          "name": "Beckman coulter 81904 Bag, Waste, Access",
+          "sku": "81904",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO514",
+      "so_id": "173458",
+      "pos": [
+        {
+          "po": "PO802",
+          "vendor": "PMA Services",
+          "po_id": "173459"
+        }
+      ],
+      "po": "PO802",
+      "po_id": "173459"
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-13 09:56 AM PDT",
+  "generated_at": "2026-08-15 04:50 PM MDT",
   "year": 2026,
   "customers": [
     {
@@ -256,6 +256,39 @@
       "qb_id": "1408",
       "invoices": [
         {
+          "number": "SO614",
+          "status": "Not Paid",
+          "amount": 1378.0,
+          "balance": 1378.0,
+          "date": "2026-08-14",
+          "link": "",
+          "invoice_link": "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-1baa97a6347a4e0a9b4ac5ee7959ff06533c7fa2300348c686dbd952ba028efb20a69070b2334f4cbcefa2c4083271c7?locale=en_US&cta=v3invoicelink",
+          "so_num": "SO515",
+          "shopify_order": "#1143",
+          "fulfillment": "Partially",
+          "so_date": "2026-08-15",
+          "open_items": [
+            {
+              "product": "Beckman Coulter 33830 Access Total T3, 100 Determinations",
+              "open_qty": 4.0,
+              "po": "PO803",
+              "vendor": "PMA Services"
+            },
+            {
+              "product": "Beckman Coulter 81906 Access Substrate",
+              "open_qty": 2.0,
+              "po": "PO803",
+              "vendor": "PMA Services"
+            },
+            {
+              "product": "Beckman Coulter A16972 Access Intact PTH Reagent, 100 determinations",
+              "open_qty": 4.0,
+              "po": "PO803",
+              "vendor": "PMA Services"
+            }
+          ]
+        },
+        {
           "number": "SO576",
           "status": "Paid",
           "amount": 1812.76,
@@ -432,10 +465,10 @@
         }
       ],
       "totals": {
-        "count": 12,
-        "amount": 14378.88,
+        "count": 13,
+        "amount": 15756.88,
         "paid": 14378.88,
-        "unpaid": 0.0
+        "unpaid": 1378.0
       }
     },
     {
@@ -1231,8 +1264,8 @@
             {
               "product": "Beckman Coulter 33830 Access Total T3, 100 Determinations",
               "open_qty": 1.0,
-              "po": "",
-              "vendor": ""
+              "po": "PO788",
+              "vendor": "PMA Services"
             }
           ]
         },
@@ -1404,7 +1437,7 @@
           "link": "",
           "invoice_link": "",
           "so_num": "SO475",
-          "shopify_order": "",
+          "shopify_order": "#1099",
           "fulfillment": "Fulfilled",
           "so_date": "2026-07-14",
           "open_items": []
@@ -1425,8 +1458,8 @@
             {
               "product": "Beckman coulter 33545 Calibrator, Access, Estradiol (REF)",
               "open_qty": 1.0,
-              "po": "",
-              "vendor": ""
+              "po": "PO738",
+              "vendor": "PMA Services"
             }
           ]
         },
@@ -1488,8 +1521,8 @@
             {
               "product": "Beckman Coulter 81906 Access Substrate",
               "open_qty": 20.0,
-              "po": "",
-              "vendor": ""
+              "po": "PO666",
+              "vendor": "PMA Services"
             }
           ]
         },
@@ -1537,8 +1570,8 @@
             {
               "product": "Beckman Coulter 81906 Access Substrate",
               "open_qty": 20.0,
-              "po": "",
-              "vendor": ""
+              "po": "PO666",
+              "vendor": "PMA Services"
             }
           ]
         },
@@ -2496,16 +2529,16 @@
     }
   ],
   "payables": {
-    "generated_at": "2026-08-13 09:56 AM PDT",
+    "generated_at": "2026-08-15 04:50 PM MDT",
     "grand_total": 49367.34,
-    "past_due": 33945.21,
+    "past_due": 35096.63,
     "count": 71,
     "vendors": [
       {
         "vendor": "Conmed",
         "balance": 48455.14,
         "count": 68,
-        "pastdue": 33033.01,
+        "pastdue": 34184.43,
         "bills": [
           {
             "num": "11399649",
@@ -3022,7 +3055,7 @@
     "source": "Bank balance",
     "book_balance": 48840.66,
     "bank_asof": "2026-07-23",
-    "as_of": "2026-08-13 09:56 AM PDT"
+    "as_of": "2026-08-15 04:50 PM MDT"
   },
-  "pulled_at": "2026-08-13 09:58 AM PT"
+  "pulled_at": "2026-08-15 04:17 PM PT"
 }
