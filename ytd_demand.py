@@ -146,6 +146,12 @@ def build_ytd_demand(vt, year=None, acct_names=None):
             qty = _f(it.get("quantity", it.get("qty", 0)))
             if qty <= 0:
                 continue
+            # $ spent = qty x unit selling price, net of line discount. Same price
+            # basis as the Customer Prices tab so the two tabs agree.
+            unit = _f(it.get("discounted_unit_selling_price"))
+            if unit == 0:
+                unit = _f(it.get("listprice", it.get("netprice", 0)))
+            amt = qty * unit
 
             row = items.get(sku)
             if row is None:
@@ -155,15 +161,22 @@ def build_ytd_demand(vt, year=None, acct_names=None):
                     "vendor": "",
                     "by_month": [0.0] * 12,
                     "ytd": 0.0,
+                    "amt_by_month": [0.0] * 12,
+                    "amt_ytd": 0.0,
                     "cust": {},
                     "so_count": 0,
                 }
             row["by_month"][mi] += qty
             row["ytd"] += qty
+            row["amt_by_month"][mi] += amt
+            row["amt_ytd"] += amt
             row["so_count"] += 1
-            cm = row["cust"].setdefault(cust, {"by_month": [0.0] * 12, "ytd": 0.0})
+            cm = row["cust"].setdefault(cust, {"by_month": [0.0] * 12, "ytd": 0.0,
+                                              "amt_by_month": [0.0] * 12, "amt_ytd": 0.0})
             cm["by_month"][mi] += qty
             cm["ytd"] += qty
+            cm["amt_by_month"][mi] += amt
+            cm["amt_ytd"] += amt
 
     def _r(x):
         return round(x, 2) if x % 1 else int(x)
@@ -172,7 +185,11 @@ def build_ytd_demand(vt, year=None, acct_names=None):
     for row in items.values():
         row["by_month"] = [_r(v) for v in row["by_month"]]
         row["ytd"] = _r(row["ytd"])
-        row["cust"] = {c: {"by_month": [_r(v) for v in d["by_month"]], "ytd": _r(d["ytd"])}
+        row["amt_by_month"] = [round(v, 2) for v in row["amt_by_month"]]
+        row["amt_ytd"] = round(row["amt_ytd"], 2)
+        row["cust"] = {c: {"by_month": [_r(v) for v in d["by_month"]], "ytd": _r(d["ytd"]),
+                           "amt_by_month": [round(v, 2) for v in d["amt_by_month"]],
+                           "amt_ytd": round(d["amt_ytd"], 2)}
                        for c, d in row["cust"].items()}
         out_items.append(row)
     out_items.sort(key=lambda r: (-float(r["ytd"] or 0), r["sku"]))
@@ -185,7 +202,9 @@ def build_ytd_demand(vt, year=None, acct_names=None):
         "customers": sorted(customers),
         "items": out_items,
         "so_count": len(so_seen),
-        "note": ("Units = sum of Sales Order line-item quantity for %d. "
+        "grand_amount": round(sum(r["amt_ytd"] for r in out_items), 2),
+        "grand_units": _r(sum(float(r["ytd"]) for r in out_items)),
+        "note": ("Units = sum of Sales Order line-item quantity for %d; $ spent = qty x unit selling price net of line discount. "
                  "Cancelled SOs and shipping/fee lines excluded. Scope matches the "
                  "dashboard: 2026 Sales Orders, ConMed accounts excluded." % Y),
     }
