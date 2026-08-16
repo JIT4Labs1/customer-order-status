@@ -39,6 +39,7 @@ from pnl_report import build_pnl
 from customer_analysis import (build_customer_analysis, _build_email_doc as _email_draft_doc,
                                _wordmark, _esc, _qstr)
 from customer_prices import build_customer_prices
+from ytd_demand import build_ytd_demand
 
 # ─────────────────────────────────────────────
 # GitHub Pages publishing (same host/repo as the customer-order-status reports)
@@ -810,6 +811,27 @@ def build_html(page_data, embeds=None):
   table.cp-table tbody tr:nth-child(even) td.cp-sticky{ background:#f7f9fc; }
   table.cp-table tbody tr:nth-child(even) td{ background:#f7f9fc; }
   table.cp-table .cp-na{ color:#c3ccd8; }
+  /* YTD Demand tab */
+  .ytd-ctrl{ display:flex; align-items:center; gap:12px; margin:6px 2px 10px; }
+  .ytd-search{ flex:0 0 300px; padding:8px 11px; border:1px solid #d7dee8; border-radius:7px;
+    font-size:13px; font-family:inherit; color:#101E3E; outline:none; }
+  .ytd-search:focus{ border-color:#2f6fd0; box-shadow:0 0 0 3px rgba(47,111,208,.13); }
+  .ytd-stat{ font-size:12px; color:#5a6b82; font-weight:600; }
+  table.ytd-table th.ytd-sticky, table.ytd-table td.ytd-sticky{ position:sticky; left:0; z-index:2; background:#fff; }
+  table.ytd-table thead th.ytd-sticky{ z-index:4; background:#101E3E; }
+  table.ytd-table tbody tr:nth-child(even) td.ytd-sticky{ background:#f7f9fc; }
+  table.ytd-table .ytd-sku{ font-weight:700; color:#101E3E; min-width:96px; text-align:left;
+    box-shadow:1px 0 0 #d7dee8; }
+  table.ytd-table .ytd-prod{ min-width:260px; color:#33465f; }
+  table.ytd-table .ytd-ven{ font-size:10px; color:#8a97a8; margin-top:2px; }
+  table.ytd-table td.ytd-cell{ text-align:right; font-variant-numeric:tabular-nums; }
+  table.ytd-table td.ytd-zero{ text-align:center; color:#c3ccd8; }
+  table.ytd-table td.ytd-total{ text-align:right; font-weight:700; color:#101E3E;
+    background:#eef3fb; font-variant-numeric:tabular-nums; }
+  table.ytd-table th.ytd-ytdcol{ background:#16305c; }
+  table.ytd-table td.ytd-ncust{ text-align:center; color:#7a8798; font-size:11px; }
+  table.ytd-table td.ytd-none{ text-align:center; color:#8a97a8; padding:22px 8px; font-style:italic; }
+  .ytd-note{ margin:10px 2px 0; font-size:11px; color:#8a97a8; line-height:1.5; }
 </style>
 </head>
 <body>
@@ -847,6 +869,7 @@ def build_html(page_data, embeds=None):
       <button class="mode-btn" data-mode="cprices" onclick="setMode('cprices')">Customer Prices</button>
       <button class="mode-btn" data-mode="vspend" onclick="setMode('vspend')">Vendor Spend</button>
       <button class="mode-btn" data-mode="sku" onclick="setMode('sku')">High Demand SKUs</button>
+      <button class="mode-btn" data-mode="ytd" onclick="setMode('ytd')">YTD Demand</button>
     </div>
   </div>
   <div class="mode-group mode-group-mkt">
@@ -958,6 +981,7 @@ function renderTabs(){
   if(mode==='ship'){ renderShipTabs(tabsEl); return; }  // Shipments: sidebar of customers (receivers)
   if(mode==='spnl'){ renderSpnlTabs(tabsEl); return; }  // Shipments P&L: sidebar of customers
   if(mode==='cj'){ renderCjTabs(tabsEl); return; }      // Customer Journey: sidebar of visitors
+  if(mode==='ytd'){ renderYtdTabs(tabsEl); return; }    // YTD Demand: sidebar of customers (All + each)
   tabsEl.style.display='';
   var list = mode==='vendor' ? (DATA.vendors||[]) : (mode==='ca' ? ((DATA.customer_analysis||{}).customers||[]) : (DATA.customers||[]));
   var cur = mode==='vendor' ? vactive : (mode==='ca' ? caactive : active);
@@ -1103,6 +1127,7 @@ function renderPanel(){
   else if(mode==='vendor') renderVendorPanel();
   else if(mode==='vspend') renderVspendPanel();
   else if(mode==='sku') renderSkuPanel();
+  else if(mode==='ytd') renderYtdPanel();
   else if(mode==='ca') renderCaPanel();
   else if(mode==='cprices') renderCpricesPanel();
   else if(mode==='gads') renderGadsPanel();
@@ -3382,6 +3407,137 @@ function renderSkuPanel(){
   document.getElementById('panel').innerHTML = head + matrixHtml + agingHtml();
 }
 
+// ── YTD Demand: units sold per item x month (sidebar customer filter + search) ──
+var ytdCust = '';                       // '' = All Customers
+var ytdSearch = '';                     // free-text item filter
+var ytdSort = {key:'ytd', dir:-1};      // default: biggest YTD movers first
+function ytdSetCust(c){ ytdCust=c; renderYtdTabs(document.getElementById('tabs')); renderYtdPanel(); }
+function ytdSortBy(k){
+  if(ytdSort.key===k){ ytdSort.dir=-ytdSort.dir; }
+  else { ytdSort.key=k; ytdSort.dir=(k==='sku'||k==='product'||k==='vendor')?1:-1; }
+  renderYtdPanel();
+}
+function ytdOnSearch(v){
+  ytdSearch=String(v||'');
+  var tb=document.getElementById('ytd-tbody'); if(!tb){ renderYtdPanel(); return; }
+  // Re-render only the table body so the input keeps focus + caret while typing.
+  tb.innerHTML=ytdBodyHtml(ytdRows());
+  var st=document.getElementById('ytd-stat'); if(st) st.textContent=ytdStatText(ytdRows());
+}
+function ytdQty(v){ if(!v) return ''; return Number(v).toLocaleString('en-US',{maximumFractionDigits:2}); }
+// One row per item, already sliced to the selected customer and search text.
+function ytdRows(){
+  var YD=DATA.ytd_demand||{items:[],months:[]}, n=(YD.months||[]).length;
+  var q=ytdSearch.replace(/^\s+|\s+$/g,'').toLowerCase();
+  var out=[];
+  for(var i=0;i<(YD.items||[]).length;i++){
+    var it=YD.items[i], by, ytd;
+    if(ytdCust){
+      var cm=(it.cust||{})[ytdCust];
+      if(!cm) continue;                     // item never ordered by this customer
+      by=cm.by_month; ytd=cm.ytd;
+    } else { by=it.by_month; ytd=it.ytd; }
+    if(q){
+      var hay=(it.sku+' '+(it.product||'')+' '+(it.vendor||'')).toLowerCase();
+      if(hay.indexOf(q)<0) continue;
+    }
+    out.push({sku:it.sku, product:it.product, vendor:it.vendor,
+              by:(by||[]).slice(0,n), ytd:ytd, ncust:Object.keys(it.cust||{}).length});
+  }
+  var k=ytdSort.key, d=ytdSort.dir;
+  out.sort(function(a,b){
+    if(k==='sku')     return d*cmp(a.sku,b.sku,'str');
+    if(k==='product') return d*cmp(a.product,b.product,'str');
+    if(k==='vendor')  return d*cmp(a.vendor,b.vendor,'str');
+    if(k==='ytd')     return d*((a.ytd||0)-(b.ytd||0)) || cmp(a.sku,b.sku,'str');
+    if(k.indexOf('m::')===0){ var mi=parseInt(k.slice(3),10);
+      return d*(((a.by||[])[mi]||0)-((b.by||[])[mi]||0)) || cmp(a.sku,b.sku,'str'); }
+    return 0;
+  });
+  return out;
+}
+function ytdStatText(rows){
+  var t=0; for(var i=0;i<rows.length;i++) t+=(rows[i].ytd||0);
+  return rows.length+' item'+(rows.length===1?'':'s')+' · '+ytdQty(t)+' units';
+}
+function ytdBodyHtml(rows){
+  var YD=DATA.ytd_demand||{months:[]}, n=(YD.months||[]).length;
+  if(!rows.length){
+    return '<tr><td colspan="'+(n+4)+'" class="ytd-none">No items match'+
+           (ytdSearch?' “'+escapeHtml(ytdSearch)+'”':'')+
+           (ytdCust?' for '+escapeHtml(ytdCust):'')+'.</td></tr>';
+  }
+  var h='';
+  for(var r=0;r<rows.length;r++){
+    var it=rows[r];
+    h+='<tr><td class="ytd-sku ytd-sticky">'+escapeHtml(it.sku)+'</td>'+
+       '<td class="ytd-prod">'+escapeHtml(it.product||'')+
+       (it.vendor?'<div class="ytd-ven">'+escapeHtml(it.vendor)+'</div>':'')+'</td>';
+    for(var m=0;m<n;m++){
+      var q=(it.by||[])[m]||0;
+      h+= q ? '<td class="c ytd-cell">'+ytdQty(q)+'</td>'
+            : '<td class="c ytd-zero">·</td>';
+    }
+    h+='<td class="c ytd-total">'+ytdQty(it.ytd)+'</td>'+
+       '<td class="c ytd-ncust">'+(ytdCust?'—':it.ncust)+'</td></tr>';
+  }
+  return h;
+}
+function renderYtdTabs(tabsEl){
+  var YD=DATA.ytd_demand||{customers:[],items:[]};
+  tabsEl.style.display='';
+  var custs=(YD.customers||[]).filter(function(c){ return !isExclCust(c); });
+  // Units per customer, so the sidebar doubles as a ranking.
+  var tot={}, all=0;
+  for(var i=0;i<(YD.items||[]).length;i++){
+    var it=YD.items[i]; all+=(it.ytd||0);
+    for(var c in (it.cust||{})){ tot[c]=(tot[c]||0)+((it.cust[c]||{}).ytd||0); }
+  }
+  custs.sort(function(a,b){ return (tot[b]||0)-(tot[a]||0) || cmp(a,b,'str'); });
+  var h='<button class="tab'+(ytdCust===''?' active':'')+'" onclick="ytdSetCust(\'\')">'+
+        'All Customers<span class="cnt">'+ytdQty(all)+'</span></button>';
+  for(var j=0;j<custs.length;j++){
+    var nm=custs[j];
+    h+='<button class="tab'+(ytdCust===nm?' active':'')+'" onclick="ytdSetCust('+
+       JSON.stringify(nm).replace(/"/g,'&quot;')+')">'+escapeHtml(nm)+
+       '<span class="cnt">'+ytdQty(tot[nm]||0)+'</span></button>';
+  }
+  tabsEl.innerHTML=h;
+}
+function renderYtdPanel(){
+  var YD=DATA.ytd_demand;
+  if(!YD || !(YD.items||[]).length){
+    document.getElementById('panel').innerHTML=
+      '<div class="panel-head"><h2>YTD Demand</h2></div>'+
+      '<div class="empty">No demand data in this snapshot yet — it is built on the next scheduled refresh.</div>';
+    return;
+  }
+  var months=YD.months||[], rows=ytdRows();
+  var head='<div class="panel-head"><h2>YTD Demand'+(ytdCust?' &mdash; '+escapeHtml(ytdCust):'')+'</h2>'+
+    '<div class="sub">Units sold per item by month &middot; '+(YD.year||'')+
+    ' Sales Orders'+(ytdCust?'':' &middot; all customers')+'</div></div>';
+  var ctrl='<div class="ytd-ctrl">'+
+    '<input id="ytd-q" class="ytd-search" type="text" placeholder="Search SKU or product…" '+
+    'autocomplete="off" spellcheck="false" value="'+escapeHtml(ytdSearch)+'" oninput="ytdOnSearch(this.value)">'+
+    '<span id="ytd-stat" class="ytd-stat">'+ytdStatText(rows)+'</span></div>';
+  var th='<th class="ytd-sticky sortable" onclick="ytdSortBy(\'sku\')">SKU'+
+         (ytdSort.key==='sku'?'<span class="arr">'+(ytdSort.dir>0?'▲':'▼')+'</span>':'')+'</th>'+
+         '<th class="sortable" onclick="ytdSortBy(\'product\')">Product'+
+         (ytdSort.key==='product'?'<span class="arr">'+(ytdSort.dir>0?'▲':'▼')+'</span>':'')+'</th>';
+  for(var m=0;m<months.length;m++){
+    var k='m::'+m;
+    th+='<th class="c sortable" onclick="ytdSortBy(\''+k+'\')">'+escapeHtml(months[m])+
+        (ytdSort.key===k?'<span class="arr">'+(ytdSort.dir>0?'▲':'▼')+'</span>':'')+'</th>';
+  }
+  th+='<th class="c sortable ytd-ytdcol" onclick="ytdSortBy(\'ytd\')">YTD'+
+      (ytdSort.key==='ytd'?'<span class="arr">'+(ytdSort.dir>0?'▲':'▼')+'</span>':'')+'</th>'+
+      '<th class="c" title="How many customers ordered this item">#Cust</th>';
+  var tbl='<div class="matrix-wrap"><table class="matrix ytd-table"><thead><tr>'+th+'</tr></thead>'+
+          '<tbody id="ytd-tbody">'+ytdBodyHtml(rows)+'</tbody></table></div>';
+  var note=YD.note?'<div class="ytd-note">'+escapeHtml(YD.note)+'</div>':'';
+  document.getElementById('panel').innerHTML=head+ctrl+tbl+note;
+}
+
 function renderAsOf(){
   document.getElementById('asof').textContent = 'Last refreshed: '+(DATA.generated_at||'—');
 }
@@ -4015,6 +4171,20 @@ def main():
     _vs = page_data["vendor_spend"]
     log(f"  Vendor Spend: {_vs.get('po_count',0)} POs, {len(_vs.get('months',[]))} months, "
         f"grand ${_vs.get('grand_total',0):,.2f}")
+
+    # YTD Demand: units sold per item x month, from the SO line items already in the
+    # retrieve cache (no extra Vtiger calls).
+    log("Building YTD Demand...")
+    _acct_names = {}
+    try:
+        for _a in vt.query_all("SELECT id, accountname FROM Accounts"):
+            _acct_names[_a["id"]] = _a.get("accountname", "")
+    except Exception as _e:
+        log(f"  YTD Demand: could not load accounts ({_e})")
+    page_data["ytd_demand"] = build_ytd_demand(vt, acct_names=_acct_names)
+    _yd = page_data["ytd_demand"]
+    log(f"  YTD Demand: {len(_yd.get('items',[]))} items, {len(_yd.get('customers',[]))} customers, "
+        f"{_yd.get('so_count',0)} SOs, {len(_yd.get('months',[]))} months")
 
     out_dir = CONFIG["output_dir"]
     data_path = os.path.join(out_dir, DATA_FILENAME)
