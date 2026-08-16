@@ -2919,10 +2919,18 @@ function renderSkuPanel(){
 var ytdCust = '';                       // '' = All Customers
 var ytdSearch = '';                     // free-text item filter
 var ytdSort = {key:'ytd', dir:-1};      // default: biggest YTD movers first
-function ytdSetCust(c){ ytdCust=c; renderYtdTabs(document.getElementById('tabs')); renderYtdPanel(); }
-function ytdSortBy(k){
-  if(ytdSort.key===k){ ytdSort.dir=-ytdSort.dir; }
-  else { ytdSort.key=k; ytdSort.dir=(k==='sku'||k==='product'||k==='vendor')?1:-1; }
+var ytdCols = [];                       // rebuilt each render (SKU, Product, months…, YTD)
+var ytdCustList = [];                   // sidebar order; index -1 = All Customers
+// Handlers take an INDEX, never a string literal — inline onclick attributes are built
+// inside single-quoted JS strings, so a quoted argument would terminate the string.
+function ytdSetCustIdx(i){
+  ytdCust = (i<0 ? '' : (ytdCustList[i]||''));
+  renderYtdTabs(document.getElementById('tabs')); renderYtdPanel();
+}
+function ytdSortByIdx(i){
+  var c=ytdCols[i]; if(!c) return;
+  if(ytdSort.key===c.k){ ytdSort.dir=-ytdSort.dir; }
+  else { ytdSort.key=c.k; ytdSort.dir=(c.k==='sku'||c.k==='product'||c.k==='vendor')?1:-1; }
   renderYtdPanel();
 }
 function ytdOnSearch(v){
@@ -3002,13 +3010,13 @@ function renderYtdTabs(tabsEl){
     for(var c in (it.cust||{})){ tot[c]=(tot[c]||0)+((it.cust[c]||{}).ytd||0); }
   }
   custs.sort(function(a,b){ return (tot[b]||0)-(tot[a]||0) || cmp(a,b,'str'); });
-  var h='<button class="tab'+(ytdCust===''?' active':'')+'" onclick="ytdSetCust('')">'+
+  ytdCustList=custs;
+  var h='<button class="tab'+(ytdCust===''?' active':'')+'" onclick="ytdSetCustIdx(-1)">'+
         'All Customers<span class="cnt">'+ytdQty(all)+'</span></button>';
   for(var j=0;j<custs.length;j++){
     var nm=custs[j];
-    h+='<button class="tab'+(ytdCust===nm?' active':'')+'" onclick="ytdSetCust('+
-       JSON.stringify(nm).replace(/"/g,'&quot;')+')">'+escapeHtml(nm)+
-       '<span class="cnt">'+ytdQty(tot[nm]||0)+'</span></button>';
+    h+='<button class="tab'+(ytdCust===nm?' active':'')+'" onclick="ytdSetCustIdx('+j+')">'+
+       escapeHtml(nm)+'<span class="cnt">'+ytdQty(tot[nm]||0)+'</span></button>';
   }
   tabsEl.innerHTML=h;
 }
@@ -3028,18 +3036,18 @@ function renderYtdPanel(){
     '<input id="ytd-q" class="ytd-search" type="text" placeholder="Search SKU or product…" '+
     'autocomplete="off" spellcheck="false" value="'+escapeHtml(ytdSearch)+'" oninput="ytdOnSearch(this.value)">'+
     '<span id="ytd-stat" class="ytd-stat">'+ytdStatText(rows)+'</span></div>';
-  var th='<th class="ytd-sticky sortable" onclick="ytdSortBy('sku')">SKU'+
-         (ytdSort.key==='sku'?'<span class="arr">'+(ytdSort.dir>0?'▲':'▼')+'</span>':'')+'</th>'+
-         '<th class="sortable" onclick="ytdSortBy('product')">Product'+
-         (ytdSort.key==='product'?'<span class="arr">'+(ytdSort.dir>0?'▲':'▼')+'</span>':'')+'</th>';
-  for(var m=0;m<months.length;m++){
-    var k='m::'+m;
-    th+='<th class="c sortable" onclick="ytdSortBy(''+k+'')">'+escapeHtml(months[m])+
-        (ytdSort.key===k?'<span class="arr">'+(ytdSort.dir>0?'▲':'▼')+'</span>':'')+'</th>';
+  // Column list drives both the header and the sort handler (index-based, no quoted args).
+  ytdCols=[{k:'sku',label:'SKU',cls:'ytd-sticky'},{k:'product',label:'Product',cls:''}];
+  for(var m=0;m<months.length;m++) ytdCols.push({k:'m::'+m,label:months[m],cls:'c'});
+  ytdCols.push({k:'ytd',label:'YTD',cls:'c ytd-ytdcol'});
+  var th='';
+  for(var ci=0;ci<ytdCols.length;ci++){
+    var col=ytdCols[ci];
+    var arr=(ytdSort.key===col.k)?'<span class="arr">'+(ytdSort.dir>0?'▲':'▼')+'</span>':'';
+    th+='<th class="'+(col.cls?col.cls+' ':'')+'sortable" onclick="ytdSortByIdx('+ci+')" title="Sort by '+
+        escapeHtml(col.label)+'">'+escapeHtml(col.label)+arr+'</th>';
   }
-  th+='<th class="c sortable ytd-ytdcol" onclick="ytdSortBy('ytd')">YTD'+
-      (ytdSort.key==='ytd'?'<span class="arr">'+(ytdSort.dir>0?'▲':'▼')+'</span>':'')+'</th>'+
-      '<th class="c" title="How many customers ordered this item">#Cust</th>';
+  th+='<th class="c" title="How many customers ordered this item">#Cust</th>';
   var tbl='<div class="matrix-wrap"><table class="matrix ytd-table"><thead><tr>'+th+'</tr></thead>'+
           '<tbody id="ytd-tbody">'+ytdBodyHtml(rows)+'</tbody></table></div>';
   var note=YD.note?'<div class="ytd-note">'+escapeHtml(YD.note)+'</div>':'';
