@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-08-18 11:04 AM PT",
-  "last_status_refresh": "2026-08-18 10:38 AM PT",
+  "pulled_at": "2026-08-18 11:51 AM PT",
+  "last_status_refresh": "2026-08-18 11:48 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -7426,7 +7426,7 @@
       "ship_to": "Ashburn, VA",
       "order": "#1142",
       "status": "In Transit",
-      "activity": "Processing at UPS Facility",
+      "activity": "Package transferred to post office",
       "location": "Chantilly, VA",
       "date": "2026-08-18",
       "time": "",
@@ -7757,6 +7757,115 @@
       ],
       "po": "PO808",
       "po_id": "174000"
+    },
+    {
+      "tracking": "875948578158",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Mercedes Scientific",
+      "ship_to": "Bradenton, FL",
+      "order": "#1118",
+      "service": "FedEx",
+      "status": "",
+      "activity": "Label created",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=875948578158",
+      "ship_date": "2026-08-18",
+      "items": [],
+      "contact": "Misty Mcwhorter",
+      "so_num": "SO493",
+      "so_id": "167019",
+      "pos": [
+        {
+          "po": "PO767",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "167026"
+        },
+        {
+          "po": "PO768",
+          "vendor": "PMA Services",
+          "po_id": "167027"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "1Z23C2X7YW12086899",
+      "carrier": "UPS",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Radiance Diagnostics",
+      "ship_to": "Naperville, IL",
+      "order": "#1125",
+      "service": "",
+      "status": "In Transit",
+      "activity": "Shipper created a label, UPS has not received the package yet. ",
+      "location": "",
+      "date": "2026-08-18",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-08-18",
+      "items": [],
+      "contact": "Siva Kumar",
+      "so_num": "SO499",
+      "so_id": "168444",
+      "pos": [
+        {
+          "po": "PO778",
+          "vendor": "PMA Services",
+          "po_id": "168445"
+        },
+        {
+          "po": "PO779",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "168446"
+        },
+        {
+          "po": "PO791",
+          "vendor": "ALDX HOLDING CORPORATION",
+          "po_id": "170412"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "1Z23C2X71312944100",
+      "carrier": "UPS",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Chicago Lab",
+      "ship_to": "Chicago, IL",
+      "order": "#1143",
+      "service": "",
+      "status": "In Transit",
+      "activity": "Shipper created a label, UPS has not received the package yet. ",
+      "location": "",
+      "date": "2026-08-18",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-08-18",
+      "items": [],
+      "contact": "Ahmed Syed",
+      "so_num": "SO515",
+      "so_id": "173593",
+      "pos": [
+        {
+          "po": "PO803",
+          "vendor": "PMA Services",
+          "po_id": "173594"
+        }
+      ],
+      "po": "PO803",
+      "po_id": "173594"
     }
   ]
 }
