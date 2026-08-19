@@ -18,6 +18,11 @@ except Exception:
 
 TARGET_INDUSTRY = "independent diagnostic lab"
 
+# Accounts to include regardless of their Vtiger Industry. Mercedes Scientific is
+# filed as "Online Reseller" but is priced like a lab customer, so it belongs in
+# the pricing matrix. Compared case-insensitively against accountname.
+EXTRA_ACCOUNT_NAMES = {"mercedes scientific"}
+
 # Non-product / freight / fee lines to drop from the pricing matrix.
 SKIP_ITEMS = ("shipping", "freight", "handling", "restricted", "discount",
               "credit", "surcharge", "fuel", "adjustment")
@@ -64,7 +69,8 @@ def build_customer_prices(vt):
     accts = vt.query_all("SELECT id, accountname, industry, email1 FROM Accounts")
     idl = {a["id"]: {"name": a.get("accountname", ""), "email": (a.get("email1", "") or "")}
            for a in accts
-           if (a.get("industry", "") or "").strip().lower() == TARGET_INDUSTRY}
+           if (a.get("industry", "") or "").strip().lower() == TARGET_INDUSTRY
+           or (a.get("accountname", "") or "").strip().lower() in EXTRA_ACCOUNT_NAMES}
 
     # 2) Products map: productid -> {sku, cogs, name}
     pmap = {}
