@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-19 10:42 PM EDT",
+  "generated_at": "2026-08-20 04:38 PM EDT",
   "year": 2026,
   "customers": [
     {
@@ -2201,9 +2201,16 @@
           "invoice_link": "https://connect.intuit.com/t/scs-v1-4a909fdfabaa4933a6721ae0bde4804034f8fe8fa3cf4e5ca087885909bc11757e3420b2c4f34830a7d2165a8aed62b7-1?locale=en_US&cta=v3invoicelink",
           "so_num": "SO453",
           "shopify_order": "#1078",
-          "fulfillment": "Fulfilled",
+          "fulfillment": "Partially",
           "so_date": "2026-06-29",
-          "open_items": []
+          "open_items": [
+            {
+              "product": "Beckman Coulter A16953 Access Intact PTH Calibrator (S0-S5, RB)",
+              "open_qty": 1.0,
+              "po": "",
+              "vendor": ""
+            }
+          ]
         },
         {
           "number": "SO487",
@@ -2410,12 +2417,27 @@
     {
       "name": "Stark Family Health Center",
       "qb_id": "439",
-      "invoices": [],
+      "invoices": [
+        {
+          "number": "SO628",
+          "status": "Not Paid",
+          "amount": 8458.81,
+          "balance": 8458.81,
+          "date": "2026-08-20",
+          "link": "",
+          "invoice_link": "",
+          "so_num": "SO522",
+          "shopify_order": "#1150",
+          "fulfillment": "Fulfilled",
+          "so_date": "2026-08-20",
+          "open_items": []
+        }
+      ],
       "totals": {
-        "count": 0,
-        "amount": 0,
-        "paid": 0,
-        "unpaid": 0
+        "count": 1,
+        "amount": 8458.81,
+        "paid": 0.0,
+        "unpaid": 8458.81
       }
     },
     {
@@ -2556,16 +2578,16 @@
     }
   ],
   "payables": {
-    "generated_at": "2026-08-19 10:42 PM EDT",
-    "grand_total": 49367.34,
-    "past_due": 38550.89,
-    "count": 71,
+    "generated_at": "2026-08-20 04:38 PM EDT",
+    "grand_total": 29311.68,
+    "past_due": 18495.23,
+    "count": 38,
     "vendors": [
       {
         "vendor": "Conmed",
-        "balance": 48455.14,
-        "count": 68,
-        "pastdue": 37638.69,
+        "balance": 28399.48,
+        "count": 35,
+        "pastdue": 17583.03,
         "bills": [
           {
             "num": "11399649",
@@ -2806,242 +2828,11 @@
             "balance": 311.73
           },
           {
-            "num": "11365763",
-            "date": "2026-06-29",
-            "due": "2026-07-29",
-            "amount": 1151.42,
-            "balance": 1151.42
-          },
-          {
             "num": "11365547",
             "date": "2026-06-29",
             "due": "2026-07-29",
             "amount": 1151.42,
             "balance": 1151.42
-          },
-          {
-            "num": "11365229",
-            "date": "2026-06-29",
-            "due": "2026-07-29",
-            "amount": 141.94,
-            "balance": 141.94
-          },
-          {
-            "num": "11364330",
-            "date": "2026-06-27",
-            "due": "2026-07-27",
-            "amount": 1009.48,
-            "balance": 1009.48
-          },
-          {
-            "num": "11361284",
-            "date": "2026-06-25",
-            "due": "2026-07-25",
-            "amount": 141.94,
-            "balance": 141.94
-          },
-          {
-            "num": "11361319",
-            "date": "2026-06-25",
-            "due": "2026-07-25",
-            "amount": 1009.48,
-            "balance": 1009.48
-          },
-          {
-            "num": "11360615",
-            "date": "2026-06-24",
-            "due": "2026-07-24",
-            "amount": 1009.48,
-            "balance": 1009.48
-          },
-          {
-            "num": "11359615",
-            "date": "2026-06-24",
-            "due": "2026-07-24",
-            "amount": 141.94,
-            "balance": 141.94
-          },
-          {
-            "num": "11360613",
-            "date": "2026-06-24",
-            "due": "2026-07-24",
-            "amount": 1009.48,
-            "balance": 1009.48
-          },
-          {
-            "num": "11359887",
-            "date": "2026-06-24",
-            "due": "2026-07-24",
-            "amount": 141.94,
-            "balance": 141.94
-          },
-          {
-            "num": "11360646",
-            "date": "2026-06-24",
-            "due": "2026-07-24",
-            "amount": 1009.48,
-            "balance": 1009.48
-          },
-          {
-            "num": "11358241",
-            "date": "2026-06-22",
-            "due": "2026-07-22",
-            "amount": 141.94,
-            "balance": 141.94
-          },
-          {
-            "num": "11325318",
-            "date": "2026-05-19",
-            "due": "2026-06-18",
-            "amount": 1009.48,
-            "balance": 1009.48
-          },
-          {
-            "num": "11324903",
-            "date": "2026-05-19",
-            "due": "2026-06-18",
-            "amount": 141.94,
-            "balance": 141.94
-          },
-          {
-            "num": "11319849",
-            "date": "2026-05-11",
-            "due": "2026-06-10",
-            "amount": 1009.48,
-            "balance": 1009.48
-          },
-          {
-            "num": "11319848",
-            "date": "2026-05-11",
-            "due": "2026-06-10",
-            "amount": 1009.48,
-            "balance": 1009.48
-          },
-          {
-            "num": "11317865",
-            "date": "2026-05-11",
-            "due": "2026-06-10",
-            "amount": 141.94,
-            "balance": 141.94
-          },
-          {
-            "num": "11317860",
-            "date": "2026-05-11",
-            "due": "2026-06-10",
-            "amount": 141.94,
-            "balance": 141.94
-          },
-          {
-            "num": "11317212",
-            "date": "2026-05-11",
-            "due": "2026-06-10",
-            "amount": 1009.48,
-            "balance": 1009.48
-          },
-          {
-            "num": "11316263",
-            "date": "2026-05-08",
-            "due": "2026-06-07",
-            "amount": 141.94,
-            "balance": 141.94
-          },
-          {
-            "num": "11315637",
-            "date": "2026-05-07",
-            "due": "2026-06-06",
-            "amount": 311.73,
-            "balance": 311.73
-          },
-          {
-            "num": "11313003",
-            "date": "2026-05-05",
-            "due": "2026-06-04",
-            "amount": 311.73,
-            "balance": 311.73
-          },
-          {
-            "num": "11312977",
-            "date": "2026-05-05",
-            "due": "2026-06-04",
-            "amount": 1009.48,
-            "balance": 1009.48
-          },
-          {
-            "num": "11312747",
-            "date": "2026-05-05",
-            "due": "2026-06-04",
-            "amount": 141.94,
-            "balance": 141.94
-          },
-          {
-            "num": "11309403",
-            "date": "2026-04-30",
-            "due": "2026-05-30",
-            "amount": 1009.48,
-            "balance": 1009.48
-          },
-          {
-            "num": "11308565",
-            "date": "2026-04-30",
-            "due": "2026-05-30",
-            "amount": 141.94,
-            "balance": 141.94
-          },
-          {
-            "num": "11308265",
-            "date": "2026-04-30",
-            "due": "2026-05-30",
-            "amount": 1009.48,
-            "balance": 1009.48
-          },
-          {
-            "num": "11308150",
-            "date": "2026-04-29",
-            "due": "2026-05-29",
-            "amount": 1009.48,
-            "balance": 1009.48
-          },
-          {
-            "num": "11307650",
-            "date": "2026-04-29",
-            "due": "2026-05-29",
-            "amount": 141.94,
-            "balance": 141.94
-          },
-          {
-            "num": "11306255",
-            "date": "2026-04-28",
-            "due": "2026-05-28",
-            "amount": 1009.48,
-            "balance": 1009.48
-          },
-          {
-            "num": "11305831",
-            "date": "2026-04-28",
-            "due": "2026-05-28",
-            "amount": 141.94,
-            "balance": 141.94
-          },
-          {
-            "num": "11305817",
-            "date": "2026-04-28",
-            "due": "2026-05-28",
-            "amount": 1009.48,
-            "balance": 1009.48
-          },
-          {
-            "num": "11305739",
-            "date": "2026-04-28",
-            "due": "2026-05-28",
-            "amount": 1151.42,
-            "balance": 1151.42
-          },
-          {
-            "num": "11304482",
-            "date": "2026-04-25",
-            "due": "2026-05-25",
-            "amount": 141.94,
-            "balance": 141.94
           }
         ]
       },
@@ -3080,9 +2871,9 @@
     "name": "Chase CHK (9219)",
     "balance": 60619.43,
     "source": "Bank balance",
-    "book_balance": 53339.15,
+    "book_balance": 33283.49,
     "bank_asof": "2026-07-23",
-    "as_of": "2026-08-19 10:42 PM EDT"
+    "as_of": "2026-08-20 04:38 PM EDT"
   },
-  "pulled_at": "2026-08-19 07:57 PM PT"
+  "pulled_at": "2026-08-20 02:05 PM PT"
 }
