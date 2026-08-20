@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-08-19 08:17 AM PT",
-  "last_status_refresh": "2026-08-19 08:14 AM PT",
+  "pulled_at": "2026-08-19 07:57 PM PT",
+  "last_status_refresh": "2026-08-19 07:41 PM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -7445,9 +7445,9 @@
       "ship_to": "Kiryat Motzkin, ",
       "order": "#1141",
       "status": "In Transit",
-      "activity": "Import Scan",
+      "activity": "Departed from Facility",
       "location": "Lod",
-      "date": "2026-08-19",
+      "date": "2026-08-20",
       "time": "",
       "delivered": false,
       "ship_date": "2026-08-11",
@@ -7511,12 +7511,12 @@
       "contact": "ibtihaj@clinicaldiagnosticlab.com",
       "ship_to": "Ashburn, VA",
       "order": "#1142",
-      "status": "In Transit",
-      "activity": "Package transferred to post office",
+      "status": "Delivered",
+      "activity": "Package delivered by local post office ",
       "location": "Chantilly, VA",
-      "date": "2026-08-18",
-      "time": "",
-      "delivered": false,
+      "date": "2026-08-19",
+      "time": "1:42 PM",
+      "delivered": true,
       "ship_date": "2026-08-14",
       "items": [
         {
@@ -7649,12 +7649,12 @@
       "receiver": "Radiance Diagnostics",
       "ship_to": "Naperville, IL",
       "order": "#1125",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Addison, IL",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "NAPERVILLE, IL",
       "date": "2026-08-19",
-      "time": "",
-      "delivered": false,
+      "time": "10:33 AM",
+      "delivered": true,
       "ship_date": "2026-08-18",
       "items": [
         {
@@ -7685,12 +7685,12 @@
       "receiver": "3 Alpha Labs, LLC",
       "ship_to": "Costa Mesa, CA",
       "order": "#1136",
-      "status": "In Transit",
-      "activity": "Processing at UPS Facility",
-      "location": "Aliso Viejo, CA",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "COSTA MESA, CA",
       "date": "2026-08-19",
-      "time": "",
-      "delivered": false,
+      "time": "10:05 AM",
+      "delivered": true,
       "ship_date": "2026-08-18",
       "items": [
         {
@@ -7721,12 +7721,12 @@
       "receiver": "GENOLAB DIAGNOSTICS",
       "ship_to": "Fairfield, NJ",
       "order": "#1144",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Parsippany, NJ",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "FAIRFIELD, NJ",
       "date": "2026-08-19",
-      "time": "",
-      "delivered": false,
+      "time": "11:20 AM",
+      "delivered": true,
       "ship_date": "2026-08-18",
       "items": [
         {
@@ -7861,12 +7861,12 @@
       "ship_to": "Bradenton, FL",
       "order": "#1118",
       "service": "FedEx",
-      "status": "Out for Delivery",
-      "activity": "OUT FOR DELIVERY",
+      "status": "Delivered",
+      "activity": "Delivered",
       "location": "",
-      "date": "",
+      "date": "2026-08-18",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "url": "https://www.fedex.com/fedextrack/?trknbr=875948578158",
       "ship_date": "2026-08-18",
       "items": [],
@@ -7900,9 +7900,9 @@
       "order": "#1125",
       "service": "",
       "status": "In Transit",
-      "activity": "Shipper created a label, UPS has not received the package yet. ",
-      "location": "",
-      "date": "2026-08-18",
+      "activity": "Pickup Scan ",
+      "location": "Aliso Viejo, CA",
+      "date": "2026-08-19",
       "time": "",
       "delivered": false,
       "ship_date": "2026-08-18",
@@ -7941,12 +7941,12 @@
       "ship_to": "Chicago, IL",
       "order": "#1143",
       "service": "",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Skokie, IL",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "CHICAGO, IL",
       "date": "2026-08-19",
-      "time": "",
-      "delivered": false,
+      "time": "11:49 AM",
+      "delivered": true,
       "ship_date": "2026-08-18",
       "items": [],
       "contact": "Ahmed Syed",
@@ -7971,8 +7971,8 @@
       "ship_to": "",
       "service": "",
       "status": "In Transit",
-      "activity": "Shipper created a label, UPS has not received the package yet. ",
-      "location": "",
+      "activity": "Pickup Scan ",
+      "location": "Owensboro, KY",
       "date": "2026-08-19",
       "time": "",
       "delivered": false,
@@ -7993,6 +7993,165 @@
       ],
       "po": "PO809",
       "po_id": "174293"
+    },
+    {
+      "tracking": "1Z23C2X71302122132",
+      "carrier": "UPS",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Clinical Diagnostic Laboratory",
+      "contact": "djoseph@clinicaldiagnosticlaboratory.com",
+      "ship_to": "Monroe, LA",
+      "order": "#1149",
+      "status": "In Transit",
+      "activity": "Departed from Facility",
+      "location": "Owensboro, KY",
+      "date": "2026-08-19",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-08-19",
+      "items": [
+        {
+          "name": "Beckman Coulter A98857 Access 25OH Vitamin D Calibrator",
+          "sku": "A98857",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO521",
+      "so_id": "174762",
+      "pos": [
+        {
+          "po": "PO812",
+          "vendor": "PMA Services",
+          "po_id": "174763"
+        }
+      ],
+      "po": "PO812",
+      "po_id": "174763"
+    },
+    {
+      "tracking": "1Z23C2X7YW23079297",
+      "carrier": "UPS",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "MEDICAL HEALTH LAB",
+      "contact": "SYED RIZVI",
+      "ship_to": "Sugar Land, TX",
+      "order": "#1148",
+      "status": "In Transit",
+      "activity": "Departed from Facility",
+      "location": "Owensboro, KY",
+      "date": "2026-08-19",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-08-19",
+      "items": [
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 4
+        }
+      ],
+      "so_num": "SO520",
+      "so_id": "174750",
+      "pos": [
+        {
+          "po": "PO811",
+          "vendor": "PMA Services",
+          "po_id": "174751"
+        }
+      ],
+      "po": "PO811",
+      "po_id": "174751"
+    },
+    {
+      "tracking": "1Z23C2X71311436947",
+      "carrier": "UPS",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "MEDICAL HEALTH LAB",
+      "contact": "SYED RIZVI",
+      "ship_to": "Sugar Land, TX",
+      "order": "#1148",
+      "status": "In Transit",
+      "activity": "Departed from Facility",
+      "location": "Owensboro, KY",
+      "date": "2026-08-19",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-08-19",
+      "items": [
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 4
+        }
+      ],
+      "so_num": "SO520",
+      "so_id": "174750",
+      "pos": [
+        {
+          "po": "PO811",
+          "vendor": "PMA Services",
+          "po_id": "174751"
+        }
+      ],
+      "po": "PO811",
+      "po_id": "174751"
+    },
+    {
+      "tracking": "1Z23C2X71307145724",
+      "carrier": "UPS",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Doctors General Laboratory",
+      "contact": "Mahemdra Patel",
+      "ship_to": "Clarendon Hills, IL",
+      "order": "#1145",
+      "status": "In Transit",
+      "activity": "Departed from Facility",
+      "location": "Owensboro, KY",
+      "date": "2026-08-19",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-08-19",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6102 Olympus Albumin Reagent R1",
+          "sku": "OSR6102",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6004 Olympus ALP Reagent 3P ALP R1 Alkaline Phosphatase Reagent",
+          "sku": "OSR6004",
+          "qty": 6
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6112 Olympus Total Bilirubin Reagent",
+          "sku": "OSR6112",
+          "qty": 2
+        }
+      ],
+      "so_num": "SO517",
+      "so_id": "173948",
+      "pos": [
+        {
+          "po": "PO806",
+          "vendor": "PMA Services",
+          "po_id": "173949"
+        }
+      ],
+      "po": "PO806",
+      "po_id": "173949"
     }
   ]
 }
