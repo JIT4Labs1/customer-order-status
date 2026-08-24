@@ -2831,6 +2831,43 @@ function pnlCmApply(){
 }
 // Section 7 Detailed Report: month toggle + customer filter (All / IDL-only / a specific
 // IDL customer) with live-recomputed totals for the visible month.
+// Section 7 Detailed Report: click a column header to sort that month's table.
+// Reorders only the .pnl-det-row rows; the Total row (and the "no sales orders"
+// placeholder) are always re-appended last so the total stays pinned at the bottom.
+// Row visibility set by pnlDetApply() survives, since this only moves nodes.
+function pnlDetSort(th){
+  var key=th.getAttribute('data-key'); if(!key) return;
+  var type=th.getAttribute('data-type')||'s';
+  var table=th.parentNode; while(table && table.tagName!=='TABLE') table=table.parentNode;
+  if(!table) return;
+  var tb=table.getElementsByTagName('tbody')[0]; if(!tb) return;
+  var dir=(th.getAttribute('data-dir')==='asc')?'desc':'asc';
+  // Clear every header's arrow in this table, then mark the clicked one.
+  var ths=table.getElementsByTagName('th');
+  for(var i=0;i<ths.length;i++){
+    ths[i].removeAttribute('data-dir');
+    var c=ths[i].getElementsByClassName('pnl-det-caret')[0];
+    if(c) c.textContent='';
+  }
+  th.setAttribute('data-dir',dir);
+  var caret=th.getElementsByClassName('pnl-det-caret')[0];
+  if(caret) caret.textContent = (dir==='asc' ? ' ▲' : ' ▼');
+  var all=[].slice.call(tb.children);
+  var rows=[], rest=[];
+  for(var r=0;r<all.length;r++){
+    ((all[r].className||'').indexOf('pnl-det-row')>=0 ? rows : rest).push(all[r]);
+  }
+  var mul=(dir==='asc')?1:-1;
+  rows.sort(function(a,b){
+    var x=a.getAttribute('data-'+key), y=b.getAttribute('data-'+key);
+    if(type==='n'){ x=parseFloat(x); y=parseFloat(y);
+      if(isNaN(x)) x=0; if(isNaN(y)) y=0; return (x-y)*mul; }
+    x=String(x||'').toLowerCase(); y=String(y||'').toLowerCase();
+    return (x<y?-1:(x>y?1:0))*mul;
+  });
+  for(var j=0;j<rows.length;j++) tb.appendChild(rows[j]);
+  for(var k=0;k<rest.length;k++) tb.appendChild(rest[k]);
+}
 function pnlDetApply(){
   var mo=document.getElementById('pnlDetMonth'); var cu=document.getElementById('pnlDetCust');
   if(!mo) return; var mv=mo.value, cv=cu?cu.value:'__ALL__';
