@@ -554,10 +554,19 @@ def build_pnl(vt):
         msos = sorted([s for s in main_sos if s["month"] == m], key=lambda x: x["created"], reverse=True)
         disp = "" if m == cur_month else "none"
         H.append('<div class="pnl-detail-mo" data-mo="%d" style="display:%s;">' % (m, disp))
-        H.append('<table style="%s"><thead><tr><th style="%s">Customer</th><th style="%s">SO #</th><th style="%s">Created</th>'
-                 '<th style="%s">SO Amount</th><th style="%s">PO Total</th><th style="%s">P&amp;L</th><th style="%s">Margin</th>'
-                 '<th style="%s">QB Payment</th><th style="%s">Net deposit</th>'
-                 '</tr></thead><tbody>' % (tbl, thl, thl, thl, th, th, th, th, thg, thg))
+        # Clickable, sortable headers. pnlDetSort() (global, in open_orders_page.py) reads
+        # data-key/data-type off the <th> and the matching data-* off each row.
+        det_cols = [("cust", "Customer", "s", thl), ("so", "SO #", "s", thl),
+                    ("created", "Created", "s", thl), ("net", "SO Amount", "n", th),
+                    ("cost", "PO Total", "n", th), ("pnl", "P&amp;L", "n", th),
+                    ("margin", "Margin", "n", th), ("qb", "QB Payment", "n", thg),
+                    ("netdep", "Net deposit", "n", thg)]
+        hdr = "".join(
+            '<th class="pnl-det-th" data-key="%s" data-type="%s" onclick="pnlDetSort(this)" '
+            'style="%scursor:pointer;user-select:none;white-space:nowrap;" title="Click to sort">'
+            '%s<span class="pnl-det-caret"></span></th>' % (k, t, stl, lbl)
+            for (k, lbl, t, stl) in det_cols)
+        H.append('<table style="%s"><thead><tr>%s</tr></thead><tbody>' % (tbl, hdr))
         dr = dc = dqb = dnet = 0.0
         for s in msos:
             pnl = s["net"] - s["po_total"]; dr += s["net"]; dc += s["po_total"]
@@ -573,11 +582,14 @@ def build_pnl(vt):
                 qbcell = '<span style="color:#c0cad4;">&mdash;</span>'; qb_note = True
                 netcell = '<span style="color:#c0cad4;">&mdash;</span>'
             idlflag = "1" if s["industry"].strip().lower() == "independent diagnostic lab" else "0"
-            H.append('<tr class="pnl-det-row" data-cust="%s" data-idl="%s" data-net="%.2f" data-cost="%.2f" data-qb="%.2f" data-netdep="%.2f">'
+            _marg = (pnl / s["net"] * 100.0) if s["net"] else 0.0
+            H.append('<tr class="pnl-det-row" data-cust="%s" data-idl="%s" data-net="%.2f" data-cost="%.2f" data-qb="%.2f" data-netdep="%.2f"'
+                     ' data-so="%s" data-created="%s" data-pnl="%.2f" data-margin="%.4f">'
                      '<td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td>'
                      '<td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td>'
                      '<td style="%s">%s</td><td style="%s">%s</td></tr>'
                      % (_esc(s["customer"]), idlflag, s["net"], s["po_total"], paid, netdep,
+                        _esc(s["no"]), str(s["created"])[:10], pnl, _marg,
                         tdl, _esc(s["customer"]), tdl, _esc(s["no"]), tdl, created,
                         td, _money(s["net"]), td, _money(s["po_total"]), td, _money(pnl), td, _pct(pnl, s["net"]),
                         tdg, qbcell, tdg, netcell))
