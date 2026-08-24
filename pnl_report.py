@@ -258,33 +258,47 @@ def build_pnl(vt):
     # ── SECTION 1: Year-to-Date Monthly Summary ──────────────────────────────
     H.append('<h3 style="color:#2c3e50;">1. Year-to-Date Monthly Summary</h3>')
     H.append('<table style="%s"><thead><tr>'
-             '<th style="%s">Month</th><th style="%s">Orders</th><th style="%s">SO Revenue</th>'
+             '<th style="%s">Month</th><th style="%s">Orders</th>'
+             '<th style="%s" title="Distinct organizations with Industry = Independent Diagnostic Lab '
+             'that placed at least one order in this month">IDL\'s</th><th style="%s">SO Revenue</th>'
              '<th style="%s">PO Cost</th><th style="%s">P&amp;L</th><th style="%s">Margin</th>'
              '<th style="%s">Avg Rev/Day</th></tr></thead><tbody>'
-             % (tbl, thl, th, th, th, th, th, th))
+             % (tbl, thl, th, th, th, th, th, th, th))
     t_orders = t_rev = t_cost = 0.0
+    t_idl_accts = set()
     for m in range(1, cur_month + 1):
         msos = [s for s in main_sos if s["month"] == m]
         orders = len(msos)
+        # Distinct IDL organizations that ordered this month.
+        m_idl = {s["acct_id"] for s in msos
+                 if (s.get("industry", "") or "").strip().lower() == "independent diagnostic lab"
+                 and s.get("acct_id")}
+        t_idl_accts |= m_idl
         rev = sum(s["net"] for s in msos)
         cost = sum(s["po_total"] for s in msos)
         pnl = rev - cost
         days = today_day if m == cur_month else calendar.monthrange(Y, m)[1]
         avg = rev / days if days else 0
         t_orders += orders; t_rev += rev; t_cost += cost
-        H.append('<tr><td style="%s">%s %d</td><td style="%s">%d</td><td style="%s">%s</td>'
+        H.append('<tr><td style="%s">%s %d</td><td style="%s">%d</td><td style="%s">%d</td><td style="%s">%s</td>'
                  '<td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td></tr>'
-                 % (tdl, MONTHS[m - 1], Y, td, orders, td, _money(rev), td, _money(cost),
+                 % (tdl, MONTHS[m - 1], Y, td, orders, td, len(m_idl), td, _money(rev), td, _money(cost),
                     td, _money(pnl), td, _pct(pnl, rev), td, _money(avg)))
     t_pnl = t_rev - t_cost
     tot_avg = t_rev / day_of_year if day_of_year else 0
     bt = 'padding:8px 10px;border-top:2px solid #2c3e50;background:#f5f5f5;font-weight:bold;text-align:right;'
     btl = bt + 'text-align:left;'
-    H.append('<tr><td style="%s">Total</td><td style="%s">%d</td><td style="%s">%s</td>'
+    H.append('<tr><td style="%s">Total</td><td style="%s">%d</td>'
+             '<td style="%s" title="Distinct IDL organizations that ordered at any point this year '
+             '(not the sum of the monthly counts)">%d</td><td style="%s">%s</td>'
              '<td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td></tr>'
-             % (btl, bt, int(t_orders), bt, _money(t_rev), bt, _money(t_cost), bt, _money(t_pnl),
-                bt, _pct(t_pnl, t_rev), bt, _money(tot_avg)))
+             % (btl, bt, int(t_orders), bt, len(t_idl_accts), bt, _money(t_rev), bt, _money(t_cost),
+                bt, _money(t_pnl), bt, _pct(t_pnl, t_rev), bt, _money(tot_avg)))
     H.append('</tbody></table>')
+    H.append('<div style="color:#888;font-size:11px;margin:-4px 0 14px 0;">'
+             "IDL's = distinct organizations with Industry = <i>Independent Diagnostic Lab</i> that "
+             'ordered in that month. The Total row counts each organization once for the year, so it '
+             'is not the sum of the column.</div>')
 
     # ── SECTION 2: New IDL Customers ─────────────────────────────────────────
     H.append('<h3 style="color:#2c3e50;">2. New IDL Customers — First Order in %d</h3>' % Y)
