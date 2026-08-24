@@ -2678,6 +2678,46 @@ function cpSetOrg(v){ cpActive=parseInt(v,10)||0; cpWindow='ytd'; cpSku=''; rend
 function cpSetWindow(v){ cpWindow=v||'ytd'; renderCpricesPanel(); }
 function cpSetSku(v){ cpSku=v||''; renderCpricesPanel();
   var el=document.getElementById('cpSkuSearch'); if(el){ el.focus(); try{ var n=el.value.length; el.setSelectionRange(n,n); }catch(e){} } }
+// Snapshot of exactly what the table is currently showing, so Export CSV always
+// matches the visible org / window / SKU filter.
+var cpLastGrid = null;
+var CP_CRLF = String.fromCharCode(13,10);
+// NB: the RegExp is built from a string on purpose — this file is emitted from a
+// Python string literal, so a backslash escape inside a /regex/ would be eaten.
+var CP_NEEDS_QUOTE = new RegExp('[",' + String.fromCharCode(10) + String.fromCharCode(13) + ']');
+function cpCsvCell(v){ v=(v===null||v===undefined)?'':String(v);
+  return CP_NEEDS_QUOTE.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; }
+function cpExportCsv(){
+  var G=cpLastGrid;
+  if(!G || !G.skuOrder.length || !G.sos.length){ alert('Nothing to export — the table is empty.'); return; }
+  var rows=[];
+  // Header: SKU | Product | COGS | one column per SO (SO# + date)
+  var hdr=['SKU','Product','COGS'];
+  for(var s=0;s<G.sos.length;s++){
+    var d=G.sos[s].date?(' ('+G.sos[s].date+')'):'';
+    hdr.push((G.sos[s].so_num||'')+d);
+  }
+  rows.push(hdr);
+  for(var k=0;k<G.skuOrder.length;k++){
+    var sk=G.skuOrder[k], info=G.skuInfo[sk]||{};
+    var r=[sk, info.product||'', (info.cogs===undefined||info.cogs===null||info.cogs==='')?'':Number(info.cogs).toFixed(2)];
+    for(var s2=0;s2<G.sos.length;s2++){
+      var pv=G.priceBySo[s2][sk];
+      r.push((pv===undefined||pv===null)?'':Number(pv).toFixed(2));
+    }
+    rows.push(r);
+  }
+  var csv=rows.map(function(r){ return r.map(cpCsvCell).join(','); }).join(CP_CRLF);
+  var name=('customer-prices_'+(G.custName||'customer')+'_'+(G.windowKey||'ytd'))
+    .replace(/[^A-Za-z0-9._-]+/g,'-').replace(/-+/g,'-')+'.csv';
+  try{
+    var blob=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8;'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a'); a.href=url; a.download=name;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+  }catch(e){ alert('Could not export CSV: '+e.message); }
+}
 function renderCpricesPanel(){
   var CP=DATA.customer_prices||{customers:[]};
   var custs=CP.customers||[];
@@ -2709,11 +2749,16 @@ function renderCpricesPanel(){
     '<div><div style="font-size:11px;font-weight:700;color:#6b7a90;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Search SKU</div>'+
     '<input id="cpSkuSearch" type="text" value="'+escapeHtml(cpSku)+'" oninput="cpSetSku(this.value)" placeholder="Filter by SKU or product…" '+
     'style="min-width:220px;padding:7px 10px;border:1px solid #cfd8e3;border-radius:8px;font-size:14px;background:#fff;"></div>'+
+    '<div><button onclick="cpExportCsv()" class="mode-btn" '+
+    'style="padding:7px 14px;border-radius:8px;border:1px solid #cdd9e6;font-size:13px;cursor:pointer;" '+
+    'title="Download the table exactly as filtered (organization, time window, SKU search) as a CSV">'+
+    '⬇ Export CSV</button></div>'+
     '</div>';
 
   var head='<div class="head"><div><h2 style="margin:0;">Customer Prices</h2></div></div>';
 
-  if(!sos.length){ panel.innerHTML=head+controls+'<div class="empty">No Sales Orders for this organization in the selected window.</div>'; return; }
+  if(!sos.length){ cpLastGrid=null;
+    panel.innerHTML=head+controls+'<div class="empty">No Sales Orders for this organization in the selected window.</div>'; return; }
 
   // Build SKU rows: union across the filtered SOs (preserve first-seen order).
   var skuOrder=[], skuInfo={};   // sku -> {product, cogs}
@@ -2732,6 +2777,10 @@ function renderCpricesPanel(){
   // SKU search filter (matches SKU code or product name).
   var q=(cpSku||'').trim().toLowerCase();
   if(q){ skuOrder=skuOrder.filter(function(sk){ var info=skuInfo[sk]||{}; return sk.toLowerCase().indexOf(q)>=0 || (info.product||'').toLowerCase().indexOf(q)>=0; }); }
+
+  // Keep a snapshot for Export CSV — same rows/columns the user is looking at.
+  cpLastGrid = { custName:c.name||'', windowKey:(cpWindow==='ytd'?(CP.year||'ytd')+'-YTD':cpWindow),
+                 sos:sos, skuOrder:skuOrder, skuInfo:skuInfo, priceBySo:priceBySo };
 
   // Header: SKU | COGS | one column per SO (SO# + date).
   var thead='<tr>'+
