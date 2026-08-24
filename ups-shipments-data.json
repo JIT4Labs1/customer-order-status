@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-08-23 10:14 AM PT",
-  "last_status_refresh": "2026-08-23 09:40 AM PT",
+  "pulled_at": "2026-08-24 09:29 AM PT",
+  "last_status_refresh": "2026-08-24 09:15 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -7823,7 +7823,7 @@
       "ship_to": "Monroe, LA",
       "order": "#1146",
       "status": "Delivered",
-      "activity": "Delivered",
+      "activity": "DELIVERED",
       "location": "",
       "date": "",
       "time": "",
@@ -7862,7 +7862,7 @@
       "order": "#1118",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "Delivered",
+      "activity": "DELIVERED",
       "location": "",
       "date": "2026-08-18",
       "time": "",
@@ -7916,9 +7916,9 @@
       "order": "#1125",
       "service": "",
       "status": "In Transit",
-      "activity": "Processing at UPS Facility",
+      "activity": "Out For Delivery Today",
       "location": "Addison, IL",
-      "date": "2026-08-22",
+      "date": "2026-08-24",
       "time": "",
       "delivered": false,
       "ship_date": "2026-08-18",
@@ -8212,6 +8212,134 @@
       ],
       "po": "PO806",
       "po_id": "173949"
+    },
+    {
+      "tracking": "1Z23C2X71334022529",
+      "carrier": "UPS",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Chicago Lab",
+      "ship_to": "Chicago, IL",
+      "order": "#1152",
+      "service": "",
+      "status": "In Transit",
+      "activity": "Shipper created a label, UPS has not received the package yet. ",
+      "location": "",
+      "date": "2026-08-24",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-08-24",
+      "items": [
+        {
+          "name": "Beckman Coulter 33530 Access Prolactin Reagent, 100 Determinations",
+          "sku": "33530",
+          "qty": 2
+        }
+      ],
+      "so_num": "SO524",
+      "so_id": "175545",
+      "pos": [
+        {
+          "po": "PO819",
+          "vendor": "PMA Services",
+          "po_id": "175550"
+        }
+      ],
+      "po": "PO819",
+      "po_id": "175550"
+    },
+    {
+      "tracking": "1Z23C2X71333684138",
+      "carrier": "UPS",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Benjamin Swisher",
+      "ship_to": "North Canton, OH",
+      "order": "#1150",
+      "service": "",
+      "status": "In Transit",
+      "activity": "Shipper created a label, UPS has not received the package yet. ",
+      "location": "",
+      "date": "2026-08-24",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-08-24",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6195 Olympus HDL Cholesterol Reagent",
+          "sku": "OSR6195",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 81906 Access Substrate",
+          "sku": "81906",
+          "qty": 3
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter DR0070-1 Olympus Lyophilized Chemistry Calibrator Level 1",
+          "sku": "DR0070-1",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO522",
+      "so_id": "174946",
+      "pos": [
+        {
+          "po": "PO813",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "174947"
+        },
+        {
+          "po": "PO814",
+          "vendor": "PMA Services",
+          "po_id": "174948"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "1Z23C2X71337418516",
+      "carrier": "UPS",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "MEDICAL HEALTH LAB",
+      "ship_to": "Sugar Land, TX",
+      "order": "#1147",
+      "service": "",
+      "status": "In Transit",
+      "activity": "Shipper created a label, UPS has not received the package yet. ",
+      "location": "",
+      "date": "2026-08-24",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-08-24",
+      "items": [
+        {
+          "name": "Beckman Coulter 33830 Access Total T3, 100 Determinations",
+          "sku": "33830",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO519",
+      "so_id": "174292",
+      "pos": [
+        {
+          "po": "PO809",
+          "vendor": "PMA Services",
+          "po_id": "174293"
+        }
+      ],
+      "po": "PO809",
+      "po_id": "174293"
     }
   ]
 }
