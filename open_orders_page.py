@@ -705,6 +705,15 @@ def build_html(page_data, embeds=None):
   .so-group .so-h { font-weight:700; color:#0D2B45; font-size:13px; margin-right:10px; }
   .so-group .so-date { color:#666; font-size:11px; margin-left:10px; }
   .so-group .so-cnt { color:#888; font-size:11px; margin-left:10px; }
+  /* Customer Open SO's: sidebar SKU search + All-customers grouping */
+  .custq-box { padding:11px 13px 12px; border-bottom:1px solid #eef2f6; background:#fbfdff; }
+  .custq { width:100%; box-sizing:border-box; padding:8px 11px; border:1px solid #d7dee8; border-radius:7px;
+    font-size:13px; font-family:inherit; color:#101E3E; outline:none; }
+  .custq:focus { border-color:#2f6fd0; box-shadow:0 0 0 3px rgba(47,111,208,.13); }
+  .custq-hint { font-size:11px; color:#7a8a99; margin-top:6px; line-height:1.35; }
+  .cust-group td { background:#1F4E79; color:#fff; border-top:2px solid #163c5e; padding:9px 12px; }
+  .cust-group .cg-h { font-weight:700; font-size:13px; letter-spacing:.01em; }
+  .cust-group .cg-cnt { color:#cfe0f0; font-size:11px; margin-left:10px; font-weight:600; }
   .empty { padding:40px; text-align:center; color:#999; }
   .matrix-wrap { overflow-x:auto; }
   table.matrix td.item-name { max-width:300px; color:#101E3E; font-weight:600; }
@@ -910,7 +919,8 @@ var BTN = __BTN_CFG__;
 var GADS_EMBED = __GADS_EMBED__, LI_EMBED = __LI_EMBED__, WT_EMBED = __WT_EMBED__, SHIP_EMBED = __SHIP_EMBED__, PAY_EMBED = __PAY_EMBED__, SPNL_EMBED = __SPNL_EMBED__, CJ_EMBED = __CJ_EMBED__;
 function _deobf(s,key){ if(!s) return ''; var raw=atob(s), out=''; for(var i=0;i<raw.length;i++){ out+=String.fromCharCode(raw.charCodeAt(i) ^ key.charCodeAt(i%key.length)); } return out; }
 BTN.token = _deobf(BTN.token_obf, BTN.k || '');
-var active = 0;     // selected customer index (Customer Open SO's view)
+var active = 0;     // selected customer index (Customer Open SO's view); -1 = All customers
+var custSku = '';   // Customer Open SO's: SKU / product search text ('' = no filter)
 var vactive = 0;    // selected vendor index (Open Vendor POs view)
 var caactive = 0;   // selected IDL customer index (Customer Analysis view)
 var mode = 'pnl';   // 'pnl' · 'cust' · 'vendor' · 'sku' · 'ca'
@@ -984,6 +994,7 @@ function renderTabs(){
   if(mode==='spnl'){ renderSpnlTabs(tabsEl); return; }  // Shipments P&L: sidebar of customers
   if(mode==='cj'){ renderCjTabs(tabsEl); return; }      // Customer Journey: sidebar of visitors
   if(mode==='ytd'){ renderYtdTabs(tabsEl); return; }    // YTD Demand: sidebar of customers (All + each)
+  if(mode==='cust'){ renderCustTabs(tabsEl); return; }  // Customer Open SO's: SKU search + All customers + each
   tabsEl.style.display='';
   var list = mode==='vendor' ? (DATA.vendors||[]) : (mode==='ca' ? ((DATA.customer_analysis||{}).customers||[]) : (DATA.customers||[]));
   var cur = mode==='vendor' ? vactive : (mode==='ca' ? caactive : active);
@@ -2896,11 +2907,58 @@ function pnlDetApply(){
   }
 }
 
-function renderCustPanel(){
-  var c=(DATA.customers||[])[active];
-  if(!c){ document.getElementById('panel').innerHTML='<div class="empty">No open orders.</div>'; return; }
-  // Group this customer's rows by SO number.
-  var groups={}, order=[], rows=(c.rows||[]);
+// ── Customer Open SO's: sidebar (SKU search + "All customers" + one tab per customer) ──
+// The search text matches the product string, which carries the SKU
+// (e.g. "Beckman Coulter 33565 Testosterone CalIbrator" matches "33565").
+function custQ(){ return custSku.replace(/^\s+|\s+$/g,'').toLowerCase(); }
+function custMatch(r){ var q=custQ(); if(!q) return true;
+  return String(r.product||'').toLowerCase().indexOf(q)>=0; }
+// A customer's open rows, narrowed to the SKU search (all rows when the box is empty).
+function custRows(c){ var out=[], rows=(c&&c.rows)||[];
+  for(var i=0;i<rows.length;i++){ if(custMatch(rows[i])) out.push(rows[i]); }
+  return out; }
+function renderCustTabs(tabsEl){
+  tabsEl.style.display='';
+  if(!(DATA.customers||[]).length){ tabsEl.innerHTML='<div class="empty">No open orders.</div>'; return; }
+  tabsEl.innerHTML='<div class="custq-box">'+
+    '<input id="cust-q" class="custq" type="text" placeholder="Search SKU or product&hellip;" '+
+    'autocomplete="off" spellcheck="false" value="'+escapeHtml(custSku)+'" oninput="custOnSearch(this.value)">'+
+    '<div class="custq-hint" id="cust-q-hint"></div></div>'+
+    '<div id="cust-tablist"></div>';
+  renderCustTabList();
+}
+// Only this list (never the input) is re-rendered while typing, so the box keeps focus + caret.
+function renderCustTabList(){
+  var el=document.getElementById('cust-tablist'); if(!el) return;
+  var list=(DATA.customers||[]), q=custQ(), counts=[], tot=0, shown=0;
+  for(var i=0;i<list.length;i++){ var n=custRows(list[i]).length; counts.push(n); tot+=n; }
+  var h='<button class="tab'+(active<0?' active':'')+'" onclick="custSelect(-1)">'+
+        'All customers<span class="cnt">'+tot+'</span></button>';
+  for(var j=0;j<list.length;j++){
+    if(q && !counts[j]) continue;                 // hide customers with nothing matching
+    shown++;
+    h+='<button class="tab'+(j===active?' active':'')+'" onclick="custSelect('+j+')">'+
+       escapeHtml(list[j].name)+'<span class="cnt">'+counts[j]+'</span></button>';
+  }
+  if(q && !shown) h+='<div class="empty" style="padding:14px 16px;font-size:12px;">No open item matches that SKU.</div>';
+  el.innerHTML=h;
+  var hint=document.getElementById('cust-q-hint');
+  if(hint) hint.textContent = q
+    ? (shown+' customer'+(shown===1?'':'s')+' · '+tot+' open item'+(tot===1?'':'s')+' match')
+    : 'Filter open items by SKU or product name.';
+}
+function custSelect(i){ active=i; renderCustTabList(); renderCustPanel(); }
+function custOnSearch(v){
+  custSku=String(v||'');
+  // If the selected customer has nothing matching, fall back to the All-customers view
+  // so a search always lands on results rather than an empty panel.
+  if(custQ() && active>=0){ var c=(DATA.customers||[])[active];
+    if(!c || !custRows(c).length) active=-1; }
+  renderCustTabList(); renderCustPanel();
+}
+// SO-grouped <tbody> rows for one customer's (already filtered) open items.
+function custSoBody(rows, ncol){
+  var groups={}, order=[], body='';
   for(var i=0;i<rows.length;i++){
     var r=rows[i], so=r.so_num||'(no SO)';
     if(!groups[so]){ groups[so]={so:so, status:r.so_status, date:r.order_date, items:[]}; order.push(so); }
@@ -2909,7 +2967,6 @@ function renderCustPanel(){
   }
   // Order SO groups by order date (oldest first), then SO number.
   order.sort(function(a,b){ var d=cmp(groups[a].date,groups[b].date,'date'); return d!==0?d:cmp(groups[a].so,groups[b].so,'str'); });
-  var ncol=COLS_CUST.length, body='';
   for(var gi=0;gi<order.length;gi++){
     var grp=groups[order[gi]];
     var its=grp.items.slice();
@@ -2935,14 +2992,56 @@ function renderCustPanel(){
         '</tr>';
     }
   }
+  return body;
+}
+// "All customers": every customer that still has a matching open item, banded by customer.
+function renderCustAllPanel(){
+  var list=(DATA.customers||[]), q=custQ(), ncol=COLS_CUST.length;
+  var body='', nc=0, ni=0, nso={};
+  for(var i=0;i<list.length;i++){
+    var c=list[i], rows=custRows(c);
+    if(!rows.length) continue;
+    nc++; ni+=rows.length;
+    for(var k=0;k<rows.length;k++) nso[c.name+'||'+(rows[k].so_num||'')]=1;
+    body+='<tr class="cust-group"><td colspan="'+ncol+'">'+
+      '<span class="cg-h">'+escapeHtml(c.name)+'</span>'+
+      '<span class="cg-cnt">'+rows.length+' open item(s)</span></td></tr>'+
+      custSoBody(rows, ncol);
+  }
   var sortNote = sortState.key ? ' &middot; sorted by '+escapeHtml(colByKey(sortState.key).label)+(sortState.dir>0?' ▲':' ▼') : '';
+  var el=document.getElementById('panel');
+  if(!body){
+    el.innerHTML='<div class="panel-head"><h2 style="margin:0;">All customers</h2>'+
+      '<div class="sub">SKU search: &ldquo;'+escapeHtml(custSku)+'&rdquo;</div></div>'+
+      '<div class="empty">No customer has that SKU open right now.</div>';
+    return;
+  }
+  el.innerHTML =
+    '<div class="panel-head"><h2 style="margin:0;">All customers'+(q?' &mdash; SKU &ldquo;'+escapeHtml(custSku)+'&rdquo;':'')+'</h2>'+
+    '<div class="sub">'+nc+' customer(s) &middot; '+Object.keys(nso).length+' SO(s) &middot; '+ni+' open item(s)'+
+    (q?' matching the search':'')+' &middot; grouped by customer, then SO'+sortNote+'</div></div>'+
+    '<table><thead><tr>'+renderHead()+'</tr></thead><tbody>'+body+'</tbody></table>';
+}
+function renderCustPanel(){
+  var list=(DATA.customers||[]);
+  if(!list.length){ document.getElementById('panel').innerHTML='<div class="empty">No open orders.</div>'; return; }
+  if(active<0){ renderCustAllPanel(); return; }
+  var c=list[active];
+  if(!c){ active=-1; renderCustAllPanel(); return; }
+  var q=custQ(), rows=custRows(c), ncol=COLS_CUST.length;
+  var body=custSoBody(rows, ncol);
+  var nso={}; for(var k=0;k<rows.length;k++) nso[rows[k].so_num||'']=1;
+  var sortNote = sortState.key ? ' &middot; sorted by '+escapeHtml(colByKey(sortState.key).label)+(sortState.dir>0?' ▲':' ▼') : '';
+  var sub = q
+    ? (Object.keys(nso).length+' matching SO(s) &middot; '+rows.length+' open item(s) matching &ldquo;'+escapeHtml(custSku)+'&rdquo; &middot; grouped by SO'+sortNote)
+    : (c.open_sos+' open SO(s) &middot; '+c.open_items+' open item(s) &middot; '+(c.vendors||[]).length+' vendor(s) &middot; grouped by SO'+sortNote);
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">'+
     '<h2 style="margin:0;">'+escapeHtml(c.name)+'</h2>'+
     '<button class="copy-email-btn" onclick="custEmailToClipboard()" title="Copy this customer&#39;s open-order email (Product, List Price, quantities) — pastes as a formatted table into email/Word/Docs">📋 Copy email</button></div>'+
-    '<div class="sub">'+c.open_sos+' open SO(s) &middot; '+c.open_items+' open item(s) &middot; '+
-    (c.vendors||[]).length+' vendor(s) &middot; grouped by SO'+sortNote+'</div></div>'+
-    '<table><thead><tr>'+renderHead()+'</tr></thead><tbody>'+body+'</tbody></table>';
+    '<div class="sub">'+sub+'</div></div>'+
+    '<table><thead><tr>'+renderHead()+'</tr></thead><tbody>'+(body||'')+'</tbody></table>'+
+    (body?'':'<div class="empty">No open item matches &ldquo;'+escapeHtml(custSku)+'&rdquo; for this customer.</div>');
 }
 
 // ── "Copy email" for the selected customer (Customer Open SO's tab) ──
@@ -3002,8 +3101,10 @@ function buildCustEmailHtml(c){
     '</div></div>';
 }
 function custEmailToClipboard(){
+  if(active<0){ alert('Pick a single customer in the sidebar to copy their open-order email.'); return; }
   var c=(DATA.customers||[])[active];
   if(!c){ alert('No customer selected.'); return; }
+  // Always emails the customer's FULL open orders — the SKU search only narrows the on-screen view.
   var html=buildCustEmailHtml(c);
   function done(){ var b=document.querySelector('.copy-email-btn'); if(b){ var o=b.innerHTML; b.innerHTML='✓ Copied!'; setTimeout(function(){ b.innerHTML=o; },1800); } }
   // Copy as rich text/html so pasting drops in the RENDERED TABLE (email/Word/Docs), not raw code.
