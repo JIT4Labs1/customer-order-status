@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-08-24 09:29 AM PT",
-  "last_status_refresh": "2026-08-24 09:15 AM PT",
+  "pulled_at": "2026-08-25 09:35 AM PT",
+  "last_status_refresh": "2026-08-25 09:05 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -5751,9 +5751,9 @@
           "po_id": "168445"
         },
         {
-          "po": "PO791",
-          "vendor": "ALDX HOLDING CORPORATION",
-          "po_id": "170412"
+          "po": "PO820",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "176029"
         }
       ],
       "po": "",
@@ -5795,9 +5795,9 @@
           "po_id": "168445"
         },
         {
-          "po": "PO791",
-          "vendor": "ALDX HOLDING CORPORATION",
-          "po_id": "170412"
+          "po": "PO820",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "176029"
         }
       ],
       "po": "",
@@ -7915,12 +7915,12 @@
       "ship_to": "Naperville, IL",
       "order": "#1125",
       "service": "",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Addison, IL",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "NAPERVILLE, IL",
       "date": "2026-08-24",
-      "time": "",
-      "delivered": false,
+      "time": "11:37 AM",
+      "delivered": true,
       "ship_date": "2026-08-18",
       "items": [
         {
@@ -8100,10 +8100,10 @@
       "contact": "SYED RIZVI",
       "ship_to": "Sugar Land, TX",
       "order": "#1148",
-      "status": "In Transit",
-      "activity": "Package transferred to post office",
+      "status": "Exception",
+      "activity": "The post office attempted delivery of your UPS Ground Saver\u00ae package, but the receiving business was closed.",
       "location": "Nashville, TN",
-      "date": "2026-08-22",
+      "date": "2026-08-24",
       "time": "",
       "delivered": false,
       "ship_date": "2026-08-19",
@@ -8224,9 +8224,9 @@
       "order": "#1152",
       "service": "",
       "status": "In Transit",
-      "activity": "Shipper created a label, UPS has not received the package yet. ",
-      "location": "",
-      "date": "2026-08-24",
+      "activity": "Out For Delivery Today",
+      "location": "Skokie, IL",
+      "date": "2026-08-25",
       "time": "",
       "delivered": false,
       "ship_date": "2026-08-24",
@@ -8260,9 +8260,9 @@
       "order": "#1150",
       "service": "",
       "status": "In Transit",
-      "activity": "Shipper created a label, UPS has not received the package yet. ",
-      "location": "",
-      "date": "2026-08-24",
+      "activity": "Out For Delivery Today",
+      "location": "Canton, OH",
+      "date": "2026-08-25",
       "time": "",
       "delivered": false,
       "ship_date": "2026-08-24",
@@ -8316,9 +8316,9 @@
       "order": "#1147",
       "service": "",
       "status": "In Transit",
-      "activity": "Shipper created a label, UPS has not received the package yet. ",
-      "location": "",
-      "date": "2026-08-24",
+      "activity": "Out For Delivery Today",
+      "location": "Stafford, TX",
+      "date": "2026-08-25",
       "time": "",
       "delivered": false,
       "ship_date": "2026-08-24",
@@ -8340,6 +8340,97 @@
       ],
       "po": "PO809",
       "po_id": "174293"
+    },
+    {
+      "tracking": "1Z23C2X70116306154",
+      "carrier": "UPS",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Mercedes Scientific",
+      "ship_to": "Lakewood Ranch, FL",
+      "order": "#1153",
+      "service": "",
+      "status": "In Transit",
+      "activity": "Shipper created a label, UPS has not received the package yet. ",
+      "location": "",
+      "date": "2026-08-25",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-08-25",
+      "items": [
+        {
+          "name": "Beckman Coulter 33560 Access Testosterone Reagent",
+          "sku": "33560",
+          "qty": 26
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 11
+        },
+        {
+          "name": "Beckman Coulter OSR6199 C-reactive Protein High sensitive CRP",
+          "sku": "OSR6199",
+          "qty": 7
+        },
+        {
+          "name": "Beckman Coulter OSR6130 Lipase Reagent Enzyme Assay Lipase 4 X 65 Tests",
+          "sku": "OSR6130",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations",
+          "sku": "A98856",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81906 Access Substrate",
+          "sku": "81906",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B63284 Access TSH Stimulating Hormone (3rd IS) 2 x 100 Determinations",
+          "sku": "B63284",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
+          "sku": "B00389",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33000 Access Vitamin B12 Reagent, 100 Determinations",
+          "sku": "33000",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 37215 Access Hybritech free PSA Calibrators (S0-S5)",
+          "sku": "37215",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO525",
+      "so_id": "176088",
+      "pos": [
+        {
+          "po": "PO821",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "176089"
+        },
+        {
+          "po": "PO822",
+          "vendor": "PMA Services",
+          "po_id": "176090"
+        }
+      ],
+      "po": "",
+      "po_id": ""
     }
   ]
 }
