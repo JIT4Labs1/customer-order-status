@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-08-25 09:35 AM PT",
-  "last_status_refresh": "2026-08-25 09:05 AM PT",
+  "pulled_at": "2026-08-26 07:44 AM PT",
+  "last_status_refresh": "2026-08-26 07:38 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -8100,12 +8100,12 @@
       "contact": "SYED RIZVI",
       "ship_to": "Sugar Land, TX",
       "order": "#1148",
-      "status": "Exception",
-      "activity": "The post office attempted delivery of your UPS Ground Saver\u00ae package, but the receiving business was closed.",
+      "status": "Delivered",
+      "activity": "Package delivered by local post office ",
       "location": "Nashville, TN",
-      "date": "2026-08-24",
-      "time": "",
-      "delivered": false,
+      "date": "2026-08-25",
+      "time": "1:02 PM",
+      "delivered": true,
       "ship_date": "2026-08-19",
       "items": [
         {
@@ -8223,12 +8223,12 @@
       "ship_to": "Chicago, IL",
       "order": "#1152",
       "service": "",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Skokie, IL",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "CHICAGO, IL",
       "date": "2026-08-25",
-      "time": "",
-      "delivered": false,
+      "time": "1:47 PM",
+      "delivered": true,
       "ship_date": "2026-08-24",
       "items": [
         {
@@ -8259,12 +8259,12 @@
       "ship_to": "North Canton, OH",
       "order": "#1150",
       "service": "",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Canton, OH",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "NORTH CANTON, OH",
       "date": "2026-08-25",
-      "time": "",
-      "delivered": false,
+      "time": "12:37 PM",
+      "delivered": true,
       "ship_date": "2026-08-24",
       "items": [
         {
@@ -8315,12 +8315,12 @@
       "ship_to": "Sugar Land, TX",
       "order": "#1147",
       "service": "",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Stafford, TX",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "SUGAR LAND, TX",
       "date": "2026-08-25",
-      "time": "",
-      "delivered": false,
+      "time": "12:50 PM",
+      "delivered": true,
       "ship_date": "2026-08-24",
       "items": [
         {
@@ -8352,9 +8352,9 @@
       "order": "#1153",
       "service": "",
       "status": "In Transit",
-      "activity": "Shipper created a label, UPS has not received the package yet. ",
-      "location": "",
-      "date": "2026-08-25",
+      "activity": "Out For Delivery Today",
+      "location": "Sarasota, FL",
+      "date": "2026-08-26",
       "time": "",
       "delivered": false,
       "ship_date": "2026-08-25",
@@ -8415,6 +8415,524 @@
           "qty": 1
         }
       ],
+      "so_num": "SO525",
+      "so_id": "176088",
+      "pos": [
+        {
+          "po": "PO821",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "176089"
+        },
+        {
+          "po": "PO822",
+          "vendor": "PMA Services",
+          "po_id": "176090"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "876277728461",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Benjamin Swisher",
+      "ship_to": "Canton, OH",
+      "order": "#1150",
+      "service": "FedEx",
+      "status": "Out for Delivery",
+      "activity": "OUT FOR DELIVERY",
+      "location": "",
+      "date": "2026-08-25",
+      "time": "",
+      "delivered": false,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=876277728461",
+      "ship_date": "2026-08-25",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6004 Olympus ALP Reagent 3P ALP R1 Alkaline Phosphatase Reagent",
+          "sku": "OSR6004",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)",
+          "sku": "OSR6134",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6195 Olympus HDL Cholesterol Reagent",
+          "sku": "OSR6195",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6102 Olympus Albumin Reagent R1",
+          "sku": "OSR6102",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6112 Olympus Total Bilirubin Reagent",
+          "sku": "OSR6112",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter DR0070-1 Olympus Lyophilized Chemistry Calibrator Level 1",
+          "sku": "DR0070-1",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter DR0070-2 Olympus Lyophilized Chemistry Calibrator",
+          "sku": "DR0070-2",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 81906 Access Substrate",
+          "sku": "81906",
+          "qty": 3
+        },
+        {
+          "name": "Beckman Coulter 33020 Access 2 Ferritin Reagent 2x50 Count 100/Kt",
+          "sku": "33020",
+          "qty": 10
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 10
+        },
+        {
+          "name": "Beckman Coulter A98032 Access Folate Reagent, 100 Determinations",
+          "sku": "A98032",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter 33000 Access Vitamin B12 Reagent, 100 Determinations",
+          "sku": "33000",
+          "qty": 5
+        }
+      ],
+      "contact": "Benjamin Swisher",
+      "shopify_order": "#1150",
+      "so_num": "SO522",
+      "so_id": "174946",
+      "pos": [
+        {
+          "po": "PO813",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "174947"
+        },
+        {
+          "po": "PO814",
+          "vendor": "PMA Services",
+          "po_id": "174948"
+        },
+        {
+          "po": "PO815",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "174949"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "383371162051",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Benjamin Swisher",
+      "ship_to": "Canton, OH",
+      "order": "#1150",
+      "service": "FedEx",
+      "status": "Out for Delivery",
+      "activity": "OUT FOR DELIVERY",
+      "location": "",
+      "date": "2026-08-25",
+      "time": "",
+      "delivered": false,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=383371162051",
+      "ship_date": "2026-08-25",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6004 Olympus ALP Reagent 3P ALP R1 Alkaline Phosphatase Reagent",
+          "sku": "OSR6004",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)",
+          "sku": "OSR6134",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6195 Olympus HDL Cholesterol Reagent",
+          "sku": "OSR6195",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6102 Olympus Albumin Reagent R1",
+          "sku": "OSR6102",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6112 Olympus Total Bilirubin Reagent",
+          "sku": "OSR6112",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter DR0070-1 Olympus Lyophilized Chemistry Calibrator Level 1",
+          "sku": "DR0070-1",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter DR0070-2 Olympus Lyophilized Chemistry Calibrator",
+          "sku": "DR0070-2",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 81906 Access Substrate",
+          "sku": "81906",
+          "qty": 3
+        },
+        {
+          "name": "Beckman Coulter 33020 Access 2 Ferritin Reagent 2x50 Count 100/Kt",
+          "sku": "33020",
+          "qty": 10
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 10
+        },
+        {
+          "name": "Beckman Coulter A98032 Access Folate Reagent, 100 Determinations",
+          "sku": "A98032",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter 33000 Access Vitamin B12 Reagent, 100 Determinations",
+          "sku": "33000",
+          "qty": 5
+        }
+      ],
+      "contact": "Benjamin Swisher",
+      "shopify_order": "#1150",
+      "so_num": "SO522",
+      "so_id": "174946",
+      "pos": [
+        {
+          "po": "PO813",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "174947"
+        },
+        {
+          "po": "PO814",
+          "vendor": "PMA Services",
+          "po_id": "174948"
+        },
+        {
+          "po": "PO815",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "174949"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "876268149013",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "3 Alpha Labs, LLC",
+      "ship_to": "Costa Mesa, CA",
+      "order": "#1151",
+      "service": "FedEx",
+      "status": "In Transit",
+      "activity": "IN TRANSIT",
+      "location": "",
+      "date": "2026-08-25",
+      "time": "",
+      "delivered": false,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=876268149013",
+      "ship_date": "2026-08-25",
+      "items": [
+        {
+          "name": "Beckman Coulter 81906 Access Substrate",
+          "sku": "81906",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B84493 Access Sensitive Estradiol Reagent",
+          "sku": "B84493",
+          "qty": 1
+        },
+        {
+          "name": "386167 DXI reaction vessels",
+          "sku": null,
+          "qty": 2
+        }
+      ],
+      "contact": "Bart Pitula",
+      "shopify_order": "#1151",
+      "so_num": "SO523",
+      "so_id": "175238",
+      "pos": [
+        {
+          "po": "PO816",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "175239"
+        }
+      ],
+      "po": "PO816",
+      "po_id": "175239"
+    },
+    {
+      "tracking": "383370054937",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "3 Alpha Labs, LLC",
+      "ship_to": "Costa Mesa, CA",
+      "order": "#1151",
+      "service": "FedEx",
+      "status": "In Transit",
+      "activity": "IN TRANSIT",
+      "location": "",
+      "date": "2026-08-25",
+      "time": "",
+      "delivered": false,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=383370054937",
+      "ship_date": "2026-08-25",
+      "items": [
+        {
+          "name": "Beckman Coulter 81906 Access Substrate",
+          "sku": "81906",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B84493 Access Sensitive Estradiol Reagent",
+          "sku": "B84493",
+          "qty": 1
+        },
+        {
+          "name": "386167 DXI reaction vessels",
+          "sku": null,
+          "qty": 2
+        }
+      ],
+      "contact": "Bart Pitula",
+      "shopify_order": "#1151",
+      "so_num": "SO523",
+      "so_id": "175238",
+      "pos": [
+        {
+          "po": "PO816",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "175239"
+        }
+      ],
+      "po": "PO816",
+      "po_id": "175239"
+    },
+    {
+      "tracking": "383370002090",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "3 Alpha Labs, LLC",
+      "ship_to": "Costa Mesa, CA",
+      "order": "#1151",
+      "service": "FedEx",
+      "status": "In Transit",
+      "activity": "IN TRANSIT",
+      "location": "",
+      "date": "2026-08-25",
+      "time": "",
+      "delivered": false,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=383370002090",
+      "ship_date": "2026-08-25",
+      "items": [
+        {
+          "name": "Beckman Coulter 81906 Access Substrate",
+          "sku": "81906",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B84493 Access Sensitive Estradiol Reagent",
+          "sku": "B84493",
+          "qty": 1
+        },
+        {
+          "name": "386167 DXI reaction vessels",
+          "sku": null,
+          "qty": 2
+        }
+      ],
+      "contact": "Bart Pitula",
+      "shopify_order": "#1151",
+      "so_num": "SO523",
+      "so_id": "175238",
+      "pos": [
+        {
+          "po": "PO816",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "175239"
+        }
+      ],
+      "po": "PO816",
+      "po_id": "175239"
+    },
+    {
+      "tracking": "876269571218",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Chicago Lab",
+      "ship_to": "Chicago, IL",
+      "order": "#1152",
+      "service": "FedEx",
+      "status": "Out for Delivery",
+      "activity": "OUT FOR DELIVERY",
+      "location": "",
+      "date": "2026-08-25",
+      "time": "",
+      "delivered": false,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=876269571218",
+      "ship_date": "2026-08-25",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6112 Olympus Total Bilirubin Reagent",
+          "sku": "OSR6112",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33530 Access Prolactin Reagent, 100 Determinations",
+          "sku": "33530",
+          "qty": 2
+        }
+      ],
+      "contact": "Ahmed Syed",
+      "shopify_order": "#1152",
+      "so_num": "SO524",
+      "so_id": "175545",
+      "pos": [
+        {
+          "po": "PO818",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "175546"
+        },
+        {
+          "po": "PO819",
+          "vendor": "PMA Services",
+          "po_id": "175550"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "876266838516",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Mercedes Scientific",
+      "ship_to": "Lakewood Ranch, FL",
+      "order": "#1153",
+      "service": "FedEx",
+      "status": "Out for Delivery",
+      "activity": "OUT FOR DELIVERY",
+      "location": "",
+      "date": "2026-08-25",
+      "time": "",
+      "delivered": false,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=876266838516",
+      "ship_date": "2026-08-25",
+      "items": [
+        {
+          "name": "Beckman Coulter 33560 Access Testosterone Reagent",
+          "sku": "33560",
+          "qty": 26
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 11
+        },
+        {
+          "name": "Beckman Coulter OSR6199 C-reactive Protein High sensitive CRP",
+          "sku": "OSR6199",
+          "qty": 7
+        },
+        {
+          "name": "Beckman Coulter OSR6130 Lipase Reagent Enzyme Assay Lipase 4 X 65 Tests",
+          "sku": "OSR6130",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations",
+          "sku": "A98856",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81906 Access Substrate",
+          "sku": "81906",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B63284 Access TSH Stimulating Hormone (3rd IS) 2 x 100 Determinations",
+          "sku": "B63284",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
+          "sku": "B00389",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33000 Access Vitamin B12 Reagent, 100 Determinations",
+          "sku": "33000",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 37215 Access Hybritech free PSA Calibrators (S0-S5)",
+          "sku": "37215",
+          "qty": 1
+        }
+      ],
+      "contact": "Misty Mcwhorter",
+      "shopify_order": "#1153",
       "so_num": "SO525",
       "so_id": "176088",
       "pos": [
