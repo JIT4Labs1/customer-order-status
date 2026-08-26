@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-08-26 07:44 AM PT",
-  "last_status_refresh": "2026-08-26 07:38 AM PT",
+  "pulled_at": "2026-08-26 09:13 AM PT",
+  "last_status_refresh": "2026-08-26 09:07 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -1149,11 +1149,6 @@
           "po_id": "156345"
         },
         {
-          "po": "PO683",
-          "vendor": "PMA Services",
-          "po_id": "156346"
-        },
-        {
           "po": "PO684",
           "vendor": "Allora Biotech LLC",
           "po_id": "156347"
@@ -1397,16 +1392,11 @@
           "po": "PO665",
           "vendor": "PMA Services",
           "po_id": "153741"
-        },
-        {
-          "po": "PO734",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "162355"
         }
       ],
-      "po": "",
+      "po": "PO665",
       "so_id": "153740",
-      "po_id": "",
+      "po_id": "153741",
       "shopify_order": "#1039"
     },
     {
@@ -2174,16 +2164,10 @@
         }
       ],
       "so_num": "SO424",
-      "pos": [
-        {
-          "po": "PO674",
-          "vendor": "PMA Services",
-          "po_id": "155588"
-        }
-      ],
-      "po": "PO674",
+      "pos": [],
+      "po": "",
       "so_id": "155587",
-      "po_id": "155588",
+      "po_id": "",
       "shopify_order": "#1045"
     },
     {
@@ -2223,16 +2207,10 @@
         }
       ],
       "so_num": "SO408",
-      "pos": [
-        {
-          "po": "PO645",
-          "vendor": "PMA Services",
-          "po_id": "150061"
-        }
-      ],
-      "po": "PO645",
+      "pos": [],
+      "po": "",
       "so_id": "150060",
-      "po_id": "150061"
+      "po_id": ""
     },
     {
       "tracking": "873791765762",
@@ -3387,15 +3365,9 @@
       ],
       "so_num": "SO470",
       "so_id": "162697",
-      "pos": [
-        {
-          "po": "PO739",
-          "vendor": "PMA Services",
-          "po_id": "162699"
-        }
-      ],
-      "po": "PO739",
-      "po_id": "162699",
+      "pos": [],
+      "po": "",
+      "po_id": "",
       "shopify_order": "#1094"
     },
     {
@@ -4123,15 +4095,10 @@
           "po": "PO665",
           "vendor": "PMA Services",
           "po_id": "153741"
-        },
-        {
-          "po": "PO734",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "162355"
         }
       ],
-      "po": "",
-      "po_id": "",
+      "po": "PO665",
+      "po_id": "153741",
       "shopify_order": "#1039"
     },
     {
@@ -7802,15 +7769,9 @@
       ],
       "so_num": "SO516",
       "so_id": "173598",
-      "pos": [
-        {
-          "po": "PO804",
-          "vendor": "PMA Services",
-          "po_id": "173599"
-        }
-      ],
-      "po": "PO804",
-      "po_id": "173599",
+      "pos": [],
+      "po": "",
+      "po_id": "",
       "shopify_order": "#1144"
     },
     {
@@ -8239,15 +8200,9 @@
       ],
       "so_num": "SO524",
       "so_id": "175545",
-      "pos": [
-        {
-          "po": "PO819",
-          "vendor": "PMA Services",
-          "po_id": "175550"
-        }
-      ],
-      "po": "PO819",
-      "po_id": "175550"
+      "pos": [],
+      "po": "",
+      "po_id": ""
     },
     {
       "tracking": "1Z23C2X71333684138",
@@ -8351,12 +8306,12 @@
       "ship_to": "Lakewood Ranch, FL",
       "order": "#1153",
       "service": "",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Sarasota, FL",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "BRADENTON, FL",
       "date": "2026-08-26",
-      "time": "",
-      "delivered": false,
+      "time": "10:43 AM",
+      "delivered": true,
       "ship_date": "2026-08-25",
       "items": [
         {
@@ -8419,18 +8374,13 @@
       "so_id": "176088",
       "pos": [
         {
-          "po": "PO821",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "176089"
-        },
-        {
           "po": "PO822",
           "vendor": "PMA Services",
           "po_id": "176090"
         }
       ],
-      "po": "",
-      "po_id": ""
+      "po": "PO822",
+      "po_id": "176090"
     },
     {
       "tracking": "876277728461",
@@ -8660,8 +8610,8 @@
       "ship_to": "Costa Mesa, CA",
       "order": "#1151",
       "service": "FedEx",
-      "status": "In Transit",
-      "activity": "IN TRANSIT",
+      "status": "Out for Delivery",
+      "activity": "OUT FOR DELIVERY",
       "location": "",
       "date": "2026-08-25",
       "time": "",
@@ -8846,15 +8796,10 @@
           "po": "PO818",
           "vendor": "Allora Biotech LLC",
           "po_id": "175546"
-        },
-        {
-          "po": "PO819",
-          "vendor": "PMA Services",
-          "po_id": "175550"
         }
       ],
-      "po": "",
-      "po_id": ""
+      "po": "PO818",
+      "po_id": "175546"
     },
     {
       "tracking": "876266838516",
@@ -8866,12 +8811,12 @@
       "ship_to": "Lakewood Ranch, FL",
       "order": "#1153",
       "service": "FedEx",
-      "status": "Out for Delivery",
-      "activity": "OUT FOR DELIVERY",
+      "status": "Delivered",
+      "activity": "DELIVERED",
       "location": "",
       "date": "2026-08-25",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "url": "https://www.fedex.com/fedextrack/?trknbr=876266838516",
       "ship_date": "2026-08-25",
       "items": [
@@ -8937,18 +8882,13 @@
       "so_id": "176088",
       "pos": [
         {
-          "po": "PO821",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "176089"
-        },
-        {
           "po": "PO822",
           "vendor": "PMA Services",
           "po_id": "176090"
         }
       ],
-      "po": "",
-      "po_id": ""
+      "po": "PO822",
+      "po_id": "176090"
     }
   ]
 }
