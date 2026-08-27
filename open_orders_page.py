@@ -560,7 +560,14 @@ def build_html(page_data, embeds=None):
   .fop-dot { display:inline-block; width:11px; height:11px; border-radius:50%;
              background:#22a046; animation:fopPulse 1.25s ease-in-out infinite; cursor:pointer; }
   .fop-dot:hover { background:#1b7a3d; }
-  @media (prefers-reduced-motion: reduce) { .fop-dot { animation:none; } }
+  @keyframes fopTextPulse { 0%,100% { opacity:1; } 50% { opacity:.34; } }
+  .fop-txt { display:inline-block; color:#1b7a3d; font-weight:700; font-size:12px; line-height:1.3;
+             white-space:normal; text-align:center; cursor:pointer;
+             animation:fopTextPulse 1.25s ease-in-out infinite; }
+  .fop-txt:hover { color:#146030; text-decoration:underline; }
+  .fop-txt .fop-q { color:#0D2B45; }
+  .fop-txt .fop-more { display:block; font-weight:600; font-size:11px; color:#6b7a8a; }
+  @media (prefers-reduced-motion: reduce) { .fop-dot, .fop-txt { animation:none; } }
   .fop-none { color:#c8d0d8; }
   .iop-up { border:2px dashed #cdd9e6; border-radius:12px; padding:18px; text-align:center;
             background:#fbfdff; margin:0 0 16px; }
@@ -4074,18 +4081,33 @@ function ioppOtherFor(sku, poVendor){
 }
 
 // The Fulfill Opp cell in Open Vendor POs (poVendor = the vendor this PO sits with).
+// Shows the ALTERNATIVE vendor(s) holding the SKU and how much they have, flashing
+// green. Quantities are summed per vendor, so multiple lots of the same SKU from one
+// vendor read as a single number.
 function fopCell(r, poVendor){
   var hit=ioppOtherFor(r&&r.sku, poVendor);
   if(!hit) return '<span class="fop-none">&mdash;</span>';
-  var lines=[];
-  for(var i=0;i<hit.srcs.length && i<6;i++){
-    var s=hit.srcs[i];
-    lines.push(s.vendor+': '+fmtQty(s.qty)+(s.lot?(' lot '+s.lot):'')+(s.exp?(' exp '+s.exp):''));
+  // Collapse the sources to one entry per vendor.
+  var byVen={}, order=[];
+  for(var i=0;i<hit.srcs.length;i++){
+    var s=hit.srcs[i], key=ioppVenNorm(s.vendor)||s.vendor;
+    if(!byVen[key]){ byVen[key]={vendor:s.vendor, qty:0, lots:[]}; order.push(key); }
+    byVen[key].qty+=s.qty;
+    if(s.lot) byVen[key].lots.push(s.lot+(s.exp?(' exp '+s.exp):''));
   }
-  if(hit.srcs.length>6) lines.push('+'+(hit.srcs.length-6)+' more');
-  var tip='Available from another vendor: '+fmtQty(hit.qty)+IOPP_NL+lines.join(IOPP_NL)+
+  order.sort(function(a,b){ return byVen[b].qty-byVen[a].qty; });   // biggest holder first
+  var shown=[], tipLines=[];
+  for(var k=0;k<order.length;k++){
+    var v=byVen[order[k]];
+    if(k<2) shown.push(escapeHtml(v.vendor)+' <span class="fop-q">'+fmtQty(v.qty)+'</span>');
+    tipLines.push(v.vendor+': '+fmtQty(v.qty)+(v.lots.length?(' ('+v.lots.join('; ')+')'):''));
+  }
+  var more=order.length>2 ? '<span class="fop-more">+'+(order.length-2)+' more vendor(s)</span>' : '';
+  var tip='Available from another vendor: '+fmtQty(hit.qty)+IOPP_NL+tipLines.join(IOPP_NL)+
           IOPP_NL+'(this PO is with '+(poVendor||'?')+')';
-  return '<span class="fop-dot" title="'+escapeHtml(tip)+'" onclick="setMode(String.fromCharCode(105,111,112,112))"></span>';
+  return '<span class="fop-txt" title="'+escapeHtml(tip)+'" '+
+         'onclick="setMode(String.fromCharCode(105,111,112,112))">'+
+         shown.join('<br>')+more+'</span>';
 }
 function fopAvail(r, poVendor){ var h=ioppOtherFor(r&&r.sku, poVendor); return h?h.qty:0; }
 
