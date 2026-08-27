@@ -3568,6 +3568,24 @@ function ioppHasAny(){ var x=ioppIndex(); for(var k in x){ if(x.hasOwnProperty(k
 // Vendor-name comparison: letters+digits only, so "PMA Services" == "PMA SERVICES"
 // and "ClearChem Diagnostics, Inc" == "ClearChem Diagnostics Inc".
 function ioppVenNorm(s){ return String(s==null?'':s).toUpperCase().replace(/[^A-Z0-9]/g,''); }
+// Short display label for the narrow Fulfill Opp column: the distinctive first word.
+// "Allora Biotech LLC" -> "Allora" · "PMA Services" -> "PMA" ·
+// "ClearChem Diagnostics, Inc" -> "ClearChem" · "ALDX HOLDING CORPORATION" -> "ALDX".
+// Full names are kept everywhere else (tooltip, Inventory Opportunities tab).
+function ioppShortVen(s){
+  var t=String(s==null?'':s).replace(/[.](xlsx|xls|csv)$/i,'').trim();
+  if(!t) return '?';
+  var parts=t.split(/[ ,/_-]+/);
+  for(var i=0;i<parts.length;i++){
+    var w=parts[i].replace(/[^A-Za-z0-9&+]/g,'');
+    if(!w) continue;
+    var low=w.toLowerCase();
+    // skip leading filler so "The Acme Group" -> "Acme"
+    if(low==='the'||low==='a'||low==='an') continue;
+    return w;
+  }
+  return t.slice(0,12);
+}
 
 // ALTERNATIVE-SOURCE ONLY. A PO line is an opportunity only when the stock sits with
 // a DIFFERENT vendor than the one the PO is already placed with — e.g. PMA Services
@@ -3604,7 +3622,7 @@ function fopCell(r, poVendor){
   var shown=[], tipLines=[];
   for(var k=0;k<order.length;k++){
     var v=byVen[order[k]];
-    if(k<2) shown.push(escapeHtml(v.vendor)+' <span class="fop-q">'+fmtQty(v.qty)+'</span>');
+    if(k<2) shown.push(escapeHtml(ioppShortVen(v.vendor))+' <span class="fop-q">'+fmtQty(v.qty)+'</span>');
     tipLines.push(v.vendor+': '+fmtQty(v.qty)+(v.lots.length?(' ('+v.lots.join('; ')+')'):''));
   }
   var more=order.length>2 ? '<span class="fop-more">+'+(order.length-2)+' more vendor(s)</span>' : '';
