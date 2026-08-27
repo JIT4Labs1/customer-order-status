@@ -4449,42 +4449,10 @@ function renderIoppPanel(){
     '<div id="iopp-note" class="iop-note">'+escapeHtml(ioppNote)+'</div>'+
     '</div>';
 
-  var ms=ioppMatches(), mb='';
-  for(var m=0;m<ms.length;m++){
-    var x=ms[m], src=[], lots=[], exps=[];
-    // One stacked line per source lot, so Alternative source / Lot # / Exp Date line
-    // up row-for-row. A SKU can legitimately appear on several lots (and several
-    // vendors) — each gets its own line rather than being packed into one string.
-    for(var s=0;s<x.srcs.length;s++){
-      var sv=x.srcs[s];
-      src.push(escapeHtml(sv.vendor)+' <span class="fop-q">'+fmtQty(sv.qty)+'</span>');
-      lots.push(sv.lot?escapeHtml(sv.lot):'<span style="color:#c8d0d8;">&mdash;</span>');
-      exps.push(sv.exp?escapeHtml(sv.exp):'<span style="color:#c8d0d8;">&mdash;</span>');
-    }
-    var covers=x.avail>=x.open_qty;
-    mb+='<tr>'+
-      '<td class="c"><span class="fop-dot"></span></td>'+
-      '<td style="font-weight:600;">'+escapeHtml(x.sku||'')+'</td>'+
-      '<td>'+escapeHtml(x.product||'')+'</td>'+
-      '<td>'+escapeHtml(x.customer||'')+'</td>'+
-      '<td class="so">'+escapeHtml(x.so_num||'')+'</td>'+
-      '<td class="c open">'+fmtQty(x.open_qty)+'</td>'+
-      '<td class="c" style="font-weight:700;color:'+(covers?'#1b7a3d':'#b54708')+';">'+fmtQty(x.avail)+'</td>'+
-      '<td style="white-space:nowrap;">'+src.join('<br>')+'</td>'+
-      '<td style="white-space:nowrap;">'+lots.join('<br>')+'</td>'+
-      '<td class="c" style="white-space:nowrap;">'+exps.join('<br>')+'</td>'+
-      '<td>'+escapeHtml(x.po_vendor||'')+'</td>'+
-      '<td class="c">'+fmtDate(x.eta)+'</td>'+
-      '</tr>';
-  }
+  // The opportunity count still drives the header line; the matched rows themselves
+  // live in the Open Vendor POs tab's Fulfill Opp column, so no table is drawn here.
+  var ms=ioppMatches();
   var sameV=fs.length?ioppSameVendorCount():0;
-  var matchTbl = ms.length
-    ? ('<table><thead><tr><th></th><th>SKU</th><th>Product</th><th>Customer</th><th>SO #</th>'+
-       '<th class="c">Open</th><th class="c">Available elsewhere</th><th>Alternative source</th>'+
-       '<th>Lot #</th><th class="c">Exp date</th><th>PO currently with</th><th class="c">ETA</th>'+
-       '</tr></thead><tbody>'+mb+'</tbody></table>')
-    : ('<div class="empty">'+(fs.length?'No open vendor PO line has stock sitting with a different vendor.'
-                                      :'Upload an inventory file to see fulfillment opportunities.')+'</div>');
 
   // Full uploaded inventory, searchable.
   var ib='', shown=0;
@@ -4523,14 +4491,13 @@ function renderIoppPanel(){
       (sameV?(' &middot; '+sameV+' more already stocked by their own PO vendor'):'')+
       (IOPP&&IOPP.saved_at?(' &middot; saved '+escapeHtml(IOPP.saved_at)):'')+'</div></div>'+
     up+
-    '<h3 style="margin:18px 0 8px;color:#0D2B45;font-size:15px;">Fulfillment opportunities '+
-      '<span style="font-weight:400;font-size:12px;color:#6b7a8a;">&mdash; open PO lines where a '+
-      '<b>different</b> vendor holds the stock</span></h3>'+
-    matchTbl+
-    (nRows?('<h3 style="margin:22px 0 8px;color:#0D2B45;font-size:15px;">All uploaded inventory</h3>'+
+    (nRows?('<h3 style="margin:18px 0 8px;color:#0D2B45;font-size:15px;">All uploaded inventory '+
+      '<span style="font-weight:400;font-size:12px;color:#6b7a8a;">&mdash; highlighted rows are on an '+
+      'open PO with a <b>different</b> vendor</span></h3>'+
       '<input type="search" placeholder="Search SKU, description or vendor…" value="'+escapeHtml(ioppQ)+'" '+
       'oninput="ioppSearch(this.value)" style="padding:8px 10px;border:1px solid #cdd9e6;border-radius:8px;'+
-      'font-size:13px;width:280px;margin-bottom:10px;">'+invTbl):'');
+      'font-size:13px;width:280px;margin-bottom:10px;">'+invTbl)
+     :'<div class="empty">Upload an inventory file to get started.</div>');
   _ioppWireDrop();
 }
 // SKU -> the set of PO vendors that SKU is currently on order with. Used to highlight
