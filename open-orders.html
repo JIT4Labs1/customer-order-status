@@ -56,7 +56,7 @@
   .mode-btn.mode-inv { color:#7c3aed; border-color:#ddd6fe; background:#f5f3ff; }
   .mode-btn.mode-inv:hover { background:#ede9fe; }
   .mode-btn.mode-inv.active { background:#7c3aed; color:#fff; border-color:#7c3aed; }
-  /* ── Inventory Opportunities: flashing green dot in the Open Vendor POs "Fulfill Opp" column ── */
+  /* ── Inventory Opportunities: per-vendor INV columns in Open Vendor POs ── */
   @keyframes fopPulse {
     0%   { opacity:1;   transform:scale(1);    box-shadow:0 0 0 0 rgba(34,160,70,.65); }
     70%  { opacity:.55; transform:scale(1.12); box-shadow:0 0 0 7px rgba(34,160,70,0); }
@@ -72,6 +72,7 @@
   .fop-txt:hover { color:#146030; text-decoration:underline; }
   .fop-txt .fop-q { color:#0D2B45; }
   .fop-txt .fop-more { display:block; font-weight:600; font-size:11px; color:#6b7a8a; }
+  .fop-x { color:#c62828; font-weight:700; font-size:13px; }
   @media (prefers-reduced-motion: reduce) { .fop-dot, .fop-txt { animation:none; } }
   .fop-none { color:#c8d0d8; }
   .iop-up { border:2px dashed #cdd9e6; border-radius:12px; padding:18px; text-align:center;
@@ -486,10 +487,31 @@ var COLS_VENDOR = [
   {key:'delivered_qty',label:'Del',      type:'num',  c:true},
   {key:'open_qty',   label:'Open',       type:'num',  c:true},
   {key:'pending_pos',label:'Pending PO', type:'str'},
-  {key:'eta',        label:'ETA',        type:'date', c:true},
-  {key:'fulfill_opp',label:'Fulfill Opp',type:'num',  c:true}
+  {key:'eta',        label:'ETA',        type:'date', c:true}
 ];
-function curCols(){ return mode==='vendor' ? COLS_VENDOR : COLS_CUST; }
+// One inventory column per vendor whose file has been uploaded — "PMA INV",
+// "Allora INV", … built at render time so adding or removing a file just adds or
+// removes a column. Appended after ETA in the Open Vendor POs table.
+function ioppInvVendors(){
+  var fs=(IOPP&&IOPP.files)||[], seen={}, out=[];
+  for(var i=0;i<fs.length;i++){
+    var v=fs[i].vendor||'';
+    if(!v) continue;
+    var k=ioppVenNorm(v);
+    if(!k || seen[k]) continue;
+    seen[k]=1; out.push(v);
+  }
+  return out;
+}
+function colsVendorDyn(){
+  var cols=COLS_VENDOR.slice(), vs=ioppInvVendors();
+  for(var i=0;i<vs.length;i++){
+    cols.push({key:'inv:'+ioppVenNorm(vs[i]), label:ioppShortVen(vs[i])+' INV',
+               type:'num', c:true, vendor:vs[i]});
+  }
+  return cols;
+}
+function curCols(){ return mode==='vendor' ? colsVendorDyn() : COLS_CUST; }
 var sortState = {key:null, dir:1};
 function colByKey(k){ var cols=curCols(); for(var i=0;i<cols.length;i++){ if(cols[i].key===k) return cols[i]; } return null; }
 function cmp(a,b,type){
@@ -2685,13 +2707,25 @@ function renderVendorPanel(){
     groups[cu].items.push(r);
   }
   order.sort(function(a,b){ return cmp(a,b,'str'); });  // customers A→Z
-  var ncol=COLS_VENDOR.length, body='';
+  var vcols=colsVendorDyn(), invCols=vcols.slice(COLS_VENDOR.length);
+  var ncol=vcols.length, body='';
+  function invCells(row){
+    var h='';
+    for(var ci=0;ci<invCols.length;ci++) h+='<td class="c">'+fopVenCell(row, invCols[ci].vendor)+'</td>';
+    return h;
+  }
   for(var gi=0;gi<order.length;gi++){
     var grp=groups[order[gi]];
     var its=grp.items.slice();
     if(sortState.key){ var col=colByKey(sortState.key);
-      // 'fulfill_opp' is computed from the uploaded inventory, not a field on the row.
-      var val=function(r){ return sortState.key==='fulfill_opp' ? fopAvail(r, v.name) : r[sortState.key]; };
+      // 'inv:<vendor>' columns are computed from the uploaded stock, not row fields.
+      // 'inv:<vendor>' columns are computed from the uploaded stock, not row fields.
+      var val=function(r){
+        if(String(sortState.key).indexOf('inv:')===0){
+          return col&&col.vendor ? ioppQtyVen(r.sku, col.vendor) : 0;
+        }
+        return r[sortState.key];
+      };
       its.sort(function(p,q){ return sortState.dir*cmp(val(p),val(q),col?col.type:'str'); }); }
     else { its.sort(function(p,q){ var d=cmp(p.order_date,q.order_date,'date'); return d!==0?d:cmp(p.product,q.product,'str'); }); }
     body+='<tr class="so-group"><td colspan="'+ncol+'">'+
@@ -2708,7 +2742,7 @@ function renderVendorPanel(){
         '<td class="c open">'+fmtQty(r2.open_qty)+'</td>'+
         '<td>'+poCell(r2.pending_pos, true)+'</td>'+
         '<td class="c" style="font-weight:600;color:'+etaColor(r2.eta)+'">'+fmtDate(r2.eta)+'</td>'+
-        '<td class="c">'+fopCell(r2, v.name)+'</td>'+
+        invCells(r2)+
         '</tr>';
     }
   }
@@ -3524,7 +3558,7 @@ function removePaidInv(kind, idx){
 // IN THE BROWSER (SheetJS, lazy-loaded from cdnjs) and stored in the repo file
 // inventory-opportunities.json via the button token, so the parsed stock survives a
 // reload AND the nightly rebuild. Any SKU here with qty > 0 that also has an open
-// vendor PO earns a flashing green dot in the Open Vendor POs "Fulfill Opp" column.
+// vendor PO shows a flashing green quantity in that vendor's "<Vendor> INV" column.
 // NOTE: this whole script is emitted from a NON-raw Python string — never write a
 // backslash escape in this block (no newline escapes, no regex metacharacters that
 // need one). Use String.fromCharCode() instead.
@@ -3573,7 +3607,7 @@ function ioppHasAny(){ var x=ioppIndex(); for(var k in x){ if(x.hasOwnProperty(k
 // Vendor-name comparison: letters+digits only, so "PMA Services" == "PMA SERVICES"
 // and "ClearChem Diagnostics, Inc" == "ClearChem Diagnostics Inc".
 function ioppVenNorm(s){ return String(s==null?'':s).toUpperCase().replace(/[^A-Z0-9]/g,''); }
-// Short display label for the narrow Fulfill Opp column: the distinctive first word.
+// Short display label for the narrow per-vendor INV columns: the distinctive first word.
 // "Allora Biotech LLC" -> "Allora" · "PMA Services" -> "PMA" ·
 // "ClearChem Diagnostics, Inc" -> "ClearChem" · "ALDX HOLDING CORPORATION" -> "ALDX".
 // Full names are kept everywhere else (tooltip, Inventory Opportunities tab).
@@ -3608,10 +3642,35 @@ function ioppOtherFor(sku, poVendor){
   return srcs.length?{qty:qty, srcs:srcs}:null;
 }
 
-// The Fulfill Opp cell in Open Vendor POs (poVendor = the vendor this PO sits with).
-// Shows the ALTERNATIVE vendor(s) holding the SKU and how much they have, flashing
-// green. Quantities are summed per vendor, so multiple lots of the same SKU from one
-// vendor read as a single number.
+// Total qty one vendor holds of a SKU, summed across ALL its lots.
+// Returns 0 when that vendor has none (or the SKU is in no uploaded file at all).
+function ioppQtyVen(sku, vendorName){
+  var hit=ioppFor(sku); if(!hit) return 0;
+  var vn=ioppVenNorm(vendorName), q=0;
+  for(var i=0;i<hit.srcs.length;i++){
+    if(ioppVenNorm(hit.srcs[i].vendor)===vn) q+=hit.srcs[i].qty;
+  }
+  return q;
+}
+// A per-vendor inventory cell ("PMA INV" / "Allora INV") in Open Vendor POs.
+// Positive stock flashes green with the summed quantity; nothing in stock is a red ✗.
+function fopVenCell(r, vendorName){
+  var sku=r&&r.sku, q=ioppQtyVen(sku, vendorName);
+  if(q<=0){
+    return '<span class="fop-x" title="'+escapeHtml(vendorName+' has no stock of '+(sku||'this SKU'))+'">&#10007;</span>';
+  }
+  var hit=ioppFor(sku), lots=[];
+  for(var i=0;i<hit.srcs.length;i++){
+    var s=hit.srcs[i];
+    if(ioppVenNorm(s.vendor)!==ioppVenNorm(vendorName)) continue;
+    lots.push(fmtQty(s.qty)+(s.lot?(' — lot '+s.lot):'')+(s.exp?(' exp '+s.exp):''));
+  }
+  var tip=vendorName+': '+fmtQty(q)+' in stock'+
+          (lots.length>1?(' across '+lots.length+' lots'):'')+IOPP_NL+lots.join(IOPP_NL);
+  return '<span class="fop-txt" title="'+escapeHtml(tip)+'" '+
+         'onclick="setMode(String.fromCharCode(105,111,112,112))">'+fmtQty(q)+'</span>';
+}
+// (kept) Alternative-source summary — still used by the Inventory Opportunities count.
 function fopCell(r, poVendor){
   var hit=ioppOtherFor(r&&r.sku, poVendor);
   if(!hit) return '<span class="fop-none">&mdash;</span>';
@@ -3944,7 +4003,7 @@ function ioppRenderRows(){
 }
 
 // Build the matched list: every open vendor-PO line whose SKU is in stock WITH A
-// DIFFERENT VENDOR than the PO is placed with (same rule as the Fulfill Opp dot).
+// DIFFERENT VENDOR than the PO is placed with (drives the tab header count).
 function ioppMatches(){
   var out=[], vs=(DATA.vendors||[]);
   for(var i=0;i<vs.length;i++){
@@ -4035,7 +4094,7 @@ function renderIoppPanel(){
     '</div>';
 
   // The opportunity count still drives the header line; the matched rows themselves
-  // live in the Open Vendor POs tab's Fulfill Opp column, so no table is drawn here.
+  // live in the Open Vendor POs tab's per-vendor INV columns, so no table is drawn here.
   var ms=ioppMatches();
   var sameV=fs.length?ioppSameVendorCount():0;
 
