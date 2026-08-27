@@ -4163,22 +4163,47 @@ function _ioppFromDetails(txt, rec){
     if(em && em[1]){ var d=_ioppDate(em[1]); if(d) rec.exp=d; }
   }
 }
+// Some sheets put the lot/expiry on a CONTINUATION ROW under the SKU, with filler
+// like "1. Details" in the SKU cell and "Lot#: 20970 Exp Date: 11/30/2027" in the
+// description — one such row per lot. These rows are not SKUs; they break the parent
+// SKU's quantity down by lot.
+// SKU cells can carry a second line or a trailing label, e.g. "10995489<CR><LF>SKU#: 250T".
+// Keep the first line, and drop a trailing "LABEL: value" fragment.
+function _ioppCleanSku(v){
+  var s=String(v==null?'':v);
+  s=s.split(String.fromCharCode(13)).join(String.fromCharCode(10));
+  var lines=s.split(String.fromCharCode(10));
+  var first=(lines[0]||'').trim();
+  if(!first){ for(var i=1;i<lines.length;i++){ if((lines[i]||'').trim()){ first=lines[i].trim(); break; } } }
+  var sp=first.indexOf(' ');
+  if(sp>0 && first.slice(sp).indexOf(':')>-1) first=first.slice(0,sp);
+  return first.trim();
+}
+function _ioppIsContRow(skuCell, descCell){
+  var s=String(skuCell==null?'':skuCell).toLowerCase().trim();
+  if(s.indexOf('detail')>-1) return true;
+  if(!s && RE_IOPP_LOT.test(String(descCell==null?'':descCell))) return true;
+  return false;
+}
 function _ioppHdrKind(h){
   var t=String(h==null?'':h).toLowerCase().trim();
   if(!t) return '';
   // check first: a "Details"/"Lot & Exp" column is free text holding both values
   if(t.indexOf('detail')>-1 || (t.indexOf('lot')>-1 && t.indexOf('exp')>-1)) return 'details';
+  // description BEFORE sku, so "Item Name" / "Product Description" are not read as codes
+  if(t.indexOf('description')>-1 || t.indexOf('product name')>-1 || t.indexOf('item name')>-1 ||
+     t==='desc' || t==='name') return 'desc';
   if(t.indexOf('sku')>-1 || t.indexOf('item number')>-1 || t.indexOf('item no')>-1 ||
      t.indexOf('item #')>-1 || t.indexOf('part')>-1 || t.indexOf('catalog')>-1 ||
      t.indexOf('cat no')>-1 || t.indexOf('ref')>-1 || t==='code' || t.indexOf('product code')>-1 ||
-     t.indexOf('item code')>-1 || t.indexOf('material')>-1) return 'sku';
+     t.indexOf('item code')>-1 || t.indexOf('material')>-1 ||
+     t==='item' || t==='items' || t==='product' || t==='number' || t==='no.') return 'sku';
   if(t.indexOf('quantity')>-1 || t==='qty' || t.indexOf('qty')>-1 || t.indexOf('on hand')>-1 ||
      t.indexOf('onhand')>-1 || t.indexOf('available')>-1 || t.indexOf('stock')>-1 ||
      t.indexOf('units')>-1 || t.indexOf('count')>-1) return 'qty';
   if(t.indexOf('lot')>-1 || t.indexOf('batch')>-1) return 'lot';
   if(t.indexOf('exp')>-1 || t.indexOf('expir')>-1 || t.indexOf('best before')>-1 ||
      t.indexOf('use by')>-1) return 'exp';
-  if(t.indexOf('description')>-1 || t.indexOf('product name')>-1 || t.indexOf('item name')>-1) return 'desc';
   return '';
 }
 function _ioppNum(v){
@@ -4210,22 +4235,47 @@ function _ioppParseGrid(grid){
     if(m.sku!==undefined && m.qty!==undefined){ hdrRow=i; map=m; break; }
   }
   if(hdrRow<0) return {err:'Could not find a header row with both a SKU column and a quantity column in the first 12 rows.'};
-  var out=[], skipped=0;
+  var out=[], skipped=0, lotRows=0;
+  // A SKU row is held back until we know whether lot rows follow it. If they do, the
+  // parent's quantity is just the total and the lot rows carry the real breakdown, so
+  // only the lot rows are emitted (otherwise the stock would be counted twice).
+  var pend=null, pendLots=0;
+  function flushPend(){
+    if(pend && pendLots===0){ if(pend.qty>0) out.push(pend); else skipped++; }
+    pend=null; pendLots=0;
+  }
   for(var r=hdrRow+1;r<grid.length;r++){
     var row2=grid[r]||[];
-    var sku=String(row2[map.sku]==null?'':row2[map.sku]).trim();
-    if(!sku) continue;
+    var sku=_ioppCleanSku(row2[map.sku]);
+    var dcell=(map.desc!==undefined)?row2[map.desc]:'';
     var qty=_ioppNum(row2[map.qty]);
-    if(qty<=0){ skipped++; continue; }              // only positive quantities matter
+
+    if(_ioppIsContRow(sku, dcell)){
+      // lot/expiry line belonging to the SKU above
+      if(!pend) continue;                            // stray line with no parent
+      var lrec={sku:pend.sku, qty:(qty>0?qty:pend.qty)};
+      if(pend.desc) lrec.desc=pend.desc;             // keep the product name, not the lot text
+      _ioppFromDetails(dcell, lrec);
+      _ioppFromDetails(sku, lrec);                   // in case the filler cell holds it
+      if(map.details!==undefined) _ioppFromDetails(row2[map.details], lrec);
+      if(lrec.qty>0 && (lrec.lot||lrec.exp)){ out.push(lrec); pendLots++; lotRows++; }
+      else if(lrec.qty<=0) skipped++;
+      continue;
+    }
+
+    flushPend();
+    if(!sku) continue;
     var rec={sku:sku, qty:qty};
     if(map.lot!==undefined && row2[map.lot]!=null && String(row2[map.lot]).trim()) rec.lot=String(row2[map.lot]).trim().slice(0,40);
     if(map.exp!==undefined) { var e=_ioppDate(row2[map.exp]); if(e) rec.exp=e; }
     // Fill any gaps from a combined "Details" cell (dedicated columns win).
     if(map.details!==undefined) _ioppFromDetails(row2[map.details], rec);
-    if(map.desc!==undefined && row2[map.desc]!=null && String(row2[map.desc]).trim()) rec.desc=String(row2[map.desc]).trim().slice(0,120);
-    out.push(rec);
+    if(dcell!=null && String(dcell).trim()) rec.desc=String(dcell).trim().slice(0,120);
+    pend=rec;
   }
+  flushPend();
   var cols=[]; for(var k in map){ if(map.hasOwnProperty(k)) cols.push(k); }
+  if(lotRows) cols.push('lot-rows:'+lotRows);
   return {rows:out, skipped:skipped, cols:cols};
 }
 function ioppHandleFiles(fileList){
@@ -4346,11 +4396,15 @@ function ioppGuessVendor(fname){
   var base=ioppVenNorm(String(fname||'').replace(/[.][^.]+$/,''));
   if(!base) return '';
   var opts=ioppVendorOptions(), best='', bestLen=0;
+  // Corporate suffixes carry no identifying weight and are usually absent from a
+  // filename ("Allora Biotech Inventory_0827.xlsx" vs "Allora Biotech LLC").
+  var SUFFIX={LLC:1,INC:1,CORP:1,CORPORATION:1,LTD:1,CO:1,COMPANY:1,HOLDING:1,
+              HOLDINGS:1,GMBH:1,PLC:1,LP:1,LLP:1,SA:1,NV:1,BV:1};
   for(var i=0;i<opts.length;i++){
     var tokens=String(opts[i]).split(' '), hit=0, tot=0;
     for(var t=0;t<tokens.length;t++){
       var tk=ioppVenNorm(tokens[t]);
-      if(tk.length<3) continue;                 // skip LLC / INC / short noise
+      if(tk.length<3 || SUFFIX[tk]) continue;   // skip LLC / INC / short noise
       tot++; if(base.indexOf(tk)>-1) hit++;
     }
     if(tot && hit===tot && ioppVenNorm(opts[i]).length>bestLen){ best=opts[i]; bestLen=ioppVenNorm(opts[i]).length; }
