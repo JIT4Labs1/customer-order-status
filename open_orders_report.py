@@ -400,10 +400,10 @@ def extract_open_orders(vt, dry_run=False):
 
     # STEP 5: Resolve product info (bulk query — one paginated call instead of N retrieves)
     log("Step 5: Resolving product names and vendor IDs...")
-    product_info = {}  # pid -> {name, vendor_id}
+    product_info = {}  # pid -> {name, vendor_id, sku}
     vendor_ids = set()
     try:
-        all_products = vt.query_all("SELECT id, productname, vendor_id FROM Products")
+        all_products = vt.query_all("SELECT id, productname, productcode, vendor_id FROM Products")
         for p in all_products:
             pid = p.get("id", "")
             if pid in all_product_ids:
@@ -411,6 +411,7 @@ def extract_open_orders(vt, dry_run=False):
                 product_info[pid] = {
                     "name": p.get("productname", p.get("label", "")),
                     "vendor_id": vid,
+                    "sku": (p.get("productcode") or "").strip(),
                 }
                 if vid and vid != "0":
                     vendor_ids.add(vid)
@@ -423,14 +424,15 @@ def extract_open_orders(vt, dry_run=False):
                 product_info[pid] = {
                     "name": prod.get("productname", prod.get("label", "")),
                     "vendor_id": vid,
+                    "sku": (prod.get("productcode") or "").strip(),
                 }
                 if vid and vid != "0":
                     vendor_ids.add(vid)
             except Exception:
-                product_info[pid] = {"name": "", "vendor_id": ""}
+                product_info[pid] = {"name": "", "vendor_id": "", "sku": ""}
             time.sleep(CONFIG["delay_between_calls"])
     for pid in all_product_ids:
-        product_info.setdefault(pid, {"name": "", "vendor_id": ""})
+        product_info.setdefault(pid, {"name": "", "vendor_id": "", "sku": ""})
     log(f"  Resolved {len(product_info)} products, {len(vendor_ids)} unique vendors")
 
     # STEP 6: Resolve vendor names + emails (bulk query — one paginated call instead of N retrieves)
@@ -730,6 +732,7 @@ def extract_open_orders(vt, dry_run=False):
                 "order_date": order_date,
                 "so_id": numeric_id,
                 "product": product_name,
+                "sku": pinfo.get("sku", "") or "",
                 "vendor": vendor_name,
                 "vendor_email": vendor_name_to_email.get(vendor_name, ""),
                 "ordered_qty": ordered_qty,
