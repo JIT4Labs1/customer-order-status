@@ -3648,9 +3648,31 @@ function _loadXlsx(){
   });
   return _xlsxLoading;
 }
+// Some vendor sheets pack the lot and expiry into one free-text cell, e.g. a
+// "Details" column reading "Lot#: 20970 Exp Date: 11/30/2027". These pull the two
+// values back out. Built with new RegExp (no backslash escapes) because this whole
+// script is emitted from a non-raw Python string — [^A-Za-z0-9] stands in for the
+// separators (space, #, :, etc).
+var RE_IOPP_LOT  = new RegExp('lot[^A-Za-z0-9]*([A-Za-z0-9][A-Za-z0-9-]*)','i');
+var RE_IOPP_EXPD = new RegExp('exp[a-z]*[^A-Za-z0-9]*date[^A-Za-z0-9]*([0-9][0-9/.-]*)','i');
+var RE_IOPP_EXP  = new RegExp('exp[a-z]*[^A-Za-z0-9]*([0-9][0-9/.-]*)','i');
+var RE_IOPP_HASNUM = new RegExp('[0-9]');
+function _ioppFromDetails(txt, rec){
+  var s=String(txt==null?'':txt); if(!s) return;
+  // A lot value must contain a digit — stops prose like "no lot info here" from
+  // capturing the next word as a lot number.
+  if(!rec.lot){ var lm=s.match(RE_IOPP_LOT);
+    if(lm && lm[1] && RE_IOPP_HASNUM.test(lm[1])) rec.lot=lm[1].slice(0,40); }
+  if(!rec.exp){
+    var em=s.match(RE_IOPP_EXPD)||s.match(RE_IOPP_EXP);
+    if(em && em[1]){ var d=_ioppDate(em[1]); if(d) rec.exp=d; }
+  }
+}
 function _ioppHdrKind(h){
   var t=String(h==null?'':h).toLowerCase().trim();
   if(!t) return '';
+  // check first: a "Details"/"Lot & Exp" column is free text holding both values
+  if(t.indexOf('detail')>-1 || (t.indexOf('lot')>-1 && t.indexOf('exp')>-1)) return 'details';
   if(t.indexOf('sku')>-1 || t.indexOf('item number')>-1 || t.indexOf('item no')>-1 ||
      t.indexOf('item #')>-1 || t.indexOf('part')>-1 || t.indexOf('catalog')>-1 ||
      t.indexOf('cat no')>-1 || t.indexOf('ref')>-1 || t==='code' || t.indexOf('product code')>-1 ||
@@ -3703,6 +3725,8 @@ function _ioppParseGrid(grid){
     var rec={sku:sku, qty:qty};
     if(map.lot!==undefined && row2[map.lot]!=null && String(row2[map.lot]).trim()) rec.lot=String(row2[map.lot]).trim().slice(0,40);
     if(map.exp!==undefined) { var e=_ioppDate(row2[map.exp]); if(e) rec.exp=e; }
+    // Fill any gaps from a combined "Details" cell (dedicated columns win).
+    if(map.details!==undefined) _ioppFromDetails(row2[map.details], rec);
     if(map.desc!==undefined && row2[map.desc]!=null && String(row2[map.desc]).trim()) rec.desc=String(row2[map.desc]).trim().slice(0,120);
     out.push(rec);
   }
@@ -3878,9 +3902,16 @@ function renderIoppPanel(){
 
   var ms=ioppMatches(), mb='';
   for(var m=0;m<ms.length;m++){
-    var x=ms[m], src=[];
-    for(var s=0;s<x.srcs.length;s++) src.push(escapeHtml(x.srcs[s].vendor)+' ('+fmtQty(x.srcs[s].qty)+
-      (x.srcs[s].lot?(', lot '+escapeHtml(x.srcs[s].lot)):'')+(x.srcs[s].exp?(', exp '+escapeHtml(x.srcs[s].exp)):'')+')');
+    var x=ms[m], src=[], lots=[], exps=[];
+    // One stacked line per source lot, so Alternative source / Lot # / Exp Date line
+    // up row-for-row. A SKU can legitimately appear on several lots (and several
+    // vendors) — each gets its own line rather than being packed into one string.
+    for(var s=0;s<x.srcs.length;s++){
+      var sv=x.srcs[s];
+      src.push(escapeHtml(sv.vendor)+' <span class="fop-q">'+fmtQty(sv.qty)+'</span>');
+      lots.push(sv.lot?escapeHtml(sv.lot):'<span style="color:#c8d0d8;">&mdash;</span>');
+      exps.push(sv.exp?escapeHtml(sv.exp):'<span style="color:#c8d0d8;">&mdash;</span>');
+    }
     var covers=x.avail>=x.open_qty;
     mb+='<tr>'+
       '<td class="c"><span class="fop-dot"></span></td>'+
@@ -3890,7 +3921,9 @@ function renderIoppPanel(){
       '<td class="so">'+escapeHtml(x.so_num||'')+'</td>'+
       '<td class="c open">'+fmtQty(x.open_qty)+'</td>'+
       '<td class="c" style="font-weight:700;color:'+(covers?'#1b7a3d':'#b54708')+';">'+fmtQty(x.avail)+'</td>'+
-      '<td>'+src.join('; ')+'</td>'+
+      '<td style="white-space:nowrap;">'+src.join('<br>')+'</td>'+
+      '<td style="white-space:nowrap;">'+lots.join('<br>')+'</td>'+
+      '<td class="c" style="white-space:nowrap;">'+exps.join('<br>')+'</td>'+
       '<td>'+escapeHtml(x.po_vendor||'')+'</td>'+
       '<td class="c">'+fmtDate(x.eta)+'</td>'+
       '</tr>';
@@ -3899,7 +3932,7 @@ function renderIoppPanel(){
   var matchTbl = ms.length
     ? ('<table><thead><tr><th></th><th>SKU</th><th>Product</th><th>Customer</th><th>SO #</th>'+
        '<th class="c">Open</th><th class="c">Available elsewhere</th><th>Alternative source</th>'+
-       '<th>PO currently with</th><th class="c">ETA</th>'+
+       '<th>Lot #</th><th class="c">Exp date</th><th>PO currently with</th><th class="c">ETA</th>'+
        '</tr></thead><tbody>'+mb+'</tbody></table>')
     : ('<div class="empty">'+(fs.length?'No open vendor PO line has stock sitting with a different vendor.'
                                       :'Upload an inventory file to see fulfillment opportunities.')+'</div>');
