@@ -198,6 +198,7 @@ def build_page_data(open_items):
                 "so_status": it.get("so_status", ""),
                 "order_date": it.get("order_date", ""),
                 "product": it.get("product", ""),
+                "sku": it.get("sku", "") or "",
                 "vendor": it.get("vendor", ""),
                 "list_price": it.get("unit_price", 0),
                 "ordered_qty": it.get("ordered_qty", 0),
@@ -261,6 +262,7 @@ def build_page_data(open_items):
                 "so_status": it.get("so_status", ""),
                 "order_date": it.get("order_date", ""),
                 "product": it.get("product", ""),
+                "sku": it.get("sku", "") or "",
                 "ordered_qty": it.get("ordered_qty", 0),
                 "delivered_qty": it.get("delivered_qty", 0),
                 "open_qty": it.get("open_qty", 0),
@@ -474,6 +476,7 @@ def build_html(page_data, embeds=None):
         return "null"
     gads_embed, li_embed, wt_embed, ship_embed, pay_embed, spnl_embed = _emb("gads"), _emb("li"), _emb("wt"), _emb("ship"), _emb("pay"), _emb("spnl")
     cj_embed = _emb("cj")
+    iopp_embed = _emb("iopp")
     # The button token is XOR-obfuscated (then base64'd) in the page so GitHub
     # secret scanning / push protection does not detect a `github_pat_` token —
     # plain base64 is NOT enough (GitHub decodes it), so the commit would be
@@ -548,6 +551,26 @@ def build_html(page_data, embeds=None):
   .mode-btn.mode-inv { color:#7c3aed; border-color:#ddd6fe; background:#f5f3ff; }
   .mode-btn.mode-inv:hover { background:#ede9fe; }
   .mode-btn.mode-inv.active { background:#7c3aed; color:#fff; border-color:#7c3aed; }
+  /* ── Inventory Opportunities: flashing green dot in the Open Vendor POs "Fulfill Opp" column ── */
+  @keyframes fopPulse {
+    0%   { opacity:1;   transform:scale(1);    box-shadow:0 0 0 0 rgba(34,160,70,.65); }
+    70%  { opacity:.55; transform:scale(1.12); box-shadow:0 0 0 7px rgba(34,160,70,0); }
+    100% { opacity:1;   transform:scale(1);    box-shadow:0 0 0 0 rgba(34,160,70,0); }
+  }
+  .fop-dot { display:inline-block; width:11px; height:11px; border-radius:50%;
+             background:#22a046; animation:fopPulse 1.25s ease-in-out infinite; cursor:pointer; }
+  .fop-dot:hover { background:#1b7a3d; }
+  @media (prefers-reduced-motion: reduce) { .fop-dot { animation:none; } }
+  .fop-none { color:#c8d0d8; }
+  .iop-up { border:2px dashed #cdd9e6; border-radius:12px; padding:18px; text-align:center;
+            background:#fbfdff; margin:0 0 16px; }
+  .iop-up.drag { border-color:#22a046; background:#f2fbf5; }
+  .iop-file { display:inline-flex; align-items:center; gap:8px; background:#eef4fa; border:1px solid #cdd9e6;
+              border-radius:20px; padding:5px 12px; font-size:12px; margin:4px 4px 0 0; }
+  .iop-file b { font-weight:700; }
+  .iop-x { cursor:pointer; color:#c62828; font-weight:700; }
+  .iop-note { font-size:12px; margin:10px 0 0; }
+  .iop-note.err { color:#c62828; } .iop-note.ok { color:#1b7a3d; }
   /* Invoice Check tab */
   .invchk { max-width:1000px; }
   .invchk .inv-form { display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end; background:#faf9ff; border:1px solid #e6e2f5;
@@ -876,6 +899,7 @@ def build_html(page_data, embeds=None):
     <div class="mode-group-btns">
       <button class="mode-btn" data-mode="cust" onclick="setMode('cust')">Customer Open SO's</button>
       <button class="mode-btn" data-mode="vendor" onclick="setMode('vendor')">Open Vendor POs</button>
+      <button class="mode-btn" data-mode="iopp" onclick="setMode('iopp')">Inventory Opportunities</button>
       <button class="mode-btn" data-mode="ship" onclick="setMode('ship')">Shipments</button>
       <button class="mode-btn" data-mode="cprices" onclick="setMode('cprices')">Customer Prices</button>
       <button class="mode-btn" data-mode="vspend" onclick="setMode('vspend')">Vendor Spend</button>
@@ -916,7 +940,7 @@ function normData(d){ if(d&&d.customers){ d.customers=d.customers.filter(functio
 DATA=normData(DATA);
 var BTN = __BTN_CFG__;
 // Offline mirror: when built as the local copy these hold the data inline (no fetch needed). Online build leaves them null so the page fetches fresh each load.
-var GADS_EMBED = __GADS_EMBED__, LI_EMBED = __LI_EMBED__, WT_EMBED = __WT_EMBED__, SHIP_EMBED = __SHIP_EMBED__, PAY_EMBED = __PAY_EMBED__, SPNL_EMBED = __SPNL_EMBED__, CJ_EMBED = __CJ_EMBED__;
+var GADS_EMBED = __GADS_EMBED__, LI_EMBED = __LI_EMBED__, WT_EMBED = __WT_EMBED__, SHIP_EMBED = __SHIP_EMBED__, PAY_EMBED = __PAY_EMBED__, SPNL_EMBED = __SPNL_EMBED__, CJ_EMBED = __CJ_EMBED__, IOPP_EMBED = __IOPP_EMBED__;
 function _deobf(s,key){ if(!s) return ''; var raw=atob(s), out=''; for(var i=0;i<raw.length;i++){ out+=String.fromCharCode(raw.charCodeAt(i) ^ key.charCodeAt(i%key.length)); } return out; }
 BTN.token = _deobf(BTN.token_obf, BTN.k || '');
 var active = 0;     // selected customer index (Customer Open SO's view); -1 = All customers
@@ -945,7 +969,8 @@ var COLS_VENDOR = [
   {key:'delivered_qty',label:'Del',      type:'num',  c:true},
   {key:'open_qty',   label:'Open',       type:'num',  c:true},
   {key:'pending_pos',label:'Pending PO', type:'str'},
-  {key:'eta',        label:'ETA',        type:'date', c:true}
+  {key:'eta',        label:'ETA',        type:'date', c:true},
+  {key:'fulfill_opp',label:'Fulfill Opp',type:'num',  c:true}
 ];
 function curCols(){ return mode==='vendor' ? COLS_VENDOR : COLS_CUST; }
 var sortState = {key:null, dir:1};
@@ -983,7 +1008,7 @@ function kpi(v,l,style){ return '<div class="kpi"'+(style?' style="'+style+'"':'
 
 function renderTabs(){
   var tabsEl=document.getElementById('tabs');
-  var fullWidth=(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay' || mode==='vspend' || mode==='cprices' || mode==='inv');
+  var fullWidth=(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay' || mode==='vspend' || mode==='cprices' || mode==='inv' || mode==='iopp');
   // Left-align: when a view has no left sidebar, collapse the side column so content aligns left (not centered).
   var sidecol=document.querySelector('.sidecol'); if(sidecol) sidecol.style.display = fullWidth ? 'none' : '';
   var pw=document.querySelector('.panel-wrap'); if(pw) pw.style.marginLeft = fullWidth ? '0' : '';
@@ -1143,6 +1168,7 @@ function renderPanel(){
   else if(mode==='ytd') renderYtdPanel();
   else if(mode==='ca') renderCaPanel();
   else if(mode==='cprices') renderCpricesPanel();
+  else if(mode==='iopp') renderIoppPanel();
   else if(mode==='gads') renderGadsPanel();
   else if(mode==='li') renderLiPanel();
   else if(mode==='wt') renderWtPanel();
@@ -3147,7 +3173,9 @@ function renderVendorPanel(){
     var grp=groups[order[gi]];
     var its=grp.items.slice();
     if(sortState.key){ var col=colByKey(sortState.key);
-      its.sort(function(p,q){ return sortState.dir*cmp(p[sortState.key],q[sortState.key],col?col.type:'str'); }); }
+      // 'fulfill_opp' is computed from the uploaded inventory, not a field on the row.
+      var val=function(r){ return sortState.key==='fulfill_opp' ? fopAvail(r) : r[sortState.key]; };
+      its.sort(function(p,q){ return sortState.dir*cmp(val(p),val(q),col?col.type:'str'); }); }
     else { its.sort(function(p,q){ var d=cmp(p.order_date,q.order_date,'date'); return d!==0?d:cmp(p.product,q.product,'str'); }); }
     body+='<tr class="so-group"><td colspan="'+ncol+'">'+
       '<span class="so-h">'+escapeHtml(grp.cust)+'</span>'+
@@ -3163,6 +3191,7 @@ function renderVendorPanel(){
         '<td class="c open">'+fmtQty(r2.open_qty)+'</td>'+
         '<td>'+poCell(r2.pending_pos, true)+'</td>'+
         '<td class="c" style="font-weight:600;color:'+etaColor(r2.eta)+'">'+fmtDate(r2.eta)+'</td>'+
+        '<td class="c">'+fopCell(r2)+'</td>'+
         '</tr>';
     }
   }
@@ -3973,6 +4002,356 @@ function removePaidInv(kind, idx){
     .catch(function(e){ _piNote('err','Remove failed ('+e.message+'). Refreshing…'); fetchPaidInv(); });
 }
 
+// ── Inventory Opportunities tab ──────────────────────────────────────────────
+// Upload up to 3 vendor inventory spreadsheets (.xlsx/.xls/.csv). Each file is parsed
+// IN THE BROWSER (SheetJS, lazy-loaded from cdnjs) and stored in the repo file
+// inventory-opportunities.json via the button token, so the parsed stock survives a
+// reload AND the nightly rebuild. Any SKU here with qty > 0 that also has an open
+// vendor PO earns a flashing green dot in the Open Vendor POs "Fulfill Opp" column.
+// NOTE: this whole script is emitted from a NON-raw Python string — never write a
+// backslash escape in this block (no newline escapes, no regex metacharacters that
+// need one). Use String.fromCharCode() instead.
+var IOPP=null, ioppLoading=false, ioppQ='', ioppNote='', ioppBusy=false;
+var IOPP_MAX_FILES=3;
+var IOPP_NL=String.fromCharCode(10);
+
+function ioppBlank(){ return {files:[], saved_at:''}; }
+function loadIopp(){
+  if(IOPP) return;
+  if(IOPP_EMBED){ IOPP=IOPP_EMBED; if(mode==='iopp') renderIoppPanel(); return; }
+  if(ioppLoading) return; ioppLoading=true;
+  fetch('inventory-opportunities.json?cb='+Date.now(),{cache:'no-store'})
+    .then(function(r){ if(r.status===404) return ioppBlank(); if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(d){ IOPP=d&&d.files?d:ioppBlank(); ioppLoading=false; _ioppIdx=null;
+      if(mode==='iopp') renderIoppPanel(); if(mode==='vendor') renderVendorPanel(); })
+    .catch(function(){ IOPP=ioppBlank(); ioppLoading=false; if(mode==='iopp') renderIoppPanel(); });
+}
+// SKU normalisation: uppercase, strip surrounding and internal spaces. Deliberately
+// conservative — we do NOT strip hyphens or dots, because "OSR-6006" and "OSR6006"
+// are not reliably the same part across vendors.
+function ioppNorm(s){
+  var t=String(s==null?'':s).toUpperCase();
+  t=t.split(' ').join('').split(String.fromCharCode(9)).join('');
+  return t.trim();
+}
+var _ioppIdx=null;
+function ioppIndex(){
+  if(_ioppIdx) return _ioppIdx;
+  _ioppIdx={};
+  var fs=(IOPP&&IOPP.files)||[];
+  for(var i=0;i<fs.length;i++){
+    var f=fs[i], rows=f.rows||[];
+    for(var j=0;j<rows.length;j++){
+      var r=rows[j], k=ioppNorm(r.sku); if(!k) continue;
+      var q=Number(r.qty)||0; if(q<=0) continue;   // positive quantity only
+      if(!_ioppIdx[k]) _ioppIdx[k]={qty:0, srcs:[]};
+      _ioppIdx[k].qty+=q;
+      _ioppIdx[k].srcs.push({vendor:f.vendor||f.name||'file '+(i+1), qty:q, lot:r.lot||'', exp:r.exp||''});
+    }
+  }
+  return _ioppIdx;
+}
+function ioppFor(sku){ var k=ioppNorm(sku); if(!k) return null; return ioppIndex()[k]||null; }
+function ioppHasAny(){ var x=ioppIndex(); for(var k in x){ if(x.hasOwnProperty(k)) return true; } return false; }
+
+// The Fulfill Opp cell in Open Vendor POs.
+function fopCell(r){
+  var hit=ioppFor(r&&r.sku);
+  if(!hit) return '<span class="fop-none">&mdash;</span>';
+  var lines=[];
+  for(var i=0;i<hit.srcs.length && i<6;i++){
+    var s=hit.srcs[i];
+    lines.push(s.vendor+': '+fmtQty(s.qty)+(s.lot?(' lot '+s.lot):'')+(s.exp?(' exp '+s.exp):''));
+  }
+  if(hit.srcs.length>6) lines.push('+'+(hit.srcs.length-6)+' more');
+  var tip='Available in uploaded inventory: '+fmtQty(hit.qty)+IOPP_NL+lines.join(IOPP_NL);
+  return '<span class="fop-dot" title="'+escapeHtml(tip)+'" onclick="setMode(String.fromCharCode(105,111,112,112))"></span>';
+}
+function fopAvail(r){ var h=ioppFor(r&&r.sku); return h?h.qty:0; }
+
+// ── Spreadsheet parsing (SheetJS, lazy-loaded) ───────────────────────────────
+var _xlsxLoading=null;
+function _loadXlsx(){
+  if(window.XLSX) return Promise.resolve(window.XLSX);
+  if(_xlsxLoading) return _xlsxLoading;
+  _xlsxLoading=new Promise(function(res,rej){
+    var s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    s.onload=function(){ res(window.XLSX); };
+    s.onerror=function(){ rej(new Error('Could not load the spreadsheet reader (network blocked?)')); };
+    document.head.appendChild(s);
+  });
+  return _xlsxLoading;
+}
+function _ioppHdrKind(h){
+  var t=String(h==null?'':h).toLowerCase().trim();
+  if(!t) return '';
+  if(t.indexOf('sku')>-1 || t.indexOf('item number')>-1 || t.indexOf('item no')>-1 ||
+     t.indexOf('item #')>-1 || t.indexOf('part')>-1 || t.indexOf('catalog')>-1 ||
+     t.indexOf('cat no')>-1 || t.indexOf('ref')>-1 || t==='code' || t.indexOf('product code')>-1 ||
+     t.indexOf('item code')>-1 || t.indexOf('material')>-1) return 'sku';
+  if(t.indexOf('quantity')>-1 || t==='qty' || t.indexOf('qty')>-1 || t.indexOf('on hand')>-1 ||
+     t.indexOf('onhand')>-1 || t.indexOf('available')>-1 || t.indexOf('stock')>-1 ||
+     t.indexOf('units')>-1 || t.indexOf('count')>-1) return 'qty';
+  if(t.indexOf('lot')>-1 || t.indexOf('batch')>-1) return 'lot';
+  if(t.indexOf('exp')>-1 || t.indexOf('expir')>-1 || t.indexOf('best before')>-1 ||
+     t.indexOf('use by')>-1) return 'exp';
+  if(t.indexOf('description')>-1 || t.indexOf('product name')>-1 || t.indexOf('item name')>-1) return 'desc';
+  return '';
+}
+function _ioppNum(v){
+  if(v==null||v==='') return 0;
+  if(typeof v==='number') return v;
+  var t=String(v).replace(/[^0-9.eE+-]/g,'');
+  var n=parseFloat(t); return isNaN(n)?0:n;
+}
+function _ioppDate(v){
+  if(v==null||v==='') return '';
+  if(v instanceof Date && !isNaN(v.getTime())) return v.toISOString().slice(0,10);
+  if(typeof v==='number' && v>20000 && v<80000){          // Excel serial date
+    var ms=Date.UTC(1899,11,30)+v*86400000; var d=new Date(ms);
+    return isNaN(d.getTime())?'':d.toISOString().slice(0,10);
+  }
+  var s=String(v).trim(); if(!s) return '';
+  var p=Date.parse(s); if(!isNaN(p)) return new Date(p).toISOString().slice(0,10);
+  return s.slice(0,32);
+}
+// Find the header row anywhere in the first 12 rows, then map the columns we care about.
+function _ioppParseGrid(grid){
+  var hdrRow=-1, map=null;
+  for(var i=0;i<grid.length && i<12;i++){
+    var row=grid[i]||[], m={}, seen=0;
+    for(var c=0;c<row.length;c++){
+      var kind=_ioppHdrKind(row[c]);
+      if(kind && m[kind]===undefined){ m[kind]=c; seen++; }
+    }
+    if(m.sku!==undefined && m.qty!==undefined){ hdrRow=i; map=m; break; }
+  }
+  if(hdrRow<0) return {err:'Could not find a header row with both a SKU column and a quantity column in the first 12 rows.'};
+  var out=[], skipped=0;
+  for(var r=hdrRow+1;r<grid.length;r++){
+    var row2=grid[r]||[];
+    var sku=String(row2[map.sku]==null?'':row2[map.sku]).trim();
+    if(!sku) continue;
+    var qty=_ioppNum(row2[map.qty]);
+    if(qty<=0){ skipped++; continue; }              // only positive quantities matter
+    var rec={sku:sku, qty:qty};
+    if(map.lot!==undefined && row2[map.lot]!=null && String(row2[map.lot]).trim()) rec.lot=String(row2[map.lot]).trim().slice(0,40);
+    if(map.exp!==undefined) { var e=_ioppDate(row2[map.exp]); if(e) rec.exp=e; }
+    if(map.desc!==undefined && row2[map.desc]!=null && String(row2[map.desc]).trim()) rec.desc=String(row2[map.desc]).trim().slice(0,120);
+    out.push(rec);
+  }
+  var cols=[]; for(var k in map){ if(map.hasOwnProperty(k)) cols.push(k); }
+  return {rows:out, skipped:skipped, cols:cols};
+}
+function ioppHandleFiles(fileList){
+  var files=[]; for(var i=0;i<fileList.length;i++) files.push(fileList[i]);
+  if(!files.length) return;
+  var cur=((IOPP&&IOPP.files)||[]).length;
+  if(cur+files.length>IOPP_MAX_FILES){
+    _ioppNote('err','You can hold '+IOPP_MAX_FILES+' inventory files at a time. Remove one first (currently '+cur+').');
+    return;
+  }
+  _ioppNote('','Reading '+files.length+' file(s)…');
+  _loadXlsx().then(function(XLSX){
+    var done=0, added=0, errs=[];
+    files.forEach(function(f){
+      var fr=new FileReader();
+      fr.onload=function(ev){
+        try{
+          var wb=XLSX.read(new Uint8Array(ev.target.result),{type:'array',cellDates:true});
+          var sh=wb.Sheets[wb.SheetNames[0]];
+          var grid=XLSX.utils.sheet_to_json(sh,{header:1,raw:true,defval:''});
+          var res=_ioppParseGrid(grid);
+          if(res.err){ errs.push(f.name+': '+res.err); }
+          else if(!res.rows.length){ errs.push(f.name+': no rows with a positive quantity.'); }
+          else {
+            if(!IOPP) IOPP=ioppBlank();
+            IOPP.files.push({name:f.name, vendor:_ioppVendorFromName(f.name),
+                             uploaded_at:new Date().toISOString().slice(0,19).replace('T',' '),
+                             cols:res.cols, skipped:res.skipped, rows:res.rows});
+            added++;
+          }
+        }catch(e){ errs.push(f.name+': '+e.message); }
+        done++;
+        if(done===files.length){
+          _ioppIdx=null;
+          if(added) ioppCommit();
+          _ioppNote(errs.length?'err':'ok',
+            (added?(added+' file(s) loaded. '):'')+(errs.length?errs.join(' | '):''));
+          renderIoppPanel(); if(mode==='vendor') renderVendorPanel();
+        }
+      };
+      fr.onerror=function(){ done++; errs.push(f.name+': could not read file.');
+        if(done===files.length){ _ioppNote('err',errs.join(' | ')); renderIoppPanel(); } };
+      fr.readAsArrayBuffer(f);
+    });
+  }).catch(function(e){ _ioppNote('err',e.message); });
+}
+function _ioppVendorFromName(n){
+  var s=String(n||'').replace(/[.][^.]+$/,'');
+  s=s.split('_').join(' ').split('-').join(' ').trim();
+  return s.slice(0,60) || 'Vendor';
+}
+function _ioppNote(cls,msg){ ioppNote=msg||''; var n=document.getElementById('iopp-note');
+  if(n){ n.className='iop-note '+(cls||''); n.innerHTML=escapeHtml(msg||''); } }
+function ioppRemove(i){
+  if(!IOPP||!IOPP.files[i]) return;
+  IOPP.files.splice(i,1); _ioppIdx=null; ioppCommit();
+  renderIoppPanel(); if(mode==='vendor') renderVendorPanel();
+}
+function ioppClearAll(){ if(!IOPP) return; IOPP.files=[]; _ioppIdx=null; ioppCommit();
+  renderIoppPanel(); if(mode==='vendor') renderVendorPanel(); }
+function ioppRenameVendor(i,val){ if(!IOPP||!IOPP.files[i]) return;
+  IOPP.files[i].vendor=String(val||'').slice(0,60); _ioppIdx=null; ioppCommit(); }
+// Persist to inventory-opportunities.json via the button token (same pattern as
+// spnl_accepted.json / payment-overrides.json).
+function ioppCommit(){
+  if(!IOPP) return;
+  IOPP.saved_at=new Date().toISOString().slice(0,19).replace('T',' ');
+  try{ localStorage.setItem('jit4_iopp', JSON.stringify(IOPP)); }catch(e){}
+  if(!BTN||!BTN.token){ _ioppNote('err','Loaded for this browser only — no save token on this page.'); return; }
+  var base='https://api.github.com/repos/'+BTN.repo+'/contents/inventory-opportunities.json';
+  var hdr={'Authorization':'Bearer '+BTN.token,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
+  ioppBusy=true;
+  fetch(base+'?ref='+encodeURIComponent(BTN.branch)+'&cb='+Date.now(),{headers:hdr,cache:'no-store'})
+    .then(function(r){ if(r.status===404) return {sha:null}; if(!r.ok) throw new Error('read '+r.status); return r.json().then(function(j){ return {sha:j.sha}; }); })
+    .then(function(st){ return fetch(base,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},hdr),
+      body:JSON.stringify({message:'Update vendor inventory ('+((IOPP.files||[]).length)+' file(s))',
+        content:_b64enc(JSON.stringify(IOPP,null,1)+IOPP_NL), sha:st.sha||undefined, branch:BTN.branch})}); })
+    .then(function(r){ if(!r.ok) throw new Error('save '+r.status); ioppBusy=false; })
+    .catch(function(e){ ioppBusy=false; _ioppNote('err','Saved in this browser, but the shared copy failed ('+e.message+').'); });
+}
+function ioppSearch(v){ ioppQ=String(v||'').toLowerCase(); renderIoppPanel(); }
+
+// Build the matched list: every open vendor-PO line whose SKU is in the uploaded stock.
+function ioppMatches(){
+  var out=[], vs=(DATA.vendors||[]);
+  for(var i=0;i<vs.length;i++){
+    var rows=vs[i].rows||[];
+    for(var j=0;j<rows.length;j++){
+      var r=rows[j], hit=ioppFor(r.sku);
+      if(!hit) continue;
+      out.push({sku:r.sku, product:r.product, po_vendor:vs[i].name, customer:r.customer,
+                so_num:r.so_num, open_qty:Number(r.open_qty)||0, eta:r.eta,
+                pending_pos:r.pending_pos, avail:hit.qty, srcs:hit.srcs});
+    }
+  }
+  out.sort(function(a,b){ var d=cmp(b.avail,a.avail,'num'); return d!==0?d:cmp(a.sku,b.sku,'str'); });
+  return out;
+}
+function renderIoppPanel(){
+  loadIopp();
+  var fs=(IOPP&&IOPP.files)||[];
+  var nRows=0; for(var i=0;i<fs.length;i++) nRows+=(fs[i].rows||[]).length;
+  var chips='';
+  for(var k=0;k<fs.length;k++){
+    chips+='<span class="iop-file"><b>'+escapeHtml(fs[k].vendor||fs[k].name)+'</b> &middot; '+
+      (fs[k].rows||[]).length+' SKU(s) &middot; <span style="color:#6b7a8a;">'+escapeHtml(fs[k].name)+'</span>'+
+      ' <span class="iop-x" title="Remove this file" onclick="ioppRemove('+k+')">&times;</span></span>';
+  }
+  var up='<div class="iop-up" id="iopp-drop">'+
+    '<div style="font-weight:700;color:#0D2B45;margin-bottom:6px;">Vendor inventory files</div>'+
+    '<div style="font-size:12px;color:#6b7a8a;margin-bottom:10px;">Drop up to '+IOPP_MAX_FILES+
+      ' spreadsheets here, or <label style="color:#1F4E79;text-decoration:underline;cursor:pointer;">browse'+
+      '<input type="file" accept=".xlsx,.xls,.csv" multiple style="display:none;" '+
+      'onchange="ioppHandleFiles(this.files); this.value=String.fromCharCode();"></label>.'+
+      ' Needs a SKU column and a quantity column; lot and expiration are picked up when present.</div>'+
+    (chips||'<div style="font-size:12px;color:#9aa7b4;">No files loaded yet.</div>')+
+    (fs.length?('<div style="margin-top:10px;"><button class="ca-email-btn" onclick="ioppClearAll()">Remove all</button></div>'):'')+
+    '<div id="iopp-note" class="iop-note">'+escapeHtml(ioppNote)+'</div>'+
+    '</div>';
+
+  var ms=ioppMatches(), mb='';
+  for(var m=0;m<ms.length;m++){
+    var x=ms[m], src=[];
+    for(var s=0;s<x.srcs.length;s++) src.push(escapeHtml(x.srcs[s].vendor)+' ('+fmtQty(x.srcs[s].qty)+
+      (x.srcs[s].lot?(', lot '+escapeHtml(x.srcs[s].lot)):'')+(x.srcs[s].exp?(', exp '+escapeHtml(x.srcs[s].exp)):'')+')');
+    var covers=x.avail>=x.open_qty;
+    mb+='<tr>'+
+      '<td class="c"><span class="fop-dot"></span></td>'+
+      '<td style="font-weight:600;">'+escapeHtml(x.sku||'')+'</td>'+
+      '<td>'+escapeHtml(x.product||'')+'</td>'+
+      '<td>'+escapeHtml(x.customer||'')+'</td>'+
+      '<td class="so">'+escapeHtml(x.so_num||'')+'</td>'+
+      '<td class="c open">'+fmtQty(x.open_qty)+'</td>'+
+      '<td class="c" style="font-weight:700;color:'+(covers?'#1b7a3d':'#b54708')+';">'+fmtQty(x.avail)+'</td>'+
+      '<td>'+src.join('; ')+'</td>'+
+      '<td>'+escapeHtml(x.po_vendor||'')+'</td>'+
+      '<td class="c">'+fmtDate(x.eta)+'</td>'+
+      '</tr>';
+  }
+  var matchTbl = ms.length
+    ? ('<table><thead><tr><th></th><th>SKU</th><th>Product</th><th>Customer</th><th>SO #</th>'+
+       '<th class="c">Open</th><th class="c">Available</th><th>Source</th><th>PO vendor</th><th class="c">ETA</th>'+
+       '</tr></thead><tbody>'+mb+'</tbody></table>')
+    : ('<div class="empty">'+(fs.length?'No open vendor PO lines match a SKU in the uploaded inventory.'
+                                      :'Upload an inventory file to see fulfillment opportunities.')+'</div>');
+
+  // Full uploaded inventory, searchable.
+  var ib='', shown=0;
+  for(var fi=0;fi<fs.length;fi++){
+    var f=fs[fi], rws=f.rows||[];
+    for(var ri=0;ri<rws.length;ri++){
+      var rr=rws[ri];
+      if(ioppQ){
+        var hay=((rr.sku||'')+' '+(rr.desc||'')+' '+(f.vendor||'')).toLowerCase();
+        if(hay.indexOf(ioppQ)<0) continue;
+      }
+      shown++;
+      if(shown>500) continue;
+      var isMatch=!!ioppFor(rr.sku) && _ioppOpenSkus()[ioppNorm(rr.sku)];
+      ib+='<tr'+(isMatch?' style="background:#f2fbf5;"':'')+'>'+
+        '<td class="c">'+(isMatch?'<span class="fop-dot"></span>':'')+'</td>'+
+        '<td style="font-weight:600;">'+escapeHtml(rr.sku||'')+'</td>'+
+        '<td>'+escapeHtml(rr.desc||'')+'</td>'+
+        '<td class="c">'+fmtQty(rr.qty)+'</td>'+
+        '<td>'+escapeHtml(rr.lot||'')+'</td>'+
+        '<td class="c">'+escapeHtml(rr.exp||'')+'</td>'+
+        '<td>'+escapeHtml(f.vendor||f.name)+'</td>'+
+        '</tr>';
+    }
+  }
+  var invTbl = nRows
+    ? ('<table><thead><tr><th></th><th>SKU</th><th>Description</th><th class="c">Qty</th><th>Lot</th>'+
+       '<th class="c">Expiration</th><th>Vendor file</th></tr></thead><tbody>'+ib+'</tbody></table>'+
+       (shown>500?('<div style="font-size:12px;color:#6b7a8a;padding:8px 2px;">Showing the first 500 of '+shown+' matching rows — narrow the search to see more.</div>'):''))
+    : '';
+
+  document.getElementById('panel').innerHTML =
+    '<div class="panel-head"><h2>Inventory Opportunities</h2>'+
+    '<div class="sub">'+fs.length+' file(s) &middot; '+nRows+' SKU(s) in stock &middot; '+
+      ms.length+' open PO line(s) you could fill now'+
+      (IOPP&&IOPP.saved_at?(' &middot; saved '+escapeHtml(IOPP.saved_at)):'')+'</div></div>'+
+    up+
+    '<h3 style="margin:18px 0 8px;color:#0D2B45;font-size:15px;">Fulfillment opportunities</h3>'+
+    matchTbl+
+    (nRows?('<h3 style="margin:22px 0 8px;color:#0D2B45;font-size:15px;">All uploaded inventory</h3>'+
+      '<input type="search" placeholder="Search SKU, description or vendor…" value="'+escapeHtml(ioppQ)+'" '+
+      'oninput="ioppSearch(this.value)" style="padding:8px 10px;border:1px solid #cdd9e6;border-radius:8px;'+
+      'font-size:13px;width:280px;margin-bottom:10px;">'+invTbl):'');
+  _ioppWireDrop();
+}
+// SKUs that actually have an open vendor PO — used to highlight rows in the full list.
+var _ioppOpenSkuCache=null;
+function _ioppOpenSkus(){
+  if(_ioppOpenSkuCache) return _ioppOpenSkuCache;
+  _ioppOpenSkuCache={};
+  var vs=(DATA.vendors||[]);
+  for(var i=0;i<vs.length;i++){ var rows=vs[i].rows||[];
+    for(var j=0;j<rows.length;j++){ var k=ioppNorm(rows[j].sku); if(k) _ioppOpenSkuCache[k]=1; } }
+  return _ioppOpenSkuCache;
+}
+function _ioppWireDrop(){
+  var d=document.getElementById('iopp-drop'); if(!d) return;
+  ['dragenter','dragover'].forEach(function(ev){ d.addEventListener(ev,function(e){
+    e.preventDefault(); e.stopPropagation(); d.classList.add('drag'); }); });
+  ['dragleave','drop'].forEach(function(ev){ d.addEventListener(ev,function(e){
+    e.preventDefault(); e.stopPropagation(); d.classList.remove('drag'); }); });
+  d.addEventListener('drop',function(e){ if(e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files.length)
+    ioppHandleFiles(e.dataTransfer.files); });
+}
+
 // ── Invoice Check tab ────────────────────────────────────────────────────────
 // Upload a vendor PDF invoice + enter the PO#. Each SKU on the PO is located in the
 // invoice text and its unit price compared to the PO unit (list) price. All parsing
@@ -4121,7 +4500,7 @@ function _invCompare(poKey, lines, fname){
   else _invNote('warn','No PO SKUs were located in this invoice — check that it matches PO '+escapeHtml(poKey)+'.');
 }
 
-function renderAll(){ renderKpis(); renderTabs(); renderPanel(); renderAsOf(); }
+function renderAll(){ _ioppOpenSkuCache=null; loadIopp(); renderKpis(); renderTabs(); renderPanel(); renderAsOf(); }
 
 function fetchData(){ return fetch(DATA_URL+'?cb='+Date.now(),{cache:'no-store'})
   .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); }); }
@@ -4178,7 +4557,7 @@ function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(
 renderAll();
 </script>
 </body>
-</html>""".replace("__DATA_JSON__", data_json).replace("__DATA_URL__", data_url).replace("__BTN_CFG__", btn_cfg).replace("__GADS_EMBED__", gads_embed).replace("__LI_EMBED__", li_embed).replace("__WT_EMBED__", wt_embed).replace("__SHIP_EMBED__", ship_embed).replace("__PAY_EMBED__", pay_embed).replace("__SPNL_EMBED__", spnl_embed).replace("__CJ_EMBED__", cj_embed)
+</html>""".replace("__DATA_JSON__", data_json).replace("__DATA_URL__", data_url).replace("__BTN_CFG__", btn_cfg).replace("__GADS_EMBED__", gads_embed).replace("__LI_EMBED__", li_embed).replace("__WT_EMBED__", wt_embed).replace("__SHIP_EMBED__", ship_embed).replace("__PAY_EMBED__", pay_embed).replace("__SPNL_EMBED__", spnl_embed).replace("__CJ_EMBED__", cj_embed).replace("__IOPP_EMBED__", iopp_embed)
 
 
 # ─────────────────────────────────────────────
