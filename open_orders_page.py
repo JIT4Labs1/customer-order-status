@@ -3268,6 +3268,7 @@ function payFulfillCell(v){
     if(v.so_num) return '<a href="#" data-so="'+escapeHtml(v.so_num)+'" onclick="showFulfill(this);return false;" style="color:#b54708;font-weight:600;text-decoration:none;">Partially <span style="font-size:11px;">▦</span></a>';
     return '<span style="color:#b54708;font-weight:600;">Partially</span>';
   }
+  if(f==='Unknown') return '<span title="Vtiger did not return this SO&#39;s line items on the last refresh, so fulfillment could not be verified. Treated as NOT ready for payment. Re-run the refresh to resolve." style="color:#b54708;font-weight:600;">Unverified <span style="font-size:11px;">&#9888;</span></span>';
   return '<span style="color:#c8d0d8;">—</span>';
 }
 function closeFulfill(){ var m=document.getElementById('fulfillModal'); if(m) m.parentNode.removeChild(m); }
