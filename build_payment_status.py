@@ -9,7 +9,7 @@ QB customer IDs are resolved below), and writes per-customer invoice lists:
 
 Re-run any time to refresh. Publishes with publish_google_ads_data.py.
 """
-import json, os, base64, urllib.parse, urllib.request, urllib.error, datetime
+import json, os, base64, time, urllib.parse, urllib.request, urllib.error, datetime
 from concurrent.futures import ThreadPoolExecutor
 
 QB = os.path.dirname(os.path.abspath(__file__))
@@ -52,15 +52,33 @@ def so_fulfillment(sostatus):
     return "Partially"   # partially delivered / sent / approved / created -> still has open items
 
 
-def vtiger_retrieve(eid):
+RETRIEVE_FAILED = object()   # sentinel: the API call failed, which is NOT the same as "no line items"
+
+
+def _po_lines(eid):
+    """LineItems for a PO id; [] if the retrieve failed. Safe here — a missing PO only costs us
+    the PO#/vendor label on an open item, it can never flip a fulfillment verdict."""
+    rec = vtiger_retrieve(eid)
+    return [] if rec is RETRIEVE_FAILED else (rec.get("LineItems", []) or [])
+
+
+def vtiger_retrieve(eid, tries=4):
+    """Retrieve one record. Returns {} only when Vtiger genuinely returned no result.
+    Returns RETRIEVE_FAILED when every attempt errored/timed out — callers MUST NOT treat
+    that as an empty record. Retries with exponential backoff (Vtiger throttles when the
+    open-orders rebuild has just hammered it)."""
     auth = base64.b64encode(f"{VTIGER_USER}:{VTIGER_ACCESS_KEY}".encode()).decode()
     req = urllib.request.Request(VTIGER_URL + "/restapi/v1/vtiger/default/retrieve?id=" + eid)
     req.add_header("Authorization", "Basic " + auth)
-    try:
-        with urllib.request.urlopen(req, timeout=40) as r:
-            return json.loads(r.read().decode()).get("result", {}) or {}
-    except Exception:
-        return {}
+    for attempt in range(tries):
+        try:
+            with urllib.request.urlopen(req, timeout=40) as r:
+                return json.loads(r.read().decode()).get("result", {}) or {}
+        except Exception:
+            if attempt == tries - 1:
+                return RETRIEVE_FAILED
+            time.sleep(1.5 * (2 ** attempt))   # 1.5s, 3s, 6s
+    return RETRIEVE_FAILED
 
 
 def vtiger_so_map(docnumbers):
@@ -114,13 +132,26 @@ def enrich_open_items(somap):
     if not mapped:
         return
     # Pass 1: retrieve each SO (parallel), compute real open lines (ignore fully-delivered + junk).
-    with ThreadPoolExecutor(max_workers=10) as ex:
+    def _fetch(sid):
+        rec = vtiger_retrieve(sid)
+        if rec is RETRIEVE_FAILED:
+            return RETRIEVE_FAILED
+        return rec.get("LineItems", []) or []
+
+    with ThreadPoolExecutor(max_workers=6) as ex:
         li_map = dict(zip([v["so_id"] for v in mapped],
-                          ex.map(lambda sid: vtiger_retrieve(sid).get("LineItems", []) or [],
-                                 [v["so_id"] for v in mapped])))
+                          ex.map(_fetch, [v["so_id"] for v in mapped])))
+    n_failed = 0
     for v in mapped:
+        lines = li_map.get(v["so_id"])
+        if lines is RETRIEVE_FAILED:
+            # Could not verify this SO. NEVER fall through to "Fulfilled" — that would feed
+            # the page's "Ready for payment" KPI off a failed API call.
+            v["fulfillment"], v["open_items"] = "Unknown", []
+            n_failed += 1
+            continue
         opens = []
-        for it in li_map.get(v["so_id"], []):
+        for it in (lines or []):
             pid = (it.get("productid") or "").strip()
             name = (it.get("product_name") or "").strip()
             if not pid or name.lower() in SKIP_LINE:
@@ -134,6 +165,9 @@ def enrich_open_items(somap):
             v["fulfillment"], v["open_items"] = "Partially", opens
         else:
             v["fulfillment"], v["open_items"] = "Fulfilled", []
+    if n_failed:
+        print(f"  [WARN] {n_failed} of {len(mapped)} SO(s) could not be retrieved from Vtiger — "
+              f"marked 'Unknown' (excluded from Ready for payment). Re-run to resolve.")
     # Pass 2: only for SOs with open lines, resolve PO # + vendor by product.
     part = [v for v in mapped if v.get("open_items")]
     if not part:
@@ -157,7 +191,7 @@ def enrich_open_items(somap):
     if multi_po_ids:
         with ThreadPoolExecutor(max_workers=6) as ex:
             po_li = dict(zip(multi_po_ids,
-                             ex.map(lambda pid: vtiger_retrieve(pid).get("LineItems", []) or [], multi_po_ids)))
+                             ex.map(_po_lines, multi_po_ids)))
     for v in part:
         pos = po_by_so.get(v["so_id"], [])
         v["pos"] = [{"po": pn, "vendor": vname.get(vi, "")} for (pn, vi, _pid) in pos]
