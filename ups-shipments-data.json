@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-08-26 01:55 PM PT",
-  "last_status_refresh": "2026-08-26 01:21 PM PT",
+  "pulled_at": "2026-08-27 09:32 AM PT",
+  "last_status_refresh": "2026-08-27 08:55 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -8639,12 +8639,12 @@
       "ship_to": "Costa Mesa, CA",
       "order": "#1151",
       "service": "FedEx",
-      "status": "Out for Delivery",
-      "activity": "OUT FOR DELIVERY",
+      "status": "Delivered",
+      "activity": "DELIVERED",
       "location": "",
       "date": "2026-08-25",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "url": "https://www.fedex.com/fedextrack/?trknbr=876268149013",
       "ship_date": "2026-08-25",
       "items": [
@@ -8786,12 +8786,12 @@
       "ship_to": "Chicago, IL",
       "order": "#1152",
       "service": "FedEx",
-      "status": "Out for Delivery",
-      "activity": "OUT FOR DELIVERY",
+      "status": "Delivered",
+      "activity": "DELIVERED",
       "location": "",
       "date": "2026-08-25",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "url": "https://www.fedex.com/fedextrack/?trknbr=876269571218",
       "ship_date": "2026-08-25",
       "items": [
@@ -9024,9 +9024,9 @@
       "order": "#1136",
       "service": "UPS",
       "status": "In Transit",
-      "activity": "Shipper created a label, UPS has not received the package yet. ",
-      "location": "",
-      "date": "2026-08-26",
+      "activity": "Loaded on Delivery Vehicle ",
+      "location": "Aliso Viejo, CA",
+      "date": "2026-08-27",
       "time": "",
       "delivered": false,
       "ship_date": "2026-08-26",
@@ -9075,12 +9075,12 @@
       "ship_to": "",
       "order": "#1144",
       "service": "FedEx",
-      "status": "Label Created",
-      "activity": "LABEL CREATED",
+      "status": "Delivered",
+      "activity": "DELIVERED",
       "location": "",
       "date": "2026-08-26",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "ship_date": "2026-08-26",
       "url": "https://www.fedex.com/fedextrack/?trknbr=876333270535",
       "items": [
@@ -9213,9 +9213,9 @@
       "order": "#1154",
       "service": "UPS",
       "status": "In Transit",
-      "activity": "Shipper created a label, UPS has not received the package yet. ",
-      "location": "",
-      "date": "2026-08-26",
+      "activity": "Departed from Facility",
+      "location": "Lexington, KY",
+      "date": "2026-08-27",
       "time": "",
       "delivered": false,
       "ship_date": "2026-08-26",
@@ -9330,9 +9330,9 @@
       "order": "#1154",
       "service": "UPS",
       "status": "In Transit",
-      "activity": "Shipper created a label, UPS has not received the package yet. ",
-      "location": "",
-      "date": "2026-08-26",
+      "activity": "Departed from Facility",
+      "location": "Lexington, KY",
+      "date": "2026-08-27",
       "time": "",
       "delivered": false,
       "ship_date": "2026-08-26",
@@ -9447,13 +9447,130 @@
       "order": "#1154",
       "service": "UPS",
       "status": "In Transit",
-      "activity": "Shipper created a label, UPS has not received the package yet. ",
-      "location": "",
-      "date": "2026-08-26",
+      "activity": "Out For Delivery Today",
+      "location": "Addison, IL",
+      "date": "2026-08-27",
       "time": "",
       "delivered": false,
       "ship_date": "2026-08-26",
       "url": "https://www.ups.com/track?tracknum=1Z23C2X71309785762",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent",
+          "sku": "OSR6137",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6134 Olympus BUN Reagent",
+          "sku": "OSR6134",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6230 Olympus LIP Lipase Reagent",
+          "sku": "OSR6230",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter S66039 Cleaning Solution, Access, 450mL",
+          "sku": "S66039",
+          "qty": 2
+        },
+        {
+          "name": "Beckman coulter OSR6212 Reagent, Olympus, TBIL",
+          "sku": "OSR6212",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR61205 UIBC",
+          "sku": "OSR61205",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6111 Direct Bilirubin reagent",
+          "sku": "OSR6111",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6004 Olympus ALP Reagent",
+          "sku": "OSR6004",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6109 Olympus AST Reagent",
+          "sku": "OSR6109",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6107 Olympus ALT Reagent",
+          "sku": "OSR6107",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter 81904 Bag, Waste, Access",
+          "sku": "81904",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 5
+        }
+      ],
+      "so_num": "SO526",
+      "so_id": "176657",
+      "pos": [
+        {
+          "po": "PO823",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "176658"
+        },
+        {
+          "po": "PO824",
+          "vendor": "PMA Services",
+          "po_id": "176659"
+        },
+        {
+          "po": "PO825",
+          "vendor": "PMA Services",
+          "po_id": "176660"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "1Z23C2X71331174568",
+      "carrier": "UPS",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Radiance Diagnostics",
+      "ship_to": "",
+      "order": "#1154",
+      "service": "UPS",
+      "status": "In Transit",
+      "activity": "Out For Delivery Today",
+      "location": "Addison, IL",
+      "date": "2026-08-27",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-08-26",
+      "url": "https://www.ups.com/track?tracknum=1Z23C2X71331174568",
       "items": [
         {
           "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent",
