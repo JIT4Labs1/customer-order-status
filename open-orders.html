@@ -83,6 +83,11 @@
   .iop-x { cursor:pointer; color:#c62828; font-weight:700; }
   .iop-note { font-size:12px; margin:10px 0 0; }
   .iop-note.err { color:#c62828; } .iop-note.ok { color:#1b7a3d; }
+  /* Scrollable inventory grid with headers pinned to the top of the scroll box. */
+  .iop-scroll { max-height:62vh; overflow:auto; border:1px solid #e3e9f0; border-radius:8px; }
+  .iop-scroll thead th { position:sticky; top:0; z-index:3; background:#0D2B45; }
+  .iop-scroll table { border-collapse:separate; border-spacing:0; }
+  .iop-scroll tbody td { border-bottom:1px solid #eef2f6; }
   /* Invoice Check tab */
   .invchk { max-width:1000px; }
   .invchk .inv-form { display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end; background:#faf9ff; border:1px solid #e6e2f5;
@@ -3861,7 +3866,82 @@ function ioppCommit(){
     .then(function(r){ if(!r.ok) throw new Error('save '+r.status); ioppBusy=false; })
     .catch(function(e){ ioppBusy=false; _ioppNote('err','Saved in this browser, but the shared copy failed ('+e.message+').'); });
 }
-function ioppSearch(v){ ioppQ=String(v||'').toLowerCase(); renderIoppPanel(); }
+// Typing must NOT re-render the whole panel — that replaces the <input> and the
+// caret jumps out, forcing a click before every keystroke. Only the rows redraw.
+function ioppSearch(v){ ioppQ=String(v||'').toLowerCase(); ioppRenderRows(); }
+// Sort state for the inventory grid. Default: SKU ascending.
+var ioppSort={key:'sku', dir:1};
+var IOPP_COLS=[
+  {k:'flag', label:'',            t:'num',  c:true},
+  {k:'sku',  label:'SKU',         t:'str'},
+  {k:'desc', label:'Description', t:'str'},
+  {k:'qty',  label:'Qty',         t:'num',  c:true},
+  {k:'lot',  label:'Lot',         t:'str'},
+  {k:'exp',  label:'Expiration',  t:'date', c:true},
+  {k:'ven',  label:'Vendor file', t:'str'}
+];
+function ioppSortBy(i){
+  var c=IOPP_COLS[i]; if(!c) return;
+  if(ioppSort.key===c.k) ioppSort.dir=-ioppSort.dir;
+  else { ioppSort.key=c.k; ioppSort.dir=(c.t==='num'?-1:1); }
+  ioppRenderHead(); ioppRenderRows();
+}
+function ioppRenderHead(){
+  var el=document.getElementById('iopp-head'); if(!el) return;
+  var h='';
+  for(var i=0;i<IOPP_COLS.length;i++){
+    var c=IOPP_COLS[i];
+    var arr=(ioppSort.key===c.k)?('<span class="arr">'+(ioppSort.dir>0?'▲':'▼')+'</span>'):'';
+    h+='<th class="sortable'+(c.c?' c':'')+'" onclick="ioppSortBy('+i+')">'+escapeHtml(c.label)+arr+'</th>';
+  }
+  el.innerHTML=h;
+}
+// Flatten every uploaded file into one sortable/filterable row list.
+function ioppAllRows(){
+  var fs=(IOPP&&IOPP.files)||[], out=[];
+  for(var fi=0;fi<fs.length;fi++){
+    var f=fs[fi], rws=f.rows||[], ven=f.vendor||f.name||'';
+    for(var ri=0;ri<rws.length;ri++){
+      var rr=rws[ri];
+      out.push({sku:rr.sku||'', desc:rr.desc||'', qty:Number(rr.qty)||0,
+                lot:rr.lot||'', exp:rr.exp||'', ven:ven,
+                flag:_ioppIsOpp(rr.sku, f.vendor)?1:0});
+    }
+  }
+  return out;
+}
+function ioppRenderRows(){
+  var body=document.getElementById('iopp-tbody'); if(!body) return;
+  var rows=ioppAllRows();
+  if(ioppQ){
+    rows=rows.filter(function(r){
+      return (r.sku+' '+r.desc+' '+r.ven).toLowerCase().indexOf(ioppQ)>-1;
+    });
+  }
+  var k=ioppSort.key, d=ioppSort.dir, col=null;
+  for(var i=0;i<IOPP_COLS.length;i++){ if(IOPP_COLS[i].k===k) col=IOPP_COLS[i]; }
+  rows.sort(function(a,b){
+    var r=d*cmp(a[k],b[k],col?col.t:'str');
+    return r!==0?r:cmp(a.sku,b.sku,'str');          // stable tiebreak on SKU
+  });
+  var total=rows.length, cap=2000, h='';
+  for(var j=0;j<rows.length && j<cap;j++){
+    var r2=rows[j];
+    h+='<tr'+(r2.flag?' style="background:#f2fbf5;"':'')+'>'+
+      '<td class="c">'+(r2.flag?'<span class="fop-dot"></span>':'')+'</td>'+
+      '<td style="font-weight:600;">'+escapeHtml(r2.sku)+'</td>'+
+      '<td>'+escapeHtml(r2.desc)+'</td>'+
+      '<td class="c">'+fmtQty(r2.qty)+'</td>'+
+      '<td>'+escapeHtml(r2.lot)+'</td>'+
+      '<td class="c">'+escapeHtml(r2.exp)+'</td>'+
+      '<td>'+escapeHtml(r2.ven)+'</td>'+
+      '</tr>';
+  }
+  if(!total) h='<tr><td colspan="7" style="padding:16px;color:#6b7a8a;">No rows match that search.</td></tr>';
+  body.innerHTML=h;
+  var n=document.getElementById('iopp-count');
+  if(n) n.innerHTML=total+' row(s)'+(total>cap?(' — showing the first '+cap):'');
+}
 
 // Build the matched list: every open vendor-PO line whose SKU is in stock WITH A
 // DIFFERENT VENDOR than the PO is placed with (same rule as the Fulfill Opp dot).
@@ -3959,34 +4039,12 @@ function renderIoppPanel(){
   var ms=ioppMatches();
   var sameV=fs.length?ioppSameVendorCount():0;
 
-  // Full uploaded inventory, searchable.
-  var ib='', shown=0;
-  for(var fi=0;fi<fs.length;fi++){
-    var f=fs[fi], rws=f.rows||[];
-    for(var ri=0;ri<rws.length;ri++){
-      var rr=rws[ri];
-      if(ioppQ){
-        var hay=((rr.sku||'')+' '+(rr.desc||'')+' '+(f.vendor||'')).toLowerCase();
-        if(hay.indexOf(ioppQ)<0) continue;
-      }
-      shown++;
-      if(shown>500) continue;
-      var isMatch=_ioppIsOpp(rr.sku, f.vendor);
-      ib+='<tr'+(isMatch?' style="background:#f2fbf5;"':'')+'>'+
-        '<td class="c">'+(isMatch?'<span class="fop-dot"></span>':'')+'</td>'+
-        '<td style="font-weight:600;">'+escapeHtml(rr.sku||'')+'</td>'+
-        '<td>'+escapeHtml(rr.desc||'')+'</td>'+
-        '<td class="c">'+fmtQty(rr.qty)+'</td>'+
-        '<td>'+escapeHtml(rr.lot||'')+'</td>'+
-        '<td class="c">'+escapeHtml(rr.exp||'')+'</td>'+
-        '<td>'+escapeHtml(f.vendor||f.name)+'</td>'+
-        '</tr>';
-    }
-  }
+  // Shell only — the header row and the body are filled by ioppRenderHead() /
+  // ioppRenderRows() so that typing in the search box never replaces the <input>.
   var invTbl = nRows
-    ? ('<table><thead><tr><th></th><th>SKU</th><th>Description</th><th class="c">Qty</th><th>Lot</th>'+
-       '<th class="c">Expiration</th><th>Vendor file</th></tr></thead><tbody>'+ib+'</tbody></table>'+
-       (shown>500?('<div style="font-size:12px;color:#6b7a8a;padding:8px 2px;">Showing the first 500 of '+shown+' matching rows — narrow the search to see more.</div>'):''))
+    ? ('<div class="iop-scroll"><table><thead><tr id="iopp-head"></tr></thead>'+
+       '<tbody id="iopp-tbody"></tbody></table></div>'+
+       '<div id="iopp-count" style="font-size:12px;color:#6b7a8a;padding:8px 2px;"></div>')
     : '';
 
   document.getElementById('panel').innerHTML =
@@ -3999,10 +4057,12 @@ function renderIoppPanel(){
     (nRows?('<h3 style="margin:18px 0 8px;color:#0D2B45;font-size:15px;">All uploaded inventory '+
       '<span style="font-weight:400;font-size:12px;color:#6b7a8a;">&mdash; highlighted rows are on an '+
       'open PO with a <b>different</b> vendor</span></h3>'+
-      '<input type="search" placeholder="Search SKU, description or vendor…" value="'+escapeHtml(ioppQ)+'" '+
-      'oninput="ioppSearch(this.value)" style="padding:8px 10px;border:1px solid #cdd9e6;border-radius:8px;'+
+      '<input id="iopp-q" type="search" placeholder="Search SKU, description or vendor…" '+
+      'value="'+escapeHtml(ioppQ)+'" oninput="ioppSearch(this.value)" '+
+      'style="padding:8px 10px;border:1px solid #cdd9e6;border-radius:8px;'+
       'font-size:13px;width:280px;margin-bottom:10px;">'+invTbl)
      :'<div class="empty">Upload an inventory file to get started.</div>');
+  if(nRows){ ioppRenderHead(); ioppRenderRows(); }
   _ioppWireDrop();
 }
 // SKU -> the set of PO vendors that SKU is currently on order with. Used to highlight
