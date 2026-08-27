@@ -360,6 +360,53 @@ def build_page_data(open_items):
 # ─────────────────────────────────────────────
 ALT_SOURCE_MANUFACTURER = "Beckman Coulter"
 
+# One Products scan shared by the Beckman-only Alternative Sources box and the
+# all-products vendor cost map behind the Inventory Opportunities COGS column.
+_PRODUCT_COST_ROWS = None
+
+
+def _product_cost_rows(vt):
+    global _PRODUCT_COST_ROWS
+    if _PRODUCT_COST_ROWS is None:
+        _PRODUCT_COST_ROWS = vt.query_all(
+            "SELECT productcode, productname, manufacturer, cf_products_pmacost, "
+            "cf_products_alloracost, cf_products_hldxcost, cf_products_clearchemcost "
+            "FROM Products") or []
+    return _PRODUCT_COST_ROWS
+
+
+def build_vendor_costs(vt):
+    """SKU (upper) -> [pma, allora, aldx, clearchem] unit costs, for EVERY product that
+    has at least one vendor cost on file. Powers the COGS column on the Inventory
+    Opportunities tab: each uploaded inventory row is priced with the cost field of the
+    vendor that file belongs to ("PMA cost" / "Allora cost")."""
+    def clean(v):
+        s = str(v or "").strip()
+        if not s:
+            return ""
+        try:
+            f = float(s)
+        except Exception:
+            return ""
+        return "" if f == 0 else round(f, 2)
+
+    out = {}
+    for r in _product_cost_rows(vt):
+        code = (r.get("productcode") or "").strip()
+        if not code:
+            continue
+        rec = [clean(r.get("cf_products_pmacost")),
+               clean(r.get("cf_products_alloracost")),
+               clean(r.get("cf_products_hldxcost")),
+               clean(r.get("cf_products_clearchemcost"))]
+        if not any(x != "" for x in rec):
+            continue                      # nothing priced — keep the payload small
+        key = code.upper()
+        if key in out and sum(1 for x in rec if x != "") <= sum(1 for x in out[key] if x != ""):
+            continue                      # duplicate SKU: keep the better-populated row
+        out[key] = rec
+    return out
+
 
 def build_alt_sources(vt):
     def clean(v):
@@ -372,10 +419,8 @@ def build_alt_sources(vt):
             return ""
         return "" if f == 0 else round(f, 2)
 
-    rows = vt.query_all(
-        "SELECT productcode, productname, manufacturer, cf_products_pmacost, "
-        "cf_products_alloracost, cf_products_hldxcost, cf_products_clearchemcost "
-        "FROM Products WHERE manufacturer = '" + ALT_SOURCE_MANUFACTURER + "'")
+    rows = [r for r in _product_cost_rows(vt)
+            if (r.get("manufacturer") or "").strip() == ALT_SOURCE_MANUFACTURER]
     out = {}
     for r in rows:
         code = (r.get("productcode") or "").strip()
@@ -4432,8 +4477,27 @@ var IOPP_COLS=[
   {k:'qty',  label:'Qty',         t:'num',  c:true},
   {k:'lot',  label:'Lot',         t:'str'},
   {k:'exp',  label:'Expiration',  t:'date', c:true},
-  {k:'ven',  label:'Vendor file', t:'str'}
+  {k:'ven',  label:'Vendor file', t:'str'},
+  {k:'cogs', label:'COGS',        t:'num',  c:true}
 ];
+// Which slot of DATA.vendor_costs [pma, allora, aldx, clearchem] a file's vendor uses.
+// "Allora Biotech LLC" -> the Vtiger "Allora cost" field; "PMA Services" -> "PMA cost".
+function ioppCostSlot(vendorName){
+  var v=ioppVenNorm(vendorName);
+  if(!v) return -1;
+  if(v.indexOf('PMA')>-1) return 0;
+  if(v.indexOf('ALLORA')>-1) return 1;
+  if(v.indexOf('ALDX')>-1 || v.indexOf('HLDX')>-1) return 2;
+  if(v.indexOf('CLEARCHEM')>-1) return 3;
+  return -1;
+}
+function ioppCogs(sku, vendorName){
+  var slot=ioppCostSlot(vendorName); if(slot<0) return '';
+  var rec=(DATA.vendor_costs||{})[String(sku||'').toUpperCase().trim()];
+  if(!rec) return '';
+  var v=rec[slot];
+  return (v===''||v==null)?'':Number(v);
+}
 function ioppSortBy(i){
   var c=IOPP_COLS[i]; if(!c) return;
   if(ioppSort.key===c.k) ioppSort.dir=-ioppSort.dir;
@@ -4459,6 +4523,7 @@ function ioppAllRows(){
       var rr=rws[ri];
       out.push({sku:rr.sku||'', desc:rr.desc||'', qty:Number(rr.qty)||0,
                 lot:rr.lot||'', exp:rr.exp||'', ven:ven,
+                cogs:ioppCogs(rr.sku, f.vendor),
                 flag:_ioppIsOpp(rr.sku, f.vendor)?1:0});
     }
   }
@@ -4489,9 +4554,11 @@ function ioppRenderRows(){
       '<td>'+escapeHtml(r2.lot)+'</td>'+
       '<td class="c">'+escapeHtml(r2.exp)+'</td>'+
       '<td>'+escapeHtml(r2.ven)+'</td>'+
+      '<td class="c">'+(r2.cogs===''?'<span style="color:#c8d0d8;">&mdash;</span>'
+                                    :'$'+Number(r2.cogs).toFixed(2))+'</td>'+
       '</tr>';
   }
-  if(!total) h='<tr><td colspan="7" style="padding:16px;color:#6b7a8a;">No rows match that search.</td></tr>';
+  if(!total) h='<tr><td colspan="8" style="padding:16px;color:#6b7a8a;">No rows match that search.</td></tr>';
   body.innerHTML=h;
   var n=document.getElementById('iopp-count');
   if(n) n.innerHTML=total+' row(s)'+(total>cap?(' — showing the first '+cap):'');
@@ -5027,6 +5094,10 @@ def main():
     log("Building Alternative Sources cost map...")
     page_data["alt_sources"] = build_alt_sources(vt)
     log(f"  Alt sources: {len(page_data['alt_sources'])} Beckman Coulter products")
+
+    # Vendor cost map for the Inventory Opportunities COGS column (all products).
+    page_data["vendor_costs"] = build_vendor_costs(vt)
+    log(f"  Vendor costs: {len(page_data['vendor_costs'])} priced SKU(s)")
 
     # PO price map: PO -> {sku: {unit, product, qty}} for the Invoice Check tab
     # (built from PO line items already in the retrieve cache — no extra Vtiger calls).
