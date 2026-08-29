@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-29 09:43 AM PDT",
+  "generated_at": "2026-08-29 12:30 PM PDT",
   "year": 2026,
   "customers": [
     {
@@ -574,6 +574,27 @@
       "qb_id": "453",
       "invoices": [
         {
+          "number": "SO645",
+          "status": "Not Paid",
+          "amount": 410.0,
+          "balance": 410.0,
+          "date": "2026-08-29",
+          "link": "",
+          "invoice_link": "https://connect.intuit.com/t/scs-v1-299563cb441a4facbde741109ce668f40b8668d42732403b8658d2bef4d0005139fda53a898944e08706e6762d8d8212-1?locale=en_US&cta=v3invoicelink",
+          "so_num": "SO532",
+          "shopify_order": "",
+          "fulfillment": "Partially",
+          "so_date": "2026-08-29",
+          "open_items": [
+            {
+              "product": "Beckman Coulter OSR6186 Iron reagent",
+              "open_qty": 1.0,
+              "po": "PO833",
+              "vendor": "PMA Services"
+            }
+          ]
+        },
+        {
           "number": "SO618",
           "status": "Paid",
           "amount": 605.46,
@@ -791,10 +812,10 @@
         }
       ],
       "totals": {
-        "count": 14,
-        "amount": 32423.61,
+        "count": 15,
+        "amount": 32833.61,
         "paid": 29681.71,
-        "unpaid": 2741.9
+        "unpaid": 3151.9
       }
     },
     {
@@ -2846,7 +2867,7 @@
     }
   ],
   "payables": {
-    "generated_at": "2026-08-29 09:43 AM PDT",
+    "generated_at": "2026-08-29 12:30 PM PDT",
     "grand_total": 29311.68,
     "past_due": 24706.0,
     "count": 38,
@@ -3141,7 +3162,7 @@
     "source": "Bank balance",
     "book_balance": 58460.01,
     "bank_asof": "2026-07-23",
-    "as_of": "2026-08-29 09:43 AM PDT"
+    "as_of": "2026-08-29 12:30 PM PDT"
   },
-  "pulled_at": "2026-08-29 09:45 AM PT"
+  "pulled_at": "2026-08-29 12:32 PM PT"
 }
