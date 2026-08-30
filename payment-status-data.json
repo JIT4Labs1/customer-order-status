@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-29 12:30 PM PDT",
+  "generated_at": "2026-08-30 02:02 PM PDT",
   "year": 2026,
   "customers": [
     {
@@ -582,12 +582,18 @@
           "link": "",
           "invoice_link": "https://connect.intuit.com/t/scs-v1-299563cb441a4facbde741109ce668f40b8668d42732403b8658d2bef4d0005139fda53a898944e08706e6762d8d8212-1?locale=en_US&cta=v3invoicelink",
           "so_num": "SO532",
-          "shopify_order": "",
+          "shopify_order": "#1160",
           "fulfillment": "Partially",
           "so_date": "2026-08-29",
           "open_items": [
             {
               "product": "Beckman Coulter OSR6186 Iron reagent",
+              "open_qty": 2.0,
+              "po": "PO833",
+              "vendor": "PMA Services"
+            },
+            {
+              "product": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
               "open_qty": 1.0,
               "po": "PO833",
               "vendor": "PMA Services"
@@ -1642,7 +1648,7 @@
           "link": "",
           "invoice_link": "",
           "so_num": "SO475",
-          "shopify_order": "",
+          "shopify_order": "#1099",
           "fulfillment": "Fulfilled",
           "so_date": "2026-07-14",
           "open_items": []
@@ -1677,7 +1683,7 @@
           "link": "",
           "invoice_link": "",
           "so_num": "SO468",
-          "shopify_order": "",
+          "shopify_order": "#1089",
           "fulfillment": "Fulfilled",
           "so_date": "2026-07-07",
           "open_items": []
@@ -1747,7 +1753,7 @@
           "link": "",
           "invoice_link": "",
           "so_num": "SO433",
-          "shopify_order": "",
+          "shopify_order": "#1057",
           "fulfillment": "Fulfilled",
           "so_date": "2026-06-15",
           "open_items": []
@@ -2867,16 +2873,16 @@
     }
   ],
   "payables": {
-    "generated_at": "2026-08-29 12:30 PM PDT",
+    "generated_at": "2026-08-30 02:02 PM PDT",
     "grand_total": 29311.68,
-    "past_due": 24706.0,
+    "past_due": 25857.42,
     "count": 38,
     "vendors": [
       {
         "vendor": "Conmed",
         "balance": 28399.48,
         "count": 35,
-        "pastdue": 23793.8,
+        "pastdue": 24945.22,
         "bills": [
           {
             "num": "11399649",
@@ -3162,7 +3168,7 @@
     "source": "Bank balance",
     "book_balance": 58460.01,
     "bank_asof": "2026-07-23",
-    "as_of": "2026-08-29 12:30 PM PDT"
+    "as_of": "2026-08-30 02:02 PM PDT"
   },
-  "pulled_at": "2026-08-29 12:32 PM PT"
+  "pulled_at": "2026-08-30 02:04 PM PT"
 }
