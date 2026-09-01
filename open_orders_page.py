@@ -907,6 +907,10 @@ def build_html(page_data, embeds=None):
     font-size:13px; font-family:inherit; color:#101E3E; outline:none; }
   .ytd-search:focus{ border-color:#2f6fd0; box-shadow:0 0 0 3px rgba(47,111,208,.13); }
   .ytd-stat{ font-size:12px; color:#5a6b82; font-weight:600; }
+  .ytd-xlsx{ margin-left:auto; padding:7px 14px; border:1px solid #cdd9e6; border-radius:8px;
+    background:#fff; color:#1d6f42; font-size:13px; font-weight:700; font-family:inherit;
+    cursor:pointer; white-space:nowrap; }
+  .ytd-xlsx:hover{ background:#f1f8f3; border-color:#9ec7ae; }
   table.ytd-table th.ytd-sticky, table.ytd-table td.ytd-sticky{ position:sticky; left:0; z-index:2; background:#fff; }
   table.ytd-table thead th.ytd-sticky{ z-index:4; background:#101E3E; }
   table.ytd-table tbody tr:nth-child(even) td.ytd-sticky{ background:#f7f9fc; }
@@ -3807,6 +3811,186 @@ function ytdBodyHtml(rows){
   }
   return h;
 }
+// ── YTD Demand -> Excel (.xlsx) ──────────────────────────────────────────────
+// Writes a real single-sheet workbook in the browser so Excel opens it natively
+// (a renamed .csv/.xls would trip Excel's "format mismatch" warning). Store-only
+// ZIP, no deflate and no external library, so the page stays self-contained.
+// Exports exactly what the table shows: same customer tab, same search filter,
+// same sort order, same columns.
+// NB: no backslashes anywhere below — this file is emitted from a non-raw Python
+// string literal, so an escape here would be eaten before it reaches the page.
+var YTD_CRC = null;
+function ytdCrcTable(){
+  if(YTD_CRC) return YTD_CRC;
+  var t=new Array(256);
+  for(var n=0;n<256;n++){
+    var c=n;
+    for(var k=0;k<8;k++){ c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1); }
+    t[n]=c>>>0;
+  }
+  YTD_CRC=t; return t;
+}
+function ytdCrc32(b){
+  var t=ytdCrcTable(), c=0xFFFFFFFF;
+  for(var i=0;i<b.length;i++){ c=t[(c^b[i])&0xFF]^(c>>>8); }
+  return (c^0xFFFFFFFF)>>>0;
+}
+function ytdUtf8(s){ return new TextEncoder().encode(s); }
+function ytdXmlEsc(v){
+  v=(v===null||v===undefined)?'':String(v);
+  return v.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function ytdColRef(i){
+  var s='', n=i+1;
+  while(n>0){ var m=(n-1)%26; s=String.fromCharCode(65+m)+s; n=Math.floor((n-1)/26); }
+  return s;
+}
+// aoa = array of rows; row 0 is the header (bold via style index 1).
+function ytdSheetXml(aoa, widths){
+  var x='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'+
+    '<sheetViews><sheetView workbookViewId="0">'+
+    '<pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/>'+
+    '</sheetView></sheetViews>';
+  if(widths && widths.length){
+    x+='<cols>';
+    for(var w=0;w<widths.length;w++){
+      x+='<col min="'+(w+1)+'" max="'+(w+1)+'" width="'+widths[w]+'" customWidth="1"/>';
+    }
+    x+='</cols>';
+  }
+  x+='<sheetData>';
+  for(var r=0;r<aoa.length;r++){
+    var row=aoa[r];
+    x+='<row r="'+(r+1)+'">';
+    for(var c=0;c<row.length;c++){
+      var v=row[c];
+      if(v===null||v===undefined||v==='') continue;
+      var ref=ytdColRef(c)+(r+1);
+      var st=(r===0)?' s="1"':'';
+      if(typeof v==='number' && isFinite(v)){
+        x+='<c r="'+ref+'"'+st+'><v>'+v+'</v></c>';
+      } else {
+        x+='<c r="'+ref+'"'+st+' t="inlineStr"><is><t xml:space="preserve">'+
+           ytdXmlEsc(v)+'</t></is></c>';
+      }
+    }
+    x+='</row>';
+  }
+  return x+'</sheetData></worksheet>';
+}
+// Minimal store-only (method 0) ZIP container.
+function ytdZip(files){
+  var chunks=[], central=[], offset=0;
+  var d=new Date();
+  var dosTime=((d.getHours()&31)<<11)|((d.getMinutes()&63)<<5)|((Math.floor(d.getSeconds()/2))&31);
+  var dosDate=(((d.getFullYear()-1980)&127)<<9)|(((d.getMonth()+1)&15)<<5)|(d.getDate()&31);
+  function u16(a,v){ a.push(v&0xFF,(v>>>8)&0xFF); }
+  function u32(a,v){ a.push(v&0xFF,(v>>>8)&0xFF,(v>>>16)&0xFF,(v>>>24)&0xFF); }
+  for(var i=0;i<files.length;i++){
+    var f=files[i], nm=ytdUtf8(f.name), data=f.data;
+    var crc=ytdCrc32(data), len=data.length;
+    var lh=[];
+    u32(lh,0x04034B50); u16(lh,20); u16(lh,0x0800); u16(lh,0);
+    u16(lh,dosTime); u16(lh,dosDate); u32(lh,crc); u32(lh,len); u32(lh,len);
+    u16(lh,nm.length); u16(lh,0);
+    chunks.push(new Uint8Array(lh)); chunks.push(nm); chunks.push(data);
+    var ch=[];
+    u32(ch,0x02014B50); u16(ch,20); u16(ch,20); u16(ch,0x0800); u16(ch,0);
+    u16(ch,dosTime); u16(ch,dosDate); u32(ch,crc); u32(ch,len); u32(ch,len);
+    u16(ch,nm.length); u16(ch,0); u16(ch,0); u16(ch,0); u16(ch,0); u32(ch,0); u32(ch,offset);
+    central.push({head:new Uint8Array(ch), name:nm});
+    offset += lh.length + nm.length + len;
+  }
+  var cstart=offset, csize=0;
+  for(var j=0;j<central.length;j++){
+    chunks.push(central[j].head); chunks.push(central[j].name);
+    csize += central[j].head.length + central[j].name.length;
+  }
+  var eo=[];
+  u32(eo,0x06054B50); u16(eo,0); u16(eo,0); u16(eo,files.length); u16(eo,files.length);
+  u32(eo,csize); u32(eo,cstart); u16(eo,0);
+  chunks.push(new Uint8Array(eo));
+  return new Blob(chunks,{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+}
+function ytdExportXlsx(){
+  var YD=DATA.ytd_demand||{items:[],months:[]};
+  var rows=ytdRows();
+  if(!rows.length){ alert('Nothing to export - the table is empty.'); return; }
+  var months=YD.months||[];
+  var hdr=['SKU','Product','Vendor'];
+  for(var m=0;m<months.length;m++) hdr.push(months[m]);
+  hdr.push('YTD Units'); hdr.push('$ Spent'); hdr.push('#Cust');
+  var aoa=[hdr];
+  for(var r=0;r<rows.length;r++){
+    var it=rows[r];
+    var line=[it.sku||'', it.product||'', it.vendor||''];
+    for(var k=0;k<months.length;k++){
+      var q=(it.by||[])[k]||0;
+      line.push(q?Number(q):'');
+    }
+    line.push(Number(it.ytd||0));
+    line.push(Number(it.amt||0));
+    line.push(ytdCust?'':Number(it.ncust||0));
+    aoa.push(line);
+  }
+  var widths=[14,42,18];
+  for(var mw=0;mw<months.length;mw++) widths.push(9);
+  widths.push(11); widths.push(13); widths.push(8);
+
+  var CT='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'+
+    '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'+
+    '<Default Extension="xml" ContentType="application/xml"/>'+
+    '<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>'+
+    '<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'+
+    '<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>'+
+    '</Types>';
+  var RELS='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+
+    '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>'+
+    '</Relationships>';
+  var WB='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" '+
+    'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'+
+    '<sheets><sheet name="YTD Demand" sheetId="1" r:id="rId1"/></sheets></workbook>';
+  var WBR='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+
+    '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>'+
+    '<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>'+
+    '</Relationships>';
+  var STY='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'+
+    '<fonts count="2"><font><sz val="11"/><name val="Calibri"/></font>'+
+    '<font><b/><sz val="11"/><name val="Calibri"/></font></fonts>'+
+    '<fills count="2"><fill><patternFill patternType="none"/></fill>'+
+    '<fill><patternFill patternType="gray125"/></fill></fills>'+
+    '<borders count="1"><border/></borders>'+
+    '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>'+
+    '<cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>'+
+    '<xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/></cellXfs>'+
+    '<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles>'+
+    '<dxfs count="0"/><tableStyles count="0" defaultTableStyle="TableStyleMedium9"/>'+
+    '</styleSheet>';
+
+  var files=[
+    {name:'[Content_Types].xml', data:ytdUtf8(CT)},
+    {name:'_rels/.rels', data:ytdUtf8(RELS)},
+    {name:'xl/workbook.xml', data:ytdUtf8(WB)},
+    {name:'xl/_rels/workbook.xml.rels', data:ytdUtf8(WBR)},
+    {name:'xl/styles.xml', data:ytdUtf8(STY)},
+    {name:'xl/worksheets/sheet1.xml', data:ytdUtf8(ytdSheetXml(aoa,widths))}
+  ];
+  var base='ytd-demand_'+(ytdCust||'All Customers')+'_'+(YD.year||'');
+  if(ytdSearch) base += '_'+ytdSearch;
+  var name=base.replace(/[^A-Za-z0-9._-]+/g,'-').replace(/-+/g,'-')+'.xlsx';
+  try{
+    var url=URL.createObjectURL(ytdZip(files));
+    var a=document.createElement('a'); a.href=url; a.download=name;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+  }catch(e){ alert('Could not export to Excel: '+e.message); }
+}
 function renderYtdTabs(tabsEl){
   var YD=DATA.ytd_demand||{customers:[],items:[]};
   tabsEl.style.display='';
@@ -3843,7 +4027,10 @@ function renderYtdPanel(){
   var ctrl='<div class="ytd-ctrl">'+
     '<input id="ytd-q" class="ytd-search" type="text" placeholder="Search SKU or product…" '+
     'autocomplete="off" spellcheck="false" value="'+escapeHtml(ytdSearch)+'" oninput="ytdOnSearch(this.value)">'+
-    '<span id="ytd-stat" class="ytd-stat">'+ytdStatText(rows)+'</span></div>';
+    '<span id="ytd-stat" class="ytd-stat">'+ytdStatText(rows)+'</span>'+
+    '<button class="ytd-xlsx" onclick="ytdExportXlsx()" '+
+    'title="Download the table exactly as shown (customer tab, search filter, sort order) as an Excel .xlsx workbook">'+
+    '&#11015; Export to Excel</button></div>';
   // Column list drives both the header and the sort handler (index-based, no quoted args).
   ytdCols=[{k:'sku',label:'SKU',cls:'ytd-sticky'},{k:'product',label:'Product',cls:''}];
   for(var m=0;m<months.length;m++) ytdCols.push({k:'m::'+m,label:months[m],cls:'c'});
