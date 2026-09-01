@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-08-31 09:54 AM PT",
-  "last_status_refresh": "2026-08-31 09:06 AM PT",
+  "pulled_at": "2026-09-01 09:47 AM PT",
+  "last_status_refresh": "2026-09-01 09:05 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -9680,12 +9680,12 @@
       "ship_to": "Lakewood Ranch, FL",
       "order": "#1159",
       "service": "FedEx",
-      "status": "Label Created",
-      "activity": "SHIPMENT INFORMATION RECEIVED",
+      "status": "Delivered",
+      "activity": "DELIVERED",
       "location": "",
       "date": "2026-08-28",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "url": "https://www.fedex.com/fedextrack/?trknbr=876452215334",
       "ship_date": "2026-08-28",
       "items": [
@@ -9717,9 +9717,9 @@
       "ship_to": "Charleston, SC",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Arrived at Facility",
-      "location": "West Columbia, SC",
-      "date": "2026-08-30",
+      "activity": "Out For Delivery Today",
+      "location": "Charleston, SC",
+      "date": "2026-09-01",
       "time": "",
       "delivered": false,
       "source": "UPS My Choice (3rd Party)",
@@ -9761,9 +9761,9 @@
       "ship_to": "Charleston, SC",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Shipper created a label, UPS has not received the package yet. ",
-      "location": "",
-      "date": "2026-08-29",
+      "activity": "Departed from Facility",
+      "location": "Atlanta, GA",
+      "date": "2026-09-01",
       "time": "",
       "delivered": false,
       "source": "UPS My Choice (3rd Party)",
@@ -9806,8 +9806,8 @@
       "service": "UPS Ground",
       "status": "In Transit",
       "activity": "Departed from Facility",
-      "location": "Nashville, TN",
-      "date": "2026-08-31",
+      "location": "Lenexa, KS",
+      "date": "2026-09-01",
       "time": "",
       "delivered": false,
       "source": "UPS My Choice (3rd Party)",
@@ -9850,8 +9850,8 @@
       "service": "UPS Ground",
       "status": "In Transit",
       "activity": "Departed from Facility",
-      "location": "Nashville, TN",
-      "date": "2026-08-31",
+      "location": "Lenexa, KS",
+      "date": "2026-09-01",
       "time": "",
       "delivered": false,
       "source": "UPS My Choice (3rd Party)",
@@ -9972,6 +9972,55 @@
       ],
       "po": "PO828",
       "po_id": "177418"
+    },
+    {
+      "tracking": "383466660917",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Doctors General Laboratory",
+      "ship_to": "Clarendon Hills, IL",
+      "order": "#1160",
+      "service": "FedEx",
+      "status": "Delivered",
+      "activity": "DELIVERED",
+      "location": "",
+      "date": "2026-08-31",
+      "time": "",
+      "delivered": true,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=383466660917",
+      "ship_date": "2026-08-31",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6186 Iron reagent",
+          "sku": "OSR6186",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR61118 Olympus Triglyceride Reagent (4x735 tests)",
+          "sku": "OSR61118",
+          "qty": 1
+        }
+      ],
+      "contact": "Mahemdra Patel",
+      "shopify_order": "#1160",
+      "so_num": "SO532",
+      "so_id": "177912",
+      "pos": [
+        {
+          "po": "PO833",
+          "vendor": "PMA Services",
+          "po_id": "177913"
+        }
+      ],
+      "po": "PO833",
+      "po_id": "177913"
     }
   ]
 }
