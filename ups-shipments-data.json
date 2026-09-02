@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-09-01 09:47 AM PT",
-  "last_status_refresh": "2026-09-01 09:05 AM PT",
+  "pulled_at": "2026-09-01 05:11 PM PT",
+  "last_status_refresh": "2026-09-01 04:42 PM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -8688,12 +8688,12 @@
       "ship_to": "Costa Mesa, CA",
       "order": "#1151",
       "service": "FedEx",
-      "status": "Out for Delivery",
-      "activity": "OUT FOR DELIVERY",
+      "status": "Delivered",
+      "activity": "DELIVERED",
       "location": "",
       "date": "2026-08-25",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "url": "https://www.fedex.com/fedextrack/?trknbr=383370054937",
       "ship_date": "2026-08-25",
       "items": [
@@ -8737,12 +8737,12 @@
       "ship_to": "Costa Mesa, CA",
       "order": "#1151",
       "service": "FedEx",
-      "status": "Out for Delivery",
-      "activity": "OUT FOR DELIVERY",
+      "status": "Delivered",
+      "activity": "DELIVERED",
       "location": "",
       "date": "2026-08-25",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "url": "https://www.fedex.com/fedextrack/?trknbr=383370002090",
       "ship_date": "2026-08-25",
       "items": [
@@ -9716,12 +9716,12 @@
       "receiver": "KW Aesthetics",
       "ship_to": "Charleston, SC",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Charleston, SC",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "CHARLESTON, SC",
       "date": "2026-09-01",
-      "time": "",
-      "delivered": false,
+      "time": "12:40 PM",
+      "delivered": true,
       "source": "UPS My Choice (3rd Party)",
       "carrier": "UPS",
       "ship_date": "2026-08-29",
@@ -9761,8 +9761,8 @@
       "ship_to": "Charleston, SC",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Atlanta, GA",
+      "activity": "Arrived at Facility",
+      "location": "West Columbia, SC",
       "date": "2026-09-01",
       "time": "",
       "delivered": false,
@@ -9805,8 +9805,8 @@
       "ship_to": "Colorado Springs, CO",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Lenexa, KS",
+      "activity": "Arrived at Facility",
+      "location": "Aurora, CO",
       "date": "2026-09-01",
       "time": "",
       "delivered": false,
@@ -9849,8 +9849,8 @@
       "ship_to": "Colorado Springs, CO",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Lenexa, KS",
+      "activity": "Arrived at Facility",
+      "location": "Aurora, CO",
       "date": "2026-09-01",
       "time": "",
       "delivered": false,
@@ -9893,9 +9893,9 @@
       "ship_to": "Bakersfield, CA",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Atlanta, GA",
-      "date": "2026-08-29",
+      "activity": "Arrived at Facility",
+      "location": "Vernon, CA",
+      "date": "2026-09-01",
       "time": "",
       "delivered": false,
       "source": "UPS My Choice (3rd Party)",
@@ -9937,9 +9937,9 @@
       "ship_to": "Bakersfield, CA",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Atlanta, GA",
-      "date": "2026-08-29",
+      "activity": "Arrived at Facility",
+      "location": "Vernon, CA",
+      "date": "2026-09-01",
       "time": "",
       "delivered": false,
       "source": "UPS My Choice (3rd Party)",
@@ -10021,6 +10021,479 @@
       ],
       "po": "PO833",
       "po_id": "177913"
+    },
+    {
+      "tracking": "383494725528",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "MEDICAL HEALTH LAB",
+      "ship_to": "Sugar Land, TX",
+      "order": "#1163",
+      "service": "FedEx",
+      "status": "In Transit",
+      "activity": "IN TRANSIT",
+      "location": "",
+      "date": "2026-09-01",
+      "time": "",
+      "delivered": false,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=383494725528",
+      "ship_date": "2026-09-01",
+      "items": [
+        {
+          "name": "Beckman Coulter 33885 Access Free T4 Calibrator",
+          "sku": "33885",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
+          "sku": "37200",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter A98032 Access Folate Reagent, 100 Determinations",
+          "sku": "A98032",
+          "qty": 3
+        },
+        {
+          "name": "Beckman Coulter 33830 Access Total T3, 100 Determinations",
+          "sku": "33830",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 33020 Access 2 Ferritin Reagent 2x50 Count 100/Kt",
+          "sku": "33020",
+          "qty": 3
+        },
+        {
+          "name": "Beckman Coulter 33000 Access Vitamin B12 Reagent, 100 Determinations",
+          "sku": "33000",
+          "qty": 3
+        },
+        {
+          "name": "Beckman Coulter A13430 Access Free T3 Calibrator",
+          "sku": "A13430",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33835 Access Total T3 Calibrator (S0-S5)",
+          "sku": "33835",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 3
+        },
+        {
+          "name": "Beckman Coulter 37210 Access Hybritech free PSA Reagent, 100 Determinations",
+          "sku": "37210",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B63284 Access TSH Stimulating Hormone (3rd IS) 2 x 100 Determinations",
+          "sku": "B63284",
+          "qty": 3
+        }
+      ],
+      "contact": "SYED RIZVI",
+      "shopify_order": "#1163",
+      "so_num": "SO535",
+      "so_id": "178677",
+      "pos": [
+        {
+          "po": "PO836",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "178678"
+        },
+        {
+          "po": "PO837",
+          "vendor": "PMA Services",
+          "po_id": "178679"
+        },
+        {
+          "po": "PO838",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "178682"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "1Z23C2X71311646998",
+      "carrier": "UPS",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "MEDICAL HEALTH LAB",
+      "ship_to": "Sugar Land, TX",
+      "order": "#1163",
+      "service": "UPS",
+      "status": "In Transit",
+      "activity": "Arrived at Facility",
+      "location": "Owensboro, KY",
+      "date": "2026-09-01",
+      "time": "",
+      "delivered": false,
+      "url": "https://www.ups.com/track?tracknum=1Z23C2X71311646998",
+      "ship_date": "2026-09-01",
+      "items": [
+        {
+          "name": "Beckman Coulter 33885 Access Free T4 Calibrator",
+          "sku": "33885",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
+          "sku": "37200",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter A98032 Access Folate Reagent, 100 Determinations",
+          "sku": "A98032",
+          "qty": 3
+        },
+        {
+          "name": "Beckman Coulter 33830 Access Total T3, 100 Determinations",
+          "sku": "33830",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 33020 Access 2 Ferritin Reagent 2x50 Count 100/Kt",
+          "sku": "33020",
+          "qty": 3
+        },
+        {
+          "name": "Beckman Coulter 33000 Access Vitamin B12 Reagent, 100 Determinations",
+          "sku": "33000",
+          "qty": 3
+        },
+        {
+          "name": "Beckman Coulter A13430 Access Free T3 Calibrator",
+          "sku": "A13430",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33835 Access Total T3 Calibrator (S0-S5)",
+          "sku": "33835",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 3
+        },
+        {
+          "name": "Beckman Coulter 37210 Access Hybritech free PSA Reagent, 100 Determinations",
+          "sku": "37210",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B63284 Access TSH Stimulating Hormone (3rd IS) 2 x 100 Determinations",
+          "sku": "B63284",
+          "qty": 3
+        }
+      ],
+      "contact": "SYED RIZVI",
+      "shopify_order": "#1163",
+      "so_num": "SO535",
+      "so_id": "178677",
+      "pos": [
+        {
+          "po": "PO836",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "178678"
+        },
+        {
+          "po": "PO837",
+          "vendor": "PMA Services",
+          "po_id": "178679"
+        },
+        {
+          "po": "PO838",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "178682"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "876596097455",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "MEDICAL HEALTH LAB",
+      "ship_to": "Sugar Land, TX",
+      "order": "#1163",
+      "service": "FedEx",
+      "status": "Label Created",
+      "activity": "LABEL CREATED",
+      "location": "",
+      "date": "2026-09-01",
+      "time": "",
+      "delivered": false,
+      "url": "https://www.fedex.com/fedextrack/?trknbr=876596097455",
+      "ship_date": "2026-09-01",
+      "items": [
+        {
+          "name": "Beckman Coulter 33885 Access Free T4 Calibrator",
+          "sku": "33885",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
+          "sku": "37200",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter A98032 Access Folate Reagent, 100 Determinations",
+          "sku": "A98032",
+          "qty": 3
+        },
+        {
+          "name": "Beckman Coulter 33830 Access Total T3, 100 Determinations",
+          "sku": "33830",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 33020 Access 2 Ferritin Reagent 2x50 Count 100/Kt",
+          "sku": "33020",
+          "qty": 3
+        },
+        {
+          "name": "Beckman Coulter 33000 Access Vitamin B12 Reagent, 100 Determinations",
+          "sku": "33000",
+          "qty": 3
+        },
+        {
+          "name": "Beckman Coulter A13430 Access Free T3 Calibrator",
+          "sku": "A13430",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33835 Access Total T3 Calibrator (S0-S5)",
+          "sku": "33835",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 3
+        },
+        {
+          "name": "Beckman Coulter 37210 Access Hybritech free PSA Reagent, 100 Determinations",
+          "sku": "37210",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B63284 Access TSH Stimulating Hormone (3rd IS) 2 x 100 Determinations",
+          "sku": "B63284",
+          "qty": 3
+        }
+      ],
+      "contact": "SYED RIZVI",
+      "shopify_order": "#1163",
+      "so_num": "SO535",
+      "so_id": "178677",
+      "pos": [
+        {
+          "po": "PO836",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "178678"
+        },
+        {
+          "po": "PO837",
+          "vendor": "PMA Services",
+          "po_id": "178679"
+        },
+        {
+          "po": "PO838",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "178682"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "1Z8W007Y0394682571",
+      "view": "Third Party",
+      "shipper": "CONMED OUTBOUND",
+      "receiver": "La Clinique Privee",
+      "ship_to": "Coral Gables, FL",
+      "service": "UPS Ground",
+      "status": "In Transit",
+      "activity": "Shipper created a label, UPS has not received the package yet. ",
+      "location": "United States",
+      "date": "2026-09-01",
+      "time": "",
+      "delivered": false,
+      "source": "UPS My Choice (3rd Party)",
+      "carrier": "UPS",
+      "ship_date": "2026-09-01",
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "sku": "VV120-DO",
+          "qty": 1
+        }
+      ],
+      "order": "#1162",
+      "shopify_order": "#1162",
+      "url": "https://www.ups.com/track?tracknum=1Z8W007Y0394682571",
+      "shopify_fulfilled": true,
+      "so_num": "SO534",
+      "so_id": "178108",
+      "pos": [
+        {
+          "po": "PO835",
+          "vendor": "Conmed",
+          "po_id": "178109"
+        }
+      ],
+      "po": "PO835",
+      "po_id": "178109"
+    },
+    {
+      "tracking": "1Z8W007Y0395866782",
+      "view": "Third Party",
+      "shipper": "CONMED OUTBOUND",
+      "receiver": "La Clinique Privee",
+      "ship_to": "Coral Gables, FL",
+      "service": "UPS Ground",
+      "status": "In Transit",
+      "activity": "Shipper created a label, UPS has not received the package yet. ",
+      "location": "United States",
+      "date": "2026-09-01",
+      "time": "",
+      "delivered": false,
+      "source": "UPS My Choice (3rd Party)",
+      "carrier": "UPS",
+      "ship_date": "2026-09-01",
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "sku": "VV120-DO",
+          "qty": 1
+        }
+      ],
+      "order": "#1162",
+      "shopify_order": "#1162",
+      "url": "https://www.ups.com/track?tracknum=1Z8W007Y0395866782",
+      "shopify_fulfilled": true,
+      "so_num": "SO534",
+      "so_id": "178108",
+      "pos": [
+        {
+          "po": "PO835",
+          "vendor": "Conmed",
+          "po_id": "178109"
+        }
+      ],
+      "po": "PO835",
+      "po_id": "178109"
+    },
+    {
+      "tracking": "1Z8W007Y0392848128",
+      "view": "Third Party",
+      "shipper": "CONMED OUTBOUND",
+      "receiver": "Setzer Personal Physicians",
+      "ship_to": "Lemoyne, PA",
+      "service": "UPS Ground",
+      "status": "In Transit",
+      "activity": "Shipper created a label, UPS has not received the package yet. ",
+      "location": "United States",
+      "date": "2026-09-01",
+      "time": "",
+      "delivered": false,
+      "source": "UPS My Choice (3rd Party)",
+      "carrier": "UPS",
+      "ship_date": "2026-09-01",
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "sku": "VV120-DO",
+          "qty": 1
+        }
+      ],
+      "order": "#1161",
+      "shopify_order": "#1161",
+      "url": "https://www.ups.com/track?tracknum=1Z8W007Y0392848128",
+      "shopify_fulfilled": true,
+      "so_num": "SO533",
+      "so_id": "178102",
+      "pos": [
+        {
+          "po": "PO834",
+          "vendor": "Conmed",
+          "po_id": "178103"
+        }
+      ],
+      "po": "PO834",
+      "po_id": "178103"
+    },
+    {
+      "tracking": "1Z8W007Y0396331606",
+      "view": "Third Party",
+      "shipper": "CONMED OUTBOUND",
+      "receiver": "Setzer Personal Physicians",
+      "ship_to": "Lemoyne, PA",
+      "service": "UPS Ground",
+      "status": "In Transit",
+      "activity": "Shipper created a label, UPS has not received the package yet. ",
+      "location": "United States",
+      "date": "2026-09-01",
+      "time": "",
+      "delivered": false,
+      "source": "UPS My Choice (3rd Party)",
+      "carrier": "UPS",
+      "ship_date": "2026-09-01",
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "sku": "VV120-DO",
+          "qty": 1
+        }
+      ],
+      "order": "#1161",
+      "shopify_order": "#1161",
+      "url": "https://www.ups.com/track?tracknum=1Z8W007Y0396331606",
+      "shopify_fulfilled": true,
+      "so_num": "SO533",
+      "so_id": "178102",
+      "pos": [
+        {
+          "po": "PO834",
+          "vendor": "Conmed",
+          "po_id": "178103"
+        }
+      ],
+      "po": "PO834",
+      "po_id": "178103"
     }
   ]
 }
