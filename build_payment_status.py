@@ -9,7 +9,7 @@ QB customer IDs are resolved below), and writes per-customer invoice lists:
 
 Re-run any time to refresh. Publishes with publish_google_ads_data.py.
 """
-import json, os, base64, time, urllib.parse, urllib.request, urllib.error, datetime
+import json, os, base64, time, socket, urllib.parse, urllib.request, urllib.error, datetime
 from concurrent.futures import ThreadPoolExecutor
 
 QB = os.path.dirname(os.path.abspath(__file__))
@@ -245,13 +245,53 @@ def refresh_token():
     return toks["access_token"]
 
 
-def qb_query(access, q):
+_QCACHE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_qb_qcache.json")
+# Opt-in only (default 0 = disabled) so CI / normal runs always hit QuickBooks live.
+# Set QB_CACHE_TTL_SEC>0 when driving this script in short foreground passes under a
+# shell time cap, so a pass that dies mid-pull resumes instead of restarting.
+_QCACHE_TTL = int(os.environ.get("QB_CACHE_TTL_SEC", "0") or 0)
+
+
+def _qcache_load():
+    if _QCACHE_TTL <= 0 or not os.path.exists(_QCACHE_PATH):
+        return {}
+    try:
+        return json.load(open(_QCACHE_PATH))
+    except Exception:
+        return {}
+
+
+def qb_query(access, q, _tries=4):
+    """QuickBooks query with retry/backoff — the bulk Invoice pull can exceed a
+    single 60s read when the QBO API is slow; a bare timeout used to abort the
+    whole run and leave payment-status-data.json stale."""
+    if _QCACHE_TTL > 0:
+        c = _qcache_load()
+        hit = c.get(q)
+        if hit and (time.time() - hit.get("t", 0)) < _QCACHE_TTL:
+            return hit["v"]
     url = f"{BASE}/company/{REALM}/query?query={urllib.parse.quote(q)}&minorversion=65"
-    req = urllib.request.Request(url, method="GET")
-    req.add_header("Authorization", "Bearer " + access)
-    req.add_header("Accept", "application/json")
-    with urllib.request.urlopen(req, timeout=60) as r:
-        return json.loads(r.read().decode())
+    last = None
+    for attempt in range(_tries):
+        req = urllib.request.Request(url, method="GET")
+        req.add_header("Authorization", "Bearer " + access)
+        req.add_header("Accept", "application/json")
+        try:
+            with urllib.request.urlopen(req, timeout=120) as r:
+                out = json.loads(r.read().decode())
+            if _QCACHE_TTL > 0:
+                c = _qcache_load()
+                c[q] = {"t": time.time(), "v": out}
+                try:
+                    json.dump(c, open(_QCACHE_PATH, "w"))
+                except Exception:
+                    pass
+            return out
+        except (TimeoutError, socket.timeout, urllib.error.URLError, OSError) as e:
+            last = e
+            if attempt < _tries - 1:
+                time.sleep(5 * (attempt + 1))
+    raise last
 
 
 def owner_link(inv_id):
