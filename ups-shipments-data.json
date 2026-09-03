@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-09-02 04:08 PM PT",
-  "last_status_refresh": "2026-09-02 03:20 PM PT",
+  "pulled_at": "2026-09-03 10:08 AM PT",
+  "last_status_refresh": "2026-09-03 09:07 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -9809,12 +9809,12 @@
       "receiver": "Luxus Aesthetics",
       "ship_to": "Colorado Springs, CO",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Colorado Springs, CO",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "COLORADO SPRINGS, CO",
       "date": "2026-09-02",
-      "time": "",
-      "delivered": false,
+      "time": "7:37 PM",
+      "delivered": true,
       "source": "UPS My Choice (3rd Party)",
       "carrier": "UPS",
       "ship_date": "2026-08-29",
@@ -9853,12 +9853,12 @@
       "receiver": "Luxus Aesthetics",
       "ship_to": "Colorado Springs, CO",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Colorado Springs, CO",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "COLORADO SPRINGS, CO",
       "date": "2026-09-02",
-      "time": "",
-      "delivered": false,
+      "time": "7:37 PM",
+      "delivered": true,
       "source": "UPS My Choice (3rd Party)",
       "carrier": "UPS",
       "ship_date": "2026-08-29",
@@ -10235,12 +10235,12 @@
       "ship_to": "Sugar Land, TX",
       "order": "#1163",
       "service": "FedEx",
-      "status": "In Transit",
-      "activity": "IN TRANSIT",
+      "status": "Delivered",
+      "activity": "Delivered",
       "location": "",
-      "date": "2026-09-01",
+      "date": "2026-09-02",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "url": "https://www.fedex.com/fedextrack/?trknbr=876596097455",
       "ship_date": "2026-09-01",
       "items": [
@@ -10332,9 +10332,9 @@
       "ship_to": "Coral Gables, FL",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Atlanta, GA",
-      "date": "2026-09-01",
+      "activity": "Out For Delivery Today",
+      "location": "Miami, FL",
+      "date": "2026-09-03",
       "time": "",
       "delivered": false,
       "source": "UPS My Choice (3rd Party)",
@@ -10376,9 +10376,9 @@
       "ship_to": "Coral Gables, FL",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Atlanta, GA",
-      "date": "2026-09-01",
+      "activity": "Out For Delivery Today",
+      "location": "Miami, FL",
+      "date": "2026-09-03",
       "time": "",
       "delivered": false,
       "source": "UPS My Choice (3rd Party)",
@@ -10420,9 +10420,9 @@
       "ship_to": "Lemoyne, PA",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Atlanta, GA",
-      "date": "2026-09-02",
+      "activity": "Out For Delivery Today",
+      "location": "Carlisle, PA",
+      "date": "2026-09-03",
       "time": "",
       "delivered": false,
       "source": "UPS My Choice (3rd Party)",
@@ -10464,9 +10464,9 @@
       "ship_to": "Lemoyne, PA",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Atlanta, GA",
-      "date": "2026-09-02",
+      "activity": "Out For Delivery Today",
+      "location": "Carlisle, PA",
+      "date": "2026-09-03",
       "time": "",
       "delivered": false,
       "source": "UPS My Choice (3rd Party)",
@@ -10546,12 +10546,12 @@
       "receiver": "Doctors General Laboratory",
       "ship_to": "Clarendon Hills, IL",
       "service": "FedEx",
-      "status": "In Transit",
-      "activity": "IN TRANSIT",
+      "status": "Delivered",
+      "activity": "Delivered",
       "location": "United States",
-      "date": "2026-09-02",
+      "date": "2026-08-19",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "source": "Shopify",
       "carrier": "FedEx",
       "ship_date": "2026-09-02",
@@ -10657,6 +10657,216 @@
       "po": "PO840",
       "so_id": "179109",
       "po_id": "179111"
+    },
+    {
+      "tracking": "876656967283",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Radiance Diagnostics",
+      "contact": "Siva Kumar",
+      "ship_to": "Naperville, IL",
+      "order": "#1154",
+      "service": "FedEx",
+      "status": "Delivered",
+      "activity": "Delivered",
+      "delivered": true,
+      "location": "",
+      "date": "2026-09-03",
+      "time": "",
+      "ship_date": "2026-09-02",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=876656967283",
+      "items": [
+        {
+          "name": "Beckman coulter OSR6212 Reagent, Olympus, TBIL, 4x40 (REF)",
+          "sku": "OSR6212",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR61205 UIBC unsaturated reagent iron binding capacity",
+          "sku": "OSR61205",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6109 Olympus AST Reagent - Aspartate Aminotransferase Reagent",
+          "sku": "OSR6109",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6107 Olympus ALT Reagent Alanine Transaminase",
+          "sku": "OSR6107",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO526",
+      "so_id": "176657",
+      "pos": [
+        {
+          "po": "PO823",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "176658"
+        }
+      ],
+      "po": "PO823",
+      "po_id": "176658"
+    },
+    {
+      "tracking": "383516680089",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Benjamin Swisher",
+      "contact": "Benjamin Swisher",
+      "ship_to": "Canton, OH",
+      "order": "#1150",
+      "service": "FedEx",
+      "status": "",
+      "activity": "Label created",
+      "delivered": false,
+      "location": "",
+      "date": "2026-09-02",
+      "time": "",
+      "ship_date": "2026-09-02",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=383516680089",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)",
+          "sku": "OSR6134",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO522",
+      "so_id": "174946",
+      "pos": [
+        {
+          "po": "PO814",
+          "vendor": "PMA Services",
+          "po_id": "174948"
+        }
+      ],
+      "po": "PO814",
+      "po_id": "174948"
+    },
+    {
+      "tracking": "876659442734",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "MEDICAL HEALTH LAB",
+      "contact": "SYED RIZVI",
+      "ship_to": "Sugar Land, TX",
+      "order": "#1147",
+      "service": "FedEx",
+      "status": "In Transit",
+      "activity": "",
+      "delivered": false,
+      "location": "",
+      "date": "2026-09-02",
+      "time": "",
+      "ship_date": "2026-09-02",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=876659442734",
+      "items": [
+        {
+          "name": "Beckman Coulter 37205 Access Hybritech PSA Calibrator (S0-S5)",
+          "sku": "37205",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO519",
+      "so_id": "174292",
+      "pos": [
+        {
+          "po": "PO809",
+          "vendor": "PMA Services",
+          "po_id": "174293"
+        }
+      ],
+      "po": "PO809",
+      "po_id": "174293"
+    },
+    {
+      "tracking": "383515959843",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "GENOLAB DIAGNOSTICS",
+      "contact": "Wael Saliem",
+      "ship_to": "Fairfield, NJ",
+      "order": "#1144",
+      "service": "FedEx",
+      "status": "",
+      "activity": "Label created",
+      "delivered": false,
+      "location": "",
+      "date": "2026-09-02",
+      "time": "",
+      "ship_date": "2026-09-02",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=383515959843",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)",
+          "sku": "OSR6134",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO516",
+      "so_id": "173598",
+      "pos": [
+        {
+          "po": "PO804",
+          "vendor": "PMA Services",
+          "po_id": "173599"
+        }
+      ],
+      "po": "PO804",
+      "po_id": "173599"
+    },
+    {
+      "tracking": "876646600262",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "GENOLAB DIAGNOSTICS",
+      "contact": "Wael Saliem",
+      "ship_to": "Fairfield, NJ",
+      "order": "#1144",
+      "service": "FedEx",
+      "status": "In Transit",
+      "activity": "",
+      "delivered": false,
+      "location": "",
+      "date": "2026-09-02",
+      "time": "",
+      "ship_date": "2026-09-02",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=876646600262",
+      "items": [
+        {
+          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
+          "sku": "33565",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO516",
+      "so_id": "173598",
+      "pos": [
+        {
+          "po": "PO841",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "179127"
+        }
+      ],
+      "po": "PO841",
+      "po_id": "179127"
     }
   ],
   "last_shopify_sync": "2026-09-02 03:18 PM PT"
