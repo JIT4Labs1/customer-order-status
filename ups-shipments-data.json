@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-09-03 10:08 AM PT",
-  "last_status_refresh": "2026-09-03 09:07 AM PT",
+  "pulled_at": "2026-09-03 05:21 PM PT",
+  "last_status_refresh": "2026-09-03 05:18 PM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -10331,12 +10331,12 @@
       "receiver": "La Clinique Privee",
       "ship_to": "Coral Gables, FL",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Miami, FL",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "CORAL GABLES, FL",
       "date": "2026-09-03",
-      "time": "",
-      "delivered": false,
+      "time": "12:56 PM",
+      "delivered": true,
       "source": "UPS My Choice (3rd Party)",
       "carrier": "UPS",
       "ship_date": "2026-09-01",
@@ -10375,12 +10375,12 @@
       "receiver": "La Clinique Privee",
       "ship_to": "Coral Gables, FL",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Miami, FL",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "CORAL GABLES, FL",
       "date": "2026-09-03",
-      "time": "",
-      "delivered": false,
+      "time": "12:56 PM",
+      "delivered": true,
       "source": "UPS My Choice (3rd Party)",
       "carrier": "UPS",
       "ship_date": "2026-09-01",
@@ -10419,12 +10419,12 @@
       "receiver": "Setzer Personal Physicians",
       "ship_to": "Lemoyne, PA",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Carlisle, PA",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "LEMOYNE, PA",
       "date": "2026-09-03",
-      "time": "",
-      "delivered": false,
+      "time": "1:09 PM",
+      "delivered": true,
       "source": "UPS My Choice (3rd Party)",
       "carrier": "UPS",
       "ship_date": "2026-09-01",
@@ -10463,12 +10463,12 @@
       "receiver": "Setzer Personal Physicians",
       "ship_to": "Lemoyne, PA",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Carlisle, PA",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "LEMOYNE, PA",
       "date": "2026-09-03",
-      "time": "",
-      "delivered": false,
+      "time": "1:09 PM",
+      "delivered": true,
       "source": "UPS My Choice (3rd Party)",
       "carrier": "UPS",
       "ship_date": "2026-09-01",
@@ -10585,12 +10585,12 @@
       "receiver": "Mercedes Scientific",
       "ship_to": "Bradenton, FL",
       "service": "",
-      "status": "In Transit",
-      "activity": "IN TRANSIT",
+      "status": "Delivered",
+      "activity": "DELIVERED",
       "location": "",
       "date": "2026-09-02",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "source": "Shopify",
       "carrier": "FedEx",
       "ship_date": "2026-09-02",
@@ -10622,12 +10622,12 @@
       "receiver": "Personal",
       "ship_to": "New York, NY",
       "service": "",
-      "status": "In Transit",
-      "activity": "IN TRANSIT",
+      "status": "Delivered",
+      "activity": "DELIVERED",
       "location": "",
       "date": "2026-09-02",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "source": "Shopify",
       "carrier": "FedEx",
       "ship_date": "2026-09-02",
@@ -10727,8 +10727,8 @@
       "ship_to": "Canton, OH",
       "order": "#1150",
       "service": "FedEx",
-      "status": "",
-      "activity": "Label created",
+      "status": "In Transit",
+      "activity": "IN TRANSIT",
       "delivered": false,
       "location": "",
       "date": "2026-09-02",
@@ -10803,8 +10803,8 @@
       "ship_to": "Fairfield, NJ",
       "order": "#1144",
       "service": "FedEx",
-      "status": "",
-      "activity": "Label created",
+      "status": "In Transit",
+      "activity": "IN TRANSIT",
       "delivered": false,
       "location": "",
       "date": "2026-09-02",
@@ -10867,7 +10867,214 @@
       ],
       "po": "PO841",
       "po_id": "179127"
+    },
+    {
+      "tracking": "876724006571",
+      "view": "",
+      "shipper": "JIT4You",
+      "receiver": "Mercedes Scientific",
+      "ship_to": "Bradenton, FL",
+      "service": "",
+      "status": "Label Created",
+      "activity": "LABEL CREATED",
+      "location": "",
+      "date": "2026-09-03",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "FedEx",
+      "ship_date": "2026-09-03",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1118",
+      "items": [
+        {
+          "name": "Beckman Coulter 37205 Access Hybritech PSA Calibrator (S0-S5)",
+          "sku": "37205",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter B84494 Access,Cal, Sensitive Estradiol",
+          "sku": "B84494",
+          "qty": 1
+        }
+      ],
+      "order": "#1118",
+      "so_num": "SO493",
+      "pos": [
+        {
+          "po": "PO768",
+          "vendor": "PMA Services",
+          "po_id": "167027"
+        }
+      ],
+      "po": "PO768",
+      "so_id": "167019",
+      "po_id": "167027"
+    },
+    {
+      "tracking": "1Z23C2X7YW38426571",
+      "view": "",
+      "shipper": "JIT4You",
+      "receiver": "Radiance Diagnostics",
+      "ship_to": "Naperville, IL",
+      "service": "",
+      "status": "In Transit",
+      "activity": "RFID Confirmed Pickup ",
+      "location": "Owensboro, KY",
+      "date": "2026-09-03",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "UPS",
+      "ship_date": "2026-09-03",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1125",
+      "items": [
+        {
+          "name": "Beckman Coulter 81911 Instrument Detergent Contrad 70 Liquid Concentrate 1 Liter Bottle Mild Scent",
+          "sku": "81911",
+          "qty": 1
+        }
+      ],
+      "order": "#1125",
+      "so_num": "SO499",
+      "pos": [
+        {
+          "po": "PO778",
+          "vendor": "PMA Services",
+          "po_id": "168445"
+        }
+      ],
+      "po": "PO778",
+      "so_id": "168444",
+      "po_id": "168445"
+    },
+    {
+      "tracking": "383532080641",
+      "view": "",
+      "shipper": "JIT4You",
+      "receiver": "Radiance Diagnostics",
+      "ship_to": "Naperville, IL",
+      "service": "",
+      "status": "In Transit",
+      "activity": "IN TRANSIT",
+      "location": "",
+      "date": "2026-09-03",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "FedEx",
+      "ship_date": "2026-09-03",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1166",
+      "items": [
+        {
+          "name": "Beckman Coulter 33520 Follicle Stimulating Hormone (FSH) 100 Tests",
+          "sku": "33520",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B84493 Access Sensitive Estradiol Reagent",
+          "sku": "B84493",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 386357 Access OV Monitor Reagent, 100 determinations",
+          "sku": "386357",
+          "qty": 1
+        }
+      ],
+      "order": "#1166",
+      "so_num": "SO538",
+      "pos": [
+        {
+          "po": "PO843",
+          "vendor": "PMA Services",
+          "po_id": "179352"
+        }
+      ],
+      "po": "PO843",
+      "so_id": "179351",
+      "po_id": "179352"
+    },
+    {
+      "tracking": "1Z8W007Y0391345280",
+      "view": "Third Party",
+      "shipper": "CONMED OUTBOUND",
+      "receiver": "Luxus Aesthetics",
+      "ship_to": "Colorado Springs, CO",
+      "service": "UPS Ground",
+      "status": "In Transit",
+      "activity": "Shipper created a label, UPS has not received the package yet. ",
+      "location": "United States",
+      "date": "2026-09-03",
+      "time": "",
+      "delivered": false,
+      "source": "UPS My Choice (3rd Party)",
+      "carrier": "UPS",
+      "ship_date": "2026-09-03",
+      "items": [
+        {
+          "name": "ViroVac VS35302 Surgical Smoke Evacuator Filters (2/Case)",
+          "sku": "VS35302",
+          "qty": 2
+        }
+      ],
+      "order": "#1165",
+      "shopify_order": "#1165",
+      "shopify_fulfilled": true,
+      "url": "https://www.ups.com/track?tracknum=1Z8W007Y0391345280",
+      "so_num": "SO537",
+      "so_id": "179343",
+      "pos": [
+        {
+          "po": "PO842",
+          "vendor": "Conmed",
+          "po_id": "179344"
+        }
+      ],
+      "po": "PO842",
+      "po_id": "179344"
+    },
+    {
+      "tracking": "1Z8W007Y0394876460",
+      "view": "Third Party",
+      "shipper": "CONMED OUTBOUND",
+      "receiver": "Luxus Aesthetics",
+      "ship_to": "Colorado Springs, CO",
+      "service": "UPS Ground",
+      "status": "In Transit",
+      "activity": "Shipper created a label, UPS has not received the package yet. ",
+      "location": "United States",
+      "date": "2026-09-03",
+      "time": "",
+      "delivered": false,
+      "source": "UPS My Choice (3rd Party)",
+      "carrier": "UPS",
+      "ship_date": "2026-09-03",
+      "items": [
+        {
+          "name": "ViroVac VS35302 Surgical Smoke Evacuator Filters (2/Case)",
+          "sku": "VS35302",
+          "qty": 2
+        }
+      ],
+      "order": "#1165",
+      "shopify_order": "#1165",
+      "shopify_fulfilled": true,
+      "url": "https://www.ups.com/track?tracknum=1Z8W007Y0394876460",
+      "so_num": "SO537",
+      "so_id": "179343",
+      "pos": [
+        {
+          "po": "PO842",
+          "vendor": "Conmed",
+          "po_id": "179344"
+        }
+      ],
+      "po": "PO842",
+      "po_id": "179344"
     }
   ],
-  "last_shopify_sync": "2026-09-02 03:18 PM PT"
+  "last_shopify_sync": "2026-09-03 04:41 PM PT"
 }
