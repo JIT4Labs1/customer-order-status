@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-04 09:53 AM PDT",
+  "generated_at": "2026-09-05 09:47 AM PDT",
   "year": 2026,
   "customers": [
     {
@@ -294,8 +294,8 @@
             {
               "product": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
               "open_qty": 1.0,
-              "po": "",
-              "vendor": ""
+              "po": "PO818",
+              "vendor": "Allora Biotech LLC"
             }
           ]
         },
@@ -1714,8 +1714,8 @@
             {
               "product": "Beckman coulter 33545 Calibrator, Access, Estradiol (REF)",
               "open_qty": 1.0,
-              "po": "",
-              "vendor": ""
+              "po": "PO738",
+              "vendor": "PMA Services"
             }
           ]
         },
@@ -2630,26 +2630,26 @@
             {
               "product": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
               "open_qty": 2.0,
-              "po": "",
-              "vendor": ""
+              "po": "PO824",
+              "vendor": "PMA Services"
             },
             {
               "product": "Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)",
               "open_qty": 2.0,
-              "po": "",
-              "vendor": ""
+              "po": "PO823",
+              "vendor": "Allora Biotech LLC"
             },
             {
               "product": "Beckman Coulter OSR6230 Olympus LIP Lipase Reagent Incl Calibrator",
               "open_qty": 1.0,
-              "po": "",
-              "vendor": ""
+              "po": "PO823",
+              "vendor": "Allora Biotech LLC"
             },
             {
               "product": "Beckman Coulter A16792 Access Wash Buffer II",
               "open_qty": 5.0,
-              "po": "",
-              "vendor": ""
+              "po": "PO823",
+              "vendor": "Allora Biotech LLC"
             }
           ]
         },
@@ -2779,8 +2779,8 @@
             {
               "product": "Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)",
               "open_qty": 1.0,
-              "po": "",
-              "vendor": ""
+              "po": "PO814",
+              "vendor": "PMA Services"
             }
           ]
         }
@@ -2930,17 +2930,80 @@
     }
   ],
   "payables": {
-    "generated_at": "2026-09-04 09:53 AM PDT",
-    "grand_total": 29311.68,
-    "past_due": 29311.68,
-    "count": 38,
+    "generated_at": "2026-09-05 09:47 AM PDT",
+    "grand_total": 34545.67,
+    "past_due": 28786.2,
+    "count": 50,
     "vendors": [
       {
         "vendor": "Conmed",
-        "balance": 28399.48,
-        "count": 35,
-        "pastdue": 28399.48,
+        "balance": 23237.99,
+        "count": 31,
+        "pastdue": 17866.91,
         "bills": [
+          {
+            "num": "11431177",
+            "date": "2026-09-03",
+            "due": "2026-10-03",
+            "amount": 623.46,
+            "balance": 623.46
+          },
+          {
+            "num": "11427804",
+            "date": "2026-09-01",
+            "due": "2026-10-01",
+            "amount": 1009.48,
+            "balance": 1009.48
+          },
+          {
+            "num": "11427889",
+            "date": "2026-09-01",
+            "due": "2026-10-01",
+            "amount": 141.94,
+            "balance": 141.94
+          },
+          {
+            "num": "11428189",
+            "date": "2026-09-01",
+            "due": "2026-10-01",
+            "amount": 1151.42,
+            "balance": 1151.42
+          },
+          {
+            "num": "11424543",
+            "date": "2026-08-28",
+            "due": "2026-09-27",
+            "amount": 1009.48,
+            "balance": 1009.48
+          },
+          {
+            "num": "11424379",
+            "date": "2026-08-28",
+            "due": "2026-09-27",
+            "amount": 141.94,
+            "balance": 141.94
+          },
+          {
+            "num": "11425043",
+            "date": "2026-08-28",
+            "due": "2026-09-27",
+            "amount": 1009.48,
+            "balance": 1009.48
+          },
+          {
+            "num": "11424709",
+            "date": "2026-08-28",
+            "due": "2026-09-27",
+            "amount": 141.94,
+            "balance": 141.94
+          },
+          {
+            "num": "11424774",
+            "date": "2026-08-28",
+            "due": "2026-09-27",
+            "amount": 141.94,
+            "balance": 141.94
+          },
           {
             "num": "11399649",
             "date": "2026-08-04",
@@ -3082,13 +3145,6 @@
             "balance": 141.94
           },
           {
-            "num": "11376605",
-            "date": "2026-07-13",
-            "due": "2026-08-12",
-            "amount": 1009.48,
-            "balance": 1009.48
-          },
-          {
             "num": "11376455",
             "date": "2026-07-13",
             "due": "2026-08-12",
@@ -3101,99 +3157,128 @@
             "due": "2026-08-12",
             "amount": 1151.42,
             "balance": 1151.42
+          }
+        ]
+      },
+      {
+        "vendor": "PMA Services",
+        "balance": 10015.09,
+        "count": 11,
+        "pastdue": 9892.09,
+        "bills": [
+          {
+            "num": "INV-001787",
+            "date": "2026-08-27",
+            "due": "2026-08-27",
+            "amount": 87.0,
+            "balance": 87.0
           },
           {
-            "num": "11375047",
-            "date": "2026-07-10",
-            "due": "2026-08-09",
-            "amount": 141.94,
-            "balance": 141.94
+            "num": "INV-001788",
+            "date": "2026-08-27",
+            "due": "2026-09-01",
+            "amount": 330.72,
+            "balance": 330.72
           },
           {
-            "num": "11374849",
-            "date": "2026-07-09",
-            "due": "2026-08-08",
-            "amount": 1009.48,
-            "balance": 1009.48
+            "num": "INV-001782",
+            "date": "2026-08-26",
+            "due": "2026-05-09",
+            "amount": 1869.96,
+            "balance": 1869.96
           },
           {
-            "num": "11372846",
-            "date": "2026-07-08",
-            "due": "2026-08-07",
-            "amount": 1151.42,
-            "balance": 1151.42
+            "num": "INV-001783",
+            "date": "2026-08-26",
+            "due": "2026-08-31",
+            "amount": 56.0,
+            "balance": 56.0
           },
           {
-            "num": "11371432",
-            "date": "2026-07-07",
-            "due": "2026-08-06",
-            "amount": 1151.42,
-            "balance": 1151.42
+            "num": "INV-001776",
+            "date": "2026-08-26",
+            "due": "2026-08-26",
+            "amount": 2699.5,
+            "balance": 2699.5
           },
           {
-            "num": "11370740",
-            "date": "2026-07-06",
-            "due": "2026-08-05",
-            "amount": 141.94,
-            "balance": 141.94
+            "num": "INV-001780",
+            "date": "2026-08-26",
+            "due": "2026-09-05",
+            "amount": 123.0,
+            "balance": 123.0
           },
           {
-            "num": "11370710",
-            "date": "2026-07-06",
-            "due": "2026-08-05",
-            "amount": 141.94,
-            "balance": 141.94
+            "num": "INV-001771",
+            "date": "2026-08-21",
+            "due": "2026-08-31",
+            "amount": 15.0,
+            "balance": 15.0
           },
           {
-            "num": "11370567",
-            "date": "2026-07-06",
-            "due": "2026-08-05",
-            "amount": 1009.48,
-            "balance": 1009.48
+            "num": "INV-001770",
+            "date": "2026-08-21",
+            "due": "2026-08-21",
+            "amount": 130.0,
+            "balance": 130.0
           },
           {
-            "num": "11370573",
-            "date": "2026-07-06",
-            "due": "2026-08-05",
-            "amount": 1009.48,
-            "balance": 1009.48
-          },
-          {
-            "num": "11368464",
-            "date": "2026-07-01",
+            "num": "INV-001622",
+            "date": "2026-07-21",
             "due": "2026-07-31",
-            "amount": 1151.42,
-            "balance": 1151.42
+            "amount": 3216.91,
+            "balance": 3216.91
           },
           {
-            "num": "11368451",
-            "date": "2026-07-01",
-            "due": "2026-07-31",
-            "amount": 1151.42,
-            "balance": 1151.42
+            "num": "INV-001810",
+            "date": "2026-02-09",
+            "due": "2026-02-09",
+            "amount": 1332.0,
+            "balance": 1332.0
           },
           {
-            "num": "11366268",
-            "date": "2026-06-30",
-            "due": "2026-07-30",
-            "amount": 311.73,
-            "balance": 311.73
-          },
-          {
-            "num": "11365547",
-            "date": "2026-06-29",
-            "due": "2026-07-29",
-            "amount": 1151.42,
-            "balance": 1151.42
+            "num": "INV-001801",
+            "date": "2026-01-09",
+            "due": "2026-01-09",
+            "amount": 155.0,
+            "balance": 155.0
           }
         ]
       },
       {
         "vendor": "ClearChem Diagnostics, Inc",
-        "balance": 912.2,
-        "count": 3,
+        "balance": 1177.59,
+        "count": 7,
         "pastdue": 912.2,
         "bills": [
+          {
+            "num": "25793",
+            "date": "2026-09-02",
+            "due": "2026-10-02",
+            "amount": 34.79,
+            "balance": 34.79
+          },
+          {
+            "num": "25790",
+            "date": "2026-09-01",
+            "due": "2026-10-01",
+            "amount": 61.6,
+            "balance": 61.6
+          },
+          {
+            "num": "25792",
+            "date": "2026-09-01",
+            "due": "2026-10-01",
+            "amount": 76.6,
+            "balance": 76.6
+          },
+          {
+            "num": "25765",
+            "date": "2026-08-27",
+            "due": "2026-09-26",
+            "amount": 92.4,
+            "balance": 92.4
+          },
           {
             "num": "25665",
             "date": "2026-07-07",
@@ -3216,6 +3301,21 @@
             "balance": 135.2
           }
         ]
+      },
+      {
+        "vendor": "Allora Biotech LLC",
+        "balance": 115.0,
+        "count": 1,
+        "pastdue": 115.0,
+        "bills": [
+          {
+            "num": "1568",
+            "date": "2026-07-13",
+            "due": "2026-07-13",
+            "amount": 115.0,
+            "balance": 115.0
+          }
+        ]
       }
     ]
   },
@@ -3223,9 +3323,9 @@
     "name": "Chase CHK (9219)",
     "balance": 60619.43,
     "source": "Bank balance",
-    "book_balance": 60809.64,
+    "book_balance": 48671.01,
     "bank_asof": "2026-07-23",
-    "as_of": "2026-09-04 09:53 AM PDT"
+    "as_of": "2026-09-05 09:47 AM PDT"
   },
-  "pulled_at": "2026-09-04 09:55 AM PT"
+  "pulled_at": "2026-09-05 09:50 AM PT"
 }
