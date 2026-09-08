@@ -1,6 +1,6 @@
 {
   "account": "Jit 4 You (1852255530)",
-  "pulled_at": "2026-09-07 09:51 AM PT",
+  "pulled_at": "2026-09-08 09:54 AM PT",
   "currency": "USD",
   "note_click_trails": "Google Ads exposes only the landing page (the first page a click lands on). For these Shopping campaigns the Final URL comes back empty, so the page-to-page user journey is not available from Google Ads. The full click trail lives in Google Analytics (GA4) \u2014 connect GA4 to add a real user-journey view.",
   "intervals": [
@@ -17,14 +17,14 @@
           "name": "Siemens_Sales_Shopping",
           "status": "enabled",
           "type": "Shopping",
-          "clicks": 102,
-          "impressions": 714,
-          "ctr": 0.1429,
-          "cpc": 0.6124,
-          "cost": 62.46,
+          "clicks": 101,
+          "impressions": 610,
+          "ctr": 0.1656,
+          "cpc": 0.6686,
+          "cost": 67.53,
           "conversions": 2,
           "conv_value": 0,
-          "page_views": 210,
+          "page_views": 208,
           "add_to_cart": 2,
           "purchases": 0,
           "roas": 0,
@@ -34,62 +34,28 @@
           "name": "ViroVac Shopping_Shopify",
           "status": "enabled",
           "type": "Shopping",
-          "clicks": 30,
-          "impressions": 3632,
-          "ctr": 0.0083,
-          "cpc": 1.7323,
-          "cost": 51.97,
+          "clicks": 23,
+          "impressions": 3162,
+          "ctr": 0.0073,
+          "cpc": 2.12,
+          "cost": 48.76,
           "conversions": 0,
           "conv_value": 0,
-          "page_views": 83,
+          "page_views": 70,
           "add_to_cart": 0,
           "purchases": 0,
           "roas": 0,
           "start_date": "2026-05-13"
         },
         {
-          "name": "BeckmanCoulter_Sales_Search",
-          "status": "enabled",
-          "type": "Search",
-          "clicks": 4,
-          "impressions": 30,
-          "ctr": 0.1333,
-          "cpc": 9.3325,
-          "cost": 37.33,
-          "conversions": 6,
-          "conv_value": 1637,
-          "page_views": 48,
-          "add_to_cart": 4,
-          "purchases": 2,
-          "roas": 43.8521,
-          "start_date": "2026-06-17"
-        },
-        {
-          "name": "BeckmanCoulter_Shopping_Test",
-          "status": "enabled",
-          "type": "Shopping",
-          "clicks": 22,
-          "impressions": 1789,
-          "ctr": 0.0123,
-          "cpc": 0.8645,
-          "cost": 19.02,
-          "conversions": 0,
-          "conv_value": 0,
-          "page_views": 38,
-          "add_to_cart": 0,
-          "purchases": 0,
-          "roas": 0,
-          "start_date": "2026-06-10"
-        },
-        {
           "name": "Siemens_Search",
           "status": "enabled",
           "type": "Search",
-          "clicks": 3,
-          "impressions": 178,
-          "ctr": 0.0169,
-          "cpc": 4.8767,
-          "cost": 14.63,
+          "clicks": 4,
+          "impressions": 160,
+          "ctr": 0.025,
+          "cpc": 4.9,
+          "cost": 19.6,
           "conversions": 0,
           "conv_value": 0,
           "page_views": 18,
@@ -97,6 +63,40 @@
           "purchases": 0,
           "roas": 0,
           "start_date": "2026-06-19"
+        },
+        {
+          "name": "BeckmanCoulter_Shopping_Test",
+          "status": "enabled",
+          "type": "Shopping",
+          "clicks": 19,
+          "impressions": 1731,
+          "ctr": 0.011,
+          "cpc": 0.8547,
+          "cost": 16.24,
+          "conversions": 0,
+          "conv_value": 0,
+          "page_views": 36,
+          "add_to_cart": 0,
+          "purchases": 0,
+          "roas": 0,
+          "start_date": "2026-06-10"
+        },
+        {
+          "name": "BeckmanCoulter_Sales_Search",
+          "status": "enabled",
+          "type": "Search",
+          "clicks": 1,
+          "impressions": 25,
+          "ctr": 0.04,
+          "cpc": 4.93,
+          "cost": 4.93,
+          "conversions": 2,
+          "conv_value": 1637,
+          "page_views": 4,
+          "add_to_cart": 0,
+          "purchases": 2,
+          "roas": 332.0487,
+          "start_date": "2026-06-17"
         }
       ]
     },
@@ -105,29 +105,12 @@
       "label": "Last 30 days",
       "campaigns": [
         {
-          "name": "ViroVac Shopping_Shopify",
-          "status": "enabled",
-          "type": "Shopping",
-          "clicks": 513,
-          "impressions": 20199,
-          "ctr": 0.0254,
-          "cpc": 1.1692,
-          "cost": 599.82,
-          "conversions": 2,
-          "conv_value": 0,
-          "page_views": 1210,
-          "add_to_cart": 2,
-          "purchases": 0,
-          "roas": 0,
-          "start_date": "2026-05-13"
-        },
-        {
           "name": "ViroVac_Search",
           "status": "",
           "type": "Search",
           "clicks": 115,
-          "impressions": 3298,
-          "ctr": 0.0349,
+          "impressions": 3256,
+          "ctr": 0.0353,
           "cpc": 5.1507,
           "cost": 592.33,
           "conversions": 0,
@@ -139,17 +122,34 @@
           "start_date": ""
         },
         {
+          "name": "ViroVac Shopping_Shopify",
+          "status": "enabled",
+          "type": "Shopping",
+          "clicks": 488,
+          "impressions": 20158,
+          "ctr": 0.0242,
+          "cpc": 1.1552,
+          "cost": 563.73,
+          "conversions": 2,
+          "conv_value": 0,
+          "page_views": 1164,
+          "add_to_cart": 2,
+          "purchases": 0,
+          "roas": 0,
+          "start_date": "2026-05-13"
+        },
+        {
           "name": "GeneralLabReagent_Search",
           "status": "",
           "type": "Search",
-          "clicks": 36,
-          "impressions": 657,
-          "ctr": 0.0548,
-          "cpc": 11.3747,
-          "cost": 409.49,
+          "clicks": 34,
+          "impressions": 625,
+          "ctr": 0.0544,
+          "cpc": 11.6047,
+          "cost": 394.56,
           "conversions": 0,
           "conv_value": 0,
-          "page_views": 132,
+          "page_views": 124,
           "add_to_cart": 0,
           "purchases": 0,
           "roas": 0,
@@ -160,8 +160,8 @@
           "status": "enabled",
           "type": "Search",
           "clicks": 34,
-          "impressions": 371,
-          "ctr": 0.0916,
+          "impressions": 365,
+          "ctr": 0.0932,
           "cpc": 9.6729,
           "cost": 328.88,
           "conversions": 0,
@@ -176,14 +176,14 @@
           "name": "Siemens_Search",
           "status": "enabled",
           "type": "Search",
-          "clicks": 28,
-          "impressions": 976,
-          "ctr": 0.0287,
-          "cpc": 10.1759,
-          "cost": 284.93,
+          "clicks": 27,
+          "impressions": 1007,
+          "ctr": 0.0268,
+          "cpc": 9.9054,
+          "cost": 267.45,
           "conversions": 0,
           "conv_value": 0,
-          "page_views": 94,
+          "page_views": 86,
           "add_to_cart": 0,
           "purchases": 0,
           "roas": 0,
@@ -193,31 +193,31 @@
           "name": "BeckmanCoulter_Sales_Search",
           "status": "enabled",
           "type": "Search",
-          "clicks": 16,
-          "impressions": 156,
-          "ctr": 0.1026,
-          "cpc": 13.2406,
-          "cost": 211.85,
+          "clicks": 17,
+          "impressions": 159,
+          "ctr": 0.1069,
+          "cpc": 12.7518,
+          "cost": 216.78,
           "conversions": 6.95998,
           "conv_value": 1637,
           "page_views": 130,
           "add_to_cart": 14,
           "purchases": 2,
-          "roas": 7.7272,
+          "roas": 7.5514,
           "start_date": "2026-06-17"
         },
         {
           "name": "Abbott_Sales_Shopping",
           "status": "enabled",
           "type": "Shopping",
-          "clicks": 52,
-          "impressions": 5196,
-          "ctr": 0.01,
-          "cpc": 3.6235,
-          "cost": 188.42,
+          "clicks": 50,
+          "impressions": 4786,
+          "ctr": 0.0104,
+          "cpc": 3.7128,
+          "cost": 185.64,
           "conversions": 0,
           "conv_value": 0,
-          "page_views": 96,
+          "page_views": 92,
           "add_to_cart": 0,
           "purchases": 0,
           "roas": 0,
@@ -227,14 +227,14 @@
           "name": "Siemens_Sales_Shopping",
           "status": "enabled",
           "type": "Shopping",
-          "clicks": 252,
-          "impressions": 3306,
-          "ctr": 0.0762,
-          "cpc": 0.6302,
-          "cost": 158.81,
+          "clicks": 257,
+          "impressions": 3270,
+          "ctr": 0.0786,
+          "cpc": 0.6502,
+          "cost": 167.1,
           "conversions": 26.099088,
           "conv_value": 0,
-          "page_views": 489,
+          "page_views": 501,
           "add_to_cart": 28,
           "purchases": 0,
           "roas": 0,
@@ -244,14 +244,14 @@
           "name": "BeckmanCoulter_Shopping_Test",
           "status": "enabled",
           "type": "Shopping",
-          "clicks": 124,
-          "impressions": 9991,
-          "ctr": 0.0124,
-          "cpc": 0.9223,
-          "cost": 114.36,
+          "clicks": 118,
+          "impressions": 9897,
+          "ctr": 0.0119,
+          "cpc": 0.9161,
+          "cost": 108.1,
           "conversions": 2,
           "conv_value": 0,
-          "page_views": 268,
+          "page_views": 258,
           "add_to_cart": 3,
           "purchases": 0,
           "roas": 0,
@@ -267,14 +267,14 @@
           "name": "Siemens_Sales_Shopping",
           "status": "enabled",
           "type": "Shopping",
-          "clicks": 102,
-          "impressions": 714,
-          "ctr": 0.1429,
-          "cpc": 0.6124,
-          "cost": 62.46,
+          "clicks": 107,
+          "impressions": 752,
+          "ctr": 0.1423,
+          "cpc": 0.6612,
+          "cost": 70.75,
           "conversions": 2,
           "conv_value": 0,
-          "page_views": 210,
+          "page_views": 222,
           "add_to_cart": 2,
           "purchases": 0,
           "roas": 0,
@@ -284,14 +284,14 @@
           "name": "ViroVac Shopping_Shopify",
           "status": "enabled",
           "type": "Shopping",
-          "clicks": 30,
-          "impressions": 3632,
-          "ctr": 0.0083,
-          "cpc": 1.7323,
-          "cost": 51.97,
+          "clicks": 33,
+          "impressions": 4149,
+          "ctr": 0.008,
+          "cpc": 1.7106,
+          "cost": 56.45,
           "conversions": 0,
           "conv_value": 0,
-          "page_views": 83,
+          "page_views": 89,
           "add_to_cart": 0,
           "purchases": 0,
           "roas": 0,
@@ -301,31 +301,31 @@
           "name": "BeckmanCoulter_Sales_Search",
           "status": "enabled",
           "type": "Search",
-          "clicks": 4,
-          "impressions": 30,
-          "ctr": 0.1333,
-          "cpc": 9.3325,
-          "cost": 37.33,
+          "clicks": 5,
+          "impressions": 34,
+          "ctr": 0.1471,
+          "cpc": 8.452,
+          "cost": 42.26,
           "conversions": 6,
           "conv_value": 1637,
           "page_views": 48,
           "add_to_cart": 4,
           "purchases": 2,
-          "roas": 43.8521,
+          "roas": 38.7364,
           "start_date": "2026-06-17"
         },
         {
           "name": "BeckmanCoulter_Shopping_Test",
           "status": "enabled",
           "type": "Shopping",
-          "clicks": 22,
-          "impressions": 1789,
-          "ctr": 0.0123,
-          "cpc": 0.8645,
-          "cost": 19.02,
+          "clicks": 23,
+          "impressions": 2052,
+          "ctr": 0.0112,
+          "cpc": 0.8526,
+          "cost": 19.61,
           "conversions": 0,
           "conv_value": 0,
-          "page_views": 38,
+          "page_views": 40,
           "add_to_cart": 0,
           "purchases": 0,
           "roas": 0,
@@ -335,11 +335,11 @@
           "name": "Siemens_Search",
           "status": "enabled",
           "type": "Search",
-          "clicks": 3,
-          "impressions": 178,
-          "ctr": 0.0169,
-          "cpc": 4.8767,
-          "cost": 14.63,
+          "clicks": 4,
+          "impressions": 220,
+          "ctr": 0.0182,
+          "cpc": 4.9,
+          "cost": 19.6,
           "conversions": 0,
           "conv_value": 0,
           "page_views": 18,
@@ -534,17 +534,17 @@
           "name": "ViroVac Shopping_Shopify",
           "status": "enabled",
           "type": "Shopping",
-          "clicks": 1529,
-          "impressions": 80506,
-          "ctr": 0.019,
-          "cpc": 1.6982,
-          "cost": 2596.53,
+          "clicks": 1532,
+          "impressions": 81023,
+          "ctr": 0.0189,
+          "cpc": 1.6978,
+          "cost": 2601.01,
           "conversions": 40,
           "conv_value": 11670,
-          "page_views": 3374,
+          "page_views": 3380,
           "add_to_cart": 36,
           "purchases": 10,
-          "roas": 4.4945,
+          "roas": 4.4867,
           "start_date": "2026-05-13"
         },
         {
@@ -568,17 +568,17 @@
           "name": "Siemens_Search",
           "status": "enabled",
           "type": "Search",
-          "clicks": 71,
-          "impressions": 1880,
-          "ctr": 0.0378,
-          "cpc": 15.9238,
-          "cost": 1130.59,
+          "clicks": 72,
+          "impressions": 1922,
+          "ctr": 0.0375,
+          "cpc": 15.7717,
+          "cost": 1135.56,
           "conversions": 32.12034,
           "conv_value": 670.85,
           "page_views": 367,
           "add_to_cart": 32,
           "purchases": 1,
-          "roas": 0.5934,
+          "roas": 0.5908,
           "start_date": "2026-06-19"
         },
         {
@@ -616,6 +616,23 @@
           "start_date": "2026-06-19"
         },
         {
+          "name": "BeckmanCoulter_Sales_Search",
+          "status": "enabled",
+          "type": "Search",
+          "clicks": 31,
+          "impressions": 274,
+          "ctr": 0.1131,
+          "cpc": 20.035,
+          "cost": 621.09,
+          "conversions": 6.95998,
+          "conv_value": 1637,
+          "page_views": 200,
+          "add_to_cart": 14,
+          "purchases": 2,
+          "roas": 2.6357,
+          "start_date": "2026-06-17"
+        },
+        {
           "name": "Abbott_Sales_Shopping",
           "status": "enabled",
           "type": "Shopping",
@@ -633,34 +650,17 @@
           "start_date": "2026-06-22"
         },
         {
-          "name": "BeckmanCoulter_Sales_Search",
-          "status": "enabled",
-          "type": "Search",
-          "clicks": 30,
-          "impressions": 270,
-          "ctr": 0.1111,
-          "cpc": 20.5385,
-          "cost": 616.16,
-          "conversions": 6.95998,
-          "conv_value": 1637,
-          "page_views": 200,
-          "add_to_cart": 14,
-          "purchases": 2,
-          "roas": 2.6568,
-          "start_date": "2026-06-17"
-        },
-        {
           "name": "Siemens_Sales_Shopping",
           "status": "enabled",
           "type": "Shopping",
-          "clicks": 317,
-          "impressions": 9461,
-          "ctr": 0.0335,
-          "cpc": 1.3815,
-          "cost": 437.95,
+          "clicks": 322,
+          "impressions": 9499,
+          "ctr": 0.0339,
+          "cpc": 1.3858,
+          "cost": 446.24,
           "conversions": 26.099088,
           "conv_value": 0,
-          "page_views": 620,
+          "page_views": 632,
           "add_to_cart": 28,
           "purchases": 0,
           "roas": 0,
@@ -670,14 +670,14 @@
           "name": "BeckmanCoulter_Shopping_Test",
           "status": "enabled",
           "type": "Shopping",
-          "clicks": 382,
-          "impressions": 36312,
+          "clicks": 383,
+          "impressions": 36575,
           "ctr": 0.0105,
-          "cpc": 0.9686,
-          "cost": 369.99,
+          "cpc": 0.9676,
+          "cost": 370.58,
           "conversions": 2,
           "conv_value": 0,
-          "page_views": 874,
+          "page_views": 876,
           "add_to_cart": 26,
           "purchases": 0,
           "roas": 0,
@@ -689,50 +689,24 @@
   "journey": {
     "today": {
       "summary": {
-        "sessions": 1,
-        "engaged": 1,
+        "sessions": 0,
+        "engaged": 0,
         "conversions": 0,
-        "bounce": 0.0,
-        "pages_per_session": 2.0,
-        "engagement_rate": 1.0
+        "bounce": 0,
+        "pages_per_session": 0,
+        "engagement_rate": 0
       },
-      "campaigns": [
-        {
-          "campaign": "ViroVac Shopping_Shopify",
-          "landing_pages": [
-            {
-              "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-startup-package",
-              "sessions": 1,
-              "engaged": 1,
-              "pages_per_session": 2,
-              "bounce": 0,
-              "conversions": 0
-            }
-          ],
-          "totals": {
-            "sessions": 1,
-            "engaged": 1,
-            "conversions": 0
-          }
-        }
-      ],
-      "events": [
-        {
-          "event": "view_item",
-          "count": 2,
-          "conversions": 0,
-          "is_key": false
-        }
-      ]
+      "campaigns": [],
+      "events": []
     },
     "last_7_days": {
       "summary": {
-        "sessions": 195,
-        "engaged": 91,
-        "conversions": 8,
-        "bounce": 0.533,
-        "pages_per_session": 2.03,
-        "engagement_rate": 0.467
+        "sessions": 181,
+        "engaged": 82,
+        "conversions": 4,
+        "bounce": 0.547,
+        "pages_per_session": 1.85,
+        "engagement_rate": 0.453
       },
       "campaigns": [
         {
@@ -741,9 +715,9 @@
             {
               "path": "/products/siemens-atellica-10995569-siemens-atellica-10995569-ferritin",
               "sessions": 117,
-              "engaged": 53,
+              "engaged": 55,
               "pages_per_session": 1.62,
-              "bounce": 0.547,
+              "bounce": 0.53,
               "conversions": 2
             },
             {
@@ -759,14 +733,6 @@
               "sessions": 1,
               "engaged": 1,
               "pages_per_session": 10,
-              "bounce": 0,
-              "conversions": 0
-            },
-            {
-              "path": "/products/siemens-atellica-10995628-siemens-atellica-10995628-insulin",
-              "sessions": 1,
-              "engaged": 1,
-              "pages_per_session": 2,
               "bounce": 0,
               "conversions": 0
             },
@@ -788,8 +754,8 @@
             }
           ],
           "totals": {
-            "sessions": 123,
-            "engaged": 58,
+            "sessions": 122,
+            "engaged": 59,
             "conversions": 2
           }
         },
@@ -798,26 +764,18 @@
           "landing_pages": [
             {
               "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-startup-package",
-              "sessions": 15,
-              "engaged": 7,
-              "pages_per_session": 2,
-              "bounce": 0.533,
+              "sessions": 11,
+              "engaged": 3,
+              "pages_per_session": 2.18,
+              "bounce": 0.727,
               "conversions": 0
             },
             {
               "path": "/products/conmed-virovac-vt10524-surgical-smoke-evacuation-tubing-24-box",
-              "sessions": 11,
-              "engaged": 4,
-              "pages_per_session": 1.45,
-              "bounce": 0.636,
-              "conversions": 0
-            },
-            {
-              "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-device-only",
-              "sessions": 5,
-              "engaged": 1,
-              "pages_per_session": 2,
-              "bounce": 0.8,
+              "sessions": 9,
+              "engaged": 3,
+              "pages_per_session": 1.33,
+              "bounce": 0.667,
               "conversions": 0
             },
             {
@@ -837,11 +795,11 @@
               "conversions": 0
             },
             {
-              "path": "/products/conmed-virovac-vs35302-surgical-smoke-evacuator-filter-2-box",
-              "sessions": 2,
-              "engaged": 0,
-              "pages_per_session": 1.5,
-              "bounce": 1,
+              "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-device-only",
+              "sessions": 3,
+              "engaged": 1,
+              "pages_per_session": 2.67,
+              "bounce": 0.667,
               "conversions": 0
             },
             {
@@ -851,11 +809,19 @@
               "pages_per_session": 2,
               "bounce": 1,
               "conversions": 0
+            },
+            {
+              "path": "/products/conmed-virovac-vs35302-surgical-smoke-evacuator-filter-2-box",
+              "sessions": 1,
+              "engaged": 0,
+              "pages_per_session": 2,
+              "bounce": 1,
+              "conversions": 0
             }
           ],
           "totals": {
-            "sessions": 42,
-            "engaged": 16,
+            "sessions": 33,
+            "engaged": 11,
             "conversions": 0
           }
         },
@@ -864,10 +830,10 @@
           "landing_pages": [
             {
               "path": "/products/beckman-coulter-33025-access-ferritin-calibrator-s0-s5",
-              "sessions": 8,
+              "sessions": 10,
               "engaged": 6,
-              "pages_per_session": 1.5,
-              "bounce": 0.25,
+              "pages_per_session": 1.4,
+              "bounce": 0.4,
               "conversions": 0
             },
             {
@@ -911,15 +877,15 @@
               "conversions": 0
             },
             {
-              "path": "/products/beckman-coulter-a98264-cardiac-troponin-i-2x50-tests",
+              "path": "/products/beckman-coulter-b24838-access-25-oh-vitamin-d-reagent-100-determinations",
               "sessions": 1,
-              "engaged": 1,
+              "engaged": 0,
               "pages_per_session": 2,
-              "bounce": 0,
+              "bounce": 1,
               "conversions": 0
             },
             {
-              "path": "/products/beckman-coulter-b24838-access-25-oh-vitamin-d-reagent-100-determinations",
+              "path": "/products/beckman-coulter-b63284-access-tsh-stimulating-hormone-3rd-is-2-x-100-determin",
               "sessions": 1,
               "engaged": 0,
               "pages_per_session": 2,
@@ -929,50 +895,8 @@
           ],
           "totals": {
             "sessions": 22,
-            "engaged": 9,
+            "engaged": 8,
             "conversions": 0
-          }
-        },
-        {
-          "campaign": "BeckmanCoulter_Sales_Search",
-          "landing_pages": [
-            {
-              "path": "/collections/vendor-beckman-coulter",
-              "sessions": 2,
-              "engaged": 2,
-              "pages_per_session": 4,
-              "bounce": 0,
-              "conversions": 0
-            },
-            {
-              "path": "/cart",
-              "sessions": 1,
-              "engaged": 1,
-              "pages_per_session": 4,
-              "bounce": 0,
-              "conversions": 2
-            },
-            {
-              "path": "/collections/all",
-              "sessions": 1,
-              "engaged": 1,
-              "pages_per_session": 10,
-              "bounce": 0,
-              "conversions": 0
-            },
-            {
-              "path": "/products/beckman-coulter-a16792-access-wash-buffer-ii",
-              "sessions": 1,
-              "engaged": 1,
-              "pages_per_session": 26,
-              "bounce": 0,
-              "conversions": 4
-            }
-          ],
-          "totals": {
-            "sessions": 5,
-            "engaged": 5,
-            "conversions": 6
           }
         },
         {
@@ -1000,24 +924,42 @@
             "engaged": 3,
             "conversions": 0
           }
+        },
+        {
+          "campaign": "BeckmanCoulter_Sales_Search",
+          "landing_pages": [
+            {
+              "path": "/cart",
+              "sessions": 1,
+              "engaged": 1,
+              "pages_per_session": 4,
+              "bounce": 0,
+              "conversions": 2
+            }
+          ],
+          "totals": {
+            "sessions": 1,
+            "engaged": 1,
+            "conversions": 2
+          }
         }
       ],
       "events": [
         {
           "event": "view_item",
-          "count": 301,
+          "count": 276,
           "conversions": 0,
           "is_key": false
         },
         {
           "event": "add_to_cart",
-          "count": 6,
-          "conversions": 6,
+          "count": 2,
+          "conversions": 2,
           "is_key": true
         },
         {
           "event": "begin_checkout",
-          "count": 9,
+          "count": 3,
           "conversions": 0,
           "is_key": false
         },
@@ -1031,12 +973,12 @@
     },
     "last_30_days": {
       "summary": {
-        "sessions": 1451,
-        "engaged": 914,
+        "sessions": 1418,
+        "engaged": 885,
         "conversions": 49,
-        "bounce": 0.37,
+        "bounce": 0.376,
         "pages_per_session": 1.94,
-        "engagement_rate": 0.63
+        "engagement_rate": 0.624
       },
       "campaigns": [
         {
@@ -1044,26 +986,26 @@
           "landing_pages": [
             {
               "path": "/products/conmed-virovac-armstand",
-              "sessions": 288,
+              "sessions": 285,
               "engaged": 264,
               "pages_per_session": 1.45,
-              "bounce": 0.083,
+              "bounce": 0.074,
               "conversions": 0
             },
             {
               "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-startup-package",
-              "sessions": 228,
-              "engaged": 168,
-              "pages_per_session": 1.71,
-              "bounce": 0.263,
+              "sessions": 205,
+              "engaged": 146,
+              "pages_per_session": 1.72,
+              "bounce": 0.288,
               "conversions": 2
             },
             {
               "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-device-only",
-              "sessions": 117,
-              "engaged": 102,
-              "pages_per_session": 1.73,
-              "bounce": 0.128,
+              "sessions": 114,
+              "engaged": 99,
+              "pages_per_session": 1.74,
+              "bounce": 0.132,
               "conversions": 0
             },
             {
@@ -1076,10 +1018,10 @@
             },
             {
               "path": "/products/conmed-virovac-vt10524-surgical-smoke-evacuation-tubing-24-box",
-              "sessions": 40,
-              "engaged": 16,
-              "pages_per_session": 1.7,
-              "bounce": 0.6,
+              "sessions": 38,
+              "engaged": 14,
+              "pages_per_session": 1.74,
+              "bounce": 0.632,
               "conversions": 0
             },
             {
@@ -1100,8 +1042,8 @@
             }
           ],
           "totals": {
-            "sessions": 763,
-            "engaged": 614,
+            "sessions": 732,
+            "engaged": 587,
             "conversions": 2
           }
         },
@@ -1110,10 +1052,10 @@
           "landing_pages": [
             {
               "path": "/products/siemens-atellica-10995569-siemens-atellica-10995569-ferritin",
-              "sessions": 255,
-              "engaged": 90,
-              "pages_per_session": 1.77,
-              "bounce": 0.647,
+              "sessions": 264,
+              "engaged": 96,
+              "pages_per_session": 1.75,
+              "bounce": 0.636,
               "conversions": 28
             },
             {
@@ -1174,8 +1116,8 @@
             }
           ],
           "totals": {
-            "sessions": 271,
-            "engaged": 97,
+            "sessions": 280,
+            "engaged": 103,
             "conversions": 28
           }
         },
@@ -1191,12 +1133,12 @@
               "conversions": 0
             },
             {
-              "path": "/products/beckman-coulter-osr6621-glucose-hexokinase-4x3755-tests",
+              "path": "/products/beckman-coulter-33025-access-ferritin-calibrator-s0-s5",
               "sessions": 12,
-              "engaged": 6,
-              "pages_per_session": 2.33,
-              "bounce": 0.5,
-              "conversions": 2
+              "engaged": 8,
+              "pages_per_session": 1.33,
+              "bounce": 0.333,
+              "conversions": 0
             },
             {
               "path": "/products/beckman-coulter-b63284-access-tsh-stimulating-hormone-3rd-is-2-x-100-determin",
@@ -1215,20 +1157,12 @@
               "conversions": 0
             },
             {
-              "path": "/products/beckman-coulter-33025-access-ferritin-calibrator-s0-s5",
-              "sessions": 10,
-              "engaged": 8,
-              "pages_per_session": 1.4,
-              "bounce": 0.2,
-              "conversions": 0
-            },
-            {
-              "path": "/products/beckman-coulter-c39450-reagent-access-hiv-ag-ab-combo-ref",
+              "path": "/products/beckman-coulter-osr6621-glucose-hexokinase-4x3755-tests",
               "sessions": 8,
-              "engaged": 1,
-              "pages_per_session": 1.75,
-              "bounce": 0.875,
-              "conversions": 0
+              "engaged": 4,
+              "pages_per_session": 2.5,
+              "bounce": 0.5,
+              "conversions": 2
             },
             {
               "path": "/",
@@ -1245,11 +1179,19 @@
               "pages_per_session": 1.67,
               "bounce": 0.833,
               "conversions": 0
+            },
+            {
+              "path": "/products/beckman-coulter-c39450-reagent-access-hiv-ag-ab-combo-ref",
+              "sessions": 6,
+              "engaged": 1,
+              "pages_per_session": 2,
+              "bounce": 0.833,
+              "conversions": 0
             }
           ],
           "totals": {
-            "sessions": 143,
-            "engaged": 47,
+            "sessions": 138,
+            "engaged": 44,
             "conversions": 3
           }
         },
@@ -1308,10 +1250,10 @@
             },
             {
               "path": "/products/architect-4p5201-hemoglobin-a1c-calib",
-              "sessions": 11,
-              "engaged": 5,
-              "pages_per_session": 2.91,
-              "bounce": 0.545,
+              "sessions": 9,
+              "engaged": 4,
+              "pages_per_session": 3.11,
+              "bounce": 0.556,
               "conversions": 0
             },
             {
@@ -1364,58 +1306,8 @@
             }
           ],
           "totals": {
-            "sessions": 44,
-            "engaged": 24,
-            "conversions": 0
-          }
-        },
-        {
-          "campaign": "GeneralLabReagent_Search",
-          "landing_pages": [
-            {
-              "path": "/",
-              "sessions": 20,
-              "engaged": 14,
-              "pages_per_session": 4.1,
-              "bounce": 0.3,
-              "conversions": 0
-            },
-            {
-              "path": "/collections/all",
-              "sessions": 6,
-              "engaged": 5,
-              "pages_per_session": 7.17,
-              "bounce": 0.167,
-              "conversions": 0
-            },
-            {
-              "path": "(not set)",
-              "sessions": 2,
-              "engaged": 0,
-              "pages_per_session": 0,
-              "bounce": 1,
-              "conversions": 0
-            },
-            {
-              "path": "/a/search/all",
-              "sessions": 2,
-              "engaged": 2,
-              "pages_per_session": 3,
-              "bounce": 0,
-              "conversions": 0
-            },
-            {
-              "path": "/a/search",
-              "sessions": 1,
-              "engaged": 0,
-              "pages_per_session": 1,
-              "bounce": 1,
-              "conversions": 0
-            }
-          ],
-          "totals": {
-            "sessions": 31,
-            "engaged": 21,
+            "sessions": 42,
+            "engaged": 23,
             "conversions": 0
           }
         },
@@ -1454,14 +1346,64 @@
           }
         },
         {
+          "campaign": "GeneralLabReagent_Search",
+          "landing_pages": [
+            {
+              "path": "/",
+              "sessions": 19,
+              "engaged": 13,
+              "pages_per_session": 4.21,
+              "bounce": 0.316,
+              "conversions": 0
+            },
+            {
+              "path": "/collections/all",
+              "sessions": 5,
+              "engaged": 4,
+              "pages_per_session": 7.4,
+              "bounce": 0.2,
+              "conversions": 0
+            },
+            {
+              "path": "(not set)",
+              "sessions": 2,
+              "engaged": 0,
+              "pages_per_session": 0,
+              "bounce": 1,
+              "conversions": 0
+            },
+            {
+              "path": "/a/search/all",
+              "sessions": 2,
+              "engaged": 2,
+              "pages_per_session": 3,
+              "bounce": 0,
+              "conversions": 0
+            },
+            {
+              "path": "/a/search",
+              "sessions": 1,
+              "engaged": 0,
+              "pages_per_session": 1,
+              "bounce": 1,
+              "conversions": 0
+            }
+          ],
+          "totals": {
+            "sessions": 29,
+            "engaged": 19,
+            "conversions": 0
+          }
+        },
+        {
           "campaign": "Siemens_Search",
           "landing_pages": [
             {
               "path": "/collections/vendor-siemens",
-              "sessions": 25,
-              "engaged": 15,
-              "pages_per_session": 3.6,
-              "bounce": 0.4,
+              "sessions": 23,
+              "engaged": 13,
+              "pages_per_session": 3.57,
+              "bounce": 0.435,
               "conversions": 0
             },
             {
@@ -1482,8 +1424,8 @@
             }
           ],
           "totals": {
-            "sessions": 28,
-            "engaged": 16,
+            "sessions": 26,
+            "engaged": 14,
             "conversions": 0
           }
         },
@@ -1559,7 +1501,7 @@
       "events": [
         {
           "event": "view_item",
-          "count": 1967,
+          "count": 1923,
           "conversions": 0,
           "is_key": false
         },
@@ -1585,12 +1527,12 @@
     },
     "this_month": {
       "summary": {
-        "sessions": 195,
-        "engaged": 91,
+        "sessions": 208,
+        "engaged": 98,
         "conversions": 8,
-        "bounce": 0.533,
-        "pages_per_session": 2.03,
-        "engagement_rate": 0.467
+        "bounce": 0.529,
+        "pages_per_session": 2.0,
+        "engagement_rate": 0.471
       },
       "campaigns": [
         {
@@ -1598,10 +1540,10 @@
           "landing_pages": [
             {
               "path": "/products/siemens-atellica-10995569-siemens-atellica-10995569-ferritin",
-              "sessions": 117,
-              "engaged": 53,
-              "pages_per_session": 1.62,
-              "bounce": 0.547,
+              "sessions": 126,
+              "engaged": 59,
+              "pages_per_session": 1.6,
+              "bounce": 0.532,
               "conversions": 2
             },
             {
@@ -1646,8 +1588,8 @@
             }
           ],
           "totals": {
-            "sessions": 123,
-            "engaged": 58,
+            "sessions": 132,
+            "engaged": 64,
             "conversions": 2
           }
         },
@@ -1656,10 +1598,10 @@
           "landing_pages": [
             {
               "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-startup-package",
-              "sessions": 15,
-              "engaged": 7,
-              "pages_per_session": 2,
-              "bounce": 0.533,
+              "sessions": 17,
+              "engaged": 8,
+              "pages_per_session": 2.12,
+              "bounce": 0.529,
               "conversions": 0
             },
             {
@@ -1712,8 +1654,8 @@
             }
           ],
           "totals": {
-            "sessions": 42,
-            "engaged": 16,
+            "sessions": 44,
+            "engaged": 17,
             "conversions": 0
           }
         },
@@ -1722,10 +1664,10 @@
           "landing_pages": [
             {
               "path": "/products/beckman-coulter-33025-access-ferritin-calibrator-s0-s5",
-              "sessions": 8,
+              "sessions": 10,
               "engaged": 6,
-              "pages_per_session": 1.5,
-              "bounce": 0.25,
+              "pages_per_session": 1.4,
+              "bounce": 0.4,
               "conversions": 0
             },
             {
@@ -1786,7 +1728,7 @@
             }
           ],
           "totals": {
-            "sessions": 22,
+            "sessions": 24,
             "engaged": 9,
             "conversions": 0
           }
@@ -1863,7 +1805,7 @@
       "events": [
         {
           "event": "view_item",
-          "count": 301,
+          "count": 321,
           "conversions": 0,
           "is_key": false
         },
@@ -2437,12 +2379,12 @@
     },
     "this_year": {
       "summary": {
-        "sessions": 5670,
-        "engaged": 2883,
+        "sessions": 5683,
+        "engaged": 2890,
         "conversions": 161,
-        "bounce": 0.492,
+        "bounce": 0.491,
         "pages_per_session": 1.83,
-        "engagement_rate": 0.508
+        "engagement_rate": 0.509
       },
       "campaigns": [
         {
@@ -2450,9 +2392,9 @@
           "landing_pages": [
             {
               "path": "/products/conmed-virovac-vv120-surgical-smoke-evacuator-startup-package",
-              "sessions": 893,
-              "engaged": 619,
-              "pages_per_session": 1.85,
+              "sessions": 895,
+              "engaged": 620,
+              "pages_per_session": 1.86,
               "bounce": 0.307,
               "conversions": 24
             },
@@ -2514,8 +2456,8 @@
             }
           ],
           "totals": {
-            "sessions": 1953,
-            "engaged": 1369,
+            "sessions": 1955,
+            "engaged": 1370,
             "conversions": 46
           }
         },
@@ -2736,7 +2678,7 @@
             }
           ],
           "totals": {
-            "sessions": 451,
+            "sessions": 453,
             "engaged": 169,
             "conversions": 26
           }
@@ -2746,10 +2688,10 @@
           "landing_pages": [
             {
               "path": "/products/siemens-atellica-10995569-siemens-atellica-10995569-ferritin",
-              "sessions": 270,
-              "engaged": 92,
-              "pages_per_session": 1.77,
-              "bounce": 0.659,
+              "sessions": 279,
+              "engaged": 98,
+              "pages_per_session": 1.75,
+              "bounce": 0.649,
               "conversions": 28
             },
             {
@@ -2810,8 +2752,8 @@
             }
           ],
           "totals": {
-            "sessions": 343,
-            "engaged": 112,
+            "sessions": 352,
+            "engaged": 118,
             "conversions": 28
           }
         },
@@ -3153,7 +3095,7 @@
       "events": [
         {
           "event": "view_item",
-          "count": 5698,
+          "count": 5718,
           "conversions": 0,
           "is_key": false
         },
