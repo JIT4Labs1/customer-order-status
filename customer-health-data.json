@@ -1,0 +1,1652 @@
+{
+  "generated_at": "2026-09-08T23:37:11Z",
+  "scope": "Vtiger industry = Independent Diagnostic Lab, accounts with at least one sales order or invoice",
+  "stale_days": 45,
+  "counts": {
+    "total": 30,
+    "alert": 4,
+    "watch": 10,
+    "ok": 16,
+    "manual_due": 29
+  },
+  "sources": {
+    "clia": "CMS Provider of Services \u2014 CLIA (quarterly)",
+    "npi": "NPPES registry (live)",
+    "leie": "OIG LEIE exclusions (monthly)",
+    "manual": "state registry / civil courts / bankruptcy \u2014 assisted weekly run"
+  },
+  "labs": [
+    {
+      "vtiger_id": "3x7509",
+      "name": "Suncoast Labs, LLC",
+      "city": "Neptune Beach",
+      "state": "Florida",
+      "zip": "32266",
+      "country": "US",
+      "phone": "+19042368916",
+      "website": "https://suncoastmedlabs.com/",
+      "email": "yuliya@suncoastmedlabs.com",
+      "so_count": 6,
+      "inv_count": 11,
+      "last_order": "2025-10-17",
+      "clia": {
+        "number": "10D2260316",
+        "facility": "SUNCOAST LABS LLC",
+        "city": "JACKSONVILLE BEACH",
+        "state": "FL",
+        "code": "01",
+        "state_label": "closed",
+        "desc": "Voluntary \u2014 merger or closure",
+        "cert_date": "2024-09-05",
+        "expires": "2026-05-01",
+        "accreditation": [],
+        "match_score": 1.0,
+        "records_on_file": 2,
+        "active_records": 0
+      },
+      "npi": {
+        "number": "1366108219",
+        "name": "SUNCOAST LABS, LLC",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2021-11-15",
+        "official": "Max Janov",
+        "official_title": "President/Owner",
+        "match_score": 1.0
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": true,
+        "ok": false,
+        "code": 0,
+        "url": "https://suncoastmedlabs.com/",
+        "error": "URLError"
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [
+        {
+          "sev": "alert",
+          "text": "CLIA terminated \u2014 voluntary \u2014 merger or closure"
+        },
+        {
+          "sev": "watch",
+          "text": "Website not reachable (URLError)"
+        }
+      ],
+      "status": "alert"
+    },
+    {
+      "vtiger_id": "3x173561",
+      "name": "GENOLAB DIAGNOSTICS",
+      "city": "Fairfield",
+      "state": "New Jersey",
+      "zip": "07004",
+      "country": "US",
+      "phone": "3475741218",
+      "website": "",
+      "email": "salemwael546@gmail.com",
+      "so_count": 1,
+      "inv_count": 4,
+      "last_order": "2026-08-15",
+      "clia": {
+        "number": "31D2220076",
+        "facility": "GENOLAB DIAGNOSTICS LLC",
+        "city": "FAIRFIELD",
+        "state": "NJ",
+        "code": "05",
+        "state_label": "revoked",
+        "desc": "Involuntary \u2014 failed health/safety requirements",
+        "cert_date": "2023-03-28",
+        "expires": "2026-06-29",
+        "accreditation": [],
+        "match_score": 1.5,
+        "records_on_file": 1,
+        "active_records": 0
+      },
+      "npi": {
+        "number": "1831770130",
+        "name": "GENOLAB DIAGNOSTICS LLC",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2021-10-05",
+        "official": "Abdelrahman Awad",
+        "official_title": "CFO",
+        "match_score": 1.0
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": false,
+        "ok": null,
+        "code": 0,
+        "url": ""
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [
+        {
+          "sev": "alert",
+          "text": "CLIA involuntary \u2014 failed health/safety requirements"
+        }
+      ],
+      "status": "alert"
+    },
+    {
+      "vtiger_id": "3x96514",
+      "name": "Sanctus Life Sciences LLC",
+      "city": "Mount Pleasant",
+      "state": "Wisconsin",
+      "zip": "53406",
+      "country": "US",
+      "phone": "2626767372",
+      "website": "https://sanctuslifesciences.com/",
+      "email": "Dino@sanctuslifesciences.org",
+      "so_count": 3,
+      "inv_count": 0,
+      "last_order": "2025-09-23",
+      "clia": {
+        "number": "52D2310692",
+        "facility": "SANCTUS LIFE SCIENCES LLC",
+        "city": "MOUNT PLEASANT",
+        "state": "WI",
+        "code": "01",
+        "state_label": "closed",
+        "desc": "Voluntary \u2014 merger or closure",
+        "cert_date": "2024-09-09",
+        "expires": "2026-02-27",
+        "accreditation": [
+          "AOA"
+        ],
+        "match_score": 1.5,
+        "records_on_file": 1,
+        "active_records": 0
+      },
+      "npi": {
+        "number": "1356175913",
+        "name": "SANCTUS LIFE SCIENCES LLC",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2024-08-27",
+        "official": "Zechin Ni",
+        "official_title": "Manager",
+        "match_score": 1.0
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": true,
+        "ok": false,
+        "code": 0,
+        "url": "https://sanctuslifesciences.com/",
+        "error": "URLError"
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [
+        {
+          "sev": "alert",
+          "text": "CLIA terminated \u2014 voluntary \u2014 merger or closure"
+        },
+        {
+          "sev": "watch",
+          "text": "Website not reachable (URLError)"
+        }
+      ],
+      "status": "alert"
+    },
+    {
+      "vtiger_id": "3x27385",
+      "name": "LAB District",
+      "city": "Miami",
+      "state": "Florida",
+      "zip": "33169",
+      "country": "US",
+      "phone": "'+1 954-251-3791",
+      "website": "https://www.labdistrict.com/",
+      "email": "support@labdistrict.com",
+      "so_count": 1,
+      "inv_count": 0,
+      "last_order": "2025-08-04",
+      "clia": {
+        "number": "10D2220466",
+        "facility": "LAB DISTRICT, INC",
+        "city": "MIAMI",
+        "state": "FL",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "2021-04-13",
+        "expires": "2026-07-25",
+        "accreditation": [
+          "COLA"
+        ],
+        "match_score": 1.5,
+        "records_on_file": 4,
+        "active_records": 1
+      },
+      "npi": {
+        "number": "1881289619",
+        "name": "LAB DISTRICT INC.",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2025-03-06",
+        "official": "Janik Izrael",
+        "official_title": "Owner",
+        "match_score": 1.0
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": true,
+        "ok": false,
+        "code": 404,
+        "url": "https://www.labdistrict.com/"
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [
+        {
+          "sev": "alert",
+          "text": "CLIA certificate expired 2026-07-25"
+        },
+        {
+          "sev": "watch",
+          "text": "Website not reachable (404)"
+        }
+      ],
+      "status": "alert"
+    },
+    {
+      "vtiger_id": "3x17677",
+      "name": "Doctors General Laboratory",
+      "city": "Clarendon Hills",
+      "state": "Illinois",
+      "zip": "60514",
+      "country": "US",
+      "phone": "",
+      "website": "http://www.dglinc.com",
+      "email": "mahendra@dglinc.com",
+      "so_count": 26,
+      "inv_count": 13,
+      "last_order": "2026-08-29",
+      "clia": {
+        "number": "14D0419924",
+        "facility": "DOCTORS GENERAL LABORATORY",
+        "city": "CLARENDON HILLS",
+        "state": "IL",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "2024-12-04",
+        "expires": "2026-12-25",
+        "accreditation": [],
+        "match_score": 1.5,
+        "records_on_file": 1,
+        "active_records": 1
+      },
+      "npi": {
+        "number": "1851392617",
+        "name": "DOCTORS GENERAL LABORATORY CORP",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2022-07-21",
+        "official": "Mahendra Patel",
+        "official_title": "President",
+        "match_score": 1.0
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": true,
+        "ok": false,
+        "code": 503,
+        "url": "http://www.dglinc.com"
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [
+        {
+          "sev": "watch",
+          "text": "Website not reachable (503)"
+        }
+      ],
+      "status": "watch"
+    },
+    {
+      "vtiger_id": "3x156289",
+      "name": "MEDICAL HEALTH LAB",
+      "city": "Sugar Land",
+      "state": "Texas",
+      "zip": "77479",
+      "country": "US",
+      "phone": "+13147371914",
+      "website": "",
+      "email": "ALI@MHLTX.COM",
+      "so_count": 7,
+      "inv_count": 19,
+      "last_order": "2026-09-03",
+      "clia": null,
+      "npi": {
+        "number": "1104839380",
+        "name": "MEDICAL HEALTH LAB INC",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2025-11-26",
+        "official": "Syed Rizvi",
+        "official_title": "Owner",
+        "match_score": 1.0
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": false,
+        "ok": null,
+        "code": 0,
+        "url": ""
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [
+        {
+          "sev": "watch",
+          "text": "No CLIA certificate matched on the CMS file"
+        }
+      ],
+      "status": "watch"
+    },
+    {
+      "vtiger_id": "3x107782",
+      "name": "Epic Laboratory Services Inc",
+      "city": "Brooklyn",
+      "state": "New York",
+      "zip": "11224",
+      "country": "US",
+      "phone": "",
+      "website": "https://epiclabservices.com/",
+      "email": "epiclabservices@gmail.com",
+      "so_count": 4,
+      "inv_count": 1,
+      "last_order": "2026-04-17",
+      "clia": {
+        "number": "33D2149320",
+        "facility": "EPIC LABORATORY SERVICES",
+        "city": "BROOKLYN",
+        "state": "NY",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "2018-05-31",
+        "expires": "2027-03-26",
+        "accreditation": [],
+        "match_score": 1.5,
+        "records_on_file": 1,
+        "active_records": 1
+      },
+      "npi": {
+        "number": "1124613385",
+        "name": "EPIC LABORATORY SERVICES INC.",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2026-02-28",
+        "official": "Lucy Palamarchuk",
+        "official_title": "Billing Manager",
+        "match_score": 1.0
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": true,
+        "ok": false,
+        "code": 0,
+        "url": "https://epiclabservices.com/",
+        "error": "URLError"
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [
+        {
+          "sev": "watch",
+          "text": "Website not reachable (URLError)"
+        }
+      ],
+      "status": "watch"
+    },
+    {
+      "vtiger_id": "3x43675",
+      "name": "Karrington Clinical Laboratory",
+      "city": "Fulton",
+      "state": "Maryland",
+      "zip": "20759",
+      "country": "US",
+      "phone": "+12404320117",
+      "website": "",
+      "email": "Henry.Bell@karringtoncl.com",
+      "so_count": 5,
+      "inv_count": 0,
+      "last_order": "2025-06-30",
+      "clia": null,
+      "npi": {
+        "number": "1619683190",
+        "name": "KARRINGTON CLINICAL LABORATORY, LLC",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2025-05-28",
+        "official": "Henry Bell",
+        "official_title": "Medical Director",
+        "match_score": 1.0
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": false,
+        "ok": null,
+        "code": 0,
+        "url": ""
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [
+        {
+          "sev": "watch",
+          "text": "No CLIA certificate matched on the CMS file"
+        }
+      ],
+      "status": "watch"
+    },
+    {
+      "vtiger_id": "3x166536",
+      "name": "Medlake Laboratory",
+      "city": "Milledgeville",
+      "state": "Georgia",
+      "zip": "31061",
+      "country": "US",
+      "phone": "14784144235",
+      "website": "",
+      "email": "emaddox@medlakelab.com",
+      "so_count": 3,
+      "inv_count": 2,
+      "last_order": "2026-08-28",
+      "clia": null,
+      "npi": null,
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": false,
+        "ok": null,
+        "code": 0,
+        "url": ""
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [
+        {
+          "sev": "watch",
+          "text": "No CLIA certificate matched on the CMS file"
+        }
+      ],
+      "status": "watch"
+    },
+    {
+      "vtiger_id": "3x143809",
+      "name": "Clinical Laboratory, Inc.",
+      "city": "CHRISTIANSTED",
+      "state": "",
+      "zip": "00820",
+      "country": "US",
+      "phone": "+17874104296",
+      "website": "https://google.com",
+      "email": "david@stcroixlab.com",
+      "so_count": 1,
+      "inv_count": 1,
+      "last_order": "2026-04-30",
+      "clia": null,
+      "npi": {
+        "number": "1831846443",
+        "name": "CLINICAL LABORATORY INC",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2024-07-29",
+        "official": "Habeebuddin Mohammed",
+        "official_title": "Owner",
+        "match_score": 1.0
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": false,
+        "ok": null,
+        "code": 0,
+        "url": "https://google.com",
+        "note": "placeholder URL"
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [
+        {
+          "sev": "watch",
+          "text": "No CLIA certificate matched on the CMS file"
+        }
+      ],
+      "status": "watch"
+    },
+    {
+      "vtiger_id": "3x42807",
+      "name": "Acon Labs",
+      "city": "San DIego",
+      "state": "California",
+      "zip": "92121",
+      "country": "US",
+      "phone": "+18588758000",
+      "website": "https://www.aconlabs.com/",
+      "email": "jcarnevale@aconlabs.com",
+      "so_count": 1,
+      "inv_count": 0,
+      "last_order": "2025-03-14",
+      "clia": null,
+      "npi": null,
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": true,
+        "ok": true,
+        "code": 200,
+        "url": "https://www.aconlabs.com/"
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [
+        {
+          "sev": "watch",
+          "text": "No CLIA certificate matched on the CMS file"
+        }
+      ],
+      "status": "watch"
+    },
+    {
+      "vtiger_id": "3x102185",
+      "name": "Dependable lab",
+      "city": "Huntington Beach",
+      "state": "California",
+      "zip": "92746",
+      "country": "US",
+      "phone": "",
+      "website": "",
+      "email": "dependlab@gmail.com",
+      "so_count": 1,
+      "inv_count": 0,
+      "last_order": "2025-10-09",
+      "clia": null,
+      "npi": {
+        "number": "1003424987",
+        "name": "DEPENDABLE HOSPICE SERVICES INC",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2020-07-16",
+        "official": "Erine Bagdasaryan",
+        "official_title": "CEO",
+        "match_score": 0.5
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": false,
+        "ok": null,
+        "code": 0,
+        "url": ""
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [
+        {
+          "sev": "watch",
+          "text": "No CLIA certificate matched on the CMS file"
+        }
+      ],
+      "status": "watch"
+    },
+    {
+      "vtiger_id": "3x116509",
+      "name": "Inpatient Research Clinic",
+      "city": "miami lakes",
+      "state": "Florida",
+      "zip": "33014",
+      "country": "US",
+      "phone": "17869853895",
+      "website": "https://google.com",
+      "email": "dgutierrez@inpatientresearch.com",
+      "so_count": 1,
+      "inv_count": 0,
+      "last_order": "2026-02-04",
+      "clia": {
+        "number": "10D2129576",
+        "facility": "INPATIENT RESEARCH CLINIC, LLC",
+        "city": "MIAMI LAKES",
+        "state": "FL",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "2025-09-05",
+        "expires": "2026-10-22",
+        "accreditation": [],
+        "match_score": 1.5,
+        "records_on_file": 3,
+        "active_records": 3
+      },
+      "npi": null,
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": false,
+        "ok": null,
+        "code": 0,
+        "url": "https://google.com",
+        "note": "placeholder URL"
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [
+        {
+          "sev": "watch",
+          "text": "CLIA certificate expires 2026-10-22 (44d)"
+        }
+      ],
+      "status": "watch"
+    },
+    {
+      "vtiger_id": "3x115571",
+      "name": "United Labaratories",
+      "city": "Miami",
+      "state": "Florida",
+      "zip": "33155",
+      "country": "US",
+      "phone": "+1(305) 663-1590",
+      "website": "www.unitedlaboratoryservice.com",
+      "email": "info@unitedlabservice.com",
+      "so_count": 1,
+      "inv_count": 0,
+      "last_order": "2026-03-18",
+      "clia": {
+        "number": "10D1044073",
+        "facility": "UNITED LABORATORY SERVICES CORP",
+        "city": "MIAMI",
+        "state": "FL",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "2025-05-15",
+        "expires": "2027-10-04",
+        "accreditation": [],
+        "match_score": 1.0,
+        "records_on_file": 4,
+        "active_records": 1
+      },
+      "npi": null,
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": true,
+        "ok": false,
+        "code": 0,
+        "url": "https://www.unitedlaboratoryservice.com",
+        "error": "URLError"
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [
+        {
+          "sev": "watch",
+          "text": "Website not reachable (URLError)"
+        }
+      ],
+      "status": "watch"
+    },
+    {
+      "vtiger_id": "3x100924",
+      "name": "LabX Diagnostic Systems",
+      "city": "Tampa",
+      "state": "Florida",
+      "zip": "33634",
+      "country": "US",
+      "phone": "+18002402074",
+      "website": "https://google.com",
+      "email": "bdelnista@labxdiagnostics.com",
+      "so_count": 29,
+      "inv_count": 26,
+      "last_order": "2026-08-11",
+      "clia": {
+        "number": "10D2067145",
+        "facility": "LABX DIAGNOSTIC SYSTEMS",
+        "city": "TAMPA",
+        "state": "FL",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "2013-10-09",
+        "expires": "2028-06-24",
+        "accreditation": [
+          "COLA"
+        ],
+        "match_score": 1.5,
+        "records_on_file": 1,
+        "active_records": 1
+      },
+      "npi": null,
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": false,
+        "ok": null,
+        "code": 0,
+        "url": "https://google.com",
+        "note": "placeholder URL"
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [],
+      "status": "ok"
+    },
+    {
+      "vtiger_id": "3x134891",
+      "name": "Radiance Diagnostics",
+      "city": "Naperville",
+      "state": "Illinois",
+      "zip": "60563",
+      "country": "US",
+      "phone": "",
+      "website": "",
+      "email": "siva@radiancebiosciences.com",
+      "so_count": 6,
+      "inv_count": 36,
+      "last_order": "2026-09-02",
+      "clia": {
+        "number": "14D2183279",
+        "facility": "RADIANCE DIAGNOSTICS",
+        "city": "NAPERVILLE",
+        "state": "IL",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "2024-09-17",
+        "expires": "2027-04-19",
+        "accreditation": [],
+        "match_score": 1.5,
+        "records_on_file": 1,
+        "active_records": 1
+      },
+      "npi": {
+        "number": "1093582892",
+        "name": "RADIANCE HEALTHCARE SERVICES LLC",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2024-08-26",
+        "official": "Idowu Oshokoya",
+        "official_title": "Executive manager",
+        "match_score": 0.5
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": false,
+        "ok": null,
+        "code": 0,
+        "url": ""
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [],
+      "status": "ok"
+    },
+    {
+      "vtiger_id": "3x127677",
+      "name": "Chicago Lab",
+      "city": "Chicago",
+      "state": "Illinois",
+      "zip": "60645",
+      "country": "US",
+      "phone": "",
+      "website": "chicagolabservices.net",
+      "email": "chicagolabservices@gmail.com",
+      "so_count": 13,
+      "inv_count": 17,
+      "last_order": "2026-08-22",
+      "clia": {
+        "number": "14D2184935",
+        "facility": "CHICAGO LAB SERVICES INC",
+        "city": "CHICAGO",
+        "state": "IL",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "2021-02-09",
+        "expires": "2028-04-08",
+        "accreditation": [
+          "COLA"
+        ],
+        "match_score": 1.5,
+        "records_on_file": 404,
+        "active_records": 142
+      },
+      "npi": {
+        "number": "1902416936",
+        "name": "CHICAGO LAB SERVICES INC",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2023-04-07",
+        "official": "Shaista Habib",
+        "official_title": "PRESIDENT",
+        "match_score": 1.0
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": true,
+        "ok": true,
+        "code": 200,
+        "url": "https://chicagolabservices.net"
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [],
+      "status": "ok"
+    },
+    {
+      "vtiger_id": "3x117785",
+      "name": "3 Alpha Labs, LLC",
+      "city": "Costa Mesa",
+      "state": "California",
+      "zip": "92626",
+      "country": "US",
+      "phone": "+19194410389",
+      "website": "",
+      "email": "bpitula@yahoo.com",
+      "so_count": 9,
+      "inv_count": 18,
+      "last_order": "2026-09-03",
+      "clia": {
+        "number": "05D2338068",
+        "facility": "3 ALPHA LABS, LLC",
+        "city": "COSTA MESA",
+        "state": "CA",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "2026-02-04",
+        "expires": "2028-02-03",
+        "accreditation": [
+          "CAP"
+        ],
+        "match_score": 1.5,
+        "records_on_file": 1,
+        "active_records": 1
+      },
+      "npi": null,
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": false,
+        "ok": null,
+        "code": 0,
+        "url": ""
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [],
+      "status": "ok"
+    },
+    {
+      "vtiger_id": "3x62209",
+      "name": "Stark Family Health Center",
+      "city": "North Canton",
+      "state": "Ohio",
+      "zip": "44720",
+      "country": "US",
+      "phone": "",
+      "website": "",
+      "email": "meechad@yahoo.com",
+      "so_count": 7,
+      "inv_count": 8,
+      "last_order": "2026-09-02",
+      "clia": {
+        "number": "36D1033968",
+        "facility": "STARK FAMILY HEALTH CENTER INC",
+        "city": "CANTON",
+        "state": "OH",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "2025-02-18",
+        "expires": "2027-05-26",
+        "accreditation": [
+          "COLA"
+        ],
+        "match_score": 1.0,
+        "records_on_file": 1,
+        "active_records": 1
+      },
+      "npi": {
+        "number": "1356721435",
+        "name": "STARK FAMILY HEALTH CENTER",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2015-06-04",
+        "official": "Rita Swisher",
+        "official_title": "Office Manager",
+        "match_score": 1.0
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": false,
+        "ok": null,
+        "code": 0,
+        "url": ""
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [],
+      "status": "ok"
+    },
+    {
+      "vtiger_id": "3x103729",
+      "name": "Lucid Labs",
+      "city": "Chicago",
+      "state": "Illinois",
+      "zip": "60659",
+      "country": "US",
+      "phone": "+1929 293 3997",
+      "website": "https://www.lucidlabshealthcare.com/",
+      "email": "lucidlabs20@gmail.com",
+      "so_count": 8,
+      "inv_count": 4,
+      "last_order": "2026-04-17",
+      "clia": {
+        "number": "14D2255904",
+        "facility": "LUCID LABS",
+        "city": "CHICAGO",
+        "state": "IL",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "2023-12-22",
+        "expires": "2027-02-10",
+        "accreditation": [
+          "COLA"
+        ],
+        "match_score": 1.5,
+        "records_on_file": 1,
+        "active_records": 1
+      },
+      "npi": {
+        "number": "1225749856",
+        "name": "LUCID LABS HEALTH LLC",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2025-12-31",
+        "official": "Abdul Zainulabdeen",
+        "official_title": "AUTHORIZED OFFICIAL",
+        "match_score": 0.67
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": true,
+        "ok": true,
+        "code": 200,
+        "url": "https://www.lucidlabshealthcare.com/"
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [],
+      "status": "ok"
+    },
+    {
+      "vtiger_id": "3x161309",
+      "name": "Clinical Diagnostic Laboratories, LLC",
+      "city": "Ashburn",
+      "state": "Virginia",
+      "zip": "20147",
+      "country": "US",
+      "phone": "+17037603222",
+      "website": "",
+      "email": "ibtihaj@clinicaldiagnosticlab.com",
+      "so_count": 5,
+      "inv_count": 6,
+      "last_order": "2026-08-14",
+      "clia": {
+        "number": "49D2150302",
+        "facility": "CLINICAL DIAGNOSTIC LABORATORIES, LLC",
+        "city": "ASHBURN",
+        "state": "VA",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "2018-06-21",
+        "expires": "2027-12-01",
+        "accreditation": [
+          "COLA"
+        ],
+        "match_score": 1.5,
+        "records_on_file": 1,
+        "active_records": 1
+      },
+      "npi": {
+        "number": "1881101475",
+        "name": "CLINICAL DIAGNOSTIC LABORATORIES, LLC",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2025-01-08",
+        "official": "Ibtihaj Awadelkariem",
+        "official_title": "CEO/Technical Director",
+        "match_score": 1.0
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": false,
+        "ok": null,
+        "code": 0,
+        "url": ""
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [],
+      "status": "ok"
+    },
+    {
+      "vtiger_id": "3x158966",
+      "name": "Well Health Labs",
+      "city": "Stafford",
+      "state": "Texas",
+      "zip": "77477",
+      "country": "US",
+      "phone": "+13462734500",
+      "website": "",
+      "email": "joy@wellhealthlabs.com",
+      "so_count": 3,
+      "inv_count": 6,
+      "last_order": "2026-07-15",
+      "clia": {
+        "number": "45D2191023",
+        "facility": "WELL HEALTH LABS",
+        "city": "STAFFORD",
+        "state": "TX",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "2024-11-20",
+        "expires": "2028-03-15",
+        "accreditation": [
+          "COLA"
+        ],
+        "match_score": 1.5,
+        "records_on_file": 1,
+        "active_records": 1
+      },
+      "npi": {
+        "number": "1972117349",
+        "name": "WELL HEALTH LABS, LLC",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2024-09-25",
+        "official": "Mohammad Shoaib",
+        "official_title": "Owner",
+        "match_score": 1.0
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": false,
+        "ok": null,
+        "code": 0,
+        "url": ""
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [],
+      "status": "ok"
+    },
+    {
+      "vtiger_id": "3x101235",
+      "name": "My clinical lab INC",
+      "city": "Sunrise",
+      "state": "Florida",
+      "zip": "33326",
+      "country": "US",
+      "phone": "3055880106",
+      "website": "https://www.myclinicallab.net/",
+      "email": "info@myclinicallab.net",
+      "so_count": 3,
+      "inv_count": 5,
+      "last_order": "2026-03-03",
+      "clia": {
+        "number": "10D2164773",
+        "facility": "MY CLINICAL LAB INC",
+        "city": "SUNRISE",
+        "state": "FL",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "2019-04-12",
+        "expires": "2028-03-03",
+        "accreditation": [
+          "COLA"
+        ],
+        "match_score": 1.5,
+        "records_on_file": 1,
+        "active_records": 1
+      },
+      "npi": {
+        "number": "1386205474",
+        "name": "MY CLINICAL LAB INC",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2019-06-28",
+        "official": "Juan Mesa",
+        "official_title": "President",
+        "match_score": 1.0
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": true,
+        "ok": true,
+        "code": 200,
+        "url": "https://www.myclinicallab.net/"
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [],
+      "status": "ok"
+    },
+    {
+      "vtiger_id": "3x173990",
+      "name": "Clinical Diagnostic Laboratory",
+      "city": "Monroe",
+      "state": "Louisiana",
+      "zip": "71203",
+      "country": "US",
+      "phone": "+1 318-614-9731",
+      "website": "",
+      "email": "djoseph@clinicaldiagnosticlaboratory.com",
+      "so_count": 2,
+      "inv_count": 2,
+      "last_order": "2026-08-19",
+      "clia": {
+        "number": "19D2317858",
+        "facility": "CLINICAL DIAGNOSTIC LABORATORY LLC",
+        "city": "MONROE",
+        "state": "LA",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "2025-02-01",
+        "expires": "2027-01-31",
+        "accreditation": [
+          "COLA"
+        ],
+        "match_score": 1.5,
+        "records_on_file": 1,
+        "active_records": 1
+      },
+      "npi": {
+        "number": "1396544136",
+        "name": "CLINICAL DIAGNOSTIC LABORATORY LLC",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2025-04-23",
+        "official": "Kamal Saadat",
+        "official_title": "Owner",
+        "match_score": 1.0
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": false,
+        "ok": null,
+        "code": 0,
+        "url": ""
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [],
+      "status": "ok"
+    },
+    {
+      "vtiger_id": "3x154882",
+      "name": "L&M LAB CORP",
+      "city": "Somerset",
+      "state": "New Jersey",
+      "zip": "08873",
+      "country": "US",
+      "phone": "",
+      "website": "",
+      "email": "lola.nisan@gmail.com",
+      "so_count": 1,
+      "inv_count": 2,
+      "last_order": "2026-06-08",
+      "clia": {
+        "number": "33D2077603",
+        "facility": "L&M LABORATORY CORP",
+        "city": "SOMERSET",
+        "state": "NJ",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "2014-05-12",
+        "expires": "2027-10-24",
+        "accreditation": [
+          "CAP"
+        ],
+        "match_score": 1.17,
+        "records_on_file": 1,
+        "active_records": 1
+      },
+      "npi": null,
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": false,
+        "ok": null,
+        "code": 0,
+        "url": ""
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [],
+      "status": "ok"
+    },
+    {
+      "vtiger_id": "3x39850",
+      "name": "Community First Medical Center",
+      "city": "Riverside",
+      "state": "Illinois",
+      "zip": "60546",
+      "country": "US",
+      "phone": "+16307156933",
+      "website": "https://www.cfmedicalcenter.com/",
+      "email": "jmarcucci@cfmedicalcenter.com",
+      "so_count": 2,
+      "inv_count": 0,
+      "last_order": "2025-06-23",
+      "clia": {
+        "number": "14D0426601",
+        "facility": "COMMUNITY FIRST MEDICAL CENTER",
+        "city": "CHICAGO",
+        "state": "IL",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "1993-02-03",
+        "expires": "2027-02-08",
+        "accreditation": [
+          "CAP"
+        ],
+        "match_score": 1.0,
+        "records_on_file": 1,
+        "active_records": 1
+      },
+      "npi": {
+        "number": "1033214416",
+        "name": "COMMUNITY FIRST HEALTHCARE OF ILLINOIS, INC",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2026-08-07",
+        "official": "Faisal Master",
+        "official_title": "COO",
+        "match_score": 0.5
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": true,
+        "ok": true,
+        "code": 200,
+        "url": "https://www.cfmedicalcenter.com/"
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [],
+      "status": "ok"
+    },
+    {
+      "vtiger_id": "3x179003",
+      "name": "Luzato medical group",
+      "city": "New York",
+      "state": "New York",
+      "zip": "10040",
+      "country": "US",
+      "phone": "",
+      "website": "",
+      "email": "gegerin@gmail.com",
+      "so_count": 1,
+      "inv_count": 1,
+      "last_order": "2026-09-02",
+      "clia": {
+        "number": "33D2324334",
+        "facility": "LUZATO MEDICAL GROUP PC",
+        "city": "NEW YORK",
+        "state": "NY",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "2026-02-10",
+        "expires": "2028-02-09",
+        "accreditation": [],
+        "match_score": 1.5,
+        "records_on_file": 1,
+        "active_records": 1
+      },
+      "npi": {
+        "number": "1164576385",
+        "name": "LUZATO MEDICAL GROUP P.C.",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2025-09-11",
+        "official": "Jack Bruder",
+        "official_title": "President",
+        "match_score": 0.6
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": false,
+        "ok": null,
+        "code": 0,
+        "url": ""
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [],
+      "status": "ok"
+    },
+    {
+      "vtiger_id": "3x80956",
+      "name": "North American Laboratories",
+      "city": "Bingham Farms",
+      "state": "Michigan",
+      "zip": "48025",
+      "country": "US",
+      "phone": "",
+      "website": "",
+      "email": "vlongueuil@noramlab.com",
+      "so_count": 2,
+      "inv_count": 0,
+      "last_order": "2025-09-09",
+      "clia": {
+        "number": "23D2180520",
+        "facility": "NORTH AMERICAN LABORATORIES, LLC",
+        "city": "BINGHAM FARMS",
+        "state": "MI",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "2020-03-17",
+        "expires": "2027-06-01",
+        "accreditation": [
+          "COLA"
+        ],
+        "match_score": 1.5,
+        "records_on_file": 1,
+        "active_records": 1
+      },
+      "npi": {
+        "number": "1447879978",
+        "name": "NORTH AMERICAN LABORATORIES, LLC",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2020-09-21",
+        "official": "Jennifer Watson",
+        "official_title": "Administrator",
+        "match_score": 1.0
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": false,
+        "ok": null,
+        "code": 0,
+        "url": ""
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [],
+      "status": "ok"
+    },
+    {
+      "vtiger_id": "3x172475",
+      "name": "LabX Diagnotic Systems",
+      "city": "Tampa",
+      "state": "Florida",
+      "zip": "33634",
+      "country": "US",
+      "phone": "+18002402074",
+      "website": "",
+      "email": "bdelnista@labxdiagnostics.com",
+      "so_count": 0,
+      "inv_count": 1,
+      "last_order": "",
+      "clia": {
+        "number": "10D2067145",
+        "facility": "LABX DIAGNOSTIC SYSTEMS",
+        "city": "TAMPA",
+        "state": "FL",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "2013-10-09",
+        "expires": "2028-06-24",
+        "accreditation": [
+          "COLA"
+        ],
+        "match_score": 1.17,
+        "records_on_file": 1,
+        "active_records": 1
+      },
+      "npi": null,
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": false,
+        "ok": null,
+        "code": 0,
+        "url": ""
+      },
+      "manual": {},
+      "manual_due": true,
+      "flags": [],
+      "status": "ok"
+    },
+    {
+      "vtiger_id": "3x131532",
+      "name": "OM Diagnostic Laboratories",
+      "city": "Norwood",
+      "state": "Massachusetts",
+      "zip": "02062",
+      "country": "US",
+      "phone": "+15088736257",
+      "website": "",
+      "email": "karan@omdiagnosticlab.com",
+      "so_count": 12,
+      "inv_count": 28,
+      "last_order": "2026-08-11",
+      "clia": {
+        "number": "22D2227255",
+        "facility": "OM DIAGNOSTIC LABORATORIES, INC",
+        "city": "NORWOOD",
+        "state": "MA",
+        "code": "00",
+        "state_label": "active",
+        "desc": "Active provider",
+        "cert_date": "2021-06-09",
+        "expires": "2028-05-03",
+        "accreditation": [
+          "COLA"
+        ],
+        "match_score": 1.5,
+        "records_on_file": 1,
+        "active_records": 1
+      },
+      "npi": {
+        "number": "1053984807",
+        "name": "OM DIAGNOSTIC LABORATORIES INC.",
+        "status": "A",
+        "deactivated": "",
+        "reactivated": "",
+        "last_updated": "2025-09-15",
+        "official": "Madhukar Sharma",
+        "official_title": "CEO",
+        "match_score": 1.0
+      },
+      "leie": {
+        "checked": true,
+        "hit": false,
+        "detail": ""
+      },
+      "site": {
+        "checked": false,
+        "ok": null,
+        "code": 0,
+        "url": ""
+      },
+      "manual": {
+        "name": "OM Diagnostic Laboratories",
+        "checked_on": "2026-09-08",
+        "checked_by": "assisted run (Claude + Amir)",
+        "registry": {
+          "severity": "ok",
+          "note": "MA SOS ID 001465596, Domestic Profit Corporation, organized 2020-10-19, no dissolution or administrative-dissolution filings. Officer/director/registered agent: Madhukar Sharma.",
+          "source": "corp.sec.state.ma.us"
+        },
+        "courts": {
+          "severity": "ok",
+          "note": "No records in Dedham District Court (business + individual 'Sharma, Madhukar'), Norfolk Superior, Suffolk Superior Civil, BMC Central, or Metro South Housing Court. All searched with Case Type/Status/Party Type = All.",
+          "source": "masscourts.org"
+        },
+        "collections": {
+          "severity": "ok",
+          "note": "No collections suit, small claims, or supplementary process found in the venues above.",
+          "source": "masscourts.org"
+        },
+        "bankruptcy": {
+          "severity": "unverified",
+          "note": "No hit in public bankruptcy indexes, but PACER itself was not searched (login required). Treat as unconfirmed.",
+          "source": "PacerMonitor public index / web search"
+        },
+        "notes": "BBB file opened 2026-02-12, rating A, no complaints. CLIA re-accredited (COLA) through 2028-05-03."
+      },
+      "manual_due": false,
+      "flags": [],
+      "status": "ok"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "_readme": [
+    "Manual layer for the Customer Health tab: the checks that cannot be automated.",
+    "State corporate registries, civil-court dockets and federal bankruptcy are all",
+    "CAPTCHA- or login-gated and differ by state, so they are refreshed during the",
+    "weekly assisted run and recorded here. customer_health.py merges this file into",
+    "customer-health-data.json; anything older than stale_days shows as 'check due'.",
+    "",
+    "Key each lab by its Vtiger account id (preferred) or exact account name.",
+    "severity: 'ok' | 'watch' | 'alert'. Always fill 'note' with what was actually",
+    "found and 'source' with where it was checked, so a later reader can re-verify."
+  ],
+  "labs": {
+    "3x131532": {
+      "name": "OM Diagnostic Laboratories",
+      "checked_on": "2026-09-08",
+      "checked_by": "assisted run (Claude + Amir)",
+      "registry": {
+        "severity": "ok",
+        "note": "MA SOS ID 001465596, Domestic Profit Corporation, organized 2020-10-19, no dissolution or administrative-dissolution filings. Officer/director/registered agent: Madhukar Sharma.",
+        "source": "corp.sec.state.ma.us"
+      },
+      "courts": {
+        "severity": "ok",
+        "note": "No records in Dedham District Court (business + individual 'Sharma, Madhukar'), Norfolk Superior, Suffolk Superior Civil, BMC Central, or Metro South Housing Court. All searched with Case Type/Status/Party Type = All.",
+        "source": "masscourts.org"
+      },
+      "collections": {
+        "severity": "ok",
+        "note": "No collections suit, small claims, or supplementary process found in the venues above.",
+        "source": "masscourts.org"
+      },
+      "bankruptcy": {
+        "severity": "unverified",
+        "note": "No hit in public bankruptcy indexes, but PACER itself was not searched (login required). Treat as unconfirmed.",
+        "source": "PacerMonitor public index / web search"
+      },
+      "notes": "BBB file opened 2026-02-12, rating A, no complaints. CLIA re-accredited (COLA) through 2028-05-03."
+    }
+  }
+}
