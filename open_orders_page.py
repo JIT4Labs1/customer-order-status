@@ -701,6 +701,13 @@ def build_html(page_data, embeds=None):
   .chw .ch-mono { font-variant-numeric:tabular-nums; font-size:12px; color:#4a5b6d; white-space:nowrap; }
   .chw .ch-due { color:#b9770e; font-weight:600; }
   .chw .ch-foot { font-size:11px; color:#8a97a8; margin-top:14px; line-height:1.6; }
+  .chw .ch-actcell { white-space:nowrap; text-align:right; }
+  .chw .ch-act { font-size:11px; font-weight:600; color:#8a97a8; background:#fff; border:1px solid #dde4ea;
+                 border-radius:6px; padding:4px 9px; cursor:pointer; }
+  .chw .ch-act:hover { color:#c0392b; border-color:#f0c3bd; background:#fdf6f5; }
+  .chw .ch-act.restore { color:#1e7e34; border-color:#bfe3c9; }
+  .chw .ch-act.restore:hover { background:#f2fbf5; color:#1e7e34; }
+  .chw tr.row-removed { opacity:.62; }
   .pnl-wrap { overflow-x:auto; padding:20px 22px; }
   .pnl-wrap h2, .pnl-wrap h3 { color:#2c3e50; }
 
@@ -5099,11 +5106,55 @@ function _invCompare(poKey, lines, fname){
 // in as the "manual" layer — they are shown with their age so nothing stale reads
 // as verified.
 var CH=null, chLoading=false, chFilter='all';
+
+// ── Removed accounts ─────────────────────────────────────────────────────────
+// Labs Amir no longer works with. Kept in customer-health-excluded.json in the
+// repo (same live-commit pattern as the payment overrides) so the removal sticks
+// across devices and the weekly script skips them entirely. Reversible: the
+// "removed" chip lists them with a Restore button.
+var CH_EX={}, CH_EX_KEY='jit4labs_ch_excluded';
+function chExLoadLocal(){ try{ var r=localStorage.getItem(CH_EX_KEY); return r?JSON.parse(r):{}; }catch(e){ return {}; } }
+function chExSaveLocal(m){ CH_EX=m||{}; try{ localStorage.setItem(CH_EX_KEY, JSON.stringify(CH_EX)); }catch(e){} }
+function chIsEx(id){ return !!(id && CH_EX[id]); }
+function chToday(){ var d=new Date(); function p(n){ return (n<10?'0':'')+n; }
+  return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); }
+function chExFetch(){
+  fetch('customer-health-excluded.json?cb='+Date.now(),{cache:'no-store'})
+    .then(function(r){ return r.ok?r.json():null; })
+    .then(function(j){ if(!j||!j.excluded) return; var m=chExLoadLocal(), ch=false;
+      for(var k in j.excluded){ if(j.excluded.hasOwnProperty(k) && !m.hasOwnProperty(k)){ m[k]=j.excluded[k]; ch=true; } }
+      if(ch){ chExSaveLocal(m); if(mode==='chealth') renderChealthPanel(); } else { CH_EX=m; } })
+    .catch(function(){ CH_EX=chExLoadLocal(); });
+}
+function chExCommit(){
+  if(typeof BTN==='undefined' || !BTN || !BTN.token) return;   // no token: local-only, still works for this browser
+  var base='https://api.github.com/repos/'+BTN.repo+'/contents/customer-health-excluded.json';
+  var hdr={'Authorization':'Bearer '+BTN.token,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
+  var n=0; for(var k in CH_EX){ if(CH_EX.hasOwnProperty(k)) n++; }
+  fetch(base+'?ref='+encodeURIComponent(BTN.branch)+'&cb='+Date.now(),{headers:hdr,cache:'no-store'})
+    .then(function(r){ return r.ok?r.json():{}; })
+    .then(function(st){ return fetch(base,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},hdr),
+      body:JSON.stringify({message:'Customer Health: '+n+' account(s) removed from screening',
+        content:_b64enc(JSON.stringify({excluded:CH_EX},null,2)+'\n'), sha:st.sha||undefined, branch:BTN.branch})}); })
+    .catch(function(){});
+}
+function chRemove(id,name){
+  if(!id) return;
+  if(!window.confirm('Stop screening "'+name+'"?\n\nIt will be hidden here and skipped by the weekly run. You can restore it any time from the "removed" filter.')) return;
+  var m=chExLoadLocal(); m[id]={name:name, at:chToday()}; chExSaveLocal(m);
+  renderChealthPanel(); chExCommit();
+}
+function chRestore(id){
+  var m=chExLoadLocal(); delete m[id]; chExSaveLocal(m);
+  renderChealthPanel(); chExCommit();
+}
+
 function loadChealth(){
   if(chLoading) return; chLoading=true;
+  CH_EX=chExLoadLocal();
   fetch('customer-health-data.json?cb='+Date.now(),{cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
-    .then(function(d){ CH=d; chLoading=false; if(mode==='chealth') renderChealthPanel(); })
+    .then(function(d){ CH=d; chLoading=false; chExFetch(); if(mode==='chealth') renderChealthPanel(); })
     .catch(function(e){ chLoading=false; if(mode==='chealth') document.getElementById('panel').innerHTML=
       '<div class="empty">Could not load customer health data: '+escapeHtml(e.message)+
       '<br><span style="font-size:12px;color:#8a97a8;">Run <code>python3 customer_health.py</code> to publish it.</span></div>'; });
@@ -5150,8 +5201,17 @@ function chCliaCell(lab){
 }
 function renderChealthPanel(){
   if(!CH){ document.getElementById('panel').innerHTML='<div class="empty">Loading customer health…</div>'; loadChealth(); return; }
-  var labs=CH.labs||[], cnt=CH.counts||{}, sd=CH.stale_days||45;
-  var shown=labs.filter(function(l){
+  var all=CH.labs||[], sd=CH.stale_days||45;
+  var active=[], removed=[];
+  for(var a=0;a<all.length;a++){ (chIsEx(all[a].vtiger_id)?removed:active).push(all[a]); }
+  // Counts always reflect what is actually being screened.
+  var cnt={total:active.length, alert:0, watch:0, ok:0, manual_due:0};
+  for(var b=0;b<active.length;b++){
+    var st=active[b].status; if(cnt[st]!=null) cnt[st]++;
+    if(active[b].manual_due) cnt.manual_due++;
+  }
+  var showRemoved=(chFilter==='removed');
+  var shown=showRemoved?removed:active.filter(function(l){
     if(chFilter==='all') return true;
     if(chFilter==='due') return !!l.manual_due;
     return l.status===chFilter;
@@ -5159,11 +5219,12 @@ function renderChealthPanel(){
   function chip(id,label,cls){
     return '<button class="ch-chip '+cls+(chFilter===id?' on':'')+'" onclick="chSetFilter(\'' + id + '\')">'+label+'</button>';
   }
-  var bar=chip('all','All '+(cnt.total||labs.length),'')+
-          chip('alert',(cnt.alert||0)+' alert','alert')+
-          chip('watch',(cnt.watch||0)+' watch','watch')+
-          chip('ok',(cnt.ok||0)+' clear','ok')+
-          chip('due',(cnt.manual_due||0)+' re-check due','due');
+  var bar=chip('all','All '+cnt.total,'')+
+          chip('alert',cnt.alert+' alert','alert')+
+          chip('watch',cnt.watch+' watch','watch')+
+          chip('ok',cnt.ok+' clear','ok')+
+          chip('due',cnt.manual_due+' re-check due','due')+
+          (removed.length?chip('removed',removed.length+' removed','due'):'');
 
   var body='';
   for(var i=0;i<shown.length;i++){
@@ -5179,7 +5240,11 @@ function renderChealthPanel(){
                        '<div class="ch-sub ch-mono">'+escapeHtml(n.number||'')+'</div>'+
                        (n.official?'<div class="ch-sub">'+escapeHtml(n.official)+'</div>':''))
                     : '<span class="pill na">not matched</span>';
-    body+='<tr class="row-'+escapeHtml(l.status)+'">'+
+    var act = showRemoved
+      ? ('<button class="ch-act restore" onclick="chRestore(\'' + escapeHtml(l.vtiger_id) + '\')">Restore</button>'+
+         '<div class="ch-sub">removed '+escapeHtml((CH_EX[l.vtiger_id]||{}).at||'')+'</div>')
+      : ('<button class="ch-act" title="Stop screening this account" onclick="chRemove(\'' + escapeHtml(l.vtiger_id) + '\',\'' + escapeHtml(String(l.name).replace(/'/g,'')) + '\')">Remove</button>');
+    body+='<tr class="row-'+escapeHtml(l.status)+(showRemoved?' row-removed':'')+'">'+
       '<td><span class="pill '+escapeHtml(l.status)+'">'+escapeHtml(l.status)+'</span></td>'+
       '<td><div class="ch-name">'+escapeHtml(l.name)+'</div>'+
           '<div class="ch-sub">'+escapeHtml([l.city,l.state].filter(Boolean).join(', ')||'—')+'</div></td>'+
@@ -5188,23 +5253,29 @@ function renderChealthPanel(){
       '<td>'+chCliaCell(l)+'</td>'+
       '<td>'+npiCell+'</td>'+
       '<td>'+chManualCell(l,sd)+'</td>'+
-      '<td><ul class="ch-flags">'+flags+'</ul></td></tr>';
+      '<td><ul class="ch-flags">'+flags+'</ul></td>'+
+      '<td class="ch-actcell">'+act+'</td></tr>';
   }
-  if(!shown.length) body='<tr><td colspan="7" class="ch-none" style="padding:22px;">Nothing in this bucket.</td></tr>';
+  if(!shown.length) body='<tr><td colspan="8" class="ch-none" style="padding:22px;">'+
+    (showRemoved?'No accounts removed yet.':'Nothing in this bucket.')+'</td></tr>';
 
   var src=CH.sources||{};
+  var intro = showRemoved
+    ? '<div class="ch-note"><b>Removed accounts.</b> These are skipped here and by the weekly run. '+
+      'Restoring one puts it straight back into the next screen.</div>'
+    : '<div class="ch-note"><b>What this is:</b> an early-warning screen to run <i>before</i> extending payment terms. '+
+      'The CLIA, NPI, exclusion and website columns refresh automatically every week. '+
+      '<b>Registry, court and bankruptcy records cannot be automated</b> — every state portal is CAPTCHA- or login-gated — '+
+      'so those come from the assisted weekly run and are stamped with the date they were actually checked. '+
+      'A lab showing <span class="pill ok">clear</span> has passed only the checks listed on its row; it is not a credit rating.</div>';
   var html='<div class="panel-head"><h2>Customer Health</h2><div class="sub">'+
       escapeHtml(CH.scope||'')+' &middot; built '+escapeHtml((CH.generated_at||'').replace('T',' ').replace('Z',' UTC'))+
       '</div></div><div class="chw">'+
-    '<div class="ch-note"><b>What this is:</b> an early-warning screen to run <i>before</i> extending payment terms. '+
-    'The CLIA, NPI, exclusion and website columns refresh automatically every week. '+
-    '<b>Registry, court and bankruptcy records cannot be automated</b> — every state portal is CAPTCHA- or login-gated — '+
-    'so those come from the assisted weekly run and are stamped with the date they were actually checked. '+
-    'A lab showing <span class="pill ok">clear</span> has passed only the checks listed on its row; it is not a credit rating.</div>'+
+    intro+
     '<div class="ch-bar">'+bar+'</div>'+
     '<div class="matrix-wrap"><table><thead><tr>'+
       '<td>Status</td><td>Lab</td><td>Business</td><td>CLIA certificate</td><td>NPI</td>'+
-      '<td>Registry / courts</td><td>What was found</td>'+
+      '<td>Registry / courts</td><td>What was found</td><td></td>'+
     '</tr></thead><tbody>'+body+'</tbody></table></div>'+
     '<div class="ch-foot">Sources &middot; CLIA: '+escapeHtml(src.clia||'—')+' &middot; NPI: '+escapeHtml(src.npi||'—')+
       ' &middot; Exclusions: '+escapeHtml(src.leie||'—')+' &middot; Registry/courts/bankruptcy: '+escapeHtml(src.manual||'—')+

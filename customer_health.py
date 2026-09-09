@@ -49,7 +49,7 @@ from collections import defaultdict
 # ── Vtiger ────────────────────────────────────────────────────────────────────
 VTIGER_URL = os.environ.get("VTIGER_URL", "https://jit4youinc.od2.vtiger.com")
 VTIGER_USER = os.environ.get("VTIGER_USER", "customersupport@jit4you.com")
-VTIGER_ACCESS_KEY = os.environ.get("VTIGER_ACCESS_KEY", "")
+VTIGER_ACCESS_KEY = os.environ.get("VTIGER_ACCESS_KEY", "fIPkOulq0BaA5y2s")
 
 INDUSTRY = "independent diagnostic lab"
 BUYERS_ONLY = True
@@ -59,6 +59,7 @@ GITHUB_REPO = os.environ.get("GH_PAGES_REPO", "JIT4Labs1/customer-order-status")
 GITHUB_TOKEN = os.environ.get("GH_PAT_TOKEN", "")
 DATA_FILENAME = "customer-health-data.json"
 MANUAL_FILENAME = "customer-health-manual.json"
+EXCLUDED_FILENAME = "customer-health-excluded.json"   # written by the tab's Remove button
 
 # ── Data sources ──────────────────────────────────────────────────────────────
 CLIA_API = "https://data.cms.gov/data-api/v1/dataset/d3eb38ac-d8e9-40d3-b7b7-6205d3d1dc16/data"
@@ -603,6 +604,22 @@ def load_manual(local_dir):
     return {}
 
 
+def load_excluded(local_dir):
+    """Accounts Amir removed from the screen — skip them before any lookups run."""
+    p = os.path.join(local_dir, EXCLUDED_FILENAME)
+    if os.path.exists(p):
+        try:
+            with open(p) as f:
+                d = json.load(f)
+            ex = d.get("excluded", {}) if isinstance(d, dict) else {}
+            if ex:
+                log(f"  {len(ex)} account(s) removed from screening")
+            return ex
+        except Exception as e:
+            log(f"  excluded list unreadable ({e})")
+    return {}
+
+
 # ═══════════════════════════════════════════════════════════════════
 def main():
     ap = argparse.ArgumentParser()
@@ -618,6 +635,13 @@ def main():
 
     log("Loading Vtiger accounts...")
     recs = load_accounts()
+
+    excluded = load_excluded(args.out)
+    if excluded:
+        before = len(recs)
+        recs = [r for r in recs if r["vtiger_id"] not in excluded
+                and r["name"] not in excluded]
+        log(f"  skipped {before - len(recs)} removed account(s) — {len(recs)} screened")
 
     states = {st_code(r["state"]) for r in recs}
     log(f"Loading CLIA file for {len([s for s in states if s])} state(s)...")
@@ -658,6 +682,7 @@ def main():
             "watch": sum(1 for r in recs if r["status"] == "watch"),
             "ok": sum(1 for r in recs if r["status"] == "ok"),
             "manual_due": sum(1 for r in recs if r.get("manual_due")),
+            "removed": len(excluded),
         },
         "sources": {
             "clia": "CMS Provider of Services — CLIA (quarterly)",
