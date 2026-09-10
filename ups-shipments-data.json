@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-09-09 10:08 AM PT",
-  "last_status_refresh": "2026-09-09 09:08 AM PT",
+  "pulled_at": "2026-09-10 09:56 AM PT",
+  "last_status_refresh": "2026-09-10 09:10 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -10937,12 +10937,12 @@
       "receiver": "Radiance Diagnostics",
       "ship_to": "Naperville, IL",
       "service": "",
-      "status": "In Transit",
-      "activity": "Package transferred to post office",
+      "status": "Delivered",
+      "activity": "Package delivered by local post office ",
       "location": "Addison, IL",
-      "date": "2026-09-08",
-      "time": "",
-      "delivered": false,
+      "date": "2026-09-09",
+      "time": "2:22 PM",
+      "delivered": true,
       "source": "Shopify",
       "carrier": "UPS",
       "ship_date": "2026-09-03",
@@ -11026,7 +11026,7 @@
       "status": "In Transit",
       "activity": "Out For Delivery Today",
       "location": "Colorado Springs, CO",
-      "date": "2026-09-09",
+      "date": "2026-09-10",
       "time": "",
       "delivered": false,
       "source": "UPS My Choice (3rd Party)",
@@ -11065,7 +11065,7 @@
       "status": "In Transit",
       "activity": "Out For Delivery Today",
       "location": "Colorado Springs, CO",
-      "date": "2026-09-09",
+      "date": "2026-09-10",
       "time": "",
       "delivered": false,
       "source": "UPS My Choice (3rd Party)",
@@ -11221,7 +11221,45 @@
       "po": "PO845",
       "po_id": "179434",
       "shopify_order": "#1167"
+    },
+    {
+      "tracking": "383638262086",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "California Lab Choice",
+      "contact": "Misty Mcwhorter",
+      "ship_to": "Torrance, CA",
+      "order": "#1172",
+      "service": "FedEx",
+      "status": "",
+      "activity": "Label created",
+      "delivered": false,
+      "location": "",
+      "date": "2026-09-10",
+      "time": "",
+      "ship_date": "2026-09-10",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=383638262086",
+      "items": [
+        {
+          "name": "Beckman Coulter A98857 Access 25OH Vitamin D Calibrator",
+          "sku": "A98857",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO544",
+      "so_id": "180826",
+      "pos": [
+        {
+          "po": "PO852",
+          "vendor": "PMA Services",
+          "po_id": "180827"
+        }
+      ],
+      "po": "PO852",
+      "po_id": "180827"
     }
   ],
-  "last_shopify_sync": "2026-09-09 09:07 AM PT"
+  "last_shopify_sync": "2026-09-10 09:07 AM PT"
 }
