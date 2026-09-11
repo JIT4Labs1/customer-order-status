@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-09-10 09:56 AM PT",
-  "last_status_refresh": "2026-09-10 09:10 AM PT",
+  "pulled_at": "2026-09-11 09:53 AM PT",
+  "last_status_refresh": "2026-09-11 09:06 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -10894,12 +10894,12 @@
       "receiver": "Mercedes Scientific",
       "ship_to": "Bradenton, FL",
       "service": "",
-      "status": "In Transit",
-      "activity": "IN_TRANSIT",
+      "status": "Delivered",
+      "activity": "Delivered",
       "location": "",
-      "date": "2026-09-03",
+      "date": "2026-09-10",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "source": "Shopify",
       "carrier": "FedEx",
       "ship_date": "2026-09-03",
@@ -11023,12 +11023,12 @@
       "receiver": "Luxus Aesthetics",
       "ship_to": "Colorado Springs, CO",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Colorado Springs, CO",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "COLORADO SPRINGS, CO",
       "date": "2026-09-10",
-      "time": "",
-      "delivered": false,
+      "time": "11:46 AM",
+      "delivered": true,
       "source": "UPS My Choice (3rd Party)",
       "carrier": "UPS",
       "ship_date": "2026-09-03",
@@ -11062,12 +11062,12 @@
       "receiver": "Luxus Aesthetics",
       "ship_to": "Colorado Springs, CO",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Colorado Springs, CO",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "COLORADO SPRINGS, CO",
       "date": "2026-09-10",
-      "time": "",
-      "delivered": false,
+      "time": "11:46 AM",
+      "delivered": true,
       "source": "UPS My Choice (3rd Party)",
       "carrier": "UPS",
       "ship_date": "2026-09-03",
@@ -11189,12 +11189,12 @@
       "ship_to": "North Canton, OH",
       "order": "#1167",
       "service": "FedEx",
-      "status": "In Transit",
-      "activity": "Out for Delivery",
+      "status": "Delivered",
+      "activity": "Delivered",
       "location": "",
-      "date": "2026-09-09",
+      "date": "2026-09-10",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "url": "https://www.fedex.com/fedextrack/?trknbr=383599734023",
       "ship_date": "2026-09-02",
       "items": [
@@ -11233,8 +11233,8 @@
       "ship_to": "Torrance, CA",
       "order": "#1172",
       "service": "FedEx",
-      "status": "",
-      "activity": "Label created",
+      "status": "Out for Delivery",
+      "activity": "OUT FOR DELIVERY",
       "delivered": false,
       "location": "",
       "date": "2026-09-10",
@@ -11259,7 +11259,264 @@
       ],
       "po": "PO852",
       "po_id": "180827"
+    },
+    {
+      "tracking": "877038899254",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "LabX Diagnotic Systems",
+      "contact": "Brook Delnista",
+      "ship_to": "Tampa, FL",
+      "order": "#1175",
+      "shopify_order": "#1175",
+      "service": "FedEx",
+      "status": "Delivered",
+      "activity": "DELIVERED",
+      "delivered": true,
+      "location": "",
+      "date": "2026-09-10",
+      "time": "",
+      "ship_date": "2026-09-10",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=877038899254",
+      "items": [
+        {
+          "name": "Beckman coulter B84494 Access,Cal, Sensitive Estradiol",
+          "sku": "B84494",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A13422 Access Free T3 Reagent, 100 Determinations",
+          "sku": "A13422",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 33880 (c76421) Access Free T4 Reagent, 100 Determinations",
+          "sku": "33880",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter A10826 Access DHEA-S Reagent, 100 Determinations",
+          "sku": "A10826",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33510 Access hLH Reagent, 100 Determinations",
+          "sku": "33510",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33550 Access Progesterone Reagent, 100 Determinations",
+          "sku": "33550",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33525 Access hFSH Calibrator (S0-S5)",
+          "sku": "33525",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33515 Access hLH Calibrator (S0-S5)",
+          "sku": "33515",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter B93009 Access Hemoglobin HbA1c Reagent Kit",
+          "sku": "B93009",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A98033 Access Folate Calibrator",
+          "sku": "A98033",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33000 Access Vitamin B12 Reagent, 100 Determinations",
+          "sku": "33000",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter A98032 Access Folate Reagent, 100 Determinations",
+          "sku": "A98032",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 33520 Follicle Stimulating Hormone (FSH) 100 Tests",
+          "sku": "33520",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33530 Access Prolactin Reagent, 100 Determinations",
+          "sku": "33530",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33600 Immunoassay Reagent Access Cortisol 100 Tests",
+          "sku": "33600",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A10827 Access DHEAS Calibrator (S0-S5)",
+          "sku": "A10827",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33555 Access Progesterone Calibrator (S0-S5)",
+          "sku": "33555",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO547",
+      "so_id": "181951",
+      "pos": [
+        {
+          "po": "PO857",
+          "vendor": "PMA Services",
+          "po_id": "181952"
+        },
+        {
+          "po": "PO858",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "181953"
+        },
+        {
+          "po": "PO859",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "181954"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "877025662994",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Chicago Lab",
+      "contact": "Ahmed Syed",
+      "ship_to": "Chicago, IL",
+      "order": "#1174",
+      "shopify_order": "#1174",
+      "service": "FedEx",
+      "status": "Delivered",
+      "activity": "DELIVERED",
+      "delivered": true,
+      "location": "",
+      "date": "2026-09-10",
+      "time": "",
+      "ship_date": "2026-09-10",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=877025662994",
+      "items": [
+        {
+          "name": "Beckman Coulter A16972 Access Intact PTH Reagent, 100 determinations",
+          "sku": "A16972",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
+          "sku": "37200",
+          "qty": 3
+        },
+        {
+          "name": "Beckman Coulter 33020 Access 2 Ferritin Reagent 2x50 Count 100/Kt",
+          "sku": "33020",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter 33830 Access Total T3, 100 Determinations",
+          "sku": "33830",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter 81906 Access Substrate",
+          "sku": "81906",
+          "qty": 3
+        }
+      ],
+      "so_num": "SO545",
+      "so_id": "181643",
+      "pos": [
+        {
+          "po": "PO853",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "181644"
+        }
+      ],
+      "po": "PO853",
+      "po_id": "181644"
+    },
+    {
+      "tracking": "877022961357",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "LabX Diagnotic Systems",
+      "contact": "Brook Delnista",
+      "ship_to": "Tampa, FL",
+      "order": "#1173",
+      "shopify_order": "#1173",
+      "service": "FedEx",
+      "status": "Delivered",
+      "activity": "DELIVERED",
+      "delivered": true,
+      "location": "",
+      "date": "2026-09-10",
+      "time": "",
+      "ship_date": "2026-09-10",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=877022961357",
+      "items": [
+        {
+          "name": "Beckman coulter C31860 Calibrator, Access, C-Peptide (REF)",
+          "sku": "C31860",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter C33451 Reagent, Access, C-Peptide (REF)",
+          "sku": "C33451",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A18227 Access TPO Antibody Calibrator",
+          "sku": "A18227",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A12985 Reagent Access, TPO Antibody",
+          "sku": "A12985",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B24839 Access 25OH Vitamin D Calibrators",
+          "sku": "B24839",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO546",
+      "so_id": "181655",
+      "pos": [
+        {
+          "po": "PO855",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "181656"
+        },
+        {
+          "po": "PO856",
+          "vendor": "PMA Services",
+          "po_id": "181657"
+        }
+      ],
+      "po": "",
+      "po_id": ""
     }
   ],
-  "last_shopify_sync": "2026-09-10 09:07 AM PT"
+  "last_shopify_sync": "2026-09-11 09:06 AM PT"
 }
