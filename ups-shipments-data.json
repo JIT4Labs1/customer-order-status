@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-09-11 09:53 AM PT",
-  "last_status_refresh": "2026-09-11 09:06 AM PT",
+  "pulled_at": "2026-09-12 09:50 AM PT",
+  "last_status_refresh": "2026-09-12 09:08 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -3359,7 +3359,7 @@
       "ship_to": "Bradenton, FL",
       "order": "#1094",
       "service": "FedEx",
-      "status": "Label Created",
+      "status": "In Transit",
       "activity": "CONFIRMED",
       "delivered": false,
       "location": "",
@@ -5972,7 +5972,7 @@
       "ship_to": "Bradenton, FL",
       "order": "#1118",
       "service": "FedEx",
-      "status": "Label Created",
+      "status": "In Transit",
       "activity": "CONFIRMED",
       "delivered": false,
       "location": "",
@@ -6808,7 +6808,7 @@
       "ship_to": "Sugar Land, TX",
       "order": "#1132",
       "status": "Label Created",
-      "activity": "LABEL_PURCHASED",
+      "activity": "LABEL PURCHASED",
       "location": "",
       "date": "2026-08-05",
       "time": "",
@@ -6935,7 +6935,7 @@
       "order": "#1134",
       "service": "FedEx",
       "status": "Label Created",
-      "activity": "LABEL_PRINTED",
+      "activity": "LABEL PRINTED",
       "delivered": false,
       "location": "",
       "date": "2026-08-06",
@@ -10610,7 +10610,133 @@
       "ship_date": "2026-09-02",
       "shopify_fulfilled": true,
       "shopify_order": "#1118",
-      "items": [],
+      "items": [
+        {
+          "name": "Beckman Coulter 33000 Access Vitamin B12 Reagent, 100 Determinations",
+          "sku": "33000",
+          "qty": 60
+        },
+        {
+          "name": "Beckman Coulter B63284 Access TSH Stimulating Hormone (3rd IS) 2 x 100 Determinations",
+          "sku": "B63284",
+          "qty": 60
+        },
+        {
+          "name": "Beckman Coulter 81906 Access Substrate",
+          "sku": "81906",
+          "qty": 40
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 30
+        },
+        {
+          "name": "Beckman Coulter A98032 Access Folate Reagent, 100 Determinations",
+          "sku": "A98032",
+          "qty": 30
+        },
+        {
+          "name": "Beckman Coulter 33560 Access Testosterone Reagent",
+          "sku": "33560",
+          "qty": 20
+        },
+        {
+          "name": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
+          "sku": "37200",
+          "qty": 20
+        },
+        {
+          "name": "Beckman Coulter 33880 (c76421) Access Free T4 Reagent, 100 Determinations",
+          "sku": "33880",
+          "qty": 15
+        },
+        {
+          "name": "Beckman Coulter OSR6186 Iron (Fe) reagent",
+          "sku": "OSR6186",
+          "qty": 12
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 10
+        },
+        {
+          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
+          "sku": "OSR6189",
+          "qty": 10
+        },
+        {
+          "name": "Beckman Coulter 37210 Access Hybritech free PSA Reagent, 100 Determinations",
+          "sku": "37210",
+          "qty": 10
+        },
+        {
+          "name": "Beckman Coulter 33020 Access 2 Ferritin Reagent 2x50 Count 100/Kt",
+          "sku": "33020",
+          "qty": 10
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 10
+        },
+        {
+          "name": "Beckman Coulter OSR60117 Olympus Calcium Reagent, 4 x 700 Tests",
+          "sku": "OSR60117",
+          "qty": 10
+        },
+        {
+          "name": "Beckman Coulter A16972 Access Intact PTH Reagent, 100 determinations",
+          "sku": "A16972",
+          "qty": 10
+        },
+        {
+          "name": "Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)",
+          "sku": "OSR6134",
+          "qty": 10
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 10
+        },
+        {
+          "name": "Beckman Coulter B84493 Access Sensitive Estradiol Reagent",
+          "sku": "B84493",
+          "qty": 10
+        },
+        {
+          "name": "Beckman Coulter A13422 Access Free T3 Reagent, 100 Determinations",
+          "sku": "A13422",
+          "qty": 10
+        },
+        {
+          "name": "Beckman Coulter OSR6004 Olympus ALP Reagent 3P ALP R1 Alkaline Phosphatase Reagent",
+          "sku": "OSR6004",
+          "qty": 10
+        },
+        {
+          "name": "Beckman Coulter 81910 Solution, Access, System Check, 6x4mL",
+          "sku": "81910",
+          "qty": 10
+        },
+        {
+          "name": "Beckman Coulter OSR6195 Olympus HDL Cholesterol Reagent",
+          "sku": "OSR6195",
+          "qty": 8
+        },
+        {
+          "name": "Beckman Coulter OSR61205 UIBC unsaturated reagent iron binding capacity",
+          "sku": "OSR61205",
+          "qty": 8
+        },
+        {
+          "name": "Beckman Coulter OSR6116 Olympus Cholesterol Reagent",
+          "sku": "OSR6116",
+          "qty": 5
+        }
+      ],
       "order": "#1118",
       "so_num": "SO493",
       "pos": [
@@ -10895,7 +11021,7 @@
       "ship_to": "Bradenton, FL",
       "service": "",
       "status": "Delivered",
-      "activity": "Delivered",
+      "activity": "DELIVERED",
       "location": "",
       "date": "2026-09-10",
       "time": "",
@@ -11190,7 +11316,7 @@
       "order": "#1167",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "Delivered",
+      "activity": "DELIVERED",
       "location": "",
       "date": "2026-09-10",
       "time": "",
@@ -11233,9 +11359,9 @@
       "ship_to": "Torrance, CA",
       "order": "#1172",
       "service": "FedEx",
-      "status": "Out for Delivery",
-      "activity": "OUT FOR DELIVERY",
-      "delivered": false,
+      "status": "Delivered",
+      "activity": "DELIVERED",
+      "delivered": true,
       "location": "",
       "date": "2026-09-10",
       "time": "",
@@ -11516,7 +11642,349 @@
       ],
       "po": "",
       "po_id": ""
+    },
+    {
+      "tracking": "383659421057",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Radiance Diagnostics",
+      "ship_to": "",
+      "order": "#1154",
+      "service": "FedEx",
+      "status": "In Transit",
+      "activity": "CONFIRMED",
+      "location": "",
+      "date": "2026-08-25",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-08-25",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "sku": "OSR6137",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)",
+          "sku": "OSR6134",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6230 Olympus LIP Lipase Reagent Incl Calibrator",
+          "sku": "OSR6230",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter S66039 Cleaning Solution, Access, 450mL",
+          "sku": "S66039",
+          "qty": 2
+        },
+        {
+          "name": "Beckman coulter OSR6212 Reagent, Olympus, TBIL, 4x40 (REF)",
+          "sku": "OSR6212",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR61205 UIBC unsaturated reagent iron binding capacity",
+          "sku": "OSR61205",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6111 Direct Bilirubin reagent",
+          "sku": "OSR6111",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6004 Olympus ALP Reagent 3P ALP R1 Alkaline Phosphatase Reagent",
+          "sku": "OSR6004",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6109 Olympus AST Reagent - Aspartate Aminotransferase Reagent",
+          "sku": "OSR6109",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6107 Olympus ALT Reagent Alanine Transaminase",
+          "sku": "OSR6107",
+          "qty": 1
+        },
+        {
+          "name": "Bio-Rad 694 Liquid Assayed Multiqual, Level 1, Assayed",
+          "sku": null,
+          "qty": 1
+        },
+        {
+          "name": "Bio-Rad 696 Liquid Assayed Multiqual, Level 3, Assayed,",
+          "sku": null,
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter 81904 Bag, Waste, Access",
+          "sku": "81904",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 5
+        }
+      ],
+      "contact": "Siva Kumar",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=383659421057",
+      "so_num": "SO526",
+      "so_id": "176657",
+      "pos": [
+        {
+          "po": "PO823",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "176658"
+        },
+        {
+          "po": "PO824",
+          "vendor": "PMA Services",
+          "po_id": "176659"
+        },
+        {
+          "po": "PO825",
+          "vendor": "PMA Services",
+          "po_id": "176660"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "383659394910",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Radiance Diagnostics",
+      "ship_to": "",
+      "order": "#1154",
+      "service": "FedEx",
+      "status": "In Transit",
+      "activity": "IN TRANSIT",
+      "location": "",
+      "date": "2026-08-25",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-08-25",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "sku": "OSR6137",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)",
+          "sku": "OSR6134",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6230 Olympus LIP Lipase Reagent Incl Calibrator",
+          "sku": "OSR6230",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter S66039 Cleaning Solution, Access, 450mL",
+          "sku": "S66039",
+          "qty": 2
+        },
+        {
+          "name": "Beckman coulter OSR6212 Reagent, Olympus, TBIL, 4x40 (REF)",
+          "sku": "OSR6212",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR61205 UIBC unsaturated reagent iron binding capacity",
+          "sku": "OSR61205",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6111 Direct Bilirubin reagent",
+          "sku": "OSR6111",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6004 Olympus ALP Reagent 3P ALP R1 Alkaline Phosphatase Reagent",
+          "sku": "OSR6004",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6109 Olympus AST Reagent - Aspartate Aminotransferase Reagent",
+          "sku": "OSR6109",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6107 Olympus ALT Reagent Alanine Transaminase",
+          "sku": "OSR6107",
+          "qty": 1
+        },
+        {
+          "name": "Bio-Rad 694 Liquid Assayed Multiqual, Level 1, Assayed",
+          "sku": null,
+          "qty": 1
+        },
+        {
+          "name": "Bio-Rad 696 Liquid Assayed Multiqual, Level 3, Assayed,",
+          "sku": null,
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter 81904 Bag, Waste, Access",
+          "sku": "81904",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 5
+        }
+      ],
+      "contact": "Siva Kumar",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=383659394910",
+      "so_num": "SO526",
+      "so_id": "176657",
+      "pos": [
+        {
+          "po": "PO823",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "176658"
+        },
+        {
+          "po": "PO824",
+          "vendor": "PMA Services",
+          "po_id": "176659"
+        },
+        {
+          "po": "PO825",
+          "vendor": "PMA Services",
+          "po_id": "176660"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "383659290599",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Personal",
+      "ship_to": "",
+      "order": "#1164",
+      "service": "FedEx",
+      "status": "In Transit",
+      "activity": "CONFIRMED",
+      "location": "",
+      "date": "2026-09-02",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-09-02",
+      "items": [
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
+          "sku": "37200",
+          "qty": 3
+        }
+      ],
+      "contact": "Gegerin Parikh",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=383659290599",
+      "so_num": "SO536",
+      "so_id": "179109",
+      "pos": [
+        {
+          "po": "PO840",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "179111"
+        }
+      ],
+      "po": "PO840",
+      "po_id": "179111"
+    },
+    {
+      "tracking": "383659248850",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Personal",
+      "ship_to": "",
+      "order": "#1164",
+      "service": "FedEx",
+      "status": "Delivered",
+      "activity": "DELIVERED",
+      "location": "",
+      "date": "2026-09-02",
+      "time": "",
+      "delivered": true,
+      "ship_date": "2026-09-02",
+      "items": [
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
+          "sku": "37200",
+          "qty": 3
+        }
+      ],
+      "contact": "Gegerin Parikh",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=383659248850",
+      "so_num": "SO536",
+      "so_id": "179109",
+      "pos": [
+        {
+          "po": "PO840",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "179111"
+        }
+      ],
+      "po": "PO840",
+      "po_id": "179111"
     }
   ],
-  "last_shopify_sync": "2026-09-11 09:06 AM PT"
+  "last_shopify_sync": "2026-09-12T09:07:50"
 }
