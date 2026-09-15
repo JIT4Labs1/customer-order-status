@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-09-14 10:37 AM PT",
-  "last_status_refresh": "2026-09-14 09:46 AM PT",
+  "pulled_at": "2026-09-14 05:38 PM PT",
+  "last_status_refresh": "2026-09-14 04:47 PM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -3359,7 +3359,7 @@
       "ship_to": "Bradenton, FL",
       "order": "#1094",
       "service": "FedEx",
-      "status": "",
+      "status": "Label Created",
       "activity": "Label created",
       "delivered": false,
       "location": "",
@@ -5972,7 +5972,7 @@
       "ship_to": "Bradenton, FL",
       "order": "#1118",
       "service": "FedEx",
-      "status": "",
+      "status": "Label Created",
       "activity": "Label created",
       "delivered": false,
       "location": "",
@@ -6807,7 +6807,7 @@
       "contact": "SYED RIZVI",
       "ship_to": "Sugar Land, TX",
       "order": "#1132",
-      "status": "",
+      "status": "Label Created",
       "activity": "Label created",
       "location": "",
       "date": "2026-08-05",
@@ -6934,7 +6934,7 @@
       "ship_to": "Norwood, MA",
       "order": "#1134",
       "service": "FedEx",
-      "status": "",
+      "status": "Label Created",
       "activity": "Label created",
       "delivered": false,
       "location": "",
@@ -11653,8 +11653,8 @@
       "ship_to": "",
       "order": "#1154",
       "service": "FedEx",
-      "status": "",
-      "activity": "Label created",
+      "status": "In Transit",
+      "activity": "In Transit",
       "location": "",
       "date": "2026-09-11",
       "time": "",
@@ -11781,12 +11781,12 @@
       "ship_to": "",
       "order": "#1154",
       "service": "FedEx",
-      "status": "In Transit",
-      "activity": "IN TRANSIT",
+      "status": "Delivered",
+      "activity": "Delivered",
       "location": "",
-      "date": "2026-08-25",
+      "date": "2026-09-14",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "ship_date": "2026-08-25",
       "items": [
         {
@@ -11909,8 +11909,8 @@
       "ship_to": "",
       "order": "#1164",
       "service": "FedEx",
-      "status": "",
-      "activity": "Label created",
+      "status": "In Transit",
+      "activity": "In Transit",
       "location": "",
       "date": "2026-09-11",
       "time": "",
@@ -11984,6 +11984,412 @@
       ],
       "po": "PO840",
       "po_id": "179111"
+    },
+    {
+      "tracking": "877203477797",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Doctors General Laboratory",
+      "contact": "Mahemdra Patel",
+      "ship_to": "Clarendon Hills, IL",
+      "order": "#1145",
+      "shopify_order": "#1145",
+      "service": "FedEx",
+      "status": "Label Created",
+      "activity": "Label created",
+      "delivered": false,
+      "location": "",
+      "date": "2026-08-17",
+      "time": "",
+      "ship_date": "2026-08-17",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=877203477797",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6102 Olympus Albumin Reagent R1",
+          "sku": "OSR6102",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6004 Olympus ALP Reagent 3P ALP R1 Alkaline Phosphatase Reagent",
+          "sku": "OSR6004",
+          "qty": 6
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6112 Olympus Total Bilirubin Reagent",
+          "sku": "OSR6112",
+          "qty": 2
+        }
+      ],
+      "so_num": "SO517",
+      "so_id": "173948",
+      "pos": [
+        {
+          "po": "PO806",
+          "vendor": "PMA Services",
+          "po_id": "173949"
+        }
+      ],
+      "po": "PO806",
+      "po_id": "173949"
+    },
+    {
+      "tracking": "877189564873",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "LabX Diagnotic Systems",
+      "contact": "Brook Delnista",
+      "ship_to": "Tampa, FL",
+      "order": "#1175",
+      "shopify_order": "#1175",
+      "service": "FedEx",
+      "status": "In Transit",
+      "activity": "In Transit",
+      "delivered": false,
+      "location": "",
+      "date": "2026-09-10",
+      "time": "",
+      "ship_date": "2026-09-10",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=877189564873",
+      "items": [
+        {
+          "name": "Beckman coulter B84494 Access,Cal, Sensitive Estradiol",
+          "sku": "B84494",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A13422 Access Free T3 Reagent, 100 Determinations",
+          "sku": "A13422",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 33880 (c76421) Access Free T4 Reagent, 100 Determinations",
+          "sku": "33880",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter A10826 Access DHEA-S Reagent, 100 Determinations",
+          "sku": "A10826",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33510 Access hLH Reagent, 100 Determinations",
+          "sku": "33510",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33550 Access Progesterone Reagent, 100 Determinations",
+          "sku": "33550",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33525 Access hFSH Calibrator (S0-S5)",
+          "sku": "33525",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33515 Access hLH Calibrator (S0-S5)",
+          "sku": "33515",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter B93009 Access Hemoglobin HbA1c Reagent Kit",
+          "sku": "B93009",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A98033 Access Folate Calibrator",
+          "sku": "A98033",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33000 Access Vitamin B12 Reagent, 100 Determinations",
+          "sku": "33000",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter A98032 Access Folate Reagent, 100 Determinations",
+          "sku": "A98032",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 33520 Follicle Stimulating Hormone (FSH) 100 Tests",
+          "sku": "33520",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33530 Access Prolactin Reagent, 100 Determinations",
+          "sku": "33530",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33600 Immunoassay Reagent Access Cortisol 100 Tests",
+          "sku": "33600",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A10827 Access DHEAS Calibrator (S0-S5)",
+          "sku": "A10827",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33555 Access Progesterone Calibrator (S0-S5)",
+          "sku": "33555",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO547",
+      "so_id": "181951",
+      "pos": [
+        {
+          "po": "PO857",
+          "vendor": "PMA Services",
+          "po_id": "181952"
+        },
+        {
+          "po": "PO858",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "181953"
+        },
+        {
+          "po": "PO859",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "181954"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "877185355499",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "LabX Diagnotic Systems",
+      "contact": "Brook Delnista",
+      "ship_to": "Tampa, FL",
+      "order": "#1175",
+      "shopify_order": "#1175",
+      "service": "FedEx",
+      "status": "Label Created",
+      "activity": "Label created",
+      "delivered": false,
+      "location": "",
+      "date": "2026-09-10",
+      "time": "",
+      "ship_date": "2026-09-10",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=877185355499",
+      "items": [
+        {
+          "name": "Beckman coulter B84494 Access,Cal, Sensitive Estradiol",
+          "sku": "B84494",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A13422 Access Free T3 Reagent, 100 Determinations",
+          "sku": "A13422",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 33880 (c76421) Access Free T4 Reagent, 100 Determinations",
+          "sku": "33880",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter A10826 Access DHEA-S Reagent, 100 Determinations",
+          "sku": "A10826",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33510 Access hLH Reagent, 100 Determinations",
+          "sku": "33510",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33550 Access Progesterone Reagent, 100 Determinations",
+          "sku": "33550",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33525 Access hFSH Calibrator (S0-S5)",
+          "sku": "33525",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33515 Access hLH Calibrator (S0-S5)",
+          "sku": "33515",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter B93009 Access Hemoglobin HbA1c Reagent Kit",
+          "sku": "B93009",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A98033 Access Folate Calibrator",
+          "sku": "A98033",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33000 Access Vitamin B12 Reagent, 100 Determinations",
+          "sku": "33000",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter A98032 Access Folate Reagent, 100 Determinations",
+          "sku": "A98032",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 33520 Follicle Stimulating Hormone (FSH) 100 Tests",
+          "sku": "33520",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33530 Access Prolactin Reagent, 100 Determinations",
+          "sku": "33530",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33600 Immunoassay Reagent Access Cortisol 100 Tests",
+          "sku": "33600",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A10827 Access DHEAS Calibrator (S0-S5)",
+          "sku": "A10827",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33555 Access Progesterone Calibrator (S0-S5)",
+          "sku": "33555",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO547",
+      "so_id": "181951",
+      "pos": [
+        {
+          "po": "PO857",
+          "vendor": "PMA Services",
+          "po_id": "181952"
+        },
+        {
+          "po": "PO858",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "181953"
+        },
+        {
+          "po": "PO859",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "181954"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "1Z8W007Y0391502574",
+      "carrier": "UPS",
+      "source": "UPS My Choice (3rd Party)",
+      "view": "Third Party",
+      "shipper": "CONMED OUTBOUND",
+      "receiver": "931 SKIN + COMPANY AESTHETICS",
+      "contact": "Angela Scott",
+      "ship_to": "COLUMBIA, TN, US",
+      "order": "#1171",
+      "service": "UPS Ground",
+      "status": "Delivered",
+      "activity": "Commercial Inside Release",
+      "delivered": true,
+      "location": "Columbia, TN",
+      "date": "2026-09-10",
+      "time": "10:48 A.M.",
+      "ship_date": "2026-09-10",
+      "billed_to": "W803J7 - JIT4U Third Party",
+      "shipment_charge_type": "Third Party",
+      "url": "https://www.ups.com/track?loc=en_US&tracknum=1Z8W007Y0391502574",
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "sku": "VV120-DO",
+          "qty": 1
+        }
+      ],
+      "shopify_fulfilled": true,
+      "shopify_order": "#1171",
+      "so_num": "SO543",
+      "so_id": "180048",
+      "pos": [
+        {
+          "po": "PO851",
+          "vendor": "Conmed",
+          "po_id": "180049"
+        }
+      ],
+      "po": "PO851",
+      "po_id": "180049"
+    },
+    {
+      "tracking": "1Z8W007Y0398582887",
+      "carrier": "UPS",
+      "source": "UPS My Choice (3rd Party)",
+      "view": "Third Party",
+      "shipper": "CONMED OUTBOUND",
+      "receiver": "931 SKIN + COMPANY AESTHETICS",
+      "contact": "Angela Scott",
+      "ship_to": "COLUMBIA, TN, US",
+      "order": "#1171",
+      "service": "UPS Ground",
+      "status": "Delivered",
+      "activity": "Commercial Inside Release",
+      "delivered": true,
+      "location": "Columbia, TN",
+      "date": "2026-09-10",
+      "time": "10:48 A.M.",
+      "ship_date": "2026-09-10",
+      "billed_to": "W803J7 - JIT4U Third Party",
+      "shipment_charge_type": "Third Party",
+      "url": "https://www.ups.com/track?loc=en_US&tracknum=1Z8W007Y0398582887",
+      "items": [
+        {
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "sku": "VT10524",
+          "qty": 1
+        },
+        {
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "sku": "VV120-DO",
+          "qty": 1
+        }
+      ],
+      "shopify_fulfilled": true,
+      "shopify_order": "#1171",
+      "so_num": "SO543",
+      "so_id": "180048",
+      "pos": [
+        {
+          "po": "PO851",
+          "vendor": "Conmed",
+          "po_id": "180049"
+        }
+      ],
+      "po": "PO851",
+      "po_id": "180049"
     }
   ],
   "last_shopify_sync": "2026-09-14 09:46 AM PT"
