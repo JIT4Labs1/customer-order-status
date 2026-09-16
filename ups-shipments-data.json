@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-09-15 10:08 AM PT",
-  "last_status_refresh": "2026-09-15 09:07 AM PT",
+  "pulled_at": "2026-09-16 09:52 AM PT",
+  "last_status_refresh": "2026-09-16 09:06 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -11102,9 +11102,9 @@
       "ship_to": "Naperville, IL",
       "service": "",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "",
       "location": "",
-      "date": "2026-09-04",
+      "date": "2026-09-02",
       "time": "",
       "delivered": true,
       "source": "Shopify",
@@ -11268,9 +11268,9 @@
       "order": "#1169",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "Delivered",
+      "activity": "",
       "location": "",
-      "date": "2026-09-09",
+      "date": "2026-09-03",
       "time": "",
       "delivered": true,
       "url": "https://www.fedex.com/fedextrack/?trknbr=383597608465",
@@ -11316,9 +11316,9 @@
       "order": "#1167",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "Delivered",
+      "activity": "",
       "location": "",
-      "date": "2026-09-09",
+      "date": "2026-09-02",
       "time": "",
       "delivered": true,
       "url": "https://www.fedex.com/fedextrack/?trknbr=383599734023",
@@ -11360,10 +11360,10 @@
       "order": "#1172",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "Delivered",
+      "activity": "",
       "delivered": true,
       "location": "",
-      "date": "2026-09-11",
+      "date": "2026-09-08",
       "time": "",
       "ship_date": "2026-09-10",
       "url": "https://www.fedex.com/fedextrack/?trknbr=383638262086",
@@ -11399,10 +11399,10 @@
       "shopify_order": "#1175",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "Delivered",
+      "activity": "",
       "delivered": true,
       "location": "",
-      "date": "2026-09-11",
+      "date": "2026-09-10",
       "time": "",
       "ship_date": "2026-09-10",
       "url": "https://www.fedex.com/fedextrack/?trknbr=877038899254",
@@ -11528,10 +11528,10 @@
       "shopify_order": "#1174",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "Delivered",
+      "activity": "",
       "delivered": true,
       "location": "",
-      "date": "2026-09-11",
+      "date": "2026-09-10",
       "time": "",
       "ship_date": "2026-09-10",
       "url": "https://www.fedex.com/fedextrack/?trknbr=877025662994",
@@ -11587,10 +11587,10 @@
       "shopify_order": "#1173",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "Delivered",
+      "activity": "",
       "delivered": true,
       "location": "",
-      "date": "2026-09-11",
+      "date": "2026-09-10",
       "time": "",
       "ship_date": "2026-09-10",
       "url": "https://www.fedex.com/fedextrack/?trknbr=877022961357",
@@ -12052,10 +12052,10 @@
       "shopify_order": "#1175",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "Delivered",
+      "activity": "",
       "delivered": true,
       "location": "",
-      "date": "2026-09-15",
+      "date": "2026-09-10",
       "time": "",
       "ship_date": "2026-09-10",
       "url": "https://www.fedex.com/fedextrack/?trknbr=877189564873",
@@ -12180,11 +12180,11 @@
       "order": "#1175",
       "shopify_order": "#1175",
       "service": "FedEx",
-      "status": "",
-      "activity": "Label created",
+      "status": "In Transit",
+      "activity": "Out for Delivery",
       "delivered": false,
       "location": "",
-      "date": "2026-09-14",
+      "date": "2026-09-10",
       "time": "",
       "ship_date": "2026-09-10",
       "url": "https://www.fedex.com/fedextrack/?trknbr=877185355499",
@@ -12390,6 +12390,190 @@
       ],
       "po": "PO851",
       "po_id": "180049"
+    },
+    {
+      "tracking": "383713576024",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Clinical Diagnostic Laboratories, LLC",
+      "contact": "ibtihaj@clinicaldiagnosticlab.com",
+      "ship_to": "44355 Premier Plz, Ashburn, Virginia 20147",
+      "order": "#1178",
+      "service": "FedEx",
+      "status": "In Transit",
+      "activity": "Out for Delivery",
+      "delivered": false,
+      "location": "",
+      "date": "2026-09-14",
+      "time": "",
+      "ship_date": "2026-09-14",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=383713576024",
+      "items": [
+        {
+          "name": "Beckman Coulter 33600 Immunoassay Reagent Access Cortisol 100 Tests",
+          "sku": "33600",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33605 Access Cortisol Calibrators (S0-S5)",
+          "sku": "33605",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33510 Access hLH Reagent, 100 Determinations",
+          "sku": "33510",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33515 Access hLH Calibrator (S0-S5)",
+          "sku": "33515",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33520 Follicle Stimulating Hormone (FSH) 100 Tests",
+          "sku": "33520",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33525 Access hFSH Calibrator (S0-S5)",
+          "sku": "33525",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter 33540 Reagent, Access, Estradiol (REF)",
+          "sku": "33540",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter 33545 Calibrator, Access, Estradiol (REF)",
+          "sku": "33545",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33880 (c76421) Access Free T4 Reagent, 100 Determinations",
+          "sku": "33880",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33885 Access Free T4 Calibrator",
+          "sku": "33885",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO550",
+      "so_id": "183233",
+      "pos": [
+        {
+          "po": "PO862",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "183234"
+        },
+        {
+          "po": "PO863",
+          "vendor": "PMA Services",
+          "po_id": "183235"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "877247932614",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Doctors General Laboratory",
+      "contact": "Mahemdra Patel",
+      "ship_to": "59 Ogden Ave, Clarendon Hills, Illinois 60514",
+      "order": "#1179",
+      "service": "FedEx",
+      "status": "In Transit",
+      "activity": "Out for Delivery",
+      "delivered": false,
+      "location": "",
+      "date": "2026-09-14",
+      "time": "",
+      "ship_date": "2026-09-14",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=877247932614",
+      "items": [
+        {
+          "name": "Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations",
+          "sku": "A98856",
+          "qty": 10
+        },
+        {
+          "name": "Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)",
+          "sku": "OSR6134",
+          "qty": 2
+        }
+      ],
+      "so_num": "SO551",
+      "so_id": "183272",
+      "pos": [
+        {
+          "po": "PO866",
+          "vendor": "PMA Services",
+          "po_id": "183274"
+        }
+      ],
+      "po": "PO866",
+      "po_id": "183274"
+    },
+    {
+      "tracking": "877254051087",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "MEDICAL HEALTH LAB",
+      "contact": "SYED RIZVI",
+      "ship_to": "145 Promenade Way, Sugar Land, Texas 77479",
+      "order": "#1180",
+      "service": "FedEx",
+      "status": "In Transit",
+      "activity": "Out for Delivery",
+      "delivered": false,
+      "location": "",
+      "date": "2026-09-15",
+      "time": "",
+      "ship_date": "2026-09-15",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=877254051087",
+      "items": [
+        {
+          "name": "Beckman Coulter A13422 Access Free T3 Reagent, 100 Determinations",
+          "sku": "A13422",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81906 Access Substrate",
+          "sku": "81906",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 3
+        },
+        {
+          "name": "Beckman Coulter 81910 Solution, Access, System Check, 6x4mL",
+          "sku": "81910",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO552",
+      "so_id": "183579",
+      "pos": [
+        {
+          "po": "PO868",
+          "vendor": "PMA Services",
+          "po_id": "183581"
+        }
+      ],
+      "po": "PO868",
+      "po_id": "183581"
     }
   ],
   "last_shopify_sync": "2026-09-14 09:46 AM PT"
