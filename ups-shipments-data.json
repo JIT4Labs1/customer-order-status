@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-09-17 10:06 AM PT",
-  "last_status_refresh": "2026-09-17 10:01 AM PT",
+  "pulled_at": "2026-09-18 10:04 AM PT",
+  "last_status_refresh": "2026-09-18 09:07 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -441,10 +441,16 @@
       ],
       "order": "#1049",
       "so_num": "SO428",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO681",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "156043"
+        }
+      ],
+      "po": "PO681",
       "so_id": "156040",
-      "po_id": "",
+      "po_id": "156043",
       "shopify_order": "#1049"
     },
     {
@@ -472,10 +478,16 @@
       ],
       "order": "#1033",
       "so_num": "SO412",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO654",
+          "vendor": "PMA Services",
+          "po_id": "151746"
+        }
+      ],
+      "po": "PO654",
       "so_id": "151738",
-      "po_id": "",
+      "po_id": "151746",
       "shopify_order": "#1033"
     },
     {
@@ -587,10 +599,16 @@
       ],
       "order": "#1049",
       "so_num": "SO428",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO679",
+          "vendor": "PMA Services",
+          "po_id": "156041"
+        }
+      ],
+      "po": "PO679",
       "so_id": "156040",
-      "po_id": "",
+      "po_id": "156041",
       "shopify_order": "#1049"
     },
     {
@@ -827,10 +845,16 @@
       ],
       "order": "#1038",
       "so_num": "SO417",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO661",
+          "vendor": "PMA Services",
+          "po_id": "153406"
+        }
+      ],
+      "po": "PO661",
       "so_id": "153405",
-      "po_id": "",
+      "po_id": "153406",
       "shopify_order": "#1038"
     },
     {
@@ -897,7 +921,7 @@
       "order": "#1071",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-06-26",
       "time": "",
@@ -923,10 +947,16 @@
       ],
       "contact": "Bart Pitula",
       "so_num": "SO446",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO703",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "159193"
+        }
+      ],
+      "po": "PO703",
       "so_id": "159190",
-      "po_id": "",
+      "po_id": "159193",
       "shopify_order": "#1071"
     },
     {
@@ -940,7 +970,7 @@
       "order": "#1067",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-06-23",
       "time": "",
@@ -1094,7 +1124,18 @@
       ],
       "contact": "SYED RIZVI",
       "so_num": "SO429",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO682",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "156345"
+        },
+        {
+          "po": "PO684",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "156347"
+        }
+      ],
       "po": "",
       "so_id": "156344",
       "po_id": "",
@@ -1166,10 +1207,16 @@
       ],
       "contact": "Karan Mehta",
       "so_num": "SO424",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO675",
+          "vendor": "ALDX HOLDING CORPORATION",
+          "po_id": "155589"
+        }
+      ],
+      "po": "PO675",
       "so_id": "155587",
-      "po_id": "",
+      "po_id": "155589",
       "shopify_order": "#1045"
     },
     {
@@ -1199,7 +1246,18 @@
       ],
       "contact": "Misty Mcwhorter",
       "so_num": "SO419",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO668",
+          "vendor": "ALDX HOLDING CORPORATION",
+          "po_id": "153744"
+        },
+        {
+          "po": "PO745",
+          "vendor": "ALDX HOLDING CORPORATION",
+          "po_id": "164246"
+        }
+      ],
       "po": "",
       "so_id": "153740",
       "po_id": "",
@@ -1247,10 +1305,16 @@
       ],
       "contact": "Misty Mcwhorter",
       "so_num": "SO419",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO669",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "153745"
+        }
+      ],
+      "po": "PO669",
       "so_id": "153740",
-      "po_id": "",
+      "po_id": "153745",
       "shopify_order": "#1039"
     },
     {
@@ -1305,7 +1369,18 @@
       ],
       "contact": "Misty Mcwhorter",
       "so_num": "SO419",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO665",
+          "vendor": "PMA Services",
+          "po_id": "153741"
+        },
+        {
+          "po": "PO734",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "162355"
+        }
+      ],
       "po": "",
       "so_id": "153740",
       "po_id": "",
@@ -1338,10 +1413,16 @@
       ],
       "contact": "Karan Mehta",
       "so_num": "SO417",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO662",
+          "vendor": "ALDX HOLDING CORPORATION",
+          "po_id": "153407"
+        }
+      ],
+      "po": "PO662",
       "so_id": "153405",
-      "po_id": "",
+      "po_id": "153407",
       "shopify_order": "#1038"
     },
     {
@@ -1418,10 +1499,16 @@
         }
       ],
       "so_num": "SO412",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO651",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "151739"
+        }
+      ],
+      "po": "PO651",
       "so_id": "151738",
-      "po_id": "",
+      "po_id": "151739",
       "shopify_order": "#1033"
     },
     {
@@ -1547,10 +1634,16 @@
         }
       ],
       "so_num": "SO403",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO638",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "147504"
+        }
+      ],
+      "po": "PO638",
       "so_id": "147502",
-      "po_id": ""
+      "po_id": "147504"
     },
     {
       "tracking": "1Z0E1B331335872866",
@@ -1592,10 +1685,16 @@
         }
       ],
       "so_num": "SO403",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO637",
+          "vendor": "PMA Services",
+          "po_id": "147503"
+        }
+      ],
+      "po": "PO637",
       "so_id": "147502",
-      "po_id": ""
+      "po_id": "147503"
     },
     {
       "tracking": "873094759046",
@@ -1624,10 +1723,16 @@
         }
       ],
       "so_num": "SO400",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO632",
+          "vendor": "PMA Services",
+          "po_id": "146601"
+        }
+      ],
+      "po": "PO632",
       "so_id": "146599",
-      "po_id": ""
+      "po_id": "146601"
     },
     {
       "tracking": "871822189811",
@@ -1656,10 +1761,16 @@
         }
       ],
       "so_num": "SO400",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO633",
+          "vendor": "ALDX Holding",
+          "po_id": "146602"
+        }
+      ],
+      "po": "PO633",
       "so_id": "146599",
-      "po_id": ""
+      "po_id": "146602"
     },
     {
       "tracking": "871501923240",
@@ -1688,10 +1799,16 @@
         }
       ],
       "so_num": "SO400",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO631",
+          "vendor": "Clearchem",
+          "po_id": "146600"
+        }
+      ],
+      "po": "PO631",
       "so_id": "146599",
-      "po_id": ""
+      "po_id": "146600"
     },
     {
       "tracking": "871501682126",
@@ -1730,10 +1847,16 @@
         }
       ],
       "so_num": "SO400",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO632",
+          "vendor": "PMA Services",
+          "po_id": "146601"
+        }
+      ],
+      "po": "PO632",
       "so_id": "146599",
-      "po_id": ""
+      "po_id": "146601"
     },
     {
       "tracking": "1Z0E1B331305879791",
@@ -1775,10 +1898,16 @@
         }
       ],
       "so_num": "SO398",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO627",
+          "vendor": "PMA Services",
+          "po_id": "146503"
+        }
+      ],
+      "po": "PO627",
       "so_id": "146502",
-      "po_id": ""
+      "po_id": "146503"
     },
     {
       "tracking": "873712913976",
@@ -1792,7 +1921,7 @@
       "order": "#1073",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-06-30",
@@ -1842,7 +1971,18 @@
         }
       ],
       "so_num": "SO448",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO706",
+          "vendor": "PMA Services",
+          "po_id": "159464"
+        },
+        {
+          "po": "PO737",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "162673"
+        }
+      ],
       "po": "",
       "so_id": "159463",
       "po_id": "",
@@ -1989,10 +2129,16 @@
         }
       ],
       "so_num": "SO424",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO674",
+          "vendor": "PMA Services",
+          "po_id": "155588"
+        }
+      ],
+      "po": "PO674",
       "so_id": "155587",
-      "po_id": "",
+      "po_id": "155588",
       "shopify_order": "#1045"
     },
     {
@@ -2032,10 +2178,16 @@
         }
       ],
       "so_num": "SO408",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO645",
+          "vendor": "PMA Services",
+          "po_id": "150061"
+        }
+      ],
+      "po": "PO645",
       "so_id": "150060",
-      "po_id": ""
+      "po_id": "150061"
     },
     {
       "tracking": "873791765762",
@@ -2049,7 +2201,7 @@
       "order": "#1078",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-01",
@@ -2411,7 +2563,7 @@
       "order": "#1079",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-02",
@@ -2475,10 +2627,16 @@
         }
       ],
       "so_num": "SO428",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO679",
+          "vendor": "PMA Services",
+          "po_id": "156041"
+        }
+      ],
+      "po": "PO679",
       "so_id": "156040",
-      "po_id": "",
+      "po_id": "156041",
       "shopify_order": "#1049"
     },
     {
@@ -2669,7 +2827,7 @@
       "order": "#1085",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-03",
@@ -2743,7 +2901,7 @@
       "order": "#1084",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-08",
@@ -3036,9 +3194,15 @@
       ],
       "so_num": "SO408",
       "so_id": "150060",
-      "pos": [],
-      "po": "",
-      "po_id": ""
+      "pos": [
+        {
+          "po": "PO646",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "150062"
+        }
+      ],
+      "po": "PO646",
+      "po_id": "150062"
     },
     {
       "tracking": "1Z8W007Y0394428819",
@@ -3139,8 +3303,8 @@
       "ship_to": "Bradenton, FL",
       "order": "#1094",
       "service": "FedEx",
-      "status": "In Transit",
-      "activity": "CONFIRMED",
+      "status": "",
+      "activity": "Label created",
       "delivered": false,
       "location": "",
       "date": "2026-07-08",
@@ -3156,9 +3320,15 @@
       ],
       "so_num": "SO470",
       "so_id": "162697",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO739",
+          "vendor": "PMA Services",
+          "po_id": "162699"
+        }
+      ],
+      "po": "PO739",
+      "po_id": "162699",
       "shopify_order": "#1094"
     },
     {
@@ -3173,7 +3343,7 @@
       "order": "#1073",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-09",
@@ -3189,9 +3359,15 @@
       ],
       "so_num": "SO448",
       "so_id": "159463",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO706",
+          "vendor": "PMA Services",
+          "po_id": "159464"
+        }
+      ],
+      "po": "PO706",
+      "po_id": "159464",
       "shopify_order": "#1073"
     },
     {
@@ -3294,7 +3470,7 @@
       "order": "#1084",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-15",
@@ -3310,9 +3486,15 @@
       ],
       "so_num": "SO459",
       "so_id": "161320",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO723",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "161322"
+        }
+      ],
+      "po": "PO723",
+      "po_id": "161322",
       "shopify_order": "#1084"
     },
     {
@@ -3327,7 +3509,7 @@
       "order": "#1078",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-15",
@@ -3376,7 +3558,7 @@
       "order": "#1071",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-16",
@@ -3392,9 +3574,15 @@
       ],
       "so_num": "SO446",
       "so_id": "159190",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO704",
+          "vendor": "PMA Services",
+          "po_id": "159194"
+        }
+      ],
+      "po": "PO704",
+      "po_id": "159194",
       "shopify_order": "#1071"
     },
     {
@@ -3425,9 +3613,15 @@
       ],
       "so_num": "SO417",
       "so_id": "153405",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO663",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "153408"
+        }
+      ],
+      "po": "PO663",
+      "po_id": "153408",
       "shopify_order": "#1038"
     },
     {
@@ -3463,7 +3657,18 @@
       ],
       "so_num": "SO412",
       "so_id": "151738",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO654",
+          "vendor": "PMA Services",
+          "po_id": "151746"
+        },
+        {
+          "po": "PO712",
+          "vendor": "PMA Services",
+          "po_id": "160039"
+        }
+      ],
       "po": "",
       "po_id": "",
       "shopify_order": "#1033"
@@ -3480,7 +3685,7 @@
       "order": "#1097",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-16",
@@ -3519,7 +3724,7 @@
       "order": "#1097",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-16",
@@ -3646,7 +3851,7 @@
       "order": "#1073",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-16",
@@ -3662,9 +3867,15 @@
       ],
       "so_num": "SO448",
       "so_id": "159463",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO737",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "162673"
+        }
+      ],
+      "po": "PO737",
+      "po_id": "162673",
       "shopify_order": "#1073"
     },
     {
@@ -3825,7 +4036,18 @@
       ],
       "so_num": "SO419",
       "so_id": "153740",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO665",
+          "vendor": "PMA Services",
+          "po_id": "153741"
+        },
+        {
+          "po": "PO734",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "162355"
+        }
+      ],
       "po": "",
       "po_id": "",
       "shopify_order": "#1039"
@@ -3930,7 +4152,7 @@
       "order": "#1104",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-16",
@@ -3969,7 +4191,7 @@
       "order": "#1078",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-16",
@@ -4034,9 +4256,15 @@
       ],
       "so_num": "SO419",
       "so_id": "153740",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO665",
+          "vendor": "PMA Services",
+          "po_id": "153741"
+        }
+      ],
+      "po": "PO665",
+      "po_id": "153741",
       "shopify_order": "#1039"
     },
     {
@@ -4084,7 +4312,7 @@
       "order": "#1101",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-21",
@@ -4426,7 +4654,7 @@
       "order": "#1106",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-21",
@@ -4636,7 +4864,7 @@
       "order": "#1113",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-23",
@@ -4872,7 +5100,7 @@
       "order": "#1116",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-24",
@@ -4931,7 +5159,7 @@
       "order": "#1114",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-23",
@@ -4975,7 +5203,7 @@
       "order": "#1101",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-24",
@@ -4991,9 +5219,15 @@
       ],
       "so_num": "SO477",
       "so_id": "164668",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO750",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "164671"
+        }
+      ],
+      "po": "PO750",
+      "po_id": "164671",
       "shopify_order": "#1069"
     },
     {
@@ -5123,7 +5357,7 @@
       "order": "#1119",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-28",
@@ -5192,7 +5426,7 @@
       "order": "#1123",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-07-28",
@@ -5257,9 +5491,15 @@
       ],
       "so_num": "SO493",
       "so_id": "167019",
-      "pos": [],
-      "po": "",
-      "po_id": ""
+      "pos": [
+        {
+          "po": "PO767",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "167026"
+        }
+      ],
+      "po": "PO767",
+      "po_id": "167026"
     },
     {
       "tracking": "1Z8W007Y0392169175",
@@ -5361,7 +5601,7 @@
       "order": "#1124",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-08-01",
@@ -5416,7 +5656,18 @@
       ],
       "so_num": "SO499",
       "so_id": "168444",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO778",
+          "vendor": "PMA Services",
+          "po_id": "168445"
+        },
+        {
+          "po": "PO820",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "176029"
+        }
+      ],
       "po": "",
       "po_id": "",
       "shopify_order": "#1125"
@@ -5449,7 +5700,18 @@
       ],
       "so_num": "SO499",
       "so_id": "168444",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO778",
+          "vendor": "PMA Services",
+          "po_id": "168445"
+        },
+        {
+          "po": "PO820",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "176029"
+        }
+      ],
       "po": "",
       "po_id": "",
       "shopify_order": "#1125"
@@ -5567,9 +5829,15 @@
       ],
       "so_num": "SO499",
       "so_id": "168444",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO778",
+          "vendor": "PMA Services",
+          "po_id": "168445"
+        }
+      ],
+      "po": "PO778",
+      "po_id": "168445",
       "shopify_order": "#1125"
     },
     {
@@ -5615,9 +5883,15 @@
       ],
       "so_num": "SO499",
       "so_id": "168444",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO779",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "168446"
+        }
+      ],
+      "po": "PO779",
+      "po_id": "168446",
       "shopify_order": "#1125"
     },
     {
@@ -5738,9 +6012,15 @@
       ],
       "so_num": "SO493",
       "so_id": "167019",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO767",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "167026"
+        }
+      ],
+      "po": "PO767",
+      "po_id": "167026",
       "shopify_order": "#1118"
     },
     {
@@ -5755,7 +6035,7 @@
       "order": "#1127",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-08-13",
@@ -5794,7 +6074,7 @@
       "order": "#1127",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-08-13",
@@ -5833,7 +6113,7 @@
       "order": "#1127",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-08-13",
@@ -5872,7 +6152,7 @@
       "order": "#1127",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-08-13",
@@ -5911,7 +6191,7 @@
       "order": "#1127",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-08-13",
@@ -5966,9 +6246,15 @@
       ],
       "so_num": "SO499",
       "so_id": "168444",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO778",
+          "vendor": "PMA Services",
+          "po_id": "168445"
+        }
+      ],
+      "po": "PO778",
+      "po_id": "168445",
       "shopify_order": "#1125"
     },
     {
@@ -6102,9 +6388,15 @@
       ],
       "so_num": "SO499",
       "so_id": "168444",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO778",
+          "vendor": "PMA Services",
+          "po_id": "168445"
+        }
+      ],
+      "po": "PO778",
+      "po_id": "168445",
       "shopify_order": "#1125"
     },
     {
@@ -6376,7 +6668,7 @@
       "ship_to": "Sugar Land, TX",
       "order": "#1132",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-08-06",
       "time": "",
@@ -6421,7 +6713,18 @@
       ],
       "so_num": "SO505",
       "so_id": "170113",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO788",
+          "vendor": "PMA Services",
+          "po_id": "170114"
+        },
+        {
+          "po": "PO789",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "170115"
+        }
+      ],
       "po": "",
       "po_id": "",
       "url": "https://www.fedex.com/fedextrack/?trknbr=875378897489",
@@ -6437,8 +6740,8 @@
       "contact": "SYED RIZVI",
       "ship_to": "Sugar Land, TX",
       "order": "#1132",
-      "status": "Label Created",
-      "activity": "LABEL PURCHASED",
+      "status": "",
+      "activity": "Label created",
       "location": "",
       "date": "2026-08-05",
       "time": "",
@@ -6483,7 +6786,18 @@
       ],
       "so_num": "SO505",
       "so_id": "170113",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO788",
+          "vendor": "PMA Services",
+          "po_id": "170114"
+        },
+        {
+          "po": "PO789",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "170115"
+        }
+      ],
       "po": "",
       "po_id": "",
       "url": "https://www.fedex.com/fedextrack/?trknbr=875388483839",
@@ -6500,7 +6814,7 @@
       "ship_to": "Clarendon Hills, IL",
       "order": "#1133",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-08-07",
       "time": "",
@@ -6553,8 +6867,8 @@
       "ship_to": "Norwood, MA",
       "order": "#1134",
       "service": "FedEx",
-      "status": "Label Created",
-      "activity": "LABEL PRINTED",
+      "status": "",
+      "activity": "Label created",
       "delivered": false,
       "location": "",
       "date": "2026-08-06",
@@ -6629,9 +6943,15 @@
       ],
       "so_num": "SO499",
       "so_id": "168444",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO778",
+          "vendor": "PMA Services",
+          "po_id": "168445"
+        }
+      ],
+      "po": "PO778",
+      "po_id": "168445",
       "shopify_order": "#1125"
     },
     {
@@ -6646,7 +6966,7 @@
       "order": "#1114",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-08-07",
@@ -6719,9 +7039,15 @@
       ],
       "so_num": "SO493",
       "so_id": "167019",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO768",
+          "vendor": "PMA Services",
+          "po_id": "167027"
+        }
+      ],
+      "po": "PO768",
+      "po_id": "167027",
       "shopify_order": "#1118"
     },
     {
@@ -6736,7 +7062,7 @@
       "order": "#1119",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-08-07",
@@ -6775,7 +7101,7 @@
       "order": "#1121",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-08-10",
@@ -6796,7 +7122,18 @@
       ],
       "so_num": "SO496",
       "so_id": "167330",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO775",
+          "vendor": "PMA Services",
+          "po_id": "167332"
+        },
+        {
+          "po": "PO797",
+          "vendor": "PMA Services",
+          "po_id": "172169"
+        }
+      ],
       "po": "",
       "po_id": "",
       "shopify_order": "#1121"
@@ -6813,7 +7150,7 @@
       "order": "#1135",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-08-11",
@@ -6852,7 +7189,7 @@
       "order": "#1118",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-08-11",
@@ -6888,9 +7225,15 @@
       ],
       "so_num": "SO493",
       "so_id": "167019",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO767",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "167026"
+        }
+      ],
+      "po": "PO767",
+      "po_id": "167026",
       "shopify_order": "#1118"
     },
     {
@@ -6903,7 +7246,7 @@
       "order": "#1137",
       "service": "",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-08-12",
       "time": "",
@@ -7043,7 +7386,7 @@
       "order": "#1101",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-08-13",
@@ -7059,9 +7402,15 @@
       ],
       "so_num": "SO477",
       "so_id": "164668",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO750",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "164671"
+        }
+      ],
+      "po": "PO750",
+      "po_id": "164671",
       "shopify_order": "#1101"
     },
     {
@@ -7136,9 +7485,15 @@
       ],
       "so_num": "SO493",
       "so_id": "167019",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO768",
+          "vendor": "PMA Services",
+          "po_id": "167027"
+        }
+      ],
+      "po": "PO768",
+      "po_id": "167027",
       "shopify_order": "#1118"
     },
     {
@@ -7186,9 +7541,15 @@
       ],
       "so_num": "SO493",
       "so_id": "167019",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO768",
+          "vendor": "PMA Services",
+          "po_id": "167027"
+        }
+      ],
+      "po": "PO768",
+      "po_id": "167027",
       "shopify_order": "#1118"
     },
     {
@@ -7216,9 +7577,15 @@
       ],
       "so_num": "SO499",
       "so_id": "168444",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO778",
+          "vendor": "PMA Services",
+          "po_id": "168445"
+        }
+      ],
+      "po": "PO778",
+      "po_id": "168445",
       "shopify_order": "#1125"
     },
     {
@@ -7347,9 +7714,15 @@
       ],
       "so_num": "SO516",
       "so_id": "173598",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO804",
+          "vendor": "PMA Services",
+          "po_id": "173599"
+        }
+      ],
+      "po": "PO804",
+      "po_id": "173599",
       "shopify_order": "#1144"
     },
     {
@@ -7362,7 +7735,7 @@
       "ship_to": "Monroe, LA",
       "order": "#1146",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-08-19",
       "time": "",
@@ -7401,7 +7774,7 @@
       "order": "#1118",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-08-19",
       "time": "",
@@ -7433,9 +7806,15 @@
       "contact": "Misty Mcwhorter",
       "so_num": "SO493",
       "so_id": "167019",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO767",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "167026"
+        }
+      ],
+      "po": "PO767",
+      "po_id": "167026",
       "shopify_order": "#1118"
     },
     {
@@ -7465,9 +7844,15 @@
       "contact": "Siva Kumar",
       "so_num": "SO499",
       "so_id": "168444",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO791",
+          "vendor": "ALDX HOLDING CORPORATION",
+          "po_id": "170412"
+        }
+      ],
+      "po": "PO791",
+      "po_id": "170412",
       "shopify_order": "#1125"
     },
     {
@@ -7770,9 +8155,15 @@
       ],
       "so_num": "SO524",
       "so_id": "175545",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO819",
+          "vendor": "PMA Services",
+          "po_id": "175550"
+        }
+      ],
+      "po": "PO819",
+      "po_id": "175550",
       "shopify_order": "#1152"
     },
     {
@@ -7816,9 +8207,15 @@
       ],
       "so_num": "SO522",
       "so_id": "174946",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO814",
+          "vendor": "PMA Services",
+          "po_id": "174948"
+        }
+      ],
+      "po": "PO814",
+      "po_id": "174948",
       "shopify_order": "#1150"
     },
     {
@@ -7934,9 +8331,15 @@
       ],
       "so_num": "SO525",
       "so_id": "176088",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO822",
+          "vendor": "PMA Services",
+          "po_id": "176090"
+        }
+      ],
+      "po": "PO822",
+      "po_id": "176090",
       "shopify_order": "#1153"
     },
     {
@@ -7950,7 +8353,7 @@
       "order": "#1150",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-08-26",
       "time": "",
@@ -8030,13 +8433,18 @@
       "so_id": "174946",
       "pos": [
         {
+          "po": "PO814",
+          "vendor": "PMA Services",
+          "po_id": "174948"
+        },
+        {
           "po": "PO815",
           "vendor": "ClearChem Diagnostics, Inc",
           "po_id": "174949"
         }
       ],
-      "po": "PO815",
-      "po_id": "174949"
+      "po": "",
+      "po_id": ""
     },
     {
       "tracking": "383371162051",
@@ -8049,7 +8457,7 @@
       "order": "#1150",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-08-26",
       "time": "",
@@ -8129,13 +8537,18 @@
       "so_id": "174946",
       "pos": [
         {
+          "po": "PO814",
+          "vendor": "PMA Services",
+          "po_id": "174948"
+        },
+        {
           "po": "PO815",
           "vendor": "ClearChem Diagnostics, Inc",
           "po_id": "174949"
         }
       ],
-      "po": "PO815",
-      "po_id": "174949"
+      "po": "",
+      "po_id": ""
     },
     {
       "tracking": "876268149013",
@@ -8148,7 +8561,7 @@
       "order": "#1151",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-08-26",
       "time": "",
@@ -8197,7 +8610,7 @@
       "order": "#1151",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-09-01",
       "time": "",
@@ -8246,7 +8659,7 @@
       "order": "#1151",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-09-01",
       "time": "",
@@ -8295,7 +8708,7 @@
       "order": "#1152",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-08-26",
       "time": "",
@@ -8328,7 +8741,18 @@
       "shopify_order": "#1152",
       "so_num": "SO524",
       "so_id": "175545",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO818",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "175546"
+        },
+        {
+          "po": "PO819",
+          "vendor": "PMA Services",
+          "po_id": "175550"
+        }
+      ],
       "po": "",
       "po_id": ""
     },
@@ -8343,7 +8767,7 @@
       "order": "#1153",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-08-26",
       "time": "",
@@ -8411,9 +8835,15 @@
       "shopify_order": "#1153",
       "so_num": "SO525",
       "so_id": "176088",
-      "pos": [],
-      "po": "",
-      "po_id": ""
+      "pos": [
+        {
+          "po": "PO822",
+          "vendor": "PMA Services",
+          "po_id": "176090"
+        }
+      ],
+      "po": "PO822",
+      "po_id": "176090"
     },
     {
       "tracking": "383354001098",
@@ -8426,7 +8856,7 @@
       "order": "#1125",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-08-28",
       "time": "",
@@ -8442,7 +8872,18 @@
       ],
       "so_num": "SO499",
       "so_id": "168444",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO778",
+          "vendor": "PMA Services",
+          "po_id": "168445"
+        },
+        {
+          "po": "PO820",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "176029"
+        }
+      ],
       "po": "",
       "po_id": ""
     },
@@ -8457,7 +8898,7 @@
       "order": "#1125",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-08-26",
       "time": "",
@@ -8473,7 +8914,18 @@
       ],
       "so_num": "SO499",
       "so_id": "168444",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO778",
+          "vendor": "PMA Services",
+          "po_id": "168445"
+        },
+        {
+          "po": "PO820",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "176029"
+        }
+      ],
       "po": "",
       "po_id": ""
     },
@@ -8541,7 +8993,7 @@
       "order": "#1144",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-08-27",
       "time": "",
@@ -8652,7 +9104,23 @@
       ],
       "so_num": "SO516",
       "so_id": "173598",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO804",
+          "vendor": "PMA Services",
+          "po_id": "173599"
+        },
+        {
+          "po": "PO827",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "176695"
+        },
+        {
+          "po": "PO841",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "179127"
+        }
+      ],
       "po": "",
       "po_id": "",
       "shopify_order": "#1144"
@@ -8754,7 +9222,18 @@
       ],
       "so_num": "SO526",
       "so_id": "176657",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO824",
+          "vendor": "PMA Services",
+          "po_id": "176659"
+        },
+        {
+          "po": "PO825",
+          "vendor": "PMA Services",
+          "po_id": "176660"
+        }
+      ],
       "po": "",
       "po_id": "",
       "shopify_order": "#1154"
@@ -8856,7 +9335,18 @@
       ],
       "so_num": "SO526",
       "so_id": "176657",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO824",
+          "vendor": "PMA Services",
+          "po_id": "176659"
+        },
+        {
+          "po": "PO825",
+          "vendor": "PMA Services",
+          "po_id": "176660"
+        }
+      ],
       "po": "",
       "po_id": "",
       "shopify_order": "#1154"
@@ -8958,7 +9448,18 @@
       ],
       "so_num": "SO526",
       "so_id": "176657",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO824",
+          "vendor": "PMA Services",
+          "po_id": "176659"
+        },
+        {
+          "po": "PO825",
+          "vendor": "PMA Services",
+          "po_id": "176660"
+        }
+      ],
       "po": "",
       "po_id": "",
       "shopify_order": "#1154"
@@ -9060,7 +9561,18 @@
       ],
       "so_num": "SO526",
       "so_id": "176657",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO824",
+          "vendor": "PMA Services",
+          "po_id": "176659"
+        },
+        {
+          "po": "PO825",
+          "vendor": "PMA Services",
+          "po_id": "176660"
+        }
+      ],
       "po": "",
       "po_id": "",
       "shopify_order": "#1154"
@@ -9076,7 +9588,7 @@
       "order": "#1159",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-09-01",
       "time": "",
@@ -9379,7 +9891,7 @@
       "order": "#1160",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-09-01",
       "time": "",
@@ -9428,7 +9940,7 @@
       "order": "#1163",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-09-02",
       "time": "",
@@ -9496,7 +10008,23 @@
       "shopify_order": "#1163",
       "so_num": "SO535",
       "so_id": "178677",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO836",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "178678"
+        },
+        {
+          "po": "PO837",
+          "vendor": "PMA Services",
+          "po_id": "178679"
+        },
+        {
+          "po": "PO838",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "178682"
+        }
+      ],
       "po": "",
       "po_id": ""
     },
@@ -9579,7 +10107,23 @@
       "shopify_order": "#1163",
       "so_num": "SO535",
       "so_id": "178677",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO836",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "178678"
+        },
+        {
+          "po": "PO837",
+          "vendor": "PMA Services",
+          "po_id": "178679"
+        },
+        {
+          "po": "PO838",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "178682"
+        }
+      ],
       "po": "",
       "po_id": ""
     },
@@ -9594,7 +10138,7 @@
       "order": "#1163",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-09-03",
       "time": "",
@@ -9662,7 +10206,23 @@
       "shopify_order": "#1163",
       "so_num": "SO535",
       "so_id": "178677",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO836",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "178678"
+        },
+        {
+          "po": "PO837",
+          "vendor": "PMA Services",
+          "po_id": "178679"
+        },
+        {
+          "po": "PO838",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "178682"
+        }
+      ],
       "po": "",
       "po_id": ""
     },
@@ -9850,7 +10410,7 @@
       "ship_to": "Naperville, IL",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "United States",
       "date": "2026-09-01",
       "time": "",
@@ -9871,9 +10431,15 @@
       "shopify_fulfilled": true,
       "so_num": "SO499",
       "so_id": "168444",
-      "pos": [],
-      "po": "",
-      "po_id": ""
+      "pos": [
+        {
+          "po": "PO778",
+          "vendor": "PMA Services",
+          "po_id": "168445"
+        }
+      ],
+      "po": "PO778",
+      "po_id": "168445"
     },
     {
       "tracking": "876642077640",
@@ -9883,7 +10449,7 @@
       "ship_to": "Clarendon Hills, IL",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "United States",
       "date": "2026-09-03",
       "time": "",
@@ -9922,7 +10488,7 @@
       "ship_to": "Bradenton, FL",
       "service": "",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-09-03",
       "time": "",
@@ -10061,7 +10627,18 @@
       ],
       "order": "#1118",
       "so_num": "SO493",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO767",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "167026"
+        },
+        {
+          "po": "PO768",
+          "vendor": "PMA Services",
+          "po_id": "167027"
+        }
+      ],
       "po": "",
       "so_id": "167019",
       "po_id": ""
@@ -10074,7 +10651,7 @@
       "ship_to": "New York, NY",
       "service": "",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-09-03",
       "time": "",
@@ -10121,7 +10698,7 @@
       "order": "#1154",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-09-03",
@@ -10174,7 +10751,7 @@
       "order": "#1150",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-09-04",
@@ -10190,9 +10767,15 @@
       ],
       "so_num": "SO522",
       "so_id": "174946",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO814",
+          "vendor": "PMA Services",
+          "po_id": "174948"
+        }
+      ],
+      "po": "PO814",
+      "po_id": "174948",
       "shopify_order": "#1150"
     },
     {
@@ -10207,7 +10790,7 @@
       "order": "#1147",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-09-04",
@@ -10246,7 +10829,7 @@
       "order": "#1144",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-09-04",
@@ -10262,9 +10845,15 @@
       ],
       "so_num": "SO516",
       "so_id": "173598",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO804",
+          "vendor": "PMA Services",
+          "po_id": "173599"
+        }
+      ],
+      "po": "PO804",
+      "po_id": "173599",
       "shopify_order": "#1144"
     },
     {
@@ -10279,7 +10868,7 @@
       "order": "#1144",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-09-08",
@@ -10295,9 +10884,15 @@
       ],
       "so_num": "SO516",
       "so_id": "173598",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO841",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "179127"
+        }
+      ],
+      "po": "PO841",
+      "po_id": "179127",
       "shopify_order": "#1144"
     },
     {
@@ -10308,7 +10903,7 @@
       "ship_to": "Bradenton, FL",
       "service": "",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-09-10",
       "time": "",
@@ -10332,10 +10927,16 @@
       ],
       "order": "#1118",
       "so_num": "SO493",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO768",
+          "vendor": "PMA Services",
+          "po_id": "167027"
+        }
+      ],
+      "po": "PO768",
       "so_id": "167019",
-      "po_id": ""
+      "po_id": "167027"
     },
     {
       "tracking": "1Z23C2X7YW38426571",
@@ -10364,10 +10965,16 @@
       ],
       "order": "#1125",
       "so_num": "SO499",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO778",
+          "vendor": "PMA Services",
+          "po_id": "168445"
+        }
+      ],
+      "po": "PO778",
       "so_id": "168444",
-      "po_id": ""
+      "po_id": "168445"
     },
     {
       "tracking": "383532080641",
@@ -10377,7 +10984,7 @@
       "ship_to": "Naperville, IL",
       "service": "",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-09-02",
       "time": "",
@@ -10537,7 +11144,7 @@
       "order": "#1169",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-09-03",
       "time": "",
@@ -10574,7 +11181,7 @@
       "order": "#1167",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-09-02",
       "time": "",
@@ -10618,7 +11225,7 @@
       "order": "#1172",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-09-08",
@@ -10657,7 +11264,7 @@
       "shopify_order": "#1175",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-09-10",
@@ -10753,7 +11360,23 @@
       ],
       "so_num": "SO547",
       "so_id": "181951",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO857",
+          "vendor": "PMA Services",
+          "po_id": "181952"
+        },
+        {
+          "po": "PO858",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "181953"
+        },
+        {
+          "po": "PO859",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "181954"
+        }
+      ],
       "po": "",
       "po_id": ""
     },
@@ -10770,7 +11393,7 @@
       "shopify_order": "#1174",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-09-10",
@@ -10829,7 +11452,7 @@
       "shopify_order": "#1173",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-09-10",
@@ -10870,7 +11493,18 @@
       ],
       "so_num": "SO546",
       "so_id": "181655",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO855",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "181656"
+        },
+        {
+          "po": "PO856",
+          "vendor": "PMA Services",
+          "po_id": "181657"
+        }
+      ],
       "po": "",
       "po_id": ""
     },
@@ -10885,7 +11519,7 @@
       "order": "#1154",
       "service": "FedEx",
       "status": "In Transit",
-      "activity": "IN TRANSIT",
+      "activity": "",
       "location": "",
       "date": "2026-09-14",
       "time": "",
@@ -10982,7 +11616,18 @@
       "url": "https://www.fedex.com/fedextrack/?trknbr=383659421057",
       "so_num": "SO526",
       "so_id": "176657",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO824",
+          "vendor": "PMA Services",
+          "po_id": "176659"
+        },
+        {
+          "po": "PO825",
+          "vendor": "PMA Services",
+          "po_id": "176660"
+        }
+      ],
       "po": "",
       "po_id": ""
     },
@@ -10997,7 +11642,7 @@
       "order": "#1154",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-09-14",
       "time": "",
@@ -11094,7 +11739,18 @@
       "url": "https://www.fedex.com/fedextrack/?trknbr=383659394910",
       "so_num": "SO526",
       "so_id": "176657",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO824",
+          "vendor": "PMA Services",
+          "po_id": "176659"
+        },
+        {
+          "po": "PO825",
+          "vendor": "PMA Services",
+          "po_id": "176660"
+        }
+      ],
       "po": "",
       "po_id": ""
     },
@@ -11109,7 +11765,7 @@
       "order": "#1164",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-09-15",
       "time": "",
@@ -11152,7 +11808,7 @@
       "order": "#1164",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-09-12",
       "time": "",
@@ -11197,7 +11853,7 @@
       "shopify_order": "#1145",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-09-14",
@@ -11251,7 +11907,7 @@
       "shopify_order": "#1175",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-09-10",
@@ -11347,7 +12003,23 @@
       ],
       "so_num": "SO547",
       "so_id": "181951",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO857",
+          "vendor": "PMA Services",
+          "po_id": "181952"
+        },
+        {
+          "po": "PO858",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "181953"
+        },
+        {
+          "po": "PO859",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "181954"
+        }
+      ],
       "po": "",
       "po_id": ""
     },
@@ -11364,7 +12036,7 @@
       "shopify_order": "#1175",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-09-10",
@@ -11460,7 +12132,23 @@
       ],
       "so_num": "SO547",
       "so_id": "181951",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO857",
+          "vendor": "PMA Services",
+          "po_id": "181952"
+        },
+        {
+          "po": "PO858",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "181953"
+        },
+        {
+          "po": "PO859",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "181954"
+        }
+      ],
       "po": "",
       "po_id": ""
     },
@@ -11570,7 +12258,7 @@
       "order": "#1178",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-09-14",
@@ -11631,7 +12319,18 @@
       ],
       "so_num": "SO550",
       "so_id": "183233",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO862",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "183234"
+        },
+        {
+          "po": "PO863",
+          "vendor": "PMA Services",
+          "po_id": "183235"
+        }
+      ],
       "po": "",
       "po_id": ""
     },
@@ -11647,7 +12346,7 @@
       "order": "#1179",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-09-14",
@@ -11690,7 +12389,7 @@
       "order": "#1180",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "delivered": true,
       "location": "",
       "date": "2026-09-15",
@@ -11742,7 +12441,7 @@
       "order": "#1118",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-07-22T22:08:30Z",
       "time": "",
@@ -11879,7 +12578,18 @@
       "url": "https://www.fedex.com/fedextrack/?trknbr=877303187152",
       "so_num": "SO493",
       "so_id": "167019",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO767",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "167026"
+        },
+        {
+          "po": "PO768",
+          "vendor": "PMA Services",
+          "po_id": "167027"
+        }
+      ],
       "po": "",
       "po_id": ""
     },
@@ -11894,7 +12604,7 @@
       "order": "#1152",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-08-22T23:39:20Z",
       "time": "",
@@ -11926,7 +12636,18 @@
       "url": "https://www.fedex.com/fedextrack/?trknbr=383736325305",
       "so_num": "SO524",
       "so_id": "175545",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO818",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "175546"
+        },
+        {
+          "po": "PO819",
+          "vendor": "PMA Services",
+          "po_id": "175550"
+        }
+      ],
       "po": "",
       "po_id": ""
     },
@@ -11941,7 +12662,7 @@
       "order": "#1173",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-09-10T01:31:18Z",
       "time": "",
@@ -11983,7 +12704,18 @@
       "url": "https://www.fedex.com/fedextrack/?trknbr=877312474832",
       "so_num": "SO546",
       "so_id": "181655",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO855",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "181656"
+        },
+        {
+          "po": "PO856",
+          "vendor": "PMA Services",
+          "po_id": "181657"
+        }
+      ],
       "po": "",
       "po_id": ""
     },
@@ -11998,7 +12730,7 @@
       "order": "#1181",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-09-15T18:57:53Z",
       "time": "",
@@ -12050,7 +12782,18 @@
       "url": "https://www.fedex.com/fedextrack/?trknbr=877306832614",
       "so_num": "SO553",
       "so_id": "183643",
-      "pos": [],
+      "pos": [
+        {
+          "po": "PO870",
+          "vendor": "PMA Services",
+          "po_id": "183645"
+        },
+        {
+          "po": "PO872",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "183888"
+        }
+      ],
       "po": "",
       "po_id": ""
     },
@@ -12065,7 +12808,7 @@
       "order": "#1182",
       "service": "FedEx",
       "status": "Delivered",
-      "activity": "DELIVERED",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-09-15T23:15:09Z",
       "time": "",
@@ -12112,12 +12855,12 @@
       "ship_to": "",
       "order": "#1185",
       "service": "FedEx",
-      "status": "Label Created",
-      "activity": "LABEL PRINTED",
+      "status": "Delivered",
+      "activity": "Delivered",
       "location": "",
       "date": "2026-09-17T15:51:59Z",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "ship_date": "2026-09-17T15:51:59Z",
       "items": [
         {
@@ -12150,12 +12893,12 @@
       "ship_to": "GAITHERSBURG, MD, US",
       "order": "#1177",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Gaithersburg, MD",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "GAITHERSBURG, MD",
       "date": "2026-09-17",
-      "time": "",
-      "delivered": false,
+      "time": "2:17 PM",
+      "delivered": true,
       "ship_date": "2026-09-15",
       "items": [
         {
@@ -12271,5 +13014,5 @@
       "po_id": "182315"
     }
   ],
-  "last_shopify_sync": "2026-09-17T10:00:10"
+  "last_shopify_sync": "2026-09-18"
 }
