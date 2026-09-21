@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-09-19 10:07 AM PT",
-  "last_status_refresh": "2026-09-19 09:07 AM PT",
+  "pulled_at": "2026-09-21 08:06 AM PT",
+  "last_status_refresh": "2026-09-21 07:13 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -1822,10 +1822,16 @@
         }
       ],
       "so_num": "SO400",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO631",
+          "vendor": "Clearchem",
+          "po_id": "146600"
+        }
+      ],
+      "po": "PO631",
       "so_id": "146599",
-      "po_id": ""
+      "po_id": "146600"
     },
     {
       "tracking": "871501682126",
@@ -11648,9 +11654,9 @@
       "order": "#1154",
       "service": "FedEx",
       "status": "In Transit",
-      "activity": "",
+      "activity": "Out for Delivery",
       "location": "",
-      "date": "2026-09-14",
+      "date": "2026-09-21",
       "time": "",
       "delivered": false,
       "ship_date": "2026-08-25",
@@ -13073,9 +13079,9 @@
       "order": "#1176",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Atlanta, GA",
-      "date": "2026-09-16",
+      "activity": "Out For Delivery Today",
+      "location": "San Francisco, CA",
+      "date": "2026-09-21",
       "time": "",
       "delivered": false,
       "ship_date": "2026-09-15",
@@ -13118,9 +13124,9 @@
       "order": "#1176",
       "service": "UPS Ground",
       "status": "In Transit",
-      "activity": "Departed from Facility",
-      "location": "Atlanta, GA",
-      "date": "2026-09-16",
+      "activity": "Out For Delivery Today",
+      "location": "San Francisco, CA",
+      "date": "2026-09-21",
       "time": "",
       "delivered": false,
       "ship_date": "2026-09-15",
@@ -13151,6 +13157,96 @@
       ],
       "po": "PO860",
       "po_id": "182315"
+    },
+    {
+      "tracking": "1Z8W007Y0392401207",
+      "carrier": "UPS",
+      "source": "UPS My Choice (3rd Party)",
+      "view": "Third Party",
+      "shipper": "CONMED OUTBOUND",
+      "receiver": "BRAND SURGICAL INSTITUTE",
+      "ship_to": "GLENDALE, CA, US",
+      "order": "#1184",
+      "service": "UPS Ground",
+      "status": "In Transit",
+      "activity": "Departed from Facility",
+      "location": "Atlanta, GA",
+      "date": "2026-09-18",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-09-17",
+      "items": [
+        {
+          "sku": "VT10524",
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "qty": 1
+        },
+        {
+          "sku": "VV120-DO",
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "qty": 1
+        }
+      ],
+      "billed_to": "W803J7 - JIT4U Third Party",
+      "url": "https://www.ups.com/WebTracking?loc=en_US&requester=ST&trackNums=1Z8W007Y0392401207",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1184",
+      "so_num": "SO555",
+      "so_id": "184072",
+      "pos": [
+        {
+          "po": "PO873",
+          "vendor": "Conmed",
+          "po_id": "184073"
+        }
+      ],
+      "po": "PO873",
+      "po_id": "184073"
+    },
+    {
+      "tracking": "1Z8W007Y0398480595",
+      "carrier": "UPS",
+      "source": "UPS My Choice (3rd Party)",
+      "view": "Third Party",
+      "shipper": "CONMED OUTBOUND",
+      "receiver": "BRAND SURGICAL INSTITUTE",
+      "ship_to": "GLENDALE, CA, US",
+      "order": "#1184",
+      "service": "UPS Ground",
+      "status": "In Transit",
+      "activity": "Departed from Facility",
+      "location": "Atlanta, GA",
+      "date": "2026-09-18",
+      "time": "",
+      "delivered": false,
+      "ship_date": "2026-09-17",
+      "items": [
+        {
+          "sku": "VT10524",
+          "name": "ViroVac Surgical Smoke Evacuation Tubing (24/Case)",
+          "qty": 1
+        },
+        {
+          "sku": "VV120-DO",
+          "name": "Conmed ViroVac VV120 Surgical Smoke Evacuator.",
+          "qty": 1
+        }
+      ],
+      "billed_to": "W803J7 - JIT4U Third Party",
+      "url": "https://www.ups.com/WebTracking?loc=en_US&requester=ST&trackNums=1Z8W007Y0398480595",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1184",
+      "so_num": "SO555",
+      "so_id": "184072",
+      "pos": [
+        {
+          "po": "PO873",
+          "vendor": "Conmed",
+          "po_id": "184073"
+        }
+      ],
+      "po": "PO873",
+      "po_id": "184073"
     }
   ],
   "last_shopify_sync": "2026-09-18"
