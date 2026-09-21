@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-09-21 08:06 AM PT",
-  "last_status_refresh": "2026-09-21 07:13 AM PT",
+  "pulled_at": "2026-09-21 10:02 AM PT",
+  "last_status_refresh": "2026-09-21 09:15 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -13247,6 +13247,44 @@
       ],
       "po": "PO873",
       "po_id": "184073"
+    },
+    {
+      "tracking": "877512380017",
+      "carrier": "FedEx",
+      "source": "Shopify",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Mercedes Scientific",
+      "contact": "Misty Mcwhorter",
+      "ship_to": "",
+      "order": "#1118",
+      "service": "FedEx",
+      "status": "",
+      "activity": "Label created",
+      "delivered": false,
+      "location": "",
+      "date": "2026-09-21",
+      "time": "",
+      "ship_date": "2026-09-21",
+      "url": "https://www.fedex.com/fedextrack/?trknbr=877512380017",
+      "items": [
+        {
+          "sku": "A48618",
+          "name": "Beckman Coulter A48618 Access SHBG Sex Hormone-Binding Globulin",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO493",
+      "so_id": "167019",
+      "pos": [
+        {
+          "po": "PO768",
+          "vendor": "PMA Services",
+          "po_id": "167027"
+        }
+      ],
+      "po": "PO768",
+      "po_id": "167027"
     }
   ],
   "last_shopify_sync": "2026-09-18"
