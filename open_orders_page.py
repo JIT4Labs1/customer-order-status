@@ -1013,14 +1013,16 @@ var mode = 'pnl';   // 'pnl' · 'cust' · 'vendor' · 'sku' · 'ca'
 
 // Click a header to sort by it; click again to reverse. Each view has its own columns.
 // Customer view: table grouped by SO (SO #, Status, Date appear in group headers).
+// ETA was replaced (2026-09-22) by the same per-vendor inventory columns the
+// Open Vendor POs table uses — "PMA INV" / "Allora INV" — so a customer's open
+// item shows at a glance which vendor already has that SKU on the shelf.
 var COLS_CUST = [
   {key:'product',    label:'Product',    type:'str'},
   {key:'vendor',     label:'Vendor',     type:'str'},
   {key:'ordered_qty',label:'Ord',        type:'num',  c:true},
   {key:'delivered_qty',label:'Del',      type:'num',  c:true},
   {key:'open_qty',   label:'Open',       type:'num',  c:true},
-  {key:'pending_pos',label:'Pending PO', type:'str'},
-  {key:'eta',        label:'ETA',        type:'date', c:true}
+  {key:'pending_pos',label:'Pending PO', type:'str'}
 ];
 // Vendor view: table grouped by customer (Customer appears in group headers).
 var COLS_VENDOR = [
@@ -1055,7 +1057,17 @@ function colsVendorDyn(){
   }
   return cols;
 }
-function curCols(){ return mode==='vendor' ? colsVendorDyn() : COLS_CUST; }
+// Customer Open SO's uses the SAME dynamic inventory columns as Open Vendor POs,
+// so uploading/removing a vendor stock file adds/removes the column in both tabs.
+function colsCustDyn(){
+  var cols=COLS_CUST.slice(), vs=ioppInvVendors();
+  for(var i=0;i<vs.length;i++){
+    cols.push({key:'inv:'+ioppVenNorm(vs[i]), label:ioppShortVen(vs[i])+' INV',
+               type:'num', c:true, vendor:vs[i]});
+  }
+  return cols;
+}
+function curCols(){ return mode==='vendor' ? colsVendorDyn() : colsCustDyn(); }
 var sortState = {key:null, dir:1};
 function colByKey(k){ var cols=curCols(); for(var i=0;i<cols.length;i++){ if(cols[i].key===k) return cols[i]; } return null; }
 function cmp(a,b,type){
@@ -3068,6 +3080,12 @@ function custOnSearch(v){
 // SO-grouped <tbody> rows for one customer's (already filtered) open items.
 function custSoBody(rows, ncol){
   var groups={}, order=[], body='';
+  var ccols=colsCustDyn(), cInvCols=ccols.slice(COLS_CUST.length);
+  function custInvCells(row){
+    var h='';
+    for(var ci=0;ci<cInvCols.length;ci++) h+='<td class="c">'+fopVenCell(row, cInvCols[ci].vendor)+'</td>';
+    return h;
+  }
   for(var i=0;i<rows.length;i++){
     var r=rows[i], so=r.so_num||'(no SO)';
     if(!groups[so]){ groups[so]={so:so, status:r.so_status, date:r.order_date, items:[]}; order.push(so); }
@@ -3080,7 +3098,14 @@ function custSoBody(rows, ncol){
     var grp=groups[order[gi]];
     var its=grp.items.slice();
     if(sortState.key){ var col=colByKey(sortState.key);
-      its.sort(function(p,q){ return sortState.dir*cmp(p[sortState.key],q[sortState.key],col?col.type:'str'); }); }
+      // 'inv:<vendor>' columns are computed from the uploaded stock, not row fields.
+      var cval=function(r){
+        if(String(sortState.key).indexOf('inv:')===0){
+          return col&&col.vendor ? ioppQtyVen(r.sku, col.vendor) : 0;
+        }
+        return r[sortState.key];
+      };
+      its.sort(function(p,q){ return sortState.dir*cmp(cval(p),cval(q),col?col.type:'str'); }); }
     else { its.sort(function(p,q){ return cmp(p.product,q.product,'str'); }); }
     var sc=statusColors(grp.status);
     body+='<tr class="so-group"><td colspan="'+ncol+'">'+
@@ -3097,7 +3122,7 @@ function custSoBody(rows, ncol){
         '<td class="c">'+fmtQty(r2.delivered_qty)+'</td>'+
         '<td class="c open">'+fmtQty(r2.open_qty)+'</td>'+
         '<td>'+poCell(r2.pending_pos)+'</td>'+
-        '<td class="c" style="font-weight:600;color:'+etaColor(r2.eta)+'">'+fmtDate(r2.eta)+'</td>'+
+        custInvCells(r2)+
         '</tr>';
     }
   }
@@ -3105,7 +3130,7 @@ function custSoBody(rows, ncol){
 }
 // "All customers": every customer that still has a matching open item, banded by customer.
 function renderCustAllPanel(){
-  var list=(DATA.customers||[]), q=custQ(), ncol=COLS_CUST.length;
+  var list=(DATA.customers||[]), q=custQ(), ncol=colsCustDyn().length;
   var body='', nc=0, ni=0, nso={};
   for(var i=0;i<list.length;i++){
     var c=list[i], rows=custRows(c);
@@ -3137,7 +3162,7 @@ function renderCustPanel(){
   if(active<0){ renderCustAllPanel(); return; }
   var c=list[active];
   if(!c){ active=-1; renderCustAllPanel(); return; }
-  var q=custQ(), rows=custRows(c), ncol=COLS_CUST.length;
+  var q=custQ(), rows=custRows(c), ncol=colsCustDyn().length;
   var body=custSoBody(rows, ncol);
   var nso={}; for(var k=0;k<rows.length;k++) nso[rows[k].so_num||'']=1;
   var sortNote = sortState.key ? ' &middot; sorted by '+escapeHtml(colByKey(sortState.key).label)+(sortState.dir>0?' ▲':' ▼') : '';
@@ -4301,8 +4326,10 @@ function loadIopp(){
   fetch('inventory-opportunities.json?cb='+Date.now(),{cache:'no-store'})
     .then(function(r){ if(r.status===404) return ioppBlank(); if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
     .then(function(d){ IOPP=d&&d.files?d:ioppBlank(); ioppLoading=false; _ioppIdx=null;
-      if(mode==='iopp') renderIoppPanel(); if(mode==='vendor') renderVendorPanel(); })
-    .catch(function(){ IOPP=ioppBlank(); ioppLoading=false; if(mode==='iopp') renderIoppPanel(); });
+      if(mode==='iopp') renderIoppPanel(); if(mode==='vendor') renderVendorPanel();
+      if(mode==='cust') renderCustPanel(); })
+    .catch(function(){ IOPP=ioppBlank(); ioppLoading=false; if(mode==='iopp') renderIoppPanel();
+      if(mode==='cust') renderCustPanel(); });
 }
 // SKU normalisation: uppercase, strip surrounding and internal spaces. Deliberately
 // conservative — we do NOT strip hyphens or dots, because "OSR-6006" and "OSR6006"

@@ -72,6 +72,34 @@ def _get_page_data(oop):
                 "customer_analysis": {"customers": []}}
 
 
+def _get_iopp(oop):
+    """Vendor stock (inventory-opportunities.json) is PAGE-OWNED — the dashboard's
+    Inventory Opportunities tab commits it straight to the repo via the button token,
+    so there is normally no local copy. Fetch it from GitHub Pages so the offline
+    mirror still renders the per-vendor INV columns (PMA INV / Allora INV) in BOTH
+    Open Vendor POs and Customer Open SO's; fall back to any local cache, then blank.
+    The cached copy is for the mirror only — never publish it (it would clobber the
+    user's uploads)."""
+    cache = os.path.join(HERE, "_iopp_mirror_cache.json")
+    try:
+        url = f"{oop.GITHUB_PAGES_URL}/inventory-opportunities.json?cb=mirror"
+        d = json.loads(urllib.request.urlopen(url, timeout=30).read().decode())
+        if isinstance(d, dict) and d.get("files") is not None:
+            json.dump(d, open(cache, "w"))
+            print(f"  inventory-opportunities.json: fetched from GitHub "
+                  f"({len(d['files'])} vendor file(s))")
+            return d
+    except Exception as e:
+        print(f"  inventory-opportunities.json: GitHub unreachable ({e}); trying local cache")
+    for fn in ("inventory-opportunities.json", "_iopp_mirror_cache.json"):
+        local = _read_local_json(fn)
+        if local is not None:
+            print(f"  inventory-opportunities.json: using local {fn}")
+            return local
+    print("  inventory-opportunities.json: no copy available — INV columns will be blank")
+    return None
+
+
 def main():
     oop = _load_oop()
     os.makedirs(MIRROR, exist_ok=True)
@@ -84,7 +112,7 @@ def main():
         "pay":  _read_local_json("payment-status-data.json"),
         "spnl": _read_local_json("shipments-pnl-data.json"),
         "cj":   _read_local_json("customer-journey-data.json"),
-        "iopp": _read_local_json("inventory-opportunities.json"),
+        "iopp": _get_iopp(oop),
     }
     html = oop.build_html(page_data, embeds=embeds)
     stamp = datetime.now().strftime("%Y-%m-%d %I:%M %p")
