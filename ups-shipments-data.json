@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-09-24 09:28 AM PT",
-  "last_status_refresh": "2026-09-24 09:18 AM PT",
+  "pulled_at": "2026-09-25 10:06 AM PT",
+  "last_status_refresh": "2026-09-25 09:22 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -13407,12 +13407,12 @@
       "ship_to": "ALVARADO, TX, US",
       "order": "#1189",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Fort Worth, TX",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "ALVARADO, TX",
       "date": "2026-09-24",
-      "time": "",
-      "delivered": false,
+      "time": "12:48 PM",
+      "delivered": true,
       "ship_date": "2026-09-22",
       "items": [
         {
@@ -13999,12 +13999,12 @@
       "ship_to": "ALVARADO, TX, US",
       "order": "#1191",
       "service": "UPS Ground",
-      "status": "In Transit",
-      "activity": "Out For Delivery Today",
-      "location": "Fort Worth, TX",
+      "status": "Delivered",
+      "activity": "DELIVERED ",
+      "location": "ALVARADO, TX",
       "date": "2026-09-24",
-      "time": "",
-      "delivered": false,
+      "time": "12:48 PM",
+      "delivered": true,
       "ship_date": "2026-09-22",
       "items": [
         {
@@ -14210,7 +14210,1920 @@
       ],
       "po": "PO884",
       "po_id": "186188"
+    },
+    {
+      "tracking": "1330902",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Mercedes Scientific",
+      "ship_to": "",
+      "service": "",
+      "status": "Info Received",
+      "activity": "INFO RECEIVED ",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "Other",
+      "ship_date": "",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1089",
+      "items": [
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 40
+        }
+      ],
+      "order": "#1089",
+      "so_num": "SO468",
+      "pos": [
+        {
+          "po": "PO735",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "162404"
+        }
+      ],
+      "po": "PO735",
+      "so_id": "162403",
+      "po_id": "162404"
+    },
+    {
+      "tracking": "560825654",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Mercedes Scientific",
+      "ship_to": "",
+      "service": "",
+      "status": "Info Received",
+      "activity": "INFO RECEIVED ",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "Other",
+      "ship_date": "",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1099",
+      "items": [
+        {
+          "name": "A16793",
+          "sku": "",
+          "qty": 100
+        }
+      ],
+      "order": "#1099",
+      "so_num": "SO475",
+      "pos": [
+        {
+          "po": "PO746",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "164266"
+        }
+      ],
+      "po": "PO746",
+      "so_id": "164265",
+      "po_id": "164266"
+    },
+    {
+      "tracking": "1091384550",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Haimzon Company",
+      "ship_to": "",
+      "service": "",
+      "status": "Info Received",
+      "activity": "INFO RECEIVED ",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "DHL eCommerce",
+      "ship_date": "",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1131",
+      "items": [
+        {
+          "name": "dummy",
+          "sku": "",
+          "qty": 2
+        },
+        {
+          "name": "Shipping",
+          "sku": "",
+          "qty": 1
+        }
+      ],
+      "order": "#1131",
+      "so_num": "",
+      "pos": [],
+      "po": "",
+      "so_id": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "1091383161",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Haimzon Company",
+      "ship_to": "",
+      "service": "",
+      "status": "Info Received",
+      "activity": "INFO RECEIVED ",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "DHL eCommerce",
+      "ship_date": "",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1131",
+      "items": [
+        {
+          "name": "dummy",
+          "sku": "",
+          "qty": 2
+        },
+        {
+          "name": "Shipping",
+          "sku": "",
+          "qty": 1
+        }
+      ],
+      "order": "#1131",
+      "so_num": "",
+      "pos": [],
+      "po": "",
+      "so_id": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "383865140787",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Prominis Medical Services",
+      "ship_to": "",
+      "service": "",
+      "status": "In Transit",
+      "activity": "IN TRANSIT ",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "FedEx",
+      "ship_date": "",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1194",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "sku": "OSR6137",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
+          "sku": "33565",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
+          "sku": "OSR0001",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
+          "sku": "AUH1012",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
+          "sku": "A16364",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
+          "sku": "33025",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
+          "sku": "B00389",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
+          "sku": "OSR6295",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
+          "sku": "OSR6189",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
+          "sku": "OSR6122",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 10
+        }
+      ],
+      "order": "#1194",
+      "so_num": "SO564",
+      "pos": [
+        {
+          "po": "PO887",
+          "vendor": "PMA Services",
+          "po_id": "186425"
+        }
+      ],
+      "po": "PO887",
+      "so_id": "186423",
+      "po_id": "186425"
+    },
+    {
+      "tracking": "877710487635",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Prominis Medical Services",
+      "ship_to": "",
+      "service": "",
+      "status": "In Transit",
+      "activity": "IN TRANSIT ",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "FedEx",
+      "ship_date": "",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1194",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "sku": "OSR6137",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
+          "sku": "33565",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
+          "sku": "OSR0001",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
+          "sku": "AUH1012",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
+          "sku": "A16364",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
+          "sku": "33025",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
+          "sku": "B00389",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
+          "sku": "OSR6295",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
+          "sku": "OSR6189",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
+          "sku": "OSR6122",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 10
+        }
+      ],
+      "order": "#1194",
+      "so_num": "SO564",
+      "pos": [
+        {
+          "po": "PO887",
+          "vendor": "PMA Services",
+          "po_id": "186425"
+        }
+      ],
+      "po": "PO887",
+      "so_id": "186423",
+      "po_id": "186425"
+    },
+    {
+      "tracking": "1Z23C2X70229216181",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Prominis Medical Services",
+      "ship_to": "",
+      "service": "",
+      "status": "In Transit",
+      "activity": "Shipper created a label, UPS has not received the package yet. ",
+      "location": "",
+      "date": "2026-09-24",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "UPS",
+      "ship_date": "2026-09-24",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1194",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "sku": "OSR6137",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
+          "sku": "33565",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
+          "sku": "OSR0001",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
+          "sku": "AUH1012",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
+          "sku": "A16364",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
+          "sku": "33025",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
+          "sku": "B00389",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
+          "sku": "OSR6295",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
+          "sku": "OSR6189",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
+          "sku": "OSR6122",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 10
+        }
+      ],
+      "order": "#1194",
+      "so_num": "SO564",
+      "pos": [
+        {
+          "po": "PO887",
+          "vendor": "PMA Services",
+          "po_id": "186425"
+        }
+      ],
+      "po": "PO887",
+      "so_id": "186423",
+      "po_id": "186425"
+    },
+    {
+      "tracking": "9334611043900217677364",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Prominis Medical Services",
+      "ship_to": "",
+      "service": "",
+      "status": "Label Created",
+      "activity": "LABEL CREATED ",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "USPS",
+      "ship_date": "",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1194",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "sku": "OSR6137",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
+          "sku": "33565",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
+          "sku": "OSR0001",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
+          "sku": "AUH1012",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
+          "sku": "A16364",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
+          "sku": "33025",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
+          "sku": "B00389",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
+          "sku": "OSR6295",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
+          "sku": "OSR6189",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
+          "sku": "OSR6122",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 10
+        }
+      ],
+      "order": "#1194",
+      "so_num": "SO564",
+      "pos": [
+        {
+          "po": "PO887",
+          "vendor": "PMA Services",
+          "po_id": "186425"
+        }
+      ],
+      "po": "PO887",
+      "so_id": "186423",
+      "po_id": "186425"
+    },
+    {
+      "tracking": "9334611043900217676992",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Prominis Medical Services",
+      "ship_to": "",
+      "service": "",
+      "status": "Label Created",
+      "activity": "LABEL CREATED ",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "USPS",
+      "ship_date": "",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1194",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "sku": "OSR6137",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
+          "sku": "33565",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
+          "sku": "OSR0001",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
+          "sku": "AUH1012",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
+          "sku": "A16364",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
+          "sku": "33025",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
+          "sku": "B00389",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
+          "sku": "OSR6295",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
+          "sku": "OSR6189",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
+          "sku": "OSR6122",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 10
+        }
+      ],
+      "order": "#1194",
+      "so_num": "SO564",
+      "pos": [
+        {
+          "po": "PO887",
+          "vendor": "PMA Services",
+          "po_id": "186425"
+        }
+      ],
+      "po": "PO887",
+      "so_id": "186423",
+      "po_id": "186425"
+    },
+    {
+      "tracking": "9334611043900217676596",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Prominis Medical Services",
+      "ship_to": "",
+      "service": "",
+      "status": "Label Created",
+      "activity": "LABEL CREATED ",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "USPS",
+      "ship_date": "",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1194",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "sku": "OSR6137",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
+          "sku": "33565",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
+          "sku": "OSR0001",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
+          "sku": "AUH1012",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
+          "sku": "A16364",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
+          "sku": "33025",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
+          "sku": "B00389",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
+          "sku": "OSR6295",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
+          "sku": "OSR6189",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
+          "sku": "OSR6122",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 10
+        }
+      ],
+      "order": "#1194",
+      "so_num": "SO564",
+      "pos": [
+        {
+          "po": "PO887",
+          "vendor": "PMA Services",
+          "po_id": "186425"
+        }
+      ],
+      "po": "PO887",
+      "so_id": "186423",
+      "po_id": "186425"
+    },
+    {
+      "tracking": "9334611043900217676169",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Prominis Medical Services",
+      "ship_to": "",
+      "service": "",
+      "status": "Label Created",
+      "activity": "LABEL CREATED ",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "USPS",
+      "ship_date": "",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1194",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "sku": "OSR6137",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
+          "sku": "33565",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
+          "sku": "OSR0001",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
+          "sku": "AUH1012",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
+          "sku": "A16364",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
+          "sku": "33025",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
+          "sku": "B00389",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
+          "sku": "OSR6295",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
+          "sku": "OSR6189",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
+          "sku": "OSR6122",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 10
+        }
+      ],
+      "order": "#1194",
+      "so_num": "SO564",
+      "pos": [
+        {
+          "po": "PO887",
+          "vendor": "PMA Services",
+          "po_id": "186425"
+        }
+      ],
+      "po": "PO887",
+      "so_id": "186423",
+      "po_id": "186425"
+    },
+    {
+      "tracking": "9334611043900217675612",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Prominis Medical Services",
+      "ship_to": "",
+      "service": "",
+      "status": "Label Created",
+      "activity": "LABEL CREATED ",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "USPS",
+      "ship_date": "",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1194",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "sku": "OSR6137",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
+          "sku": "33565",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
+          "sku": "OSR0001",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
+          "sku": "AUH1012",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
+          "sku": "A16364",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
+          "sku": "33025",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
+          "sku": "B00389",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
+          "sku": "OSR6295",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
+          "sku": "OSR6189",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
+          "sku": "OSR6122",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 10
+        }
+      ],
+      "order": "#1194",
+      "so_num": "SO564",
+      "pos": [
+        {
+          "po": "PO887",
+          "vendor": "PMA Services",
+          "po_id": "186425"
+        }
+      ],
+      "po": "PO887",
+      "so_id": "186423",
+      "po_id": "186425"
+    },
+    {
+      "tracking": "9334611043900217675186",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Prominis Medical Services",
+      "ship_to": "",
+      "service": "",
+      "status": "Label Created",
+      "activity": "LABEL CREATED ",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "USPS",
+      "ship_date": "",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1194",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "sku": "OSR6137",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
+          "sku": "33565",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
+          "sku": "OSR0001",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
+          "sku": "AUH1012",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
+          "sku": "A16364",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
+          "sku": "33025",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
+          "sku": "B00389",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
+          "sku": "OSR6295",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
+          "sku": "OSR6189",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
+          "sku": "OSR6122",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 10
+        }
+      ],
+      "order": "#1194",
+      "so_num": "SO564",
+      "pos": [
+        {
+          "po": "PO887",
+          "vendor": "PMA Services",
+          "po_id": "186425"
+        }
+      ],
+      "po": "PO887",
+      "so_id": "186423",
+      "po_id": "186425"
+    },
+    {
+      "tracking": "9334611043900217674608",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Prominis Medical Services",
+      "ship_to": "",
+      "service": "",
+      "status": "Label Created",
+      "activity": "LABEL CREATED ",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "USPS",
+      "ship_date": "",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1194",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "sku": "OSR6137",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
+          "sku": "33565",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
+          "sku": "OSR0001",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
+          "sku": "AUH1012",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
+          "sku": "A16364",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
+          "sku": "33025",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
+          "sku": "B00389",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
+          "sku": "OSR6295",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
+          "sku": "OSR6189",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
+          "sku": "OSR6122",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 10
+        }
+      ],
+      "order": "#1194",
+      "so_num": "SO564",
+      "pos": [
+        {
+          "po": "PO887",
+          "vendor": "PMA Services",
+          "po_id": "186425"
+        }
+      ],
+      "po": "PO887",
+      "so_id": "186423",
+      "po_id": "186425"
+    },
+    {
+      "tracking": "9334611043900217674189",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Prominis Medical Services",
+      "ship_to": "",
+      "service": "",
+      "status": "Label Created",
+      "activity": "LABEL CREATED ",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "USPS",
+      "ship_date": "",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1194",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "sku": "OSR6137",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
+          "sku": "33565",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
+          "sku": "OSR0001",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
+          "sku": "AUH1012",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
+          "sku": "A16364",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
+          "sku": "33025",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
+          "sku": "B00389",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
+          "sku": "OSR6295",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
+          "sku": "OSR6189",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
+          "sku": "OSR6122",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 10
+        }
+      ],
+      "order": "#1194",
+      "so_num": "SO564",
+      "pos": [
+        {
+          "po": "PO887",
+          "vendor": "PMA Services",
+          "po_id": "186425"
+        }
+      ],
+      "po": "PO887",
+      "so_id": "186423",
+      "po_id": "186425"
+    },
+    {
+      "tracking": "9334611043900217673175",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Prominis Medical Services",
+      "ship_to": "",
+      "service": "",
+      "status": "Label Created",
+      "activity": "LABEL CREATED ",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "USPS",
+      "ship_date": "",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1194",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "sku": "OSR6137",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
+          "sku": "33565",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
+          "sku": "OSR0001",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
+          "sku": "AUH1012",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
+          "sku": "A16364",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
+          "sku": "33025",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
+          "sku": "B00389",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
+          "sku": "OSR6295",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
+          "sku": "OSR6189",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
+          "sku": "OSR6122",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 10
+        }
+      ],
+      "order": "#1194",
+      "so_num": "SO564",
+      "pos": [
+        {
+          "po": "PO887",
+          "vendor": "PMA Services",
+          "po_id": "186425"
+        }
+      ],
+      "po": "PO887",
+      "so_id": "186423",
+      "po_id": "186425"
+    },
+    {
+      "tracking": "9334611043900217672123",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Prominis Medical Services",
+      "ship_to": "",
+      "service": "",
+      "status": "Label Created",
+      "activity": "LABEL CREATED ",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "USPS",
+      "ship_date": "",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1194",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "sku": "OSR6137",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
+          "sku": "33565",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
+          "sku": "OSR0001",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
+          "sku": "AUH1012",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
+          "sku": "A16364",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
+          "sku": "33025",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
+          "sku": "B00389",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
+          "sku": "OSR6295",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
+          "sku": "OSR6189",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
+          "sku": "OSR6122",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 10
+        }
+      ],
+      "order": "#1194",
+      "so_num": "SO564",
+      "pos": [
+        {
+          "po": "PO887",
+          "vendor": "PMA Services",
+          "po_id": "186425"
+        }
+      ],
+      "po": "PO887",
+      "so_id": "186423",
+      "po_id": "186425"
+    },
+    {
+      "tracking": "877728030898",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "LabX Diagnotic Systems",
+      "ship_to": "",
+      "service": "",
+      "status": "Info Received",
+      "activity": "INFO RECEIVED ",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "FedEx",
+      "ship_date": "",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1196",
+      "items": [
+        {
+          "name": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
+          "sku": "37200",
+          "qty": 3
+        },
+        {
+          "name": "Beckman Coulter B84493 Access Sensitive Estradiol Reagent",
+          "sku": "B84493",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 33800 Reagent, Access, Total T4",
+          "sku": "33800",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter A13422 Access Free T3 Reagent, 100 Determinations",
+          "sku": "A13422",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 33020 Access 2 Ferritin Reagent 2x50 Count 100/Kt",
+          "sku": "33020",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 33000 Access Vitamin B12 Reagent, 100 Determinations",
+          "sku": "33000",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter A48617 Access SHBG Reagent, 100 Determinations",
+          "sku": "A48617",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter A48618 Access SHBG Sex Hormone-Binding Globulin",
+          "sku": "A48618",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33005 Access Vitamin B12 Calibrator (S0-S5)",
+          "sku": "33005",
+          "qty": 1
+        }
+      ],
+      "order": "#1196",
+      "so_num": "SO567",
+      "pos": [
+        {
+          "po": "PO892",
+          "vendor": "PMA Services",
+          "po_id": "186946"
+        }
+      ],
+      "po": "PO892",
+      "so_id": "186945",
+      "po_id": "186946"
+    },
+    {
+      "tracking": "877714472682",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Clinical Diagnostic Laboratories, LLC",
+      "ship_to": "",
+      "service": "",
+      "status": "Out for Delivery",
+      "activity": "OUT FOR DELIVERY ",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "FedEx",
+      "ship_date": "",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1197",
+      "items": [
+        {
+          "name": "Beckman Coulter 33020 Access 2 Ferritin Reagent 2x50 Count 100/Kt",
+          "sku": "33020",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A98032 Access Folate Reagent, 100 Determinations",
+          "sku": "A98032",
+          "qty": 1
+        }
+      ],
+      "order": "#1197",
+      "so_num": "SO566",
+      "pos": [
+        {
+          "po": "PO891",
+          "vendor": "PMA Services",
+          "po_id": "186911"
+        }
+      ],
+      "po": "PO891",
+      "so_id": "186909",
+      "po_id": "186911"
+    },
+    {
+      "tracking": "383870309340",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Doctors General Laboratory",
+      "ship_to": "",
+      "service": "",
+      "status": "Label Created",
+      "activity": "LABEL CREATED ",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "FedEx",
+      "ship_date": "",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1199",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 3
+        }
+      ],
+      "order": "#1199",
+      "so_num": "SO569",
+      "pos": [
+        {
+          "po": "PO895",
+          "vendor": "PMA Services",
+          "po_id": "186995"
+        }
+      ],
+      "po": "PO895",
+      "so_id": "186994",
+      "po_id": "186995"
     }
   ],
-  "last_shopify_sync": "2026-09-24 09:17 AM PT"
+  "last_shopify_sync": "2026-09-25T16:21:46Z"
 }
