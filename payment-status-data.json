@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-28 04:53 PM UTC",
+  "generated_at": "2026-09-28 09:58 PM UTC",
   "year": 2026,
   "customers": [
     {
@@ -2862,6 +2862,20 @@
       "qb_id": "1430",
       "invoices": [
         {
+          "number": "SO698",
+          "status": "Not Paid",
+          "amount": 278.06,
+          "balance": 278.06,
+          "date": "2026-09-28",
+          "link": "",
+          "invoice_link": "https://connect.intuit.com/t/scs-v1-f052191ead544100984fb37f3f0f7a5345b4bfa7a23e41efb0c3a031bdaadc03a76cc178aecd4d6085490bec969bd20f-1?locale=en_US&cta=v3invoicelink",
+          "so_num": "",
+          "shopify_order": "",
+          "fulfillment": "",
+          "so_date": "",
+          "open_items": []
+        },
+        {
           "number": "SO680",
           "status": "Not Paid",
           "amount": 214.04,
@@ -3072,10 +3086,10 @@
         }
       ],
       "totals": {
-        "count": 14,
-        "amount": 17211.07,
+        "count": 15,
+        "amount": 17489.13,
         "paid": 7066.17,
-        "unpaid": 10144.9
+        "unpaid": 10422.96
       }
     },
     {
@@ -3163,13 +3177,27 @@
       "qb_id": "1493",
       "invoices": [
         {
+          "number": "SO697",
+          "status": "Paid",
+          "amount": 774.72,
+          "balance": 0.0,
+          "date": "2026-09-28",
+          "link": "",
+          "invoice_link": "",
+          "so_num": "",
+          "shopify_order": "",
+          "fulfillment": "",
+          "so_date": "",
+          "open_items": []
+        },
+        {
           "number": "SO696",
-          "status": "Not Paid",
-          "amount": 28.65,
-          "balance": 28.65,
+          "status": "Voided",
+          "amount": 0.0,
+          "balance": 0.0,
           "date": "2026-09-25",
           "link": "",
-          "invoice_link": "https://connect.intuit.com/t/scs-v1-81a2eaf892354f04a7eb1564d722e289452dd41a6e8140b9a909180f57df6d7147d733e16d204de9bdda556c497a1cfa-0?locale=en_US&cta=v3invoicelink",
+          "invoice_link": "",
           "so_num": "",
           "shopify_order": "",
           "fulfillment": "",
@@ -3179,8 +3207,8 @@
         {
           "number": "SO695",
           "status": "Not Paid",
-          "amount": 794.0,
-          "balance": 794.0,
+          "amount": 730.25,
+          "balance": 730.25,
           "date": "2026-09-25",
           "link": "",
           "invoice_link": "https://connect.intuit.com/t/scs-v1-e3c75c8c16184664afa8e03393c7b3ed5132a70f7af747cea54dda907d34952cc214ba6f46474d4db9986ab1671f9d19-0?locale=en_US&cta=v3invoicelink",
@@ -3290,15 +3318,15 @@
         }
       ],
       "totals": {
-        "count": 9,
-        "amount": 5313.25,
-        "paid": 4258.5,
-        "unpaid": 1054.75
+        "count": 10,
+        "amount": 5995.57,
+        "paid": 5033.22,
+        "unpaid": 962.35
       }
     }
   ],
   "payables": {
-    "generated_at": "2026-09-28 04:53 PM UTC",
+    "generated_at": "2026-09-28 09:58 PM UTC",
     "grand_total": 17111.57,
     "past_due": 11260.71,
     "count": 35,
@@ -3572,7 +3600,7 @@
     "source": "Bank balance",
     "book_balance": 35668.97,
     "bank_asof": "2026-07-23",
-    "as_of": "2026-09-28 04:53 PM UTC"
+    "as_of": "2026-09-28 09:58 PM UTC"
   },
-  "pulled_at": "2026-09-28 09:56 AM PT"
+  "pulled_at": "2026-09-28 03:00 PM PT"
 }
