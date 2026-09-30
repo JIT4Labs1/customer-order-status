@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-09-29 10:11 AM PT",
-  "last_status_refresh": "2026-09-29 10:04 AM PT",
+  "pulled_at": "2026-09-30 08:48 AM PT",
+  "last_status_refresh": "2026-09-30 08:42 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -605,16 +605,10 @@
       ],
       "order": "#1049",
       "so_num": "SO428",
-      "pos": [
-        {
-          "po": "PO679",
-          "vendor": "PMA Services",
-          "po_id": "156041"
-        }
-      ],
-      "po": "PO679",
+      "pos": [],
+      "po": "",
       "so_id": "156040",
-      "po_id": "156041",
+      "po_id": "",
       "shopify_order": "#1049"
     },
     {
@@ -857,10 +851,16 @@
       ],
       "order": "#1038",
       "so_num": "SO417",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO661",
+          "vendor": "PMA Services",
+          "po_id": "153406"
+        }
+      ],
+      "po": "PO661",
       "so_id": "153405",
-      "po_id": "",
+      "po_id": "153406",
       "shopify_order": "#1038"
     },
     {
@@ -1137,6 +1137,11 @@
           "po_id": "156345"
         },
         {
+          "po": "PO683",
+          "vendor": "PMA Services",
+          "po_id": "156346"
+        },
+        {
           "po": "PO684",
           "vendor": "Allora Biotech LLC",
           "po_id": "156347"
@@ -1213,16 +1218,10 @@
       ],
       "contact": "Karan Mehta",
       "so_num": "SO424",
-      "pos": [
-        {
-          "po": "PO675",
-          "vendor": "ALDX HOLDING CORPORATION",
-          "po_id": "155589"
-        }
-      ],
-      "po": "PO675",
+      "pos": [],
+      "po": "",
       "so_id": "155587",
-      "po_id": "155589",
+      "po_id": "",
       "shopify_order": "#1045"
     },
     {
@@ -1990,11 +1989,6 @@
           "po_id": "159464"
         },
         {
-          "po": "PO737",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "162673"
-        },
-        {
           "po": "PO743",
           "vendor": "Allora Biotech LLC",
           "po_id": "163707"
@@ -2650,16 +2644,10 @@
         }
       ],
       "so_num": "SO428",
-      "pos": [
-        {
-          "po": "PO679",
-          "vendor": "PMA Services",
-          "po_id": "156041"
-        }
-      ],
-      "po": "PO679",
+      "pos": [],
+      "po": "",
       "so_id": "156040",
-      "po_id": "156041",
+      "po_id": "",
       "shopify_order": "#1049"
     },
     {
@@ -3707,10 +3695,15 @@
           "po": "PO654",
           "vendor": "PMA Services",
           "po_id": "151746"
+        },
+        {
+          "po": "PO712",
+          "vendor": "PMA Services",
+          "po_id": "160039"
         }
       ],
-      "po": "PO654",
-      "po_id": "151746",
+      "po": "",
+      "po_id": "",
       "shopify_order": "#1033"
     },
     {
@@ -3909,18 +3902,13 @@
       "so_id": "159463",
       "pos": [
         {
-          "po": "PO737",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "162673"
-        },
-        {
           "po": "PO743",
           "vendor": "Allora Biotech LLC",
           "po_id": "163707"
         }
       ],
-      "po": "",
-      "po_id": "",
+      "po": "PO743",
+      "po_id": "163707",
       "shopify_order": "#1073"
     },
     {
@@ -5542,15 +5530,9 @@
       ],
       "so_num": "SO493",
       "so_id": "167019",
-      "pos": [
-        {
-          "po": "PO767",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "167026"
-        }
-      ],
-      "po": "PO767",
-      "po_id": "167026"
+      "pos": [],
+      "po": "",
+      "po_id": ""
     },
     {
       "tracking": "1Z8W007Y0392169175",
@@ -5709,18 +5691,13 @@
       "so_id": "168444",
       "pos": [
         {
-          "po": "PO778",
-          "vendor": "PMA Services",
-          "po_id": "168445"
-        },
-        {
           "po": "PO820",
           "vendor": "ClearChem Diagnostics, Inc",
           "po_id": "176029"
         }
       ],
-      "po": "",
-      "po_id": "",
+      "po": "PO820",
+      "po_id": "176029",
       "shopify_order": "#1125"
     },
     {
@@ -5753,18 +5730,13 @@
       "so_id": "168444",
       "pos": [
         {
-          "po": "PO778",
-          "vendor": "PMA Services",
-          "po_id": "168445"
-        },
-        {
           "po": "PO820",
           "vendor": "ClearChem Diagnostics, Inc",
           "po_id": "176029"
         }
       ],
-      "po": "",
-      "po_id": "",
+      "po": "PO820",
+      "po_id": "176029",
       "shopify_order": "#1125"
     },
     {
@@ -5880,15 +5852,9 @@
       ],
       "so_num": "SO499",
       "so_id": "168444",
-      "pos": [
-        {
-          "po": "PO778",
-          "vendor": "PMA Services",
-          "po_id": "168445"
-        }
-      ],
-      "po": "PO778",
-      "po_id": "168445",
+      "pos": [],
+      "po": "",
+      "po_id": "",
       "shopify_order": "#1125"
     },
     {
@@ -6063,15 +6029,9 @@
       ],
       "so_num": "SO493",
       "so_id": "167019",
-      "pos": [
-        {
-          "po": "PO767",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "167026"
-        }
-      ],
-      "po": "PO767",
-      "po_id": "167026",
+      "pos": [],
+      "po": "",
+      "po_id": "",
       "shopify_order": "#1118"
     },
     {
@@ -6297,15 +6257,9 @@
       ],
       "so_num": "SO499",
       "so_id": "168444",
-      "pos": [
-        {
-          "po": "PO778",
-          "vendor": "PMA Services",
-          "po_id": "168445"
-        }
-      ],
-      "po": "PO778",
-      "po_id": "168445",
+      "pos": [],
+      "po": "",
+      "po_id": "",
       "shopify_order": "#1125"
     },
     {
@@ -6439,15 +6393,9 @@
       ],
       "so_num": "SO499",
       "so_id": "168444",
-      "pos": [
-        {
-          "po": "PO778",
-          "vendor": "PMA Services",
-          "po_id": "168445"
-        }
-      ],
-      "po": "PO778",
-      "po_id": "168445",
+      "pos": [],
+      "po": "",
+      "po_id": "",
       "shopify_order": "#1125"
     },
     {
@@ -6994,15 +6942,9 @@
       ],
       "so_num": "SO499",
       "so_id": "168444",
-      "pos": [
-        {
-          "po": "PO778",
-          "vendor": "PMA Services",
-          "po_id": "168445"
-        }
-      ],
-      "po": "PO778",
-      "po_id": "168445",
+      "pos": [],
+      "po": "",
+      "po_id": "",
       "shopify_order": "#1125"
     },
     {
@@ -7178,15 +7120,10 @@
           "po": "PO775",
           "vendor": "PMA Services",
           "po_id": "167332"
-        },
-        {
-          "po": "PO797",
-          "vendor": "PMA Services",
-          "po_id": "172169"
         }
       ],
-      "po": "",
-      "po_id": "",
+      "po": "PO775",
+      "po_id": "167332",
       "shopify_order": "#1121"
     },
     {
@@ -7276,15 +7213,9 @@
       ],
       "so_num": "SO493",
       "so_id": "167019",
-      "pos": [
-        {
-          "po": "PO767",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "167026"
-        }
-      ],
-      "po": "PO767",
-      "po_id": "167026",
+      "pos": [],
+      "po": "",
+      "po_id": "",
       "shopify_order": "#1118"
     },
     {
@@ -7628,15 +7559,9 @@
       ],
       "so_num": "SO499",
       "so_id": "168444",
-      "pos": [
-        {
-          "po": "PO778",
-          "vendor": "PMA Services",
-          "po_id": "168445"
-        }
-      ],
-      "po": "PO778",
-      "po_id": "168445",
+      "pos": [],
+      "po": "",
+      "po_id": "",
       "shopify_order": "#1125"
     },
     {
@@ -7857,15 +7782,9 @@
       "contact": "Misty Mcwhorter",
       "so_num": "SO493",
       "so_id": "167019",
-      "pos": [
-        {
-          "po": "PO767",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "167026"
-        }
-      ],
-      "po": "PO767",
-      "po_id": "167026",
+      "pos": [],
+      "po": "",
+      "po_id": "",
       "shopify_order": "#1118"
     },
     {
@@ -8935,18 +8854,13 @@
       "so_id": "168444",
       "pos": [
         {
-          "po": "PO778",
-          "vendor": "PMA Services",
-          "po_id": "168445"
-        },
-        {
           "po": "PO820",
           "vendor": "ClearChem Diagnostics, Inc",
           "po_id": "176029"
         }
       ],
-      "po": "",
-      "po_id": ""
+      "po": "PO820",
+      "po_id": "176029"
     },
     {
       "tracking": "876269022606",
@@ -8977,18 +8891,13 @@
       "so_id": "168444",
       "pos": [
         {
-          "po": "PO778",
-          "vendor": "PMA Services",
-          "po_id": "168445"
-        },
-        {
           "po": "PO820",
           "vendor": "ClearChem Diagnostics, Inc",
           "po_id": "176029"
         }
       ],
-      "po": "",
-      "po_id": ""
+      "po": "PO820",
+      "po_id": "176029"
     },
     {
       "tracking": "1Z23C2X71329444155",
@@ -10512,15 +10421,9 @@
       "shopify_fulfilled": true,
       "so_num": "SO499",
       "so_id": "168444",
-      "pos": [
-        {
-          "po": "PO778",
-          "vendor": "PMA Services",
-          "po_id": "168445"
-        }
-      ],
-      "po": "PO778",
-      "po_id": "168445"
+      "pos": [],
+      "po": "",
+      "po_id": ""
     },
     {
       "tracking": "876642077640",
@@ -10710,19 +10613,14 @@
       "so_num": "SO493",
       "pos": [
         {
-          "po": "PO767",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "167026"
-        },
-        {
           "po": "PO768",
           "vendor": "PMA Services",
           "po_id": "167027"
         }
       ],
-      "po": "",
+      "po": "PO768",
       "so_id": "167019",
-      "po_id": ""
+      "po_id": "167027"
     },
     {
       "tracking": "876657754870",
@@ -11046,16 +10944,10 @@
       ],
       "order": "#1125",
       "so_num": "SO499",
-      "pos": [
-        {
-          "po": "PO778",
-          "vendor": "PMA Services",
-          "po_id": "168445"
-        }
-      ],
-      "po": "PO778",
+      "pos": [],
+      "po": "",
       "so_id": "168444",
-      "po_id": "168445"
+      "po_id": ""
     },
     {
       "tracking": "383532080641",
@@ -12688,18 +12580,13 @@
       "so_id": "167019",
       "pos": [
         {
-          "po": "PO767",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "167026"
-        },
-        {
           "po": "PO768",
           "vendor": "PMA Services",
           "po_id": "167027"
         }
       ],
-      "po": "",
-      "po_id": ""
+      "po": "PO768",
+      "po_id": "167027"
     },
     {
       "tracking": "383736325305",
@@ -14441,11 +14328,16 @@
           "po": "PO887",
           "vendor": "PMA Services",
           "po_id": "186425"
+        },
+        {
+          "po": "PO901",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "188341"
         }
       ],
-      "po": "PO887",
+      "po": "",
       "so_id": "186423",
-      "po_id": "186425"
+      "po_id": ""
     },
     {
       "tracking": "877710487635",
@@ -14564,11 +14456,16 @@
           "po": "PO887",
           "vendor": "PMA Services",
           "po_id": "186425"
+        },
+        {
+          "po": "PO901",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "188341"
         }
       ],
-      "po": "PO887",
+      "po": "",
       "so_id": "186423",
-      "po_id": "186425"
+      "po_id": ""
     },
     {
       "tracking": "1Z23C2X70229216181",
@@ -14687,11 +14584,16 @@
           "po": "PO887",
           "vendor": "PMA Services",
           "po_id": "186425"
+        },
+        {
+          "po": "PO901",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "188341"
         }
       ],
-      "po": "PO887",
+      "po": "",
       "so_id": "186423",
-      "po_id": "186425"
+      "po_id": ""
     },
     {
       "tracking": "9334611043900217677364",
@@ -14810,11 +14712,16 @@
           "po": "PO887",
           "vendor": "PMA Services",
           "po_id": "186425"
+        },
+        {
+          "po": "PO901",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "188341"
         }
       ],
-      "po": "PO887",
+      "po": "",
       "so_id": "186423",
-      "po_id": "186425"
+      "po_id": ""
     },
     {
       "tracking": "9334611043900217676992",
@@ -14933,11 +14840,16 @@
           "po": "PO887",
           "vendor": "PMA Services",
           "po_id": "186425"
+        },
+        {
+          "po": "PO901",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "188341"
         }
       ],
-      "po": "PO887",
+      "po": "",
       "so_id": "186423",
-      "po_id": "186425"
+      "po_id": ""
     },
     {
       "tracking": "9334611043900217676596",
@@ -15056,11 +14968,16 @@
           "po": "PO887",
           "vendor": "PMA Services",
           "po_id": "186425"
+        },
+        {
+          "po": "PO901",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "188341"
         }
       ],
-      "po": "PO887",
+      "po": "",
       "so_id": "186423",
-      "po_id": "186425"
+      "po_id": ""
     },
     {
       "tracking": "9334611043900217676169",
@@ -15179,11 +15096,16 @@
           "po": "PO887",
           "vendor": "PMA Services",
           "po_id": "186425"
+        },
+        {
+          "po": "PO901",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "188341"
         }
       ],
-      "po": "PO887",
+      "po": "",
       "so_id": "186423",
-      "po_id": "186425"
+      "po_id": ""
     },
     {
       "tracking": "9334611043900217675612",
@@ -15302,11 +15224,16 @@
           "po": "PO887",
           "vendor": "PMA Services",
           "po_id": "186425"
+        },
+        {
+          "po": "PO901",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "188341"
         }
       ],
-      "po": "PO887",
+      "po": "",
       "so_id": "186423",
-      "po_id": "186425"
+      "po_id": ""
     },
     {
       "tracking": "9334611043900217675186",
@@ -15425,11 +15352,16 @@
           "po": "PO887",
           "vendor": "PMA Services",
           "po_id": "186425"
+        },
+        {
+          "po": "PO901",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "188341"
         }
       ],
-      "po": "PO887",
+      "po": "",
       "so_id": "186423",
-      "po_id": "186425"
+      "po_id": ""
     },
     {
       "tracking": "9334611043900217674608",
@@ -15548,11 +15480,16 @@
           "po": "PO887",
           "vendor": "PMA Services",
           "po_id": "186425"
+        },
+        {
+          "po": "PO901",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "188341"
         }
       ],
-      "po": "PO887",
+      "po": "",
       "so_id": "186423",
-      "po_id": "186425"
+      "po_id": ""
     },
     {
       "tracking": "9334611043900217674189",
@@ -15671,11 +15608,16 @@
           "po": "PO887",
           "vendor": "PMA Services",
           "po_id": "186425"
+        },
+        {
+          "po": "PO901",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "188341"
         }
       ],
-      "po": "PO887",
+      "po": "",
       "so_id": "186423",
-      "po_id": "186425"
+      "po_id": ""
     },
     {
       "tracking": "9334611043900217673175",
@@ -15794,11 +15736,16 @@
           "po": "PO887",
           "vendor": "PMA Services",
           "po_id": "186425"
+        },
+        {
+          "po": "PO901",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "188341"
         }
       ],
-      "po": "PO887",
+      "po": "",
       "so_id": "186423",
-      "po_id": "186425"
+      "po_id": ""
     },
     {
       "tracking": "9334611043900217672123",
@@ -15917,11 +15864,16 @@
           "po": "PO887",
           "vendor": "PMA Services",
           "po_id": "186425"
+        },
+        {
+          "po": "PO901",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "188341"
         }
       ],
-      "po": "PO887",
+      "po": "",
       "so_id": "186423",
-      "po_id": "186425"
+      "po_id": ""
     },
     {
       "tracking": "877728030898",
@@ -16154,9 +16106,9 @@
     {
       "tracking": "383921069949",
       "carrier": "FedEx",
-      "status": "Label Purchased",
-      "delivered": false,
-      "activity": "LABEL CREATED",
+      "status": "Delivered",
+      "delivered": true,
+      "activity": "DELIVERED",
       "order": "#1204",
       "so_num": "SO574",
       "receiver": "Well Health Labs",
@@ -16185,9 +16137,9 @@
     {
       "tracking": "877876214744",
       "carrier": "FedEx",
-      "status": "Label Printed",
-      "delivered": false,
-      "activity": "LABEL PRINTED",
+      "status": "Delivered",
+      "delivered": true,
+      "activity": "DELIVERED",
       "order": "#1204",
       "so_num": "SO574",
       "receiver": "Well Health Labs",
@@ -16237,12 +16189,12 @@
       "carrier": "UPS",
       "status": "In Transit",
       "delivered": false,
-      "activity": "Departed from Facility",
+      "activity": "Loaded on Delivery Vehicle ",
       "order": "#1200",
       "so_num": "SO570",
       "receiver": "EUPHORIA SKIN & HAIR",
       "ship_date": "2026-09-28",
-      "date": "2026-09-26",
+      "date": "2026-09-30",
       "source": "UPS My Choice (3rd Party)",
       "shipper": "CONMED OUTBOUND",
       "items": [
@@ -16270,7 +16222,7 @@
       ],
       "po": "PO896",
       "po_id": "187081",
-      "location": "Atlanta, GA",
+      "location": "Goodyear, AZ",
       "time": ""
     },
     {
@@ -16278,12 +16230,12 @@
       "carrier": "UPS",
       "status": "In Transit",
       "delivered": false,
-      "activity": "Departed from Facility",
+      "activity": "Loaded on Delivery Vehicle ",
       "order": "#1200",
       "so_num": "SO570",
       "receiver": "EUPHORIA SKIN & HAIR",
       "ship_date": "2026-09-28",
-      "date": "2026-09-26",
+      "date": "2026-09-30",
       "source": "UPS My Choice (3rd Party)",
       "shipper": "CONMED OUTBOUND",
       "items": [
@@ -16311,15 +16263,15 @@
       ],
       "po": "PO896",
       "po_id": "187081",
-      "location": "Atlanta, GA",
+      "location": "Goodyear, AZ",
       "time": ""
     },
     {
       "tracking": "1Z8W007Y0393569473",
       "carrier": "UPS",
-      "status": "In Transit",
-      "delivered": false,
-      "activity": "Out For Delivery Today",
+      "status": "Delivered",
+      "delivered": true,
+      "activity": "DELIVERED ",
       "order": "#1195",
       "so_num": "SO565",
       "receiver": "GEORGIA PLASTIC & RECON SURG",
@@ -16357,15 +16309,15 @@
       ],
       "po": "PO889",
       "po_id": "186559",
-      "location": "Atlanta, GA",
-      "time": ""
+      "location": "MARIETTA, GA",
+      "time": "5:36 PM"
     },
     {
       "tracking": "1Z8W007Y0395293749",
       "carrier": "UPS",
-      "status": "In Transit",
-      "delivered": false,
-      "activity": "Out For Delivery Today",
+      "status": "Delivered",
+      "delivered": true,
+      "activity": "DELIVERED ",
       "order": "#1195",
       "so_num": "SO565",
       "receiver": "GEORGIA PLASTIC & RECON SURG",
@@ -16403,15 +16355,15 @@
       ],
       "po": "PO889",
       "po_id": "186559",
-      "location": "Atlanta, GA",
-      "time": ""
+      "location": "MARIETTA, GA",
+      "time": "5:36 PM"
     },
     {
       "tracking": "1Z8W007Y0398012313",
       "carrier": "UPS",
-      "status": "In Transit",
-      "delivered": false,
-      "activity": "Out For Delivery Today",
+      "status": "Delivered",
+      "delivered": true,
+      "activity": "DELIVERED ",
       "order": "#1195",
       "so_num": "SO565",
       "receiver": "GEORGIA PLASTIC & RECON SURG",
@@ -16449,15 +16401,15 @@
       ],
       "po": "PO889",
       "po_id": "186559",
-      "location": "Atlanta, GA",
-      "time": ""
+      "location": "MARIETTA, GA",
+      "time": "5:36 PM"
     },
     {
       "tracking": "877923816146",
       "carrier": "FedEx",
-      "status": "Label Printed",
-      "delivered": false,
-      "activity": "LABEL PRINTED",
+      "status": "Delivered",
+      "delivered": true,
+      "activity": "DELIVERED",
       "order": "#1205",
       "so_num": "SO575",
       "receiver": "Prime Diagnostics",
@@ -16510,6 +16462,672 @@
       "so_id": "188495",
       "pos": [
         {
+          "po": "PO903",
+          "vendor": "PMA Services",
+          "po_id": "188496"
+        },
+        {
+          "po": "PO904",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "188497"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "383932191951",
+      "carrier": "FedEx",
+      "status": "Out for Delivery",
+      "delivered": false,
+      "activity": "OUT FOR DELIVERY",
+      "order": "#1194",
+      "so_num": "SO564",
+      "receiver": "Prominis Medical Services",
+      "contact": "Andras Fenyves",
+      "ship_date": "2026-09-29",
+      "date": "2026-09-29",
+      "source": "Shopify auto-discovery",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "sku": "OSR6137",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
+          "sku": "33565",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
+          "sku": "OSR0001",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
+          "sku": "AUH1012",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
+          "sku": "A16364",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
+          "sku": "33025",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
+          "sku": "B00389",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
+          "sku": "OSR6295",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
+          "sku": "OSR6189",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
+          "sku": "OSR6122",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 10
+        }
+      ],
+      "so_id": "186423",
+      "pos": [
+        {
+          "po": "PO887",
+          "vendor": "PMA Services",
+          "po_id": "186425"
+        },
+        {
+          "po": "PO901",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "188341"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "383932170699",
+      "carrier": "FedEx",
+      "status": "Out for Delivery",
+      "delivered": false,
+      "activity": "OUT FOR DELIVERY",
+      "order": "#1194",
+      "so_num": "SO564",
+      "receiver": "Prominis Medical Services",
+      "contact": "Andras Fenyves",
+      "ship_date": "2026-09-29",
+      "date": "2026-09-29",
+      "source": "Shopify auto-discovery",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "sku": "OSR6137",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
+          "sku": "33565",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
+          "sku": "OSR0001",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
+          "sku": "AUH1012",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
+          "sku": "A16364",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
+          "sku": "33025",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
+          "sku": "B00389",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
+          "sku": "OSR6295",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
+          "sku": "OSR6189",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
+          "sku": "OSR6122",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 10
+        }
+      ],
+      "so_id": "186423",
+      "pos": [
+        {
+          "po": "PO887",
+          "vendor": "PMA Services",
+          "po_id": "186425"
+        },
+        {
+          "po": "PO901",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "188341"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "877916221537",
+      "carrier": "FedEx",
+      "status": "Out for Delivery",
+      "delivered": false,
+      "activity": "OUT FOR DELIVERY",
+      "order": "#1194",
+      "so_num": "SO564",
+      "receiver": "Prominis Medical Services",
+      "contact": "Andras Fenyves",
+      "ship_date": "2026-09-29",
+      "date": "2026-09-29",
+      "source": "Shopify auto-discovery",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "sku": "OSR6137",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
+          "sku": "33565",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
+          "sku": "OSR0001",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
+          "sku": "AUH1012",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
+          "sku": "A16364",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
+          "sku": "33025",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
+          "sku": "B00389",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
+          "sku": "OSR6295",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
+          "sku": "OSR6189",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
+          "sku": "OSR6122",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 10
+        }
+      ],
+      "so_id": "186423",
+      "pos": [
+        {
+          "po": "PO887",
+          "vendor": "PMA Services",
+          "po_id": "186425"
+        },
+        {
+          "po": "PO901",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "188341"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "383932138880",
+      "carrier": "FedEx",
+      "status": "Out for Delivery",
+      "delivered": false,
+      "activity": "OUT FOR DELIVERY",
+      "order": "#1194",
+      "so_num": "SO564",
+      "receiver": "Prominis Medical Services",
+      "contact": "Andras Fenyves",
+      "ship_date": "2026-09-29",
+      "date": "2026-09-29",
+      "source": "Shopify auto-discovery",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "sku": "OSR6137",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
+          "sku": "33565",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
+          "sku": "OSR0001",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
+          "sku": "AUH1012",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
+          "sku": "A16364",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
+          "sku": "33025",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
+          "sku": "B00389",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
+          "sku": "OSR6295",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
+          "sku": "OSR6189",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
+          "sku": "OSR6122",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 10
+        }
+      ],
+      "so_id": "186423",
+      "pos": [
+        {
+          "po": "PO887",
+          "vendor": "PMA Services",
+          "po_id": "186425"
+        },
+        {
+          "po": "PO901",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "188341"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "877916082820",
+      "carrier": "FedEx",
+      "status": "Out for Delivery",
+      "delivered": false,
+      "activity": "OUT FOR DELIVERY",
+      "order": "#1194",
+      "so_num": "SO564",
+      "receiver": "Prominis Medical Services",
+      "contact": "Andras Fenyves",
+      "ship_date": "2026-09-29",
+      "date": "2026-09-29",
+      "source": "Shopify auto-discovery",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "sku": "OSR6137",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
+          "sku": "33565",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
+          "sku": "OSR0001",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
+          "sku": "AUH1012",
+          "qty": 1
+        },
+        {
+          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
+          "sku": "A16364",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter 81901 Reaction Vessel Access",
+          "sku": "81901",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "sku": "OSR6132",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
+          "sku": "33025",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
+          "sku": "B00389",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
+          "sku": "OSR6006",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
+          "sku": "OSR6295",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
+          "sku": "OSR6189",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
+          "sku": "OSR6121",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
+          "sku": "OSR6122",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 10
+        }
+      ],
+      "so_id": "186423",
+      "pos": [
+        {
+          "po": "PO887",
+          "vendor": "PMA Services",
+          "po_id": "186425"
+        },
+        {
+          "po": "PO901",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "188341"
+        }
+      ],
+      "po": "",
+      "po_id": ""
+    },
+    {
+      "tracking": "877930979899",
+      "carrier": "FedEx",
+      "status": "Delivered",
+      "delivered": true,
+      "activity": "DELIVERED",
+      "order": "#1205",
+      "so_num": "SO575",
+      "receiver": "Prime Diagnostics",
+      "contact": "Rachana Patel",
+      "ship_date": "2026-09-28",
+      "date": "2026-09-28",
+      "source": "Shopify auto-discovery",
+      "items": [
+        {
+          "name": "Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)",
+          "sku": "OSR6134",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6109 Olympus AST Reagent - Aspartate Aminotransferase Reagent",
+          "sku": "OSR6109",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6004 Olympus ALP Reagent 3P ALP R1 Alkaline Phosphatase Reagent",
+          "sku": "OSR6004",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "sku": "OSR60118",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
+          "sku": "OSR6178",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter OSR6107 Olympus ALT Reagent Alanine Transaminase",
+          "sku": "OSR6107",
+          "qty": 1
+        }
+      ],
+      "so_id": "188495",
+      "pos": [
+        {
           "po": "PO904",
           "vendor": "Allora Biotech LLC",
           "po_id": "188497"
@@ -16519,585 +17137,98 @@
       "po_id": "188497"
     },
     {
-      "tracking": "383932191951",
+      "tracking": "877931999670",
       "carrier": "FedEx",
-      "status": "Confirmed",
+      "status": "Out for Delivery",
       "delivered": false,
-      "activity": "CONFIRMED",
-      "order": "#1194",
-      "so_num": "SO564",
-      "receiver": "Prominis Medical Services",
-      "contact": "Andras Fenyves",
-      "ship_date": "2026-09-29",
-      "date": "2026-09-29",
+      "activity": "OUT FOR DELIVERY",
+      "order": "#1178",
+      "so_num": "SO550",
+      "receiver": "Clinical Diagnostic Laboratories, LLC",
+      "contact": "",
+      "ship_date": "2026-09-14",
+      "date": "2026-09-14",
       "source": "Shopify auto-discovery",
       "items": [
         {
-          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
-          "sku": "OSR6137",
+          "name": "Beckman Coulter 33880 (c76421) Access Free T4 Reagent, 100 Determinations",
+          "sku": "33880",
           "qty": 1
-        },
-        {
-          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
-          "sku": "33565",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
-          "sku": "OSR0001",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
-          "sku": "AUH1012",
-          "qty": 1
-        },
-        {
-          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
-          "sku": "A16364",
-          "qty": 2
-        },
-        {
-          "name": "Beckman Coulter 81901 Reaction Vessel Access",
-          "sku": "81901",
-          "qty": 4
-        },
-        {
-          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
-          "sku": "OSR6178",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
-          "sku": "OSR60118",
-          "qty": 2
-        },
-        {
-          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
-          "sku": "OSR6132",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
-          "sku": "33025",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
-          "sku": "B00389",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
-          "sku": "OSR6006",
-          "qty": 2
-        },
-        {
-          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
-          "sku": "B24838",
-          "qty": 5
-        },
-        {
-          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
-          "sku": "OSR6295",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
-          "sku": "OSR6189",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
-          "sku": "OSR6121",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
-          "sku": "OSR6122",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter A16792 Access Wash Buffer II",
-          "sku": "A16792",
-          "qty": 10
         }
       ],
-      "so_id": "186423",
+      "so_id": "183233",
       "pos": [
         {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
+          "po": "PO862",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "183234"
         }
       ],
-      "po": "PO887",
-      "po_id": "186425"
+      "po": "PO862",
+      "po_id": "183234"
     },
     {
-      "tracking": "383932170699",
+      "tracking": "383938258541",
       "carrier": "FedEx",
-      "status": "Confirmed",
+      "status": "In Transit",
       "delivered": false,
-      "activity": "CONFIRMED",
-      "order": "#1194",
-      "so_num": "SO564",
-      "receiver": "Prominis Medical Services",
-      "contact": "Andras Fenyves",
-      "ship_date": "2026-09-29",
-      "date": "2026-09-29",
+      "activity": "IN TRANSIT",
+      "order": "#1168",
+      "so_num": "SO540",
+      "receiver": "Trycom",
+      "contact": "Tom Norton",
+      "ship_date": "2026-09-03",
+      "date": "2026-09-03",
       "source": "Shopify auto-discovery",
       "items": [
         {
-          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
-          "sku": "OSR6137",
+          "name": "Siemens ADVIA 10312269 CBC TIMEpac",
+          "sku": "10312269",
           "qty": 1
-        },
-        {
-          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
-          "sku": "33565",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
-          "sku": "OSR0001",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
-          "sku": "AUH1012",
-          "qty": 1
-        },
-        {
-          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
-          "sku": "A16364",
-          "qty": 2
-        },
-        {
-          "name": "Beckman Coulter 81901 Reaction Vessel Access",
-          "sku": "81901",
-          "qty": 4
-        },
-        {
-          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
-          "sku": "OSR6178",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
-          "sku": "OSR60118",
-          "qty": 2
-        },
-        {
-          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
-          "sku": "OSR6132",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
-          "sku": "33025",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
-          "sku": "B00389",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
-          "sku": "OSR6006",
-          "qty": 2
-        },
-        {
-          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
-          "sku": "B24838",
-          "qty": 5
-        },
-        {
-          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
-          "sku": "OSR6295",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
-          "sku": "OSR6189",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
-          "sku": "OSR6121",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
-          "sku": "OSR6122",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter A16792 Access Wash Buffer II",
-          "sku": "A16792",
-          "qty": 10
         }
       ],
-      "so_id": "186423",
+      "so_id": "179601",
       "pos": [
         {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
+          "po": "PO846",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "179602"
         }
       ],
-      "po": "PO887",
-      "po_id": "186425"
+      "po": "PO846",
+      "po_id": "179602"
     },
     {
-      "tracking": "877916221537",
+      "tracking": "877934381924",
       "carrier": "FedEx",
-      "status": "Confirmed",
+      "status": "In Transit",
       "delivered": false,
-      "activity": "CONFIRMED",
-      "order": "#1194",
-      "so_num": "SO564",
-      "receiver": "Prominis Medical Services",
-      "contact": "Andras Fenyves",
-      "ship_date": "2026-09-29",
-      "date": "2026-09-29",
+      "activity": "IN TRANSIT",
+      "order": "#1168",
+      "so_num": "SO540",
+      "receiver": "Trycom",
+      "contact": "Tom Norton",
+      "ship_date": "2026-09-03",
+      "date": "2026-09-03",
       "source": "Shopify auto-discovery",
       "items": [
         {
-          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
-          "sku": "OSR6137",
+          "name": "Siemens ADVIA 10312270 DIFF TIMEpac",
+          "sku": "10312270",
           "qty": 1
-        },
-        {
-          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
-          "sku": "33565",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
-          "sku": "OSR0001",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
-          "sku": "AUH1012",
-          "qty": 1
-        },
-        {
-          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
-          "sku": "A16364",
-          "qty": 2
-        },
-        {
-          "name": "Beckman Coulter 81901 Reaction Vessel Access",
-          "sku": "81901",
-          "qty": 4
-        },
-        {
-          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
-          "sku": "OSR6178",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
-          "sku": "OSR60118",
-          "qty": 2
-        },
-        {
-          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
-          "sku": "OSR6132",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
-          "sku": "33025",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
-          "sku": "B00389",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
-          "sku": "OSR6006",
-          "qty": 2
-        },
-        {
-          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
-          "sku": "B24838",
-          "qty": 5
-        },
-        {
-          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
-          "sku": "OSR6295",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
-          "sku": "OSR6189",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
-          "sku": "OSR6121",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
-          "sku": "OSR6122",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter A16792 Access Wash Buffer II",
-          "sku": "A16792",
-          "qty": 10
         }
       ],
-      "so_id": "186423",
+      "so_id": "179601",
       "pos": [
         {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
+          "po": "PO846",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "179602"
         }
       ],
-      "po": "PO887",
-      "po_id": "186425"
-    },
-    {
-      "tracking": "383932138880",
-      "carrier": "FedEx",
-      "status": "Confirmed",
-      "delivered": false,
-      "activity": "CONFIRMED",
-      "order": "#1194",
-      "so_num": "SO564",
-      "receiver": "Prominis Medical Services",
-      "contact": "Andras Fenyves",
-      "ship_date": "2026-09-29",
-      "date": "2026-09-29",
-      "source": "Shopify auto-discovery",
-      "items": [
-        {
-          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
-          "sku": "OSR6137",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
-          "sku": "33565",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
-          "sku": "OSR0001",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
-          "sku": "AUH1012",
-          "qty": 1
-        },
-        {
-          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
-          "sku": "A16364",
-          "qty": 2
-        },
-        {
-          "name": "Beckman Coulter 81901 Reaction Vessel Access",
-          "sku": "81901",
-          "qty": 4
-        },
-        {
-          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
-          "sku": "OSR6178",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
-          "sku": "OSR60118",
-          "qty": 2
-        },
-        {
-          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
-          "sku": "OSR6132",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
-          "sku": "33025",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
-          "sku": "B00389",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
-          "sku": "OSR6006",
-          "qty": 2
-        },
-        {
-          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
-          "sku": "B24838",
-          "qty": 5
-        },
-        {
-          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
-          "sku": "OSR6295",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
-          "sku": "OSR6189",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
-          "sku": "OSR6121",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
-          "sku": "OSR6122",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter A16792 Access Wash Buffer II",
-          "sku": "A16792",
-          "qty": 10
-        }
-      ],
-      "so_id": "186423",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        }
-      ],
-      "po": "PO887",
-      "po_id": "186425"
-    },
-    {
-      "tracking": "877916082820",
-      "carrier": "FedEx",
-      "status": "Confirmed",
-      "delivered": false,
-      "activity": "CONFIRMED",
-      "order": "#1194",
-      "so_num": "SO564",
-      "receiver": "Prominis Medical Services",
-      "contact": "Andras Fenyves",
-      "ship_date": "2026-09-29",
-      "date": "2026-09-29",
-      "source": "Shopify auto-discovery",
-      "items": [
-        {
-          "name": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
-          "sku": "OSR6137",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter 33565 Testosterone CalIbrator",
-          "sku": "33565",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR0001 Wash Solution (system/maintenance)",
-          "sku": "OSR0001",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter AUH1012 ISE Mid Standard",
-          "sku": "AUH1012",
-          "qty": 1
-        },
-        {
-          "name": "Beckman coulter A16364 Reagent, Access, EPO (REF)",
-          "sku": "A16364",
-          "qty": 2
-        },
-        {
-          "name": "Beckman Coulter 81901 Reaction Vessel Access",
-          "sku": "81901",
-          "qty": 4
-        },
-        {
-          "name": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
-          "sku": "OSR6178",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
-          "sku": "OSR60118",
-          "qty": 2
-        },
-        {
-          "name": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
-          "sku": "OSR6132",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
-          "sku": "33025",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter B00389 Olympus HbA1c Reagent Kit",
-          "sku": "B00389",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR6006 Amylase Reagent 4x10mL",
-          "sku": "OSR6006",
-          "qty": 2
-        },
-        {
-          "name": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
-          "sku": "B24838",
-          "qty": 5
-        },
-        {
-          "name": "Beckman Coulter OSR6295 Olympus, HDL, 4x250",
-          "sku": "OSR6295",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
-          "sku": "OSR6189",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR6121 Glucose Hexokinase 4 X 810 Tests",
-          "sku": "OSR6121",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter OSR6122 Olympus PHOS Reagent Inorganic Phosphorus",
-          "sku": "OSR6122",
-          "qty": 1
-        },
-        {
-          "name": "Beckman Coulter A16792 Access Wash Buffer II",
-          "sku": "A16792",
-          "qty": 10
-        }
-      ],
-      "so_id": "186423",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        }
-      ],
-      "po": "PO887",
-      "po_id": "186425"
+      "po": "PO846",
+      "po_id": "179602"
     }
   ],
-  "last_shopify_sync": "2026-09-28T21:14:00.257199Z"
+  "last_shopify_sync": "2026-09-30"
 }
