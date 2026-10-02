@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-01 04:53 PM UTC",
+  "generated_at": "2026-10-02 05:02 PM UTC",
   "year": 2026,
   "customers": [
     {
@@ -1070,6 +1070,34 @@
       "qb_id": "1269",
       "invoices": [
         {
+          "number": "SO708",
+          "status": "Not Paid",
+          "amount": 274.3,
+          "balance": 274.3,
+          "date": "2026-10-01",
+          "link": "",
+          "invoice_link": "https://connect.intuit.com/t/scs-v1-28dca8e0fa8142b0b993443688bd313c1b974d4a1ab44371bd82ceda0e6a9ad103ee55d456a74b0084e96afa1df4f5f5-1?locale=en_US&cta=v3invoicelink",
+          "so_num": "",
+          "shopify_order": "",
+          "fulfillment": "",
+          "so_date": "",
+          "open_items": []
+        },
+        {
+          "number": "SO707",
+          "status": "Voided",
+          "amount": 0.0,
+          "balance": 0.0,
+          "date": "2026-10-01",
+          "link": "",
+          "invoice_link": "",
+          "so_num": "",
+          "shopify_order": "",
+          "fulfillment": "",
+          "so_date": "",
+          "open_items": []
+        },
+        {
           "number": "SO693",
           "status": "Not Paid",
           "amount": 2398.12,
@@ -1435,10 +1463,10 @@
         }
       ],
       "totals": {
-        "count": 26,
-        "amount": 25365.97,
+        "count": 28,
+        "amount": 25640.27,
         "paid": 13360.57,
-        "unpaid": 12005.4
+        "unpaid": 12279.7
       }
     },
     {
@@ -3368,17 +3396,52 @@
     }
   ],
   "payables": {
-    "generated_at": "2026-10-01 04:53 PM UTC",
-    "grand_total": 19665.87,
-    "past_due": 11353.67,
-    "count": 41,
+    "generated_at": "2026-10-02 05:02 PM UTC",
+    "grand_total": 23278.63,
+    "past_due": 13794.71,
+    "count": 46,
     "vendors": [
       {
         "vendor": "Conmed",
-        "balance": 18258.32,
-        "count": 32,
-        "pastdue": 10256.11,
+        "balance": 21871.08,
+        "count": 37,
+        "pastdue": 12558.95,
         "bills": [
+          {
+            "num": "11455727",
+            "date": "2026-09-29",
+            "due": "2026-10-29",
+            "amount": 1151.42,
+            "balance": 1151.42
+          },
+          {
+            "num": "11453703",
+            "date": "2026-09-26",
+            "due": "2026-10-26",
+            "amount": 158.5,
+            "balance": 158.5
+          },
+          {
+            "num": "11453521",
+            "date": "2026-09-26",
+            "due": "2026-10-26",
+            "amount": 1151.42,
+            "balance": 1151.42
+          },
+          {
+            "num": "11453087",
+            "date": "2026-09-25",
+            "due": "2026-10-25",
+            "amount": 141.94,
+            "balance": 141.94
+          },
+          {
+            "num": "11452938",
+            "date": "2026-09-25",
+            "due": "2026-10-25",
+            "amount": 1009.48,
+            "balance": 1009.48
+          },
           {
             "num": "11450569",
             "date": "2026-09-23",
@@ -3609,7 +3672,7 @@
         "vendor": "ClearChem Diagnostics, Inc",
         "balance": 1314.59,
         "count": 8,
-        "pastdue": 1004.6,
+        "pastdue": 1142.8,
         "bills": [
           {
             "num": "25904",
@@ -3676,10 +3739,10 @@
         "pastdue": 92.96,
         "bills": [
           {
-            "num": "1705",
-            "date": "2026-09-23",
-            "due": "2026-09-23",
-            "amount": 929.0,
+            "num": "1715",
+            "date": "2026-09-29",
+            "due": "2026-09-29",
+            "amount": 485.0,
             "balance": 92.96
           }
         ]
@@ -3690,9 +3753,9 @@
     "name": "Chase CHK (9219)",
     "balance": 60619.43,
     "source": "Bank balance",
-    "book_balance": 41458.49,
+    "book_balance": 39326.87,
     "bank_asof": "2026-07-23",
-    "as_of": "2026-10-01 04:53 PM UTC"
+    "as_of": "2026-10-02 05:02 PM UTC"
   },
-  "pulled_at": "2026-10-01 09:54 AM PT"
+  "pulled_at": "2026-10-02 10:04 AM PT"
 }
