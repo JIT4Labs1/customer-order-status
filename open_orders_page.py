@@ -2649,9 +2649,19 @@ function renderGadsPanel(){
 
 // ── Google Ads line chart: CUMULATIVE daily impressions + clicks per enabled campaign, with period compare ──
 var GADS_CCOL=['#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd','#8c564b','#e377c2','#7f7f7f','#bcbd22','#17becf'];
-var gadsCWin='this_month', gadsCOff={}, gadsCNames=[], gadsShowClicks=true, gadsCLastInt=null;
+var gadsCWin='this_year', gadsCOff={}, gadsCNames=[], gadsShowClicks=true, gadsCLastInt=null;
 var gadsCFrom='', gadsCTo='', gadsCmp='off', gadsCmpFrom='', gadsCmpTo='';
-var GADS_CWINS=[['this_year','2026 YTD'],['last_month','Last month'],['this_month','Current month'],['last_30_days','Last 30 days'],['custom','Custom range…']];
+var GADS_MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+function gadsPad2(n){ return (n<10?'0':'')+n; }
+function gadsCWinList(){ var t=gadsToday().split('-'), cm=+t[1]||1, l=[['this_year','2026 YTD']];
+  for(var mm=cm; mm>=1; mm--){ l.push(['m'+gadsPad2(mm), GADS_MN[mm-1]+' 2026'+(mm===cm?' (current month)':'')]); }
+  l.push(['last_30_days','Last 30 days']); l.push(['custom','Custom range…']); return l; }
+function gadsIntToWin(iv){ var t=gadsToday().split('-'), cm=+t[1]||1;
+  if(iv==='this_month') return 'm'+gadsPad2(cm); if(iv==='last_month') return 'm'+gadsPad2(Math.max(1,cm-1));
+  if(iv==='this_year'||iv==='last_30_days') return iv; return null; }
+function gadsWinToInt(w){ var t=gadsToday().split('-'), cm=+t[1]||1;
+  if(w==='m'+gadsPad2(cm)) return 'this_month'; if(cm>1 && w==='m'+gadsPad2(cm-1)) return 'last_month';
+  if(w==='this_year'||w==='last_30_days') return w; return null; }
 function gadsIso(dt){ return dt.toISOString().slice(0,10); }
 function gadsUtc(str){ var p=str.split('-'); return new Date(Date.UTC(+p[0],+p[1]-1,+p[2])); }
 function gadsAddDays(str,k){ return gadsIso(new Date(gadsUtc(str).getTime()+k*86400000)); }
@@ -2659,12 +2669,11 @@ function gadsToday(){ return String((GADS&&GADS.pulled_at)||'').slice(0,10); }
 function gadsPresetRange(w){
   var t=gadsToday().split('-'); var y=+t[0], m=+t[1], d=+t[2], end=new Date(Date.UTC(y,m-1,d)), st;
   if(w==='this_year'){ st=new Date(Date.UTC(y,0,1)); }
-  else if(w==='this_month'){ st=new Date(Date.UTC(y,m-1,1)); }
-  else if(w==='last_month'){ st=new Date(Date.UTC(y,m-2,1)); end=new Date(Date.UTC(y,m-1,0)); }
+  else if(w.length===3 && w.charAt(0)==='m'){ var mm=+w.slice(1); st=new Date(Date.UTC(y,mm-1,1)); var me=new Date(Date.UTC(y,mm,0)); if(me<end) end=me; }
   else { st=new Date(Date.UTC(y,m-1,d-29)); }
   return [gadsIso(st),gadsIso(end)];
 }
-function gadsCRange(){ if(gadsCWin==='custom' && gadsCFrom && gadsCTo){ return gadsCFrom<=gadsCTo?[gadsCFrom,gadsCTo]:[gadsCTo,gadsCFrom]; } return gadsPresetRange(gadsCWin==='custom'?'this_month':gadsCWin); }
+function gadsCRange(){ if(gadsCWin==='custom' && gadsCFrom && gadsCTo){ return gadsCFrom<=gadsCTo?[gadsCFrom,gadsCTo]:[gadsCTo,gadsCFrom]; } return gadsPresetRange(gadsCWin==='custom'?'this_year':gadsCWin); }
 function gadsCmpRange(rg,n){
   if(gadsCmp==='prev'){ var pe=gadsAddDays(rg[0],-1); return [gadsAddDays(pe,-(n-1)),pe]; }
   if(gadsCmp==='custom' && gadsCmpFrom && gadsCmpTo){ return gadsCmpFrom<=gadsCmpTo?[gadsCmpFrom,gadsCmpTo]:[gadsCmpTo,gadsCmpFrom]; }
@@ -2673,7 +2682,8 @@ function gadsCmpRange(rg,n){
 function gadsCDays(a,b){ var out=[], cur=gadsUtc(a), e=gadsUtc(b); while(cur<=e){ out.push(gadsIso(cur)); cur=new Date(cur.getTime()+86400000); } return out; }
 function gadsCSetWin(v){
   if(v==='custom'){ if(!gadsCFrom||!gadsCTo){ var r0=gadsCRange(); gadsCFrom=r0[0]; gadsCTo=r0[1]; } gadsCWin='custom'; gadsChartRedraw(); return; }
-  gadsCWin=v; gadsInterval=v; renderGadsPanel();
+  gadsCWin=v; var iv=gadsWinToInt(v);
+  if(iv){ gadsInterval=iv; gadsCLastInt=iv; renderGadsPanel(); } else { gadsChartRedraw(); }
 }
 function gadsCSetDate(which,v){ if(!v) return; if(which==='from') gadsCFrom=v; else if(which==='to') gadsCTo=v; else if(which==='cfrom') gadsCmpFrom=v; else gadsCmpTo=v; gadsChartRedraw(); }
 function gadsCSetCmp(v){ gadsCmp=v; if(v==='custom' && (!gadsCmpFrom||!gadsCmpTo)){ var rg=gadsCRange(), n=gadsCDays(rg[0],rg[1]).length, pe=gadsAddDays(rg[0],-1); gadsCmpTo=pe; gadsCmpFrom=gadsAddDays(pe,-(n-1)); } gadsChartRedraw(); }
@@ -2713,7 +2723,7 @@ function gadsChartSvg(days, ser, cdays, cser, colors, showClicks){
 function gadsChartHtml(){
   var D=(GADS&&GADS.daily)||null;
   if(!D||!Object.keys(D).length){ return ''; }
-  if(gadsCLastInt!==gadsInterval){ gadsCLastInt=gadsInterval; for(var wi=0;wi<GADS_CWINS.length;wi++){ if(GADS_CWINS[wi][0]===gadsInterval && gadsInterval!=='custom'){ gadsCWin=gadsInterval; } } }
+  if(gadsCLastInt!==gadsInterval){ gadsCLastInt=gadsInterval; var _w=gadsIntToWin(gadsInterval); if(_w) gadsCWin=_w; }
   var tot={}; Object.keys(D).forEach(function(k){ var t=0; D[k].forEach(function(r){ t+=r[1]; }); tot[k]=t; });
   var enOn={}; (GADS.intervals||[]).forEach(function(iv){ (iv.campaigns||[]).forEach(function(c){ if((c.status||'')==='enabled') enOn[c.name]=1; }); });
   gadsCNames=Object.keys(D).filter(function(k){ return enOn[k]; }).sort(function(a,b){ return tot[b]-tot[a]; });
@@ -2729,7 +2739,7 @@ function gadsChartRedraw(){
     if(!gadsCOff[nm]) ser[nm]=cs; });
   var inp='padding:5px 8px;border:1px solid #cdd9e6;border-radius:6px;font-size:13px;font-family:inherit;';
   var mn='2026-01-01', mx=gadsToday();
-  var wsel='<select onchange="gadsCSetWin(this.value)" style="'+inp+'">'; GADS_CWINS.forEach(function(w){ wsel+='<option value="'+w[0]+'"'+(w[0]===gadsCWin?' selected':'')+'>'+w[1]+'</option>'; }); wsel+='</select>';
+  var wsel='<select onchange="gadsCSetWin(this.value)" style="'+inp+'">'; gadsCWinList().forEach(function(w){ wsel+='<option value="'+w[0]+'"'+(w[0]===gadsCWin?' selected':'')+'>'+w[1]+'</option>'; }); wsel+='</select>';
   var dr=''; if(gadsCWin==='custom'){ dr=' <input type="date" min="'+mn+'" max="'+mx+'" value="'+rg[0]+'" onchange="gadsCSetDate(&quot;from&quot;,this.value)" style="'+inp+'"> to <input type="date" min="'+mn+'" max="'+mx+'" value="'+rg[1]+'" onchange="gadsCSetDate(&quot;to&quot;,this.value)" style="'+inp+'">'; }
   var csel='<select onchange="gadsCSetCmp(this.value)" style="'+inp+'"><option value="off"'+(gadsCmp==='off'?' selected':'')+'>No comparison</option><option value="prev"'+(gadsCmp==='prev'?' selected':'')+'>Previous period (same length)</option><option value="custom"'+(gadsCmp==='custom'?' selected':'')+'>Custom period…</option></select>';
   var cdr=''; if(gadsCmp==='custom'){ cdr=' <input type="date" min="'+mn+'" max="'+mx+'" value="'+(crg?crg[0]:'')+'" onchange="gadsCSetDate(&quot;cfrom&quot;,this.value)" style="'+inp+'"> to <input type="date" min="'+mn+'" max="'+mx+'" value="'+(crg?crg[1]:'')+'" onchange="gadsCSetDate(&quot;cto&quot;,this.value)" style="'+inp+'">'; }
