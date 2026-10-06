@@ -2137,6 +2137,7 @@ function gadsPresetRange(w){
 function gadsCRange(){ if(gadsCWin==='custom' && gadsCFrom && gadsCTo){ return gadsCFrom<=gadsCTo?[gadsCFrom,gadsCTo]:[gadsCTo,gadsCFrom]; } return gadsPresetRange(gadsCWin==='custom'?'this_year':gadsCWin); }
 function gadsCmpRange(rg,n){
   if(gadsCmp==='prev'){ var pe=gadsAddDays(rg[0],-1); return [gadsAddDays(pe,-(n-1)),pe]; }
+  if(gadsCmp.length===3 && gadsCmp.charAt(0)==='m'){ return gadsPresetRange(gadsCmp); }
   if(gadsCmp==='custom' && gadsCmpFrom && gadsCmpTo){ return gadsCmpFrom<=gadsCmpTo?[gadsCmpFrom,gadsCmpTo]:[gadsCmpTo,gadsCmpFrom]; }
   return null;
 }
@@ -2202,7 +2203,7 @@ function gadsChartRedraw(){
   var mn='2026-01-01', mx=gadsToday();
   var wsel='<select onchange="gadsCSetWin(this.value)" style="'+inp+'">'; gadsCWinList().forEach(function(w){ wsel+='<option value="'+w[0]+'"'+(w[0]===gadsCWin?' selected':'')+'>'+w[1]+'</option>'; }); wsel+='</select>';
   var dr=''; if(gadsCWin==='custom'){ dr=' <input type="date" min="'+mn+'" max="'+mx+'" value="'+rg[0]+'" onchange="gadsCSetDate(&quot;from&quot;,this.value)" style="'+inp+'"> to <input type="date" min="'+mn+'" max="'+mx+'" value="'+rg[1]+'" onchange="gadsCSetDate(&quot;to&quot;,this.value)" style="'+inp+'">'; }
-  var csel='<select onchange="gadsCSetCmp(this.value)" style="'+inp+'"><option value="off"'+(gadsCmp==='off'?' selected':'')+'>No comparison</option><option value="prev"'+(gadsCmp==='prev'?' selected':'')+'>Previous period (same length)</option><option value="custom"'+(gadsCmp==='custom'?' selected':'')+'>Custom period…</option></select>';
+  var csel='<select onchange="gadsCSetCmp(this.value)" style="'+inp+'"><option value="off"'+(gadsCmp==='off'?' selected':'')+'>No comparison</option><option value="prev"'+(gadsCmp==='prev'?' selected':'')+'>Previous period (same length)</option>'+gadsCWinList().filter(function(w){ return w[0].length===3 && w[0].charAt(0)==='m'; }).map(function(w){ return '<option value="'+w[0]+'"'+(gadsCmp===w[0]?' selected':'')+'>'+w[1].replace(' (current month)','')+'</option>'; }).join('')+'<option value="custom"'+(gadsCmp==='custom'?' selected':'')+'>Custom period…</option></select>';
   var cdr=''; if(gadsCmp==='custom'){ cdr=' <input type="date" min="'+mn+'" max="'+mx+'" value="'+(crg?crg[0]:'')+'" onchange="gadsCSetDate(&quot;cfrom&quot;,this.value)" style="'+inp+'"> to <input type="date" min="'+mn+'" max="'+mx+'" value="'+(crg?crg[1]:'')+'" onchange="gadsCSetDate(&quot;cto&quot;,this.value)" style="'+inp+'">'; }
   var ctl='<div style="display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;font-size:13px;margin:2px 0 8px;"><span>Period: '+wsel+dr+'</span><span>Compare to: '+csel+cdr+'</span>'+
     '<label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-weight:600;"><input type="checkbox" '+(gadsShowClicks?'checked ':'')+'onchange="gadsCClicks(this.checked)"> Show clicks</label></div>';
