@@ -148,6 +148,24 @@ def main():
                 events.append({"event": e, "count": cnt, "conversions": conv, "is_key": conv > 0})
         journey[w] = {"summary": summary, "campaigns": campaigns, "events": events}
 
+    # ---- daily per-campaign impressions/clicks (YTD) for the Google Ads line chart ----
+    try:
+        drows = run_report(PID, ["date", "sessionGoogleAdsCampaignName"],
+                           ["advertiserAdImpressions", "advertiserAdClicks"],
+                           [(today.replace(month=1, day=1).isoformat(), today.isoformat())], token=tok, limit=10000)
+        daily = {}
+        for r in drows:
+            nm = r.get("sessionGoogleAdsCampaignName") or ""
+            if nm in ("", "(not set)"): continue
+            d8 = r.get("date") or ""
+            ds = d8[:4] + "-" + d8[4:6] + "-" + d8[6:8]
+            im = int(num(r.get("advertiserAdImpressions"))); ck = int(num(r.get("advertiserAdClicks")))
+            if im or ck: daily.setdefault(nm, []).append([ds, im, ck])
+        for nm in daily: daily[nm].sort()
+        g["daily"] = daily
+        print("daily series:", {k: len(v) for k, v in daily.items()})
+    except Exception as e:
+        print(f"  [warn] daily series: {e}")
     g["intervals"] = intervals
     g["journey"] = journey
     g["pulled_at"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
