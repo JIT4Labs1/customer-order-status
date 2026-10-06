@@ -2772,7 +2772,6 @@ function gadsChartRedraw(){
     return h; }
   var ti=0,tcl=0,tci=0,tcc=0;
   for(i=0;i<gadsCNames.length;i++){ var n2=gadsCNames[i]; if(gadsCOff[n2]) continue; var w=wtot[n2], c2=crg?ctot[n2]:[0,0]; ti+=w[0]; tcl+=w[1]; tci+=c2[0]; tcc+=c2[1]; tb+=grp(n2,colors[n2],w,c2); }
-  tb+=grp('TOTAL (selected campaigns)','',[ti,tcl],[tci,tcc]);
   tb+='</tbody></table></div>'+(crg?'<div style="font-size:12px;color:#667;margin-top:6px;">'+escapeHtml(selLbl)+' &middot; '+escapeHtml(cmpLbl)+'. Change = selected minus comparison; the percentage is the change relative to the comparison period. Numbers are totals for the whole period.</div>':'');
   function lg(dash,wd,op,label,col){ return '<span style="display:inline-flex;align-items:center;gap:6px;"><svg width="38" height="10" viewBox="0 0 38 10"><line x1="1" y1="5" x2="37" y2="5" stroke="'+col+'" stroke-width="'+wd+'" stroke-opacity="'+op+'"'+(dash?' stroke-dasharray="'+dash+'"':'')+'/></svg>'+label+'</span>'; }
   var legend='<div style="display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center;font-size:12px;color:#2c3e50;background:#f7f9fb;border:1px solid #dee5ec;border-radius:6px;padding:7px 12px;margin:2px 0 8px;"><b>Legend</b>'+
