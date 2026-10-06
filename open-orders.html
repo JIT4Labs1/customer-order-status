@@ -2157,7 +2157,8 @@ function gadsChartHtml(){
   if(!D||!Object.keys(D).length){ return ''; }
   for(var wi=0;wi<GADS_CWINS.length;wi++){ if(GADS_CWINS[wi][0]===gadsInterval){ gadsCWin=gadsInterval; } }
   var tot={}; Object.keys(D).forEach(function(k){ var t=0; D[k].forEach(function(r){ t+=r[1]; }); tot[k]=t; });
-  gadsCNames=Object.keys(D).sort(function(a,b){ return tot[b]-tot[a]; });
+  var enOn={}; (GADS.intervals||[]).forEach(function(iv){ (iv.campaigns||[]).forEach(function(c){ if((c.status||'')==='enabled') enOn[c.name]=1; }); });
+  gadsCNames=Object.keys(D).filter(function(k){ return enOn[k]; }).sort(function(a,b){ return tot[b]-tot[a]; });
   var sel='<select onchange="gadsCSetWin(this.value)" style="padding:6px 10px;border:1px solid #cdd9e6;border-radius:6px;font-size:13px;font-family:inherit;">';
   GADS_CWINS.forEach(function(w){ sel+='<option value="'+w[0]+'"'+(w[0]===gadsCWin?' selected':'')+'>'+w[1]+'</option>'; });
   sel+='</select>';
