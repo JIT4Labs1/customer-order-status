@@ -2756,11 +2756,24 @@ function gadsChartRedraw(){
   cb+='<a href="#" onclick="gadsCAll(true);return false;" style="font-size:12px;">All</a><a href="#" onclick="gadsCAll(false);return false;" style="font-size:12px;">None</a></div>';
   var body = Object.keys(ser).length ? gadsChartSvg(days,ser,cdays,cser,colors,gadsShowClicks) : '<div class="empty">Select at least one campaign.</div>';
   function pct(a,b){ if(!b) return a?'new':'—'; var p=(a-b)/b*100; return '<span style="color:'+(p>=0?'#1e7d34':'#c0392b')+';">'+(p>=0?'+':'')+p.toFixed(0)+'%</span>'; }
-  var tb='<div class="matrix-wrap" style="margin-top:10px;max-width:900px;"><table class="matrix"><thead><tr><th>Campaign (selected)</th><th class="c">Impressions</th><th class="c">Clicks</th>'+(crg?'<th class="c">Compare impr.</th><th class="c">Compare clicks</th><th class="c">Impr. change</th><th class="c">Clicks change</th>':'')+'</tr></thead><tbody>';
+  function ctr(i,c){ return i?(c/i*100).toFixed(2)+'%':'—'; }
+  function num(n){ return Number(n||0).toLocaleString(); }
+  var selLbl='Selected period: '+rg[0]+' to '+rg[1]+' ('+days.length+' days)';
+  var cmpLbl=crg?('Comparison period: '+crg[0]+' to '+crg[1]+' ('+cdays.length+' days)'):'';
+  var tb='<div class="matrix-wrap" style="margin-top:12px;max-width:980px;"><table class="matrix"><thead><tr><th>Campaign / row</th><th>Period</th><th class="c">Impressions</th><th class="c">Clicks</th><th class="c">CTR</th></tr></thead><tbody>';
+  function grp(name,color,w,c2){
+    var sw=color?'<span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:'+color+';margin-right:6px;"></span>':'';
+    var h='<tr class="so-group"><td colspan="5">'+sw+escapeHtml(name)+'</td></tr>';
+    h+='<tr><td style="padding-left:26px;">Selected</td><td>'+rg[0]+' to '+rg[1]+'</td><td class="c">'+num(w[0])+'</td><td class="c">'+num(w[1])+'</td><td class="c">'+ctr(w[0],w[1])+'</td></tr>';
+    if(crg){
+      h+='<tr style="color:#555;"><td style="padding-left:26px;">Comparison</td><td>'+crg[0]+' to '+crg[1]+'</td><td class="c">'+num(c2[0])+'</td><td class="c">'+num(c2[1])+'</td><td class="c">'+ctr(c2[0],c2[1])+'</td></tr>';
+      h+='<tr style="background:#f7f9fb;font-weight:600;"><td style="padding-left:26px;">Change (selected vs comparison)</td><td>'+(w[0]-c2[0]>=0?'+':'')+num(w[0]-c2[0])+' impr. / '+(w[1]-c2[1]>=0?'+':'')+num(w[1]-c2[1])+' clicks</td><td class="c">'+pct(w[0],c2[0])+'</td><td class="c">'+pct(w[1],c2[1])+'</td><td class="c"></td></tr>';
+    }
+    return h; }
   var ti=0,tcl=0,tci=0,tcc=0;
-  for(i=0;i<gadsCNames.length;i++){ var n2=gadsCNames[i]; if(gadsCOff[n2]) continue; var w=wtot[n2], c2=crg?ctot[n2]:[0,0]; ti+=w[0]; tcl+=w[1]; tci+=c2[0]; tcc+=c2[1];
-    tb+='<tr><td class="item-name"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:'+colors[n2]+';margin-right:6px;"></span>'+escapeHtml(n2)+'</td><td class="c">'+w[0].toLocaleString()+'</td><td class="c">'+w[1].toLocaleString()+'</td>'+(crg?'<td class="c">'+c2[0].toLocaleString()+'</td><td class="c">'+c2[1].toLocaleString()+'</td><td class="c">'+pct(w[0],c2[0])+'</td><td class="c">'+pct(w[1],c2[1])+'</td>':'')+'</tr>'; }
-  tb+='<tr class="so-group"><td>Total (selected)</td><td class="c">'+ti.toLocaleString()+'</td><td class="c">'+tcl.toLocaleString()+'</td>'+(crg?'<td class="c">'+tci.toLocaleString()+'</td><td class="c">'+tcc.toLocaleString()+'</td><td class="c">'+pct(ti,tci)+'</td><td class="c">'+pct(tcl,tcc)+'</td>':'')+'</tr></tbody></table></div>';
+  for(i=0;i<gadsCNames.length;i++){ var n2=gadsCNames[i]; if(gadsCOff[n2]) continue; var w=wtot[n2], c2=crg?ctot[n2]:[0,0]; ti+=w[0]; tcl+=w[1]; tci+=c2[0]; tcc+=c2[1]; tb+=grp(n2,colors[n2],w,c2); }
+  tb+=grp('TOTAL (selected campaigns)','',[ti,tcl],[tci,tcc]);
+  tb+='</tbody></table></div>'+(crg?'<div style="font-size:12px;color:#667;margin-top:6px;">'+escapeHtml(selLbl)+' &middot; '+escapeHtml(cmpLbl)+'. Change = selected minus comparison; the percentage is the change relative to the comparison period. Numbers are totals for the whole period.</div>':'');
   function lg(dash,wd,op,label,col){ return '<span style="display:inline-flex;align-items:center;gap:6px;"><svg width="38" height="10" viewBox="0 0 38 10"><line x1="1" y1="5" x2="37" y2="5" stroke="'+col+'" stroke-width="'+wd+'" stroke-opacity="'+op+'"'+(dash?' stroke-dasharray="'+dash+'"':'')+'/></svg>'+label+'</span>'; }
   var legend='<div style="display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center;font-size:12px;color:#2c3e50;background:#f7f9fb;border:1px solid #dee5ec;border-radius:6px;padding:7px 12px;margin:2px 0 8px;"><b>Legend</b>'+
     lg('',2.2,1,'Impressions &mdash; '+rg[0]+' to '+rg[1],'#1f77b4')+(gadsShowClicks?lg('6 4',2.2,1,'Clicks &mdash; '+rg[0]+' to '+rg[1],'#0f3b5a'):'')+
