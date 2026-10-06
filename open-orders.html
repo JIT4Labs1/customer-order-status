@@ -2107,80 +2107,109 @@ function renderGadsPanel(){
   gadsChartRedraw();
 }
 
-// ── Google Ads line chart: daily impressions + clicks per campaign (checkbox-selectable) ──
+// ── Google Ads line chart: CUMULATIVE daily impressions + clicks per enabled campaign, with period compare ──
 var GADS_CCOL=['#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd','#8c564b','#e377c2','#7f7f7f','#bcbd22','#17becf'];
-var gadsCWin='this_month', gadsCOff={}, gadsCNames=[];
-var GADS_CWINS=[['this_year','2026 YTD'],['last_month','Last month'],['this_month','Current month'],['last_30_days','Last 30 days']];
-function gadsCRange(){
-  var t=String((GADS&&GADS.pulled_at)||'').slice(0,10).split('-'); var y=+t[0], m=+t[1], d=+t[2];
-  function iso(dt){ return dt.toISOString().slice(0,10); }
-  var end=new Date(Date.UTC(y,m-1,d)), st;
-  if(gadsCWin==='this_year'){ st=new Date(Date.UTC(y,0,1)); }
-  else if(gadsCWin==='this_month'){ st=new Date(Date.UTC(y,m-1,1)); }
-  else if(gadsCWin==='last_month'){ st=new Date(Date.UTC(y,m-2,1)); end=new Date(Date.UTC(y,m-1,0)); }
+var gadsCWin='this_month', gadsCOff={}, gadsCNames=[], gadsShowClicks=true, gadsCLastInt=null;
+var gadsCFrom='', gadsCTo='', gadsCmp='off', gadsCmpFrom='', gadsCmpTo='';
+var GADS_CWINS=[['this_year','2026 YTD'],['last_month','Last month'],['this_month','Current month'],['last_30_days','Last 30 days'],['custom','Custom range…']];
+function gadsIso(dt){ return dt.toISOString().slice(0,10); }
+function gadsUtc(str){ var p=str.split('-'); return new Date(Date.UTC(+p[0],+p[1]-1,+p[2])); }
+function gadsAddDays(str,k){ return gadsIso(new Date(gadsUtc(str).getTime()+k*86400000)); }
+function gadsToday(){ return String((GADS&&GADS.pulled_at)||'').slice(0,10); }
+function gadsPresetRange(w){
+  var t=gadsToday().split('-'); var y=+t[0], m=+t[1], d=+t[2], end=new Date(Date.UTC(y,m-1,d)), st;
+  if(w==='this_year'){ st=new Date(Date.UTC(y,0,1)); }
+  else if(w==='this_month'){ st=new Date(Date.UTC(y,m-1,1)); }
+  else if(w==='last_month'){ st=new Date(Date.UTC(y,m-2,1)); end=new Date(Date.UTC(y,m-1,0)); }
   else { st=new Date(Date.UTC(y,m-1,d-29)); }
-  return [iso(st),iso(end)];
+  return [gadsIso(st),gadsIso(end)];
 }
-function gadsCDays(a,b){ var out=[], p=a.split('-'), cur=new Date(Date.UTC(+p[0],+p[1]-1,+p[2])), e=new Date(b+'T00:00:00Z');
-  while(cur<=e){ out.push(cur.toISOString().slice(0,10)); cur=new Date(cur.getTime()+86400000); } return out; }
-function gadsCSetWin(v){ gadsCWin=v; gadsInterval=v; renderGadsPanel(); }
+function gadsCRange(){ if(gadsCWin==='custom' && gadsCFrom && gadsCTo){ return gadsCFrom<=gadsCTo?[gadsCFrom,gadsCTo]:[gadsCTo,gadsCFrom]; } return gadsPresetRange(gadsCWin==='custom'?'this_month':gadsCWin); }
+function gadsCmpRange(rg,n){
+  if(gadsCmp==='prev'){ var pe=gadsAddDays(rg[0],-1); return [gadsAddDays(pe,-(n-1)),pe]; }
+  if(gadsCmp==='custom' && gadsCmpFrom && gadsCmpTo){ return gadsCmpFrom<=gadsCmpTo?[gadsCmpFrom,gadsCmpTo]:[gadsCmpTo,gadsCmpFrom]; }
+  return null;
+}
+function gadsCDays(a,b){ var out=[], cur=gadsUtc(a), e=gadsUtc(b); while(cur<=e){ out.push(gadsIso(cur)); cur=new Date(cur.getTime()+86400000); } return out; }
+function gadsCSetWin(v){
+  if(v==='custom'){ if(!gadsCFrom||!gadsCTo){ var r0=gadsCRange(); gadsCFrom=r0[0]; gadsCTo=r0[1]; } gadsCWin='custom'; gadsChartRedraw(); return; }
+  gadsCWin=v; gadsInterval=v; renderGadsPanel();
+}
+function gadsCSetDate(which,v){ if(!v) return; if(which==='from') gadsCFrom=v; else if(which==='to') gadsCTo=v; else if(which==='cfrom') gadsCmpFrom=v; else gadsCmpTo=v; gadsChartRedraw(); }
+function gadsCSetCmp(v){ gadsCmp=v; if(v==='custom' && (!gadsCmpFrom||!gadsCmpTo)){ var rg=gadsCRange(), n=gadsCDays(rg[0],rg[1]).length, pe=gadsAddDays(rg[0],-1); gadsCmpTo=pe; gadsCmpFrom=gadsAddDays(pe,-(n-1)); } gadsChartRedraw(); }
 function gadsCToggle(i){ var n=gadsCNames[i]; gadsCOff[n]=!gadsCOff[n]; gadsChartRedraw(); }
 function gadsCAll(on){ for(var i=0;i<gadsCNames.length;i++){ gadsCOff[gadsCNames[i]]=!on; } gadsChartRedraw(); }
-var gadsShowClicks=true;
 function gadsCClicks(on){ gadsShowClicks=!!on; gadsChartRedraw(); }
 function gadsNiceMax(mx){ if(mx<=0) mx=1; var mag=Math.pow(10,Math.floor(Math.log(mx)/Math.LN10)), f=mx/mag; return (f<=1?1:f<=2?2:f<=5?5:10)*mag; }
-function gadsChartSvg(days, ser, colors, showClicks){
-  var W=1000, H=340, L=64, R=showClicks?60:16, T=14, B=34, pw=W-L-R, ph=H-T-B, n=days.length, names=Object.keys(ser), mi=0, mc=0, i, j;
-  for(i=0;i<names.length;i++){ for(j=0;j<n;j++){ var a=ser[names[i]][j]; if(a[1]>mi) mi=a[1]; if(a[2]>mc) mc=a[2]; } }
+// cumulative [date,cumImpr,cumClicks] per day for one campaign
+function gadsCumSeries(nm,days){ var mp={}; (GADS.daily[nm]||[]).forEach(function(r){ mp[r[0]]=r; }); var ci=0, cc=0, out=[];
+  days.forEach(function(d){ var r=mp[d]; if(r){ ci+=r[1]; cc+=r[2]; } out.push([d,ci,cc]); }); return out; }
+function gadsChartSvg(days, ser, cdays, cser, colors, showClicks){
+  var W=1000, H=360, L=68, R=showClicks?66:16, T=16, B=34, pw=W-L-R, ph=H-T-B, n=days.length, cn=cdays?cdays.length:0, N=Math.max(n,cn,1), names=Object.keys(ser), mi=0, mc=0, i, j, last;
+  function scan(sr,len){ names.forEach(function(nm){ if(sr[nm]&&len){ last=sr[nm][len-1]; if(last[1]>mi) mi=last[1]; if(last[2]>mc) mc=last[2]; } }); }
+  scan(ser,n); if(cser) scan(cser,cn);
   var ni=gadsNiceMax(mi), nc=gadsNiceMax(mc);
-  function X(k){ return L+(n>1?pw*k/(n-1):pw/2); } function YI(v){ return T+ph-ph*v/ni; } function YC(v){ return T+ph-ph*v/nc; }
+  function X(k){ return L+(N>1?pw*k/(N-1):pw/2); } function YI(v){ return T+ph-ph*v/ni; } function YC(v){ return T+ph-ph*v/nc; }
   var g='';
   for(i=0;i<=4;i++){ var gy=YI(ni*i/4);
     g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+gy+'" y2="'+gy+'" stroke="#e3e9ef"/><text x="'+(L-6)+'" y="'+(gy+4)+'" font-size="11" text-anchor="end" fill="#667">'+Math.round(ni*i/4).toLocaleString()+'</text>';
     if(showClicks){ g+='<text x="'+(W-R+6)+'" y="'+(gy+4)+'" font-size="11" fill="#667">'+Math.round(nc*i/4).toLocaleString()+'</text>'; } }
-  g+='<text x="'+(L-6)+'" y="'+(T-2)+'" font-size="10" text-anchor="end" fill="#667">Impressions</text>';
-  if(showClicks){ g+='<text x="'+(W-R+6)+'" y="'+(T-2)+'" font-size="10" fill="#667">Clicks</text>'; }
+  g+='<text x="'+(L-6)+'" y="'+(T-4)+'" font-size="10" text-anchor="end" fill="#667">Cum. impressions</text>';
+  if(showClicks){ g+='<text x="'+(W-R+6)+'" y="'+(T-4)+'" font-size="10" fill="#667">Cum. clicks</text>'; }
   var step=Math.max(1,Math.ceil(n/8));
-  for(j=0;j<n;j+=step){ g+='<text x="'+X(j)+'" y="'+(H-12)+'" font-size="11" text-anchor="middle" fill="#667">'+days[j].slice(5)+'</text>'; }
-  for(i=0;i<names.length;i++){ var p1=[], p2=[];
-    for(j=0;j<n;j++){ p1.push(X(j).toFixed(1)+','+YI(ser[names[i]][j][1]).toFixed(1)); p2.push(X(j).toFixed(1)+','+YC(ser[names[i]][j][2]).toFixed(1)); }
-    g+='<polyline fill="none" stroke="'+colors[names[i]]+'" stroke-width="2" stroke-linejoin="round" points="'+p1.join(' ')+'"/>';
-    if(showClicks){ g+='<polyline fill="none" stroke="'+colors[names[i]]+'" stroke-width="2" stroke-dasharray="5 4" stroke-linejoin="round" points="'+p2.join(' ')+'"/>'; }
-    if(n<=40){ for(j=0;j<n;j++){ g+='<circle cx="'+X(j).toFixed(1)+'" cy="'+YI(ser[names[i]][j][1]).toFixed(1)+'" r="2.5" fill="'+colors[names[i]]+'"/>'; } } }
-  var bw=n>1?pw/(n-1):pw;
-  for(j=0;j<n;j++){ var tip=days[j]; for(i=0;i<names.length;i++){ var r=ser[names[i]][j]; tip+=String.fromCharCode(10)+names[i]+': '+r[1].toLocaleString()+' impr'+(showClicks?' / '+r[2].toLocaleString()+' clicks':''); }
+  for(j=0;j<n;j+=step){ g+='<text x="'+X(j)+'" y="'+(H-12)+'" font-size="11" text-anchor="middle" fill="#667">'+days[j].slice(5)+(cdays?' (day '+(j+1)+')':'')+'</text>'; }
+  function line(sr,len,col,yf,mi2,dash,wd,op){ var pts=[]; for(var k=0;k<len;k++){ pts.push(X(k).toFixed(1)+','+yf(sr[k][mi2]).toFixed(1)); }
+    return '<polyline fill="none" stroke="'+col+'" stroke-width="'+wd+'" stroke-opacity="'+op+'"'+(dash?' stroke-dasharray="'+dash+'"':'')+' stroke-linejoin="round" points="'+pts.join(' ')+'"/>'; }
+  for(i=0;i<names.length;i++){ var nm=names[i], col=colors[nm];
+    if(cser){ g+=line(cser[nm],cn,col,YI,1,'1 4',2,0.55); if(showClicks){ g+=line(cser[nm],cn,col,YC,2,'2 3',1.5,0.45); } }
+    g+=line(ser[nm],n,col,YI,1,'',2.2,1); if(showClicks){ g+=line(ser[nm],n,col,YC,2,'6 4',2.2,1); } }
+  var bw=N>1?pw/(N-1):pw;
+  for(j=0;j<N;j++){ var tip=(j<n?days[j]:'')+(cser&&j<cn?'  vs  '+cdays[j]:'');
+    for(i=0;i<names.length;i++){ var nm2=names[i], r=j<n?ser[nm2][j]:null, rc=(cser&&j<cn)?cser[nm2][j]:null;
+      tip+=String.fromCharCode(10)+nm2+': '+(r?r[1].toLocaleString()+' impr'+(showClicks?' / '+r[2].toLocaleString()+' clicks':''):'-')+(rc?'   |   '+rc[1].toLocaleString()+' impr'+(showClicks?' / '+rc[2].toLocaleString()+' clicks':''):''); }
     g+='<rect x="'+(X(j)-bw/2).toFixed(1)+'" y="'+T+'" width="'+bw.toFixed(1)+'" height="'+ph+'" fill="transparent"><title>'+escapeHtml(tip)+'</title></rect>'; }
   return '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;max-width:1100px;height:auto;background:#fff;border:1px solid #dee5ec;border-radius:6px;">'+g+'</svg>';
 }
 function gadsChartHtml(){
   var D=(GADS&&GADS.daily)||null;
   if(!D||!Object.keys(D).length){ return ''; }
-  for(var wi=0;wi<GADS_CWINS.length;wi++){ if(GADS_CWINS[wi][0]===gadsInterval){ gadsCWin=gadsInterval; } }
+  if(gadsCLastInt!==gadsInterval){ gadsCLastInt=gadsInterval; for(var wi=0;wi<GADS_CWINS.length;wi++){ if(GADS_CWINS[wi][0]===gadsInterval && gadsInterval!=='custom'){ gadsCWin=gadsInterval; } } }
   var tot={}; Object.keys(D).forEach(function(k){ var t=0; D[k].forEach(function(r){ t+=r[1]; }); tot[k]=t; });
   var enOn={}; (GADS.intervals||[]).forEach(function(iv){ (iv.campaigns||[]).forEach(function(c){ if((c.status||'')==='enabled') enOn[c.name]=1; }); });
   gadsCNames=Object.keys(D).filter(function(k){ return enOn[k]; }).sort(function(a,b){ return tot[b]-tot[a]; });
-  var sel='<select onchange="gadsCSetWin(this.value)" style="padding:6px 10px;border:1px solid #cdd9e6;border-radius:6px;font-size:13px;font-family:inherit;">';
-  GADS_CWINS.forEach(function(w){ sel+='<option value="'+w[0]+'"'+(w[0]===gadsCWin?' selected':'')+'>'+w[1]+'</option>'; });
-  sel+='</select>';
-  return '<div class="ca-h" style="margin-top:20px;border-top:1px solid #dee5ec;padding-top:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">'+
-    '<span>Daily Impressions &amp; Clicks by Campaign</span><span style="font-weight:400;font-size:13px;color:#2c3e50;">Time window: '+sel+'</span></div>'+
+  return '<div class="ca-h" style="margin-top:20px;border-top:1px solid #dee5ec;padding-top:14px;">Cumulative Impressions &amp; Clicks by Campaign</div>'+
     '<div id="gadsChartBox" style="padding:0 16px 8px;"></div>';
 }
 function gadsChartRedraw(){
   var box=document.getElementById('gadsChartBox'); if(!box||!GADS||!GADS.daily) return;
-  var D=GADS.daily, rg=gadsCRange(), days=gadsCDays(rg[0],rg[1]), colors={}, ser={}, wtot={}, i;
+  var D=GADS.daily, rg=gadsCRange(), days=gadsCDays(rg[0],rg[1]), crg=gadsCmpRange(rg,days.length), cdays=crg?gadsCDays(crg[0],crg[1]):null, colors={}, ser={}, cser=crg?{}:null, wtot={}, ctot={}, i;
   gadsCNames.forEach(function(nm,ix){ colors[nm]=GADS_CCOL[ix%GADS_CCOL.length];
-    var mp={}; D[nm].forEach(function(r){ mp[r[0]]=r; }); var arr=[], ti=0, tc=0;
-    days.forEach(function(d){ var r=mp[d]; var im=r?r[1]:0, ck=r?r[2]:0; ti+=im; tc+=ck; arr.push([d,im,ck]); });
-    wtot[nm]=[ti,tc]; if(!gadsCOff[nm]) ser[nm]=arr; });
+    var cs=gadsCumSeries(nm,days); wtot[nm]=cs.length?[cs[cs.length-1][1],cs[cs.length-1][2]]:[0,0];
+    if(crg){ var cc=gadsCumSeries(nm,cdays); ctot[nm]=cc.length?[cc[cc.length-1][1],cc[cc.length-1][2]]:[0,0]; if(!gadsCOff[nm]) cser[nm]=cc; }
+    if(!gadsCOff[nm]) ser[nm]=cs; });
+  var inp='padding:5px 8px;border:1px solid #cdd9e6;border-radius:6px;font-size:13px;font-family:inherit;';
+  var mn='2026-01-01', mx=gadsToday();
+  var wsel='<select onchange="gadsCSetWin(this.value)" style="'+inp+'">'; GADS_CWINS.forEach(function(w){ wsel+='<option value="'+w[0]+'"'+(w[0]===gadsCWin?' selected':'')+'>'+w[1]+'</option>'; }); wsel+='</select>';
+  var dr=''; if(gadsCWin==='custom'){ dr=' <input type="date" min="'+mn+'" max="'+mx+'" value="'+rg[0]+'" onchange="gadsCSetDate(&quot;from&quot;,this.value)" style="'+inp+'"> to <input type="date" min="'+mn+'" max="'+mx+'" value="'+rg[1]+'" onchange="gadsCSetDate(&quot;to&quot;,this.value)" style="'+inp+'">'; }
+  var csel='<select onchange="gadsCSetCmp(this.value)" style="'+inp+'"><option value="off"'+(gadsCmp==='off'?' selected':'')+'>No comparison</option><option value="prev"'+(gadsCmp==='prev'?' selected':'')+'>Previous period (same length)</option><option value="custom"'+(gadsCmp==='custom'?' selected':'')+'>Custom period…</option></select>';
+  var cdr=''; if(gadsCmp==='custom'){ cdr=' <input type="date" min="'+mn+'" max="'+mx+'" value="'+(crg?crg[0]:'')+'" onchange="gadsCSetDate(&quot;cfrom&quot;,this.value)" style="'+inp+'"> to <input type="date" min="'+mn+'" max="'+mx+'" value="'+(crg?crg[1]:'')+'" onchange="gadsCSetDate(&quot;cto&quot;,this.value)" style="'+inp+'">'; }
+  var ctl='<div style="display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;font-size:13px;margin:2px 0 8px;"><span>Period: '+wsel+dr+'</span><span>Compare to: '+csel+cdr+'</span>'+
+    '<label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-weight:600;"><input type="checkbox" '+(gadsShowClicks?'checked ':'')+'onchange="gadsCClicks(this.checked)"> Show clicks</label></div>';
+  var note='<div style="font-size:12px;color:#667;margin-bottom:6px;">'+rg[0]+' to '+rg[1]+' ('+days.length+' days)'+(crg?' &middot; compared with '+crg[0]+' to '+crg[1]+' ('+cdays.length+' days), lined up by day number':'')+
+    '. Lines are running totals. Solid = impressions (left axis)'+(gadsShowClicks?', dashed = clicks (right axis)':'')+(crg?'; faint dotted = the comparison period':'')+'. Daily data starts 2026-01-01.</div>';
   var cb='<div style="display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;margin:4px 0 6px;font-size:13px;">';
   var ordIdx=gadsCNames.map(function(x,ix){return ix;}).sort(function(a,b){ return wtot[gadsCNames[b]][0]-wtot[gadsCNames[a]][0]; });
   for(var oi=0;oi<ordIdx.length;oi++){ i=ordIdx[oi]; var nm=gadsCNames[i];
-    cb+='<label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" '+(gadsCOff[nm]?'':'checked ')+'onchange="gadsCToggle('+i+')"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:'+colors[nm]+';"></span>'+escapeHtml(nm)+' <span style="color:#889;font-size:11px;">('+(wtot[nm][0]||wtot[nm][1]?wtot[nm][0].toLocaleString()+' impr / '+wtot[nm][1].toLocaleString()+' clicks':'no activity in this window')+')</span></label>'; }
+    cb+='<label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" '+(gadsCOff[nm]?'':'checked ')+'onchange="gadsCToggle('+i+')"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:'+colors[nm]+';"></span>'+escapeHtml(nm)+'</label>'; }
   cb+='<a href="#" onclick="gadsCAll(true);return false;" style="font-size:12px;">All</a><a href="#" onclick="gadsCAll(false);return false;" style="font-size:12px;">None</a></div>';
-  var tg='<label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;font-weight:600;margin:2px 0 8px;"><input type="checkbox" '+(gadsShowClicks?'checked ':'')+'onchange="gadsCClicks(this.checked)"> Show clicks <span style="font-weight:400;color:#667;font-size:12px;">(dashed lines, right axis; solid lines = impressions, left axis)</span></label>';
-  var body = Object.keys(ser).length ? gadsChartSvg(days,ser,colors,gadsShowClicks) : '<div class="empty">Select at least one campaign.</div>';
-  box.innerHTML='<div style="font-size:12px;color:#667;">'+rg[0]+' to '+rg[1]+'</div>'+tg+cb+body;
+  var body = Object.keys(ser).length ? gadsChartSvg(days,ser,cdays,cser,colors,gadsShowClicks) : '<div class="empty">Select at least one campaign.</div>';
+  function pct(a,b){ if(!b) return a?'new':'—'; var p=(a-b)/b*100; return '<span style="color:'+(p>=0?'#1e7d34':'#c0392b')+';">'+(p>=0?'+':'')+p.toFixed(0)+'%</span>'; }
+  var tb='<div class="matrix-wrap" style="margin-top:10px;max-width:900px;"><table class="matrix"><thead><tr><th>Campaign (selected)</th><th class="c">Impressions</th><th class="c">Clicks</th>'+(crg?'<th class="c">Compare impr.</th><th class="c">Compare clicks</th><th class="c">Impr. change</th><th class="c">Clicks change</th>':'')+'</tr></thead><tbody>';
+  var ti=0,tcl=0,tci=0,tcc=0;
+  for(i=0;i<gadsCNames.length;i++){ var n2=gadsCNames[i]; if(gadsCOff[n2]) continue; var w=wtot[n2], c2=crg?ctot[n2]:[0,0]; ti+=w[0]; tcl+=w[1]; tci+=c2[0]; tcc+=c2[1];
+    tb+='<tr><td class="item-name"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:'+colors[n2]+';margin-right:6px;"></span>'+escapeHtml(n2)+'</td><td class="c">'+w[0].toLocaleString()+'</td><td class="c">'+w[1].toLocaleString()+'</td>'+(crg?'<td class="c">'+c2[0].toLocaleString()+'</td><td class="c">'+c2[1].toLocaleString()+'</td><td class="c">'+pct(w[0],c2[0])+'</td><td class="c">'+pct(w[1],c2[1])+'</td>':'')+'</tr>'; }
+  tb+='<tr class="so-group"><td>Total (selected)</td><td class="c">'+ti.toLocaleString()+'</td><td class="c">'+tcl.toLocaleString()+'</td>'+(crg?'<td class="c">'+tci.toLocaleString()+'</td><td class="c">'+tcc.toLocaleString()+'</td><td class="c">'+pct(ti,tci)+'</td><td class="c">'+pct(tcl,tcc)+'</td>':'')+'</tr></tbody></table></div>';
+  box.innerHTML=ctl+note+cb+body+tb;
 }
 function gadsHeadHtml(){
   var h='';
