@@ -2126,23 +2126,31 @@ function gadsCDays(a,b){ var out=[], p=a.split('-'), cur=new Date(Date.UTC(+p[0]
 function gadsCSetWin(v){ gadsCWin=v; gadsInterval=v; renderGadsPanel(); }
 function gadsCToggle(i){ var n=gadsCNames[i]; gadsCOff[n]=!gadsCOff[n]; gadsChartRedraw(); }
 function gadsCAll(on){ for(var i=0;i<gadsCNames.length;i++){ gadsCOff[gadsCNames[i]]=!on; } gadsChartRedraw(); }
-function gadsChartSvg(title, mi, days, ser, colors){
-  var W=980, H=300, L=62, R=16, T=14, B=34, pw=W-L-R, ph=H-T-B, n=days.length, names=Object.keys(ser), mx=0, i, j;
-  for(i=0;i<names.length;i++){ for(j=0;j<n;j++){ var v=ser[names[i]][j][mi]; if(v>mx) mx=v; } }
-  if(mx<=0) mx=1;
-  var mag=Math.pow(10,Math.floor(Math.log(mx)/Math.LN10)), f=mx/mag, nice=(f<=1?1:f<=2?2:f<=5?5:10)*mag;
-  function X(k){ return L+(n>1?pw*k/(n-1):pw/2); } function Y(v){ return T+ph-ph*v/nice; }
+var gadsShowClicks=true;
+function gadsCClicks(on){ gadsShowClicks=!!on; gadsChartRedraw(); }
+function gadsNiceMax(mx){ if(mx<=0) mx=1; var mag=Math.pow(10,Math.floor(Math.log(mx)/Math.LN10)), f=mx/mag; return (f<=1?1:f<=2?2:f<=5?5:10)*mag; }
+function gadsChartSvg(days, ser, colors, showClicks){
+  var W=1000, H=340, L=64, R=showClicks?60:16, T=14, B=34, pw=W-L-R, ph=H-T-B, n=days.length, names=Object.keys(ser), mi=0, mc=0, i, j;
+  for(i=0;i<names.length;i++){ for(j=0;j<n;j++){ var a=ser[names[i]][j]; if(a[1]>mi) mi=a[1]; if(a[2]>mc) mc=a[2]; } }
+  var ni=gadsNiceMax(mi), nc=gadsNiceMax(mc);
+  function X(k){ return L+(n>1?pw*k/(n-1):pw/2); } function YI(v){ return T+ph-ph*v/ni; } function YC(v){ return T+ph-ph*v/nc; }
   var g='';
-  for(i=0;i<=4;i++){ var gv=nice*i/4, gy=Y(gv); g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+gy+'" y2="'+gy+'" stroke="#e3e9ef"/><text x="'+(L-6)+'" y="'+(gy+4)+'" font-size="11" text-anchor="end" fill="#667">'+Math.round(gv).toLocaleString()+'</text>'; }
+  for(i=0;i<=4;i++){ var gy=YI(ni*i/4);
+    g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+gy+'" y2="'+gy+'" stroke="#e3e9ef"/><text x="'+(L-6)+'" y="'+(gy+4)+'" font-size="11" text-anchor="end" fill="#667">'+Math.round(ni*i/4).toLocaleString()+'</text>';
+    if(showClicks){ g+='<text x="'+(W-R+6)+'" y="'+(gy+4)+'" font-size="11" fill="#667">'+Math.round(nc*i/4).toLocaleString()+'</text>'; } }
+  g+='<text x="'+(L-6)+'" y="'+(T-2)+'" font-size="10" text-anchor="end" fill="#667">Impressions</text>';
+  if(showClicks){ g+='<text x="'+(W-R+6)+'" y="'+(T-2)+'" font-size="10" fill="#667">Clicks</text>'; }
   var step=Math.max(1,Math.ceil(n/8));
   for(j=0;j<n;j+=step){ g+='<text x="'+X(j)+'" y="'+(H-12)+'" font-size="11" text-anchor="middle" fill="#667">'+days[j].slice(5)+'</text>'; }
-  for(i=0;i<names.length;i++){ var pts=[]; for(j=0;j<n;j++){ pts.push(X(j).toFixed(1)+','+Y(ser[names[i]][j][mi]).toFixed(1)); }
-    g+='<polyline fill="none" stroke="'+colors[names[i]]+'" stroke-width="2" stroke-linejoin="round" points="'+pts.join(' ')+'"/>';
-    if(n<=40){ for(j=0;j<n;j++){ g+='<circle cx="'+X(j).toFixed(1)+'" cy="'+Y(ser[names[i]][j][mi]).toFixed(1)+'" r="2.5" fill="'+colors[names[i]]+'"/>'; } } }
+  for(i=0;i<names.length;i++){ var p1=[], p2=[];
+    for(j=0;j<n;j++){ p1.push(X(j).toFixed(1)+','+YI(ser[names[i]][j][1]).toFixed(1)); p2.push(X(j).toFixed(1)+','+YC(ser[names[i]][j][2]).toFixed(1)); }
+    g+='<polyline fill="none" stroke="'+colors[names[i]]+'" stroke-width="2" stroke-linejoin="round" points="'+p1.join(' ')+'"/>';
+    if(showClicks){ g+='<polyline fill="none" stroke="'+colors[names[i]]+'" stroke-width="2" stroke-dasharray="5 4" stroke-linejoin="round" points="'+p2.join(' ')+'"/>'; }
+    if(n<=40){ for(j=0;j<n;j++){ g+='<circle cx="'+X(j).toFixed(1)+'" cy="'+YI(ser[names[i]][j][1]).toFixed(1)+'" r="2.5" fill="'+colors[names[i]]+'"/>'; } } }
   var bw=n>1?pw/(n-1):pw;
-  for(j=0;j<n;j++){ var tip=days[j]; for(i=0;i<names.length;i++){ tip+=String.fromCharCode(10)+names[i]+': '+ser[names[i]][j][mi].toLocaleString(); }
+  for(j=0;j<n;j++){ var tip=days[j]; for(i=0;i<names.length;i++){ var r=ser[names[i]][j]; tip+=String.fromCharCode(10)+names[i]+': '+r[1].toLocaleString()+' impr'+(showClicks?' / '+r[2].toLocaleString()+' clicks':''); }
     g+='<rect x="'+(X(j)-bw/2).toFixed(1)+'" y="'+T+'" width="'+bw.toFixed(1)+'" height="'+ph+'" fill="transparent"><title>'+escapeHtml(tip)+'</title></rect>'; }
-  return '<div style="font-weight:700;font-size:13px;color:#0D2B45;margin:10px 0 2px;">'+title+'</div><svg viewBox="0 0 '+W+' '+H+'" style="width:100%;max-width:1100px;height:auto;background:#fff;border:1px solid #dee5ec;border-radius:6px;">'+g+'</svg>';
+  return '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;max-width:1100px;height:auto;background:#fff;border:1px solid #dee5ec;border-radius:6px;">'+g+'</svg>';
 }
 function gadsChartHtml(){
   var D=(GADS&&GADS.daily)||null;
@@ -2169,8 +2177,9 @@ function gadsChartRedraw(){
   for(var oi=0;oi<ordIdx.length;oi++){ i=ordIdx[oi]; var nm=gadsCNames[i];
     cb+='<label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" '+(gadsCOff[nm]?'':'checked ')+'onchange="gadsCToggle('+i+')"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:'+colors[nm]+';"></span>'+escapeHtml(nm)+' <span style="color:#889;font-size:11px;">('+(wtot[nm][0]||wtot[nm][1]?wtot[nm][0].toLocaleString()+' impr / '+wtot[nm][1].toLocaleString()+' clicks':'no activity in this window')+')</span></label>'; }
   cb+='<a href="#" onclick="gadsCAll(true);return false;" style="font-size:12px;">All</a><a href="#" onclick="gadsCAll(false);return false;" style="font-size:12px;">None</a></div>';
-  var body = Object.keys(ser).length ? gadsChartSvg('Impressions per day',1,days,ser,colors)+gadsChartSvg('Clicks per day',2,days,ser,colors) : '<div class="empty">Select at least one campaign.</div>';
-  box.innerHTML='<div style="font-size:12px;color:#667;">'+rg[0]+' to '+rg[1]+'</div>'+cb+body;
+  var tg='<label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;font-weight:600;margin:2px 0 8px;"><input type="checkbox" '+(gadsShowClicks?'checked ':'')+'onchange="gadsCClicks(this.checked)"> Show clicks <span style="font-weight:400;color:#667;font-size:12px;">(dashed lines, right axis; solid lines = impressions, left axis)</span></label>';
+  var body = Object.keys(ser).length ? gadsChartSvg(days,ser,colors,gadsShowClicks) : '<div class="empty">Select at least one campaign.</div>';
+  box.innerHTML='<div style="font-size:12px;color:#667;">'+rg[0]+' to '+rg[1]+'</div>'+tg+cb+body;
 }
 function gadsHeadHtml(){
   var h='';
