@@ -2663,7 +2663,7 @@ function gadsCRange(){
 }
 function gadsCDays(a,b){ var out=[], p=a.split('-'), cur=new Date(Date.UTC(+p[0],+p[1]-1,+p[2])), e=new Date(b+'T00:00:00Z');
   while(cur<=e){ out.push(cur.toISOString().slice(0,10)); cur=new Date(cur.getTime()+86400000); } return out; }
-function gadsCSetWin(v){ gadsCWin=v; gadsChartRedraw(); }
+function gadsCSetWin(v){ gadsCWin=v; gadsInterval=v; renderGadsPanel(); }
 function gadsCToggle(i){ var n=gadsCNames[i]; gadsCOff[n]=!gadsCOff[n]; gadsChartRedraw(); }
 function gadsCAll(on){ for(var i=0;i<gadsCNames.length;i++){ gadsCOff[gadsCNames[i]]=!on; } gadsChartRedraw(); }
 function gadsChartSvg(title, mi, days, ser, colors){
@@ -2687,6 +2687,7 @@ function gadsChartSvg(title, mi, days, ser, colors){
 function gadsChartHtml(){
   var D=(GADS&&GADS.daily)||null;
   if(!D||!Object.keys(D).length){ return ''; }
+  for(var wi=0;wi<GADS_CWINS.length;wi++){ if(GADS_CWINS[wi][0]===gadsInterval){ gadsCWin=gadsInterval; } }
   var tot={}; Object.keys(D).forEach(function(k){ var t=0; D[k].forEach(function(r){ t+=r[1]; }); tot[k]=t; });
   gadsCNames=Object.keys(D).sort(function(a,b){ return tot[b]-tot[a]; });
   var sel='<select onchange="gadsCSetWin(this.value)" style="padding:6px 10px;border:1px solid #cdd9e6;border-radius:6px;font-size:13px;font-family:inherit;">';
@@ -2704,8 +2705,9 @@ function gadsChartRedraw(){
     days.forEach(function(d){ var r=mp[d]; var im=r?r[1]:0, ck=r?r[2]:0; ti+=im; tc+=ck; arr.push([d,im,ck]); });
     wtot[nm]=[ti,tc]; if(!gadsCOff[nm]) ser[nm]=arr; });
   var cb='<div style="display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;margin:4px 0 6px;font-size:13px;">';
-  for(i=0;i<gadsCNames.length;i++){ var nm=gadsCNames[i];
-    cb+='<label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" '+(gadsCOff[nm]?'':'checked ')+'onchange="gadsCToggle('+i+')"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:'+colors[nm]+';"></span>'+escapeHtml(nm)+' <span style="color:#889;font-size:11px;">('+wtot[nm][0].toLocaleString()+' impr / '+wtot[nm][1].toLocaleString()+' clicks)</span></label>'; }
+  var ordIdx=gadsCNames.map(function(x,ix){return ix;}).sort(function(a,b){ return wtot[gadsCNames[b]][0]-wtot[gadsCNames[a]][0]; });
+  for(var oi=0;oi<ordIdx.length;oi++){ i=ordIdx[oi]; var nm=gadsCNames[i];
+    cb+='<label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" '+(gadsCOff[nm]?'':'checked ')+'onchange="gadsCToggle('+i+')"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:'+colors[nm]+';"></span>'+escapeHtml(nm)+' <span style="color:#889;font-size:11px;">('+(wtot[nm][0]||wtot[nm][1]?wtot[nm][0].toLocaleString()+' impr / '+wtot[nm][1].toLocaleString()+' clicks':'no activity in this window')+')</span></label>'; }
   cb+='<a href="#" onclick="gadsCAll(true);return false;" style="font-size:12px;">All</a><a href="#" onclick="gadsCAll(false);return false;" style="font-size:12px;">None</a></div>';
   var body = Object.keys(ser).length ? gadsChartSvg('Impressions per day',1,days,ser,colors)+gadsChartSvg('Clicks per day',2,days,ser,colors) : '<div class="empty">Select at least one campaign.</div>';
   box.innerHTML='<div style="font-size:12px;color:#667;">'+rg[0]+' to '+rg[1]+'</div>'+cb+body;
