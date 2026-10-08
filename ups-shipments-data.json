@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-10-07 10:14 AM PT",
-  "last_status_refresh": "2026-10-07 10:07 AM PT",
+  "pulled_at": "2026-10-08 10:09 AM PT",
+  "last_status_refresh": "2026-10-08 09:58 AM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -18166,6 +18166,146 @@
         }
       ],
       "date": "2026-10-06"
+    },
+    {
+      "carrier": "FedEx",
+      "source": "Shopify auto-discovery",
+      "shipper": "",
+      "tracking": "384070296650",
+      "order": "#1223",
+      "receiver": "CliniCore Labs",
+      "ship_to": "Mandeville, LA, US",
+      "ship_date": "2026-10-07",
+      "status": "Label Printed",
+      "activity": "LABEL_PRINTED",
+      "delivered": false,
+      "date": "2026-10-07",
+      "items": [
+        {
+          "name": "Beckman Coulter A48617 Access SHBG Reagent, 100 Determinations",
+          "sku": "A48617",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter 33530 Access Prolactin Reagent, 100 Determinations",
+          "sku": "33530",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter 33410 Access Ultrasensitive Insulin Reagent, 100 Determinations",
+          "sku": "33410",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter 33880 (c76421) Access Free T4 Reagent, 100 Determinations",
+          "sku": "33880",
+          "qty": 5
+        }
+      ],
+      "so_num": "",
+      "so_id": ""
+    },
+    {
+      "carrier": "FedEx",
+      "source": "Shopify auto-discovery",
+      "shipper": "",
+      "tracking": "384068166313",
+      "order": "#1223",
+      "receiver": "CliniCore Labs",
+      "ship_to": "Mandeville, LA, US",
+      "ship_date": "2026-10-07",
+      "status": "Out for Delivery",
+      "activity": "OUT_FOR_DELIVERY",
+      "delivered": false,
+      "date": "2026-10-07",
+      "items": [
+        {
+          "name": "Beckman Coulter 33020 Access 2 Ferritin Reagent 2x50 Count 100/Kt",
+          "sku": "33020",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter A13422 Access Free T3 Reagent, 100 Determinations",
+          "sku": "A13422",
+          "qty": 5
+        },
+        {
+          "name": "Beckman Coulter 33000 Access Vitamin B12 Reagent, 100 Determinations",
+          "sku": "33000",
+          "qty": 5
+        }
+      ],
+      "so_num": "",
+      "so_id": ""
+    },
+    {
+      "carrier": "FedEx",
+      "source": "Shopify auto-discovery",
+      "shipper": "",
+      "tracking": "878337002188",
+      "order": "#1218",
+      "receiver": "LabX Diagnostic Systems",
+      "ship_to": "Tampa, FL, US",
+      "ship_date": "2026-10-07",
+      "status": "Delivered",
+      "activity": "DELIVERED",
+      "delivered": true,
+      "date": "2026-10-07",
+      "items": [
+        {
+          "name": "Beckman Coulter B84493 Access Sensitive Estradiol Reagent",
+          "sku": "B84493",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter ODC0023 Direct HDL Cholesterol Calibrator (3 \u00d7 1 mL)",
+          "sku": "ODC0023",
+          "qty": 1
+        }
+      ],
+      "so_num": "SO586",
+      "so_id": "190159",
+      "pos": [
+        {
+          "po": "PO921",
+          "vendor": "PMA Services",
+          "po_id": "190161"
+        }
+      ],
+      "po": "PO921",
+      "po_id": "190161"
+    },
+    {
+      "carrier": "FedEx",
+      "source": "Shopify auto-discovery",
+      "shipper": "",
+      "tracking": "878340168055",
+      "order": "#1196",
+      "receiver": "LabX Diagnotic Systems",
+      "ship_to": "Tampa, FL, US",
+      "ship_date": "2026-10-07",
+      "status": "Delivered",
+      "activity": "DELIVERED",
+      "delivered": true,
+      "date": "2026-10-07",
+      "items": [
+        {
+          "name": "Beckman Coulter B84493 Access Sensitive Estradiol Reagent",
+          "sku": "B84493",
+          "qty": 2
+        }
+      ],
+      "so_num": "SO567",
+      "so_id": "186945",
+      "pos": [
+        {
+          "po": "PO892",
+          "vendor": "PMA Services",
+          "po_id": "186946"
+        }
+      ],
+      "po": "PO892",
+      "po_id": "186946"
     }
   ],
   "last_shopify_sync": "2026-10-07 17:02"
