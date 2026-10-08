@@ -195,6 +195,15 @@ def build_pnl(vt):
         for li in vt.query_all("SELECT parent_id, quantity, listprice FROM LineItem WHERE productid = '%s'" % pid):
             ship_map[li.get("parent_id", "")] += _f(li.get("quantity")) * _f(li.get("listprice"))
 
+    # Tax map: SO id -> tax $ (sum qty*listprice of line items whose product name is "tax").
+    # Sales tax is a pass-through, not revenue, so it is excluded from SO revenue / P&L.
+    tax_pids = [p.get("id", "") for p in vt.query_all("SELECT id, productname FROM Products")
+                if (p.get("productname", "") or "").strip().lower() == "tax" and p.get("id")]
+    tax_map = defaultdict(float)
+    for pid in tax_pids:
+        for li in vt.query_all("SELECT parent_id, quantity, listprice FROM LineItem WHERE productid = '%s'" % pid):
+            tax_map[li.get("parent_id", "")] += _f(li.get("quantity")) * _f(li.get("listprice"))
+
     # All-time earliest SO per account (for new-customer detection)
     earliest = {}
     for s in vt.query_all("SELECT account_id, createdtime FROM SalesOrder"):
@@ -227,12 +236,13 @@ def build_pnl(vt):
         sid = so.get("id", "")
         gross = _f(so.get("hdnGrandTotal"))
         ship = ship_map.get(sid, 0.0)
-        net = max(0.0, gross - ship)
+        tax = tax_map.get(sid, 0.0)
+        net = max(0.0, gross - ship - tax)
         aid = so.get("account_id", "")
         return {
             "no": so.get("salesorder_no", ""), "status": (so.get("sostatus", "") or ""),
             "created": so.get("createdtime", ""), "month": _month_of(so.get("createdtime", "")),
-            "gross": gross, "ship": ship, "net": net, "id": sid, "acct_id": aid,
+            "gross": gross, "ship": ship, "tax": tax, "net": net, "id": sid, "acct_id": aid,
             "customer": acct.get(aid, {}).get("name", "Unknown"),
             "industry": acct.get(aid, {}).get("industry", ""),
             "lead": ((so.get("cf_salesorder_leadsourcedealoriginated", "") or "").strip()
@@ -346,7 +356,7 @@ def build_pnl(vt):
     H.append('<div style="font-size:11px;color:#888;margin-bottom:16px;">A "new IDL customer" is an Account with '
              'industry = "Independent Diagnostic Lab" whose earliest Sales Order across all-time history falls in the '
              'current calendar year. <b>Cumulative YTD</b> is the sum of that customer\'s %d Sales Order amounts '
-             '(net of shipping).</div>' % Y)
+             '(net of shipping &amp; tax).</div>' % Y)
 
     # ── SECTION 3: Note (Draft PO + Shipping Income + CC Fees) ────────────────
     H.append('<div style="background:#fff8e1;border-left:4px solid #ffc107;padding:14px 16px;margin:0 0 18px 0;max-width:920px;">')
@@ -458,7 +468,7 @@ def build_pnl(vt):
                  % (m, ("" if m == cur_month else "none"),
                     _pareto_table([s for s in main_sos if s["month"] == m])))
     H.append('<div style="font-size:11px;color:#888;margin-bottom:16px;">* Inmode = SOs with Lead Source "InMode" '
-             '(aggregated). ** GoogleAds = SOs with Lead Source "GoogleAds" (aggregated). SO Amount is net of shipping.</div>')
+             '(aggregated). ** GoogleAds = SOs with Lead Source "GoogleAds" (aggregated). SO Amount is net of shipping &amp; tax.</div>')
 
     # ── SECTION 6: IDL Customer Statistics (YTD, NET, sparklines) ─────────────
     H.append('<h3 style="color:#2c3e50;">6. Independent Diagnostic Lab Customer Statistics (YTD)</h3>')
@@ -495,7 +505,7 @@ def build_pnl(vt):
     H.append('<div style="font-size:11px;color:#888;margin-bottom:16px;">Monthly Average = YTD SO Amount / (months '
              'since customer\'s first %d order). Monthly Trend = bar chart of SO amounts (Jan–%s %d), scaled per row; '
              'last bar green if current-month ≥ avg, red if &lt; avg. %% of Avg = Current Month / Monthly Avg. '
-             'Only %d data used. SO Amount is net of shipping.</div>' % (Y, MONTHS[cur_month - 1], Y, Y))
+             'Only %d data used. SO Amount is net of shipping &amp; tax.</div>' % (Y, MONTHS[cur_month - 1], Y, Y))
 
     # ── SECTION 7: Detailed Report (current month, NET) ──────────────────────
     H.append('<h3 style="color:#2c3e50;">7. Detailed Report</h3>')
@@ -604,7 +614,7 @@ def build_pnl(vt):
     H.append('<div style="font-size:11px;color:#888;margin-bottom:8px;">Green columns are from QuickBooks (matched by '
              'Customer + created date). QB Payment = amount received on the matching QuickBooks invoice. '
              'Net deposit = QB Payment minus processing fees (%.1f%%). '
-             '&mdash; = no matching QB invoice%s. SO Amount is net of shipping.</div>'
+             '&mdash; = no matching QB invoice%s. SO Amount is net of shipping &amp; tax.</div>'
              % (NET_FEE_RATE * 100, " (cache may need a refresh)" if qb_note else ""))
 
     H.append('</div>')
