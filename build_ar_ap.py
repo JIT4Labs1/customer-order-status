@@ -63,7 +63,7 @@ def build_ar(access, invoices=None):
         mf = re.search(r"fulfil+ment id\s*(\d+)", note, re.I)
         ms = re.search(r"shipment\s*(#[\w-]+)", note)
         order = mo.group(1) if mo else (so2ship.get(so.get("so_num", ""), "") if so.get("so_num") else "")
-        fl = [{"id": mf.group(1), "status": ms.group(1) if ms else "", "tracking": i.get("TrackingNum") or ""}] if mf else (ful.get(order, []) if order else [])
+        fl = [{"id": mf.group(1), "shipment": ms.group(1) if ms else "", "tracking": i.get("TrackingNum") or ""}] if mf else (ful.get(order, []) if order else [])
         row = {"number": num, "date": i.get("TxnDate", ""), "due": i.get("DueDate", "") or i.get("TxnDate", ""),
                "amount": round(B._fnum(i.get("TotalAmt")), 2), "balance": round(bal, 2),
                "so_num": so.get("so_num", ""), "shopify_order": order,
