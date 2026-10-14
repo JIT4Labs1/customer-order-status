@@ -54,8 +54,14 @@ def build_ar(access, invoices=None):
         num = i.get("DocNumber", "") or ("INV-" + i.get("Id", ""))
         cname = (i.get("CustomerRef") or {}).get("name", "(unknown)")
         so = somap.get(num, {})
-        order = so2ship.get(so.get("so_num", ""), "") if so.get("so_num") else ""
-        fl = ful.get(order, []) if order else []
+        # Primary source: the invoice's internal note, e.g. "Shopify order #1234, shipment #1234-F1
+        # (order id 7227..., fulfilment id 6547...)". Fallback: Vtiger SO -> Shopify order tag map.
+        note = i.get("PrivateNote") or ""
+        mo = re.search(r"Shopify order\s*(#\d+)", note)
+        mf = re.search(r"fulfil+ment id\s*(\d+)", note, re.I)
+        ms = re.search(r"shipment\s*(#[\w-]+)", note)
+        order = mo.group(1) if mo else (so2ship.get(so.get("so_num", ""), "") if so.get("so_num") else "")
+        fl = [{"id": mf.group(1), "status": ms.group(1) if ms else "", "tracking": i.get("TrackingNum") or ""}] if mf else (ful.get(order, []) if order else [])
         row = {"number": num, "date": i.get("TxnDate", ""), "due": i.get("DueDate", "") or i.get("TxnDate", ""),
                "amount": round(B._fnum(i.get("TotalAmt")), 2), "balance": round(bal, 2),
                "so_num": so.get("so_num", ""), "shopify_order": order,
