@@ -72,6 +72,12 @@ def build_ar(access, invoices=None):
         print("[WARN] could not total QB-paid per Shopify order:", e)
     # Shopify cash not yet matched by a paid QB invoice, per order (allocated oldest invoice first).
     avail = {n: (p.get("received") or 0.0) - qb_paid.get(n, 0.0) for n, p in spay.items()}
+    # tracking number -> Shopify order (from the shipments dataset), used when an invoice has no Shopify note
+    trk2order = {}
+    for sh_ in (_load(os.path.join(QB, "ups-shipments-data.json"), {}) or {}).get("shipments", []):
+        o_ = sh_.get("shopify_order") or sh_.get("order") or ""
+        if sh_.get("tracking") and str(o_).startswith("#"):
+            trk2order[str(sh_["tracking"]).strip()] = o_
     custs = {}
     for i in sorted(invs, key=lambda x: (x.get("TxnDate") or "", x.get("DocNumber") or "")):
         bal = B._fnum(i.get("Balance"))
@@ -88,11 +94,21 @@ def build_ar(access, invoices=None):
         ms = re.search(r"shipment\s*(#[\w-]+)", note)
         order = mo.group(1) if mo else (so2ship.get(so.get("so_num", ""), "") if so.get("so_num") else "")
         matched_by = "note" if mo else ("vtiger" if order else "")
+        trk_hits = []
+        if not order:
+            toks = [str(i.get("TrackingNum") or "")] + [l.get("Description") or "" for l in i.get("Line", [])]
+            for t_ in toks:
+                for w in re.findall(r"[0-9A-Za-z]{10,}", t_):
+                    if w in trk2order and w not in trk_hits:
+                        trk_hits.append(w)
+            if trk_hits:
+                order = trk2order[trk_hits[0]]
+                matched_by = "tracking"
         if not order:
             order = _find_by_amount(cname, bal) or _find_by_amount(cname, B._fnum(i.get("TotalAmt")))
             if order:
                 matched_by = "amount"
-        fl = [{"id": mf.group(1), "shipment": ms.group(1) if ms else "", "tracking": i.get("TrackingNum") or ""}] if mf else (ful.get(order, []) if order else [])
+        fl = [{"id": mf.group(1), "shipment": ms.group(1) if ms else "", "tracking": i.get("TrackingNum") or ""}] if mf else ([{"id": "", "shipment": "", "tracking": t_} for t_ in trk_hits] if trk_hits else (ful.get(order, []) if order else []))
         row = {"number": num, "date": i.get("TxnDate", ""), "due": i.get("DueDate", "") or i.get("TxnDate", ""),
                "amount": round(B._fnum(i.get("TotalAmt")), 2), "balance": round(bal, 2),
                "so_num": so.get("so_num", ""), "shopify_order": order,
