@@ -12,6 +12,7 @@ import build_payment_status as B
 
 QB = B.QB
 SHOPIFY_FUL = os.path.join(QB, "_shopify_fulfillments.json")
+SHOPIFY_PAY = os.path.join(QB, "_shopify_payments.json")   # paid/part-paid Shopify orders (Shopify MCP)
 SHOPIFY_ORD = os.path.join(QB, "_shopify_orders.json")   # {order: {status,total,outstanding}} from Shopify MCP
 
 
@@ -48,6 +49,17 @@ def build_ar(access, invoices=None):
             so2ship[sonum] = order_name
     ful = _load(SHOPIFY_FUL, {})
     sord = _load(SHOPIFY_ORD, {})
+    spay = {p["name"]: p for p in _load(SHOPIFY_PAY, [])}
+    def _norm(x):
+        return re.sub(r"[^a-z0-9]", "", (x or "").lower())
+    def _find_by_amount(cname, amt):
+        n = _norm(cname)
+        for p in spay.values():
+            if any(abs(a - amt) < 0.015 for a in ([p.get("received"), p.get("total")] + list(p.get("amounts") or [])) if a is not None):
+                for k in (_norm(p.get("company")), _norm(p.get("contact"))):
+                    if k and n and (k == n or k in n or n in k):
+                        return p["name"]
+        return ""
     custs = {}
     for i in invs:
         bal = B._fnum(i.get("Balance"))
@@ -63,21 +75,32 @@ def build_ar(access, invoices=None):
         mf = re.search(r"fulfil+ment id\s*(\d+)", note, re.I)
         ms = re.search(r"shipment\s*(#[\w-]+)", note)
         order = mo.group(1) if mo else (so2ship.get(so.get("so_num", ""), "") if so.get("so_num") else "")
+        matched_by = "note" if mo else ("vtiger" if order else "")
+        if not order:
+            order = _find_by_amount(cname, bal) or _find_by_amount(cname, B._fnum(i.get("TotalAmt")))
+            if order:
+                matched_by = "amount"
         fl = [{"id": mf.group(1), "shipment": ms.group(1) if ms else "", "tracking": i.get("TrackingNum") or ""}] if mf else (ful.get(order, []) if order else [])
         row = {"number": num, "date": i.get("TxnDate", ""), "due": i.get("DueDate", "") or i.get("TxnDate", ""),
                "amount": round(B._fnum(i.get("TotalAmt")), 2), "balance": round(bal, 2),
                "so_num": so.get("so_num", ""), "shopify_order": order,
                "shopify_fulfillments": fl}
         so_ = sord.get(order) if order else None
+        sp_ = spay.get(order) if order else None
         pis = "paid in shopify" in note.lower()
-        if so_:
-            row["shopify_status"] = so_.get("status", "")
-            row["shopify_total"] = so_.get("total")
-            row["shopify_outstanding"] = so_.get("outstanding")
-        elif pis:
-            row["shopify_status"] = "PAID"
-        # Shopify says the order is paid but QuickBooks still shows the invoice open -> needs reconcile.
-        row["reconcile"] = (row.get("shopify_status") == "PAID")
+        st = (sp_ or so_ or {}).get("status") or ("PAID" if pis else "")
+        row["shopify_status"] = st
+        if sp_ or so_:
+            row["shopify_total"] = (sp_ or so_).get("total")
+            row["shopify_received"] = (sp_ or {}).get("received")
+            row["shopify_outstanding"] = (so_ or {}).get("outstanding")
+        if matched_by:
+            row["shopify_match"] = matched_by
+        # Fully paid in Shopify, or Shopify received >= this invoice's balance (e.g. order shows PARTIALLY_PAID
+        # only because of a small later adjustment) while QuickBooks still shows it open -> reconcile.
+        recvd = [a for a in (list((sp_ or {}).get("amounts") or []) + [(sp_ or {}).get("received")]) if a is not None]
+        covers = any(abs(a - bal) < 0.015 for a in recvd) if st == "PARTIALLY_PAID" else False
+        row["reconcile"] = (st == "PAID") or covers
         c = custs.setdefault(cname, {"name": cname, "balance": 0.0, "invoices": []})
         c["balance"] += bal
         c["invoices"].append(row)
