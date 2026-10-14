@@ -953,7 +953,7 @@ def build_html(page_data, embeds=None):
       <button class="mode-btn mode-pnl active" data-mode="pnl" onclick="setMode('pnl')">P&amp;L Report</button>
       <button class="mode-btn" data-mode="spnl" onclick="setMode('spnl')">Shipments P&amp;L</button>
       <button class="mode-btn" data-mode="inv" onclick="setMode('inv')">Invoice Check</button>
-      <button class="mode-btn" data-mode="pay" onclick="setMode('pay')">Payment Status</button>
+      <button class="mode-btn" data-mode="pay" onclick="setMode('pay')">A/R &amp; A/P</button>
     </div>
   </div>
   <div class="mode-group mode-group-ops">
@@ -3602,7 +3602,7 @@ function payGrandTotals(){
   paid=amt-unpaid;
   return {amt:amt,unpaid:unpaid,paid:paid,ready:ready,readyN:readyN,openN:openN,custN:cs.length};
 }
-function renderPayPanel(){
+function renderPayPanelLegacy(){
   if(!PAY){ document.getElementById('panel').innerHTML='<div class="empty">Loading payment status…</div>'; loadPay(); return; }
   var cs=payCustomers();
   if(!cs.length){ document.getElementById('panel').innerHTML='<div class="empty">No 2026 invoices found for Independent Diagnostic Lab customers.</div>'; return; }
@@ -3744,6 +3744,113 @@ function copyPayTable(){
     }
   } catch(e){}
   fallbackCopyHtml(html, done);
+}
+
+// ── A/R & A/P tab (replaces the old Payment Status view) ──────────────────────────────
+// Data: PAY.ar (open QuickBooks invoices per customer) and PAY.ap (open QuickBooks bills per supplier).
+var arSub='ar', arAge='all', arBasis='due', arOpen={}, apOpen={}, arSearch='';
+function arDays(r){ var s=(arBasis==='due'?(r.due||r.date):r.date); if(!s) return 0;
+  var d=new Date(s+'T00:00:00'); if(isNaN(d)) return 0; var t=new Date(); t.setHours(0,0,0,0);
+  return Math.round((t.getTime()-d.getTime())/86400000); }
+function arBucket(n){ if(n<=0) return 'current'; if(n<=30) return 'b1'; if(n<=60) return 'b2'; return 'b3'; }
+function arSetSub(s){ arSub=s; renderPayPanel(); }
+function arSetAge(a){ arAge=a; renderPayPanel(); }
+function arSetBasis(b){ arBasis=b; renderPayPanel(); }
+function arToggle(i){ arOpen[i]=!arOpen[i]; renderPayPanel(); }
+function apToggle(i){ apOpen[i]=!apOpen[i]; renderPayPanel(); }
+function arSetSearch(v){ arSearch=v; renderPayPanel(); var e=document.getElementById('arSearchBox'); if(e){ e.focus(); try{ e.setSelectionRange(v.length,v.length); }catch(x){} } }
+function arExpandAll(open){ var cs=(PAY&&PAY.ar&&PAY.ar.customers)||[]; for(var i=0;i<cs.length;i++) arOpen[i]=open; renderPayPanel(); }
+function apExpandAll(open){ var vs=(PAY&&PAY.ap&&PAY.ap.vendors)||[]; for(var i=0;i<vs.length;i++) apOpen[i]=open; renderPayPanel(); }
+function arFulCell(r){
+  var f=r.shopify_fulfillments||[]; if(!f.length) return '<span style="color:#999;">&mdash;</span>';
+  var h=[]; for(var i=0;i<f.length;i++){ var x=f[i]; var tip=(x.status||'')+(x.tracking?' · '+x.tracking:'');
+    h.push('<span title="'+escapeHtml(tip)+'" style="display:inline-block;background:#eef3f8;border-radius:4px;padding:1px 6px;margin:1px 3px 1px 0;font-size:11px;font-family:monospace;">'+escapeHtml(x.id)+'</span>'); }
+  return h.join('');
+}
+function arBtn(label,on,fn){ return '<button class="mode-btn'+(on?' active':'')+'" style="margin:0 4px 4px 0;" onclick="'+fn+'">'+label+'</button>'; }
+function renderPayPanel(){
+  var P=document.getElementById('panel');
+  if(!PAY){ P.innerHTML='<div class="empty">Loading A/R &amp; A/P…</div>'; loadPay(); return; }
+  if(!PAY.ar||!PAY.ap){ P.innerHTML='<div class="empty">A/R &amp; A/P data is not in payment-status-data.json yet — run build_payment_status.py.</div>'; return; }
+  var head='<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px;">'+
+    '<h2 style="margin:0 12px 0 0;">A/R &amp; A/P</h2>'+
+    arBtn('Accounts Receivable',arSub==='ar',"arSetSub('ar')")+arBtn('Accounts Payable',arSub==='ap',"arSetSub('ap')")+
+    '<span style="color:#7f8c8d;font-size:12px;margin-left:8px;">QuickBooks open balances &middot; as of '+escapeHtml((arSub==='ar'?PAY.ar.generated_at:PAY.ap.generated_at)||'')+'</span></div>';
+  P.innerHTML=head+(arSub==='ar'?arRenderAR():arRenderAP());
+}
+function arRenderAR(){
+  var cs=PAY.ar.customers||[], tot={all:0,current:0,b1:0,b2:0,b3:0}, nAll=0;
+  var q=(arSearch||'').toLowerCase();
+  for(var i=0;i<cs.length;i++){ var iv=cs[i].invoices||[]; for(var j=0;j<iv.length;j++){ var b=Number(iv[j].balance)||0; tot.all+=b; tot[arBucket(arDays(iv[j]))]+=b; nAll++; } }
+  function kpi(label,val,key){ var on=(arAge===key);
+    return '<div onclick="arSetAge(&quot;'+key+'&quot;)" style="cursor:pointer;flex:1;min-width:130px;border:2px solid '+(on?'#008080':'#e6ebf1')+';background:'+(on?'#e8f5f5':'#fff')+';border-radius:8px;padding:8px 12px;">'+
+      '<div style="font-size:11px;color:#7f8c8d;">'+label+'</div><div style="font-size:18px;font-weight:700;color:#1f3a5f;">'+payMoney(val)+'</div></div>'; }
+  var basisLbl=(arBasis==='due'?'days past due date':'days since invoice date');
+  var bar='<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">'+
+    kpi('All open',tot.all,'all')+kpi('Current (not yet due)',tot.current,'current')+kpi('1 – 30 days',tot.b1,'b1')+kpi('31 – 60 days',tot.b2,'b2')+kpi('Over 60 days',tot.b3,'b3')+'</div>'+
+    '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:10px;font-size:13px;">'+
+    '<span>Age by:</span>'+arBtn('Due date',arBasis==='due',"arSetBasis('due')")+arBtn('Invoice date',arBasis==='inv',"arSetBasis('inv')")+
+    '<input id="arSearchBox" type="text" placeholder="Filter customer / invoice / SO / Shopify order" value="'+escapeHtml(arSearch)+'" oninput="arSetSearch(this.value)" style="padding:5px 8px;border:1px solid #cfd8e3;border-radius:6px;min-width:260px;">'+
+    '<a href="#" onclick="arExpandAll(true);return false;">Expand all</a><a href="#" onclick="arExpandAll(false);return false;">Collapse all</a>'+
+    '<span style="color:#7f8c8d;">Aging = '+basisLbl+'</span></div>';
+  var rows='', shownC=0, shownInv=0, shownAmt=0;
+  for(var i=0;i<cs.length;i++){
+    var c=cs[i], iv=c.invoices||[], keep=[];
+    var custHit=(q&&(c.name||'').toLowerCase().indexOf(q)>=0);
+    for(var j=0;j<iv.length;j++){ var r=iv[j], bk=arBucket(arDays(r));
+      if(arAge!=='all'&&bk!==arAge) continue;
+      if(q&&!custHit){ var hay=((r.number||'')+' '+(r.so_num||'')+' '+(r.shopify_order||'')).toLowerCase(); if(hay.indexOf(q)<0) continue; }
+      keep.push(r); }
+    if(!keep.length) continue;
+    var sub=0; for(var k=0;k<keep.length;k++) sub+=Number(keep[k].balance)||0;
+    shownC++; shownInv+=keep.length; shownAmt+=sub;
+    var open=!!arOpen[i];
+    rows+='<tr class="so-group" style="cursor:pointer;" onclick="arToggle('+i+')"><td style="font-weight:700;">'+(open?'&#9660;':'&#9654;')+' '+escapeHtml(c.name)+'</td>'+
+      '<td class="c">'+keep.length+'</td><td style="text-align:right;font-weight:700;">'+payMoney(sub)+'</td></tr>';
+    if(open){
+      var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr><th>Invoice #</th><th>Date</th><th>Due</th><th class="c">Days</th><th style="text-align:right;">Amount</th><th style="text-align:right;">Balance</th><th>Vtiger SO</th><th>Shopify order</th><th>Shopify fulfillment ID(s)</th></tr></thead><tbody>';
+      for(var k=0;k<keep.length;k++){ var r=keep[k], dd=arDays(r), col=dd>60?'#c0392b':(dd>30?'#d35400':(dd>0?'#b7950b':'#27ae60'));
+        t+='<tr><td>'+escapeHtml(r.number)+'</td><td>'+fmtDate(r.date)+'</td><td>'+fmtDate(r.due)+'</td>'+
+          '<td class="c" style="color:'+col+';font-weight:600;">'+(dd>0?dd:'—')+'</td>'+
+          '<td style="text-align:right;">'+payMoney(r.amount)+'</td><td style="text-align:right;font-weight:600;">'+payMoney(r.balance)+'</td>'+
+          '<td>'+(r.so_num?escapeHtml(r.so_num):'<span style="color:#999;">&mdash;</span>')+'</td>'+
+          '<td>'+(r.shopify_order?escapeHtml(r.shopify_order):'<span style="color:#999;">&mdash;</span>')+'</td>'+
+          '<td>'+arFulCell(r)+'</td></tr>'; }
+      t+='</tbody></table>';
+      rows+='<tr><td colspan="3" style="padding:0 0 0 24px;background:#fafcfe;">'+t+'</td></tr>';
+    }
+  }
+  if(!rows) rows='<tr><td colspan="3" class="empty" style="padding:16px;">No open invoices for this selection.</td></tr>';
+  rows+='<tr class="so-group"><td style="font-weight:700;">Total ('+shownC+' customer'+(shownC===1?'':'s')+')</td><td class="c" style="font-weight:700;">'+shownInv+'</td><td style="text-align:right;font-weight:700;color:#c0392b;">'+payMoney(shownAmt)+'</td></tr>';
+  return bar+'<table class="tbl" style="width:100%;"><thead><tr><th>Customer</th><th class="c">Open invoices</th><th style="text-align:right;">Balance</th></tr></thead><tbody>'+rows+'</tbody></table>';
+}
+function arRenderAP(){
+  var vs=PAY.ap.vendors||[], rows='';
+  var bar='<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">'+
+    '<div style="flex:1;min-width:130px;border:2px solid #e6ebf1;border-radius:8px;padding:8px 12px;"><div style="font-size:11px;color:#7f8c8d;">Total owed</div><div style="font-size:18px;font-weight:700;color:#1f3a5f;">'+payMoney(PAY.ap.total)+'</div></div>'+
+    '<div style="flex:1;min-width:130px;border:2px solid #e6ebf1;border-radius:8px;padding:8px 12px;"><div style="font-size:11px;color:#7f8c8d;">Past due</div><div style="font-size:18px;font-weight:700;color:#c0392b;">'+payMoney(PAY.ap.past_due)+'</div></div>'+
+    '<div style="flex:1;min-width:130px;border:2px solid #e6ebf1;border-radius:8px;padding:8px 12px;"><div style="font-size:11px;color:#7f8c8d;">Open bills</div><div style="font-size:18px;font-weight:700;color:#1f3a5f;">'+PAY.ap.count+'</div></div></div>'+
+    '<div style="margin-bottom:10px;font-size:13px;"><a href="#" onclick="apExpandAll(true);return false;">Expand all</a> &nbsp; <a href="#" onclick="apExpandAll(false);return false;">Collapse all</a></div>';
+  for(var i=0;i<vs.length;i++){
+    var v=vs[i], open=!!apOpen[i];
+    rows+='<tr class="so-group" style="cursor:pointer;" onclick="apToggle('+i+')"><td style="font-weight:700;">'+(open?'&#9660;':'&#9654;')+' '+escapeHtml(v.vendor)+'</td><td class="c">'+v.bills.length+'</td>'+
+      '<td style="text-align:right;color:'+(v.pastdue>0.005?'#c0392b':'#7f8c8d')+';">'+payMoney(v.pastdue)+'</td><td style="text-align:right;font-weight:700;">'+payMoney(v.balance)+'</td></tr>';
+    if(open){
+      var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr><th>Bill / invoice #</th><th>Date</th><th>Due</th><th class="c">Past due (days)</th><th style="text-align:right;">Balance</th><th>Purchase order(s)</th><th>Sales order</th><th>Customer</th></tr></thead><tbody>';
+      for(var k=0;k<v.bills.length;k++){ var b=v.bills[k], pos=[], sos=[];
+        for(var m=0;m<(b.pos||[]).length;m++){ pos.push(escapeHtml(b.pos[m].po)); if(b.pos[m].so) sos.push(escapeHtml(b.pos[m].so)); }
+        t+='<tr><td>'+escapeHtml(b.number)+'</td><td>'+fmtDate(b.date)+'</td><td>'+fmtDate(b.due)+'</td>'+
+          '<td class="c" style="color:'+(b.days_past_due>0?'#c0392b':'#27ae60')+';font-weight:600;">'+(b.days_past_due>0?b.days_past_due:'—')+'</td>'+
+          '<td style="text-align:right;font-weight:600;">'+payMoney(b.balance)+'</td>'+
+          '<td>'+(pos.length?pos.join(', '):'<span style="color:#999;">&mdash;</span>')+'</td>'+
+          '<td>'+(sos.length?sos.join(', '):'<span style="color:#999;">&mdash;</span>')+'</td>'+
+          '<td>'+((b.customers||[]).length?escapeHtml(b.customers.join(', ')):'<span style="color:#999;">&mdash;</span>')+'</td></tr>'; }
+      t+='</tbody></table>';
+      rows+='<tr><td colspan="4" style="padding:0 0 0 24px;background:#fafcfe;">'+t+'</td></tr>';
+    }
+  }
+  if(!rows) rows='<tr><td colspan="4" class="empty" style="padding:16px;">No open bills.</td></tr>';
+  return bar+'<table class="tbl" style="width:100%;"><thead><tr><th>Supplier</th><th class="c">Open bills</th><th style="text-align:right;">Past due</th><th style="text-align:right;">Balance</th></tr></thead><tbody>'+rows+'</tbody></table>';
 }
 
 function setMode(m){
