@@ -3808,14 +3808,15 @@ function arRenderAR(){
     rows+='<tr class="so-group" style="cursor:pointer;" onclick="arToggle('+i+')"><td style="font-weight:700;">'+(open?'&#9660;':'&#9654;')+' '+escapeHtml(c.name)+'</td>'+
       '<td class="c">'+keep.length+'</td><td style="text-align:right;font-weight:700;">'+payMoney(sub)+'</td></tr>';
     if(open){
-      var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr><th>Invoice #</th><th>Date</th><th>Due</th><th class="c">Days</th><th style="text-align:right;">Amount</th><th style="text-align:right;">Balance</th><th>Vtiger SO</th><th>Shopify order</th><th>Shopify fulfillment ID(s)</th></tr></thead><tbody>';
+      var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr><th>Invoice #</th><th>Shopify order</th><th>Shopify fulfillment ID</th><th>Date</th><th>Due</th><th class="c">Days</th><th style="text-align:right;">Amount</th><th style="text-align:right;">Balance</th><th>Vtiger SO</th></tr></thead><tbody>';
       for(var k=0;k<keep.length;k++){ var r=keep[k], dd=arDays(r), col=dd>60?'#c0392b':(dd>30?'#d35400':(dd>0?'#b7950b':'#27ae60'));
-        t+='<tr><td>'+escapeHtml(r.number)+'</td><td>'+fmtDate(r.date)+'</td><td>'+fmtDate(r.due)+'</td>'+
+        t+='<tr><td>'+escapeHtml(r.number)+'</td>'+
+          '<td>'+(r.shopify_order?escapeHtml(r.shopify_order):'<span style="color:#999;">&mdash;</span>')+'</td>'+
+          '<td>'+arFulCell(r)+'</td>'+
+          '<td>'+fmtDate(r.date)+'</td><td>'+fmtDate(r.due)+'</td>'+
           '<td class="c" style="color:'+col+';font-weight:600;">'+(dd>0?dd:'—')+'</td>'+
           '<td style="text-align:right;">'+payMoney(r.amount)+'</td><td style="text-align:right;font-weight:600;">'+payMoney(r.balance)+'</td>'+
-          '<td>'+(r.so_num?escapeHtml(r.so_num):'<span style="color:#999;">&mdash;</span>')+'</td>'+
-          '<td>'+(r.shopify_order?escapeHtml(r.shopify_order):'<span style="color:#999;">&mdash;</span>')+'</td>'+
-          '<td>'+arFulCell(r)+'</td></tr>'; }
+          '<td>'+(r.so_num?escapeHtml(r.so_num):'<span style="color:#999;">&mdash;</span>')+'</td></tr>'; }
       t+='</tbody></table>';
       rows+='<tr><td colspan="3" style="padding:0 0 0 24px;background:#fafcfe;">'+t+'</td></tr>';
     }
