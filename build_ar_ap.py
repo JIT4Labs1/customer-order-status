@@ -60,8 +60,20 @@ def build_ar(access, invoices=None):
                     if k and n and (k == n or k in n or n in k):
                         return p["name"]
         return ""
+    # Amount QuickBooks already shows as paid per Shopify order (all invoices whose note names the order).
+    qb_paid, qb_noted = {}, {}
+    try:
+        for x in _all(access, "Invoice", "TxnDate >= '2026-06-01'"):
+            m_ = re.search(r"Shopify order\s*(#\d+)", x.get("PrivateNote") or "")
+            if m_:
+                qb_paid[m_.group(1)] = qb_paid.get(m_.group(1), 0.0) + B._fnum(x.get("TotalAmt")) - B._fnum(x.get("Balance"))
+                qb_noted[m_.group(1)] = qb_noted.get(m_.group(1), 0.0) + B._fnum(x.get("TotalAmt"))
+    except Exception as e:
+        print("[WARN] could not total QB-paid per Shopify order:", e)
+    # Shopify cash not yet matched by a paid QB invoice, per order (allocated oldest invoice first).
+    avail = {n: (p.get("received") or 0.0) - qb_paid.get(n, 0.0) for n, p in spay.items()}
     custs = {}
-    for i in invs:
+    for i in sorted(invs, key=lambda x: (x.get("TxnDate") or "", x.get("DocNumber") or "")):
         bal = B._fnum(i.get("Balance"))
         if bal <= 0.005:
             continue
@@ -99,7 +111,14 @@ def build_ar(access, invoices=None):
         # Fully paid in Shopify, or Shopify received >= this invoice's balance (e.g. order shows PARTIALLY_PAID
         # only because of a small later adjustment) while QuickBooks still shows it open -> reconcile.
         recvd = [a for a in (list((sp_ or {}).get("amounts") or []) + [(sp_ or {}).get("received")]) if a is not None]
-        covers = any(abs(a - bal) < 0.015 for a in recvd) if st == "PARTIALLY_PAID" else False
+        covers = False
+        if st == "PARTIALLY_PAID" and sp_ and bal > 0:
+            # Only trust the cash allocation when the QB invoices that name this order account for most of it
+            # (otherwise earlier shipments were invoiced without a note and already consumed the cash).
+            known = qb_noted.get(order, 0.0) >= 0.7 * (sp_.get("total") or 0.0)
+            if known and avail.get(order, 0.0) + 0.015 >= bal:     # Shopify cash received still covers this open invoice
+                covers = True
+                avail[order] -= bal
         row["reconcile"] = (st == "PAID") or covers
         c = custs.setdefault(cname, {"name": cname, "balance": 0.0, "qb_balance": 0.0, "invoices": []})
         c["qb_balance"] += bal
