@@ -3208,7 +3208,7 @@ function copyPayTable(){
 
 // ── A/R & A/P tab (replaces the old Payment Status view) ──────────────────────────────
 // Data: PAY.ar (open QuickBooks invoices per customer) and PAY.ap (open QuickBooks bills per supplier).
-var arRecOnly=false, arSub='ar', arAge='all', arBasis='due', arOpen={}, apOpen={}, arSearch='';
+var arHideZero=false, arRecOnly=false, arSub='ar', arAge='all', arBasis='due', arOpen={}, apOpen={}, arSearch='';
 function arEff(r){ return r.reconcile?0:(Number(r.balance)||0); }
 // ── sortable headers ──
 var srt={arC:{k:'bal',d:-1},arI:{k:'due',d:1},apV:{k:'bal',d:-1},apB:{k:'due',d:1}};
@@ -3254,6 +3254,7 @@ function arShopBadge(r){
   if(r.shopify_status==='PARTIALLY_PAID') return ' <span title="Shopify shows this order partially paid ('+payMoney(r.shopify_received!=null?r.shopify_received:((r.shopify_total||0)-(r.shopify_outstanding||0)))+' of '+payMoney(r.shopify_total||0)+'). Check whether a payment needs to be applied to this invoice in QuickBooks." style="display:inline-block;background:#fdecea;color:#b42318;border:1px solid #f4b6ae;border-radius:10px;padding:0 7px;font-size:11px;font-weight:700;white-space:nowrap;">&#128179; Part-paid in Shopify</span>';
   return '';
 }
+function arSetHideZero(cb){ arHideZero=!!cb.checked; renderPayPanel(); }
 function arSetRec(cb){ arRecOnly=!!cb.checked; renderPayPanel(); }
 function arBtn(label,on,fn){ return '<button class="mode-btn'+(on?' active':'')+'" style="margin:0 4px 4px 0;" onclick="'+fn+'">'+label+'</button>'; }
 function renderPayPanel(){
@@ -3280,6 +3281,7 @@ function arRenderAR(){
     '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:10px;font-size:13px;">'+
     '<span>Age by:</span>'+arBtn('Due date',arBasis==='due',"arSetBasis('due')")+arBtn('Invoice date',arBasis==='inv',"arSetBasis('inv')")+
     '<input id="arSearchBox" type="text" placeholder="Filter customer / invoice / SO / Shopify order" value="'+escapeHtml(arSearch)+'" oninput="arSetSearch(this.value)" style="padding:5px 8px;border:1px solid #cfd8e3;border-radius:6px;min-width:260px;">'+
+    '<label style="cursor:pointer;white-space:nowrap;"><input type="checkbox" onchange="arSetHideZero(this)"'+(arHideZero?' checked':'')+'> Hide $0 balance lines</label>'+
     '<label style="cursor:pointer;white-space:nowrap;"><input type="checkbox" onchange="arSetRec(this)"'+(arRecOnly?' checked':'')+'> Needs reconcile (paid in Shopify, still open in QuickBooks) only &mdash; '+recN+' invoice'+(recN===1?'':'s')+', '+payMoney(recAmt)+' in QuickBooks</label>'+
     '<a href="#" onclick="arExpandAll(true);return false;">Expand all</a><a href="#" onclick="arExpandAll(false);return false;">Collapse all</a>'+
     '<span style="color:#7f8c8d;">Aging = '+basisLbl+'</span></div>';
@@ -3290,6 +3292,7 @@ function arRenderAR(){
     for(var j=0;j<iv.length;j++){ var r=iv[j], bk=arBucket(arDays(r));
       if(arAge!=='all'&&bk!==arAge) continue;
       if(arRecOnly&&!r.reconcile) continue;
+      if(arHideZero&&arEff(r)<=0.005) continue;
       if(q&&!custHit){ var hay=((r.number||'')+' '+(r.so_num||'')+' '+(r.shopify_order||'')).toLowerCase(); if(hay.indexOf(q)<0) continue; }
       keep.push(r); }
     if(!keep.length) continue;
