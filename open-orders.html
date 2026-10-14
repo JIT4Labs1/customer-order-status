@@ -3223,8 +3223,8 @@ function arExpandAll(open){ var cs=(PAY&&PAY.ar&&PAY.ar.customers)||[]; for(var 
 function apExpandAll(open){ var vs=(PAY&&PAY.ap&&PAY.ap.vendors)||[]; for(var i=0;i<vs.length;i++) apOpen[i]=open; renderPayPanel(); }
 function arFulCell(r){
   var f=r.shopify_fulfillments||[]; if(!f.length) return '<span style="color:#999;">&mdash;</span>';
-  var h=[]; for(var i=0;i<f.length;i++){ var x=f[i]; var tip=(x.status||'')+(x.tracking?' · '+x.tracking:'');
-    h.push('<span title="'+escapeHtml(tip)+'" style="display:inline-block;background:#eef3f8;border-radius:4px;padding:1px 6px;margin:1px 3px 1px 0;font-size:11px;font-family:monospace;">'+escapeHtml(x.id)+'</span>'); }
+  var h=[]; for(var i=0;i<f.length;i++){ var x=f[i]; var lbl=x.shipment||x.id; var tip='Fulfillment ID '+x.id+(x.status?' · '+x.status:'')+(x.tracking?' · tracking '+x.tracking:'');
+    h.push('<span title="'+escapeHtml(tip)+'" style="display:inline-block;background:#eef3f8;border-radius:4px;padding:1px 6px;margin:1px 3px 1px 0;font-size:11px;font-family:monospace;">'+escapeHtml(lbl)+'</span>'); }
   return h.join('');
 }
 function arShopBadge(r){
@@ -3277,7 +3277,7 @@ function arRenderAR(){
     rows+='<tr class="so-group" style="cursor:pointer;" onclick="arToggle('+i+')"><td style="font-weight:700;">'+(open?'&#9660;':'&#9654;')+' '+escapeHtml(c.name)+(function(){var n=0;for(var z=0;z<keep.length;z++) if(keep[z].reconcile) n++; return n?' <span title="'+n+' invoice(s) paid in Shopify but still open in QuickBooks" style="background:#fdecea;color:#b42318;border-radius:10px;padding:0 7px;font-size:11px;">&#128179; '+n+' to reconcile</span>':'';})()+'</td>'+
       '<td class="c">'+keep.length+'</td><td style="text-align:right;font-weight:700;">'+payMoney(sub)+'</td></tr>';
     if(open){
-      var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr><th>Invoice #</th><th>Shopify order</th><th>Shopify fulfillment ID</th><th>Date</th><th>Due</th><th class="c">Days</th><th style="text-align:right;">Amount</th><th style="text-align:right;">Balance</th><th>Vtiger SO</th></tr></thead><tbody>';
+      var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr><th>Invoice #</th><th>Shopify order</th><th>Shipment</th><th>Date</th><th>Due</th><th class="c">Days</th><th style="text-align:right;">Amount</th><th style="text-align:right;">Balance</th><th>Vtiger SO</th></tr></thead><tbody>';
       for(var k=0;k<keep.length;k++){ var r=keep[k], dd=arDays(r), col=dd>60?'#c0392b':(dd>30?'#d35400':(dd>0?'#b7950b':'#27ae60'));
         t+='<tr><td>'+escapeHtml(r.number)+'</td>'+
           '<td>'+(r.shopify_order?escapeHtml(r.shopify_order):'<span style="color:#999;">&mdash;</span>')+arShopBadge(r)+'</td>'+
