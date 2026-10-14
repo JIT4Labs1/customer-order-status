@@ -3768,8 +3768,8 @@ function arFulCell(r){
   return h.join('');
 }
 function arShopBadge(r){
-  if(r.reconcile) return ' <span title="Shopify shows this order as PAID, but the QuickBooks invoice is still open. Apply the payment / reconcile in QuickBooks." style="display:inline-block;background:#fdecea;color:#b42318;border:1px solid #f4b6ae;border-radius:10px;padding:0 7px;font-size:11px;font-weight:700;white-space:nowrap;">&#128179; Paid in Shopify &mdash; reconcile</span>';
-  if(r.shopify_status==='PARTIALLY_PAID') return ' <span title="Shopify shows this order partially paid ('+payMoney((r.shopify_total||0)-(r.shopify_outstanding||0))+' of '+payMoney(r.shopify_total||0)+'). Check whether a payment needs to be applied to this invoice in QuickBooks." style="display:inline-block;background:#fff4e5;color:#b54708;border:1px solid #f7d9a8;border-radius:10px;padding:0 7px;font-size:11px;font-weight:700;white-space:nowrap;">&#128179; Part-paid in Shopify</span>';
+  if(r.reconcile) return ' <span title="Shopify shows this order as PAID, but the QuickBooks invoice is still open. Apply the payment / reconcile in QuickBooks." style="display:inline-block;background:#e6f4ea;color:#137333;border:1px solid #a8d5b5;border-radius:10px;padding:0 7px;font-size:11px;font-weight:700;white-space:nowrap;">&#128179; Paid in Shopify &mdash; reconcile</span>';
+  if(r.shopify_status==='PARTIALLY_PAID') return ' <span title="Shopify shows this order partially paid ('+payMoney(r.shopify_received!=null?r.shopify_received:((r.shopify_total||0)-(r.shopify_outstanding||0)))+' of '+payMoney(r.shopify_total||0)+'). Check whether a payment needs to be applied to this invoice in QuickBooks." style="display:inline-block;background:#fdecea;color:#b42318;border:1px solid #f4b6ae;border-radius:10px;padding:0 7px;font-size:11px;font-weight:700;white-space:nowrap;">&#128179; Part-paid in Shopify</span>';
   return '';
 }
 function arSetRec(cb){ arRecOnly=!!cb.checked; renderPayPanel(); }
@@ -3814,7 +3814,7 @@ function arRenderAR(){
     var sub=0; for(var k=0;k<keep.length;k++) sub+=Number(keep[k].balance)||0;
     shownC++; shownInv+=keep.length; shownAmt+=sub;
     var open=!!arOpen[i];
-    rows+='<tr class="so-group" style="cursor:pointer;" onclick="arToggle('+i+')"><td style="font-weight:700;">'+(open?'&#9660;':'&#9654;')+' '+escapeHtml(c.name)+(function(){var n=0;for(var z=0;z<keep.length;z++) if(keep[z].reconcile) n++; return n?' <span title="'+n+' invoice(s) paid in Shopify but still open in QuickBooks" style="background:#fdecea;color:#b42318;border-radius:10px;padding:0 7px;font-size:11px;">&#128179; '+n+' to reconcile</span>':'';})()+'</td>'+
+    rows+='<tr class="so-group" style="cursor:pointer;" onclick="arToggle('+i+')"><td style="font-weight:700;">'+(open?'&#9660;':'&#9654;')+' '+escapeHtml(c.name)+(function(){var n=0;for(var z=0;z<keep.length;z++) if(keep[z].reconcile) n++; return n?' <span title="'+n+' invoice(s) paid in Shopify but still open in QuickBooks" style="background:#e6f4ea;color:#137333;border-radius:10px;padding:0 7px;font-size:11px;">&#128179; '+n+' to reconcile</span>':'';})()+'</td>'+
       '<td class="c">'+keep.length+'</td><td style="text-align:right;font-weight:700;">'+payMoney(sub)+'</td></tr>';
     if(open){
       var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr><th>Invoice #</th><th>Shopify order</th><th>Shipment</th><th>Date</th><th>Due</th><th class="c">Days</th><th style="text-align:right;">Amount</th><th style="text-align:right;">Balance</th><th>Vtiger SO</th></tr></thead><tbody>';
