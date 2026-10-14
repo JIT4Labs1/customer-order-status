@@ -113,6 +113,21 @@ def build_ar(access, invoices=None):
                "amount": round(B._fnum(i.get("TotalAmt")), 2), "balance": round(bal, 2),
                "so_num": so.get("so_num", ""), "shopify_order": order,
                "shopify_fulfillments": fl}
+        # Resolve Shopify shipment labels (#order-Fn) from the Shopify fulfillment map: by fulfillment id, then tracking.
+        if order and ful.get(order):
+            by_id = {f_["id"]: f_ for f_ in ful[order]}
+            by_trk = {}
+            for f_ in ful[order]:
+                for t_ in (f_.get("trackings") or [f_.get("tracking")]):
+                    if t_:
+                        by_trk.setdefault(t_, f_)
+            for e_ in fl:
+                hit = by_id.get(e_.get("id")) or by_trk.get(e_.get("tracking"))
+                if hit:
+                    e_["shipment"] = hit.get("shipment", "")
+                    e_["id"] = e_.get("id") or hit.get("id", "")
+            if not fl and not trk_hits:
+                fl = [dict(f_) for f_ in ful[order]] if False else fl
         so_ = sord.get(order) if order else None
         sp_ = spay.get(order) if order else None
         pis = "paid in shopify" in note.lower()
