@@ -3750,6 +3750,21 @@ function copyPayTable(){
 // Data: PAY.ar (open QuickBooks invoices per customer) and PAY.ap (open QuickBooks bills per supplier).
 var arRecOnly=false, arSub='ar', arAge='all', arBasis='due', arOpen={}, apOpen={}, arSearch='';
 function arEff(r){ return r.reconcile?0:(Number(r.balance)||0); }
+// ── sortable headers ──
+var srt={arC:{k:'bal',d:-1},arI:{k:'due',d:1},apV:{k:'bal',d:-1},apB:{k:'due',d:1}};
+function srtSet(t,k,ty){ var s=srt[t]; if(s.k===k){ s.d=-s.d; } else { s.k=k; s.d=(ty==='s'?1:-1); } renderPayPanel(); }
+function srtTh(t,k,ty,label,al){ var s=srt[t], on=(s.k===k);
+  return '<th style="cursor:pointer;user-select:none;white-space:nowrap;'+(al==='r'?'text-align:right;':(al==='c'?'text-align:center;':''))+'" onclick="event.stopPropagation();srtSet(&quot;'+t+'&quot;,&quot;'+k+'&quot;,&quot;'+ty+'&quot;)" title="Sort by '+label+'">'+label+(on?(s.d>0?' &#9650;':' &#9660;'):' <span style="color:#bbb;">&#8645;</span>')+'</th>'; }
+function srtCmp(t,get){ var s=srt[t]; return function(a,b){ var x=get(a,s.k), y=get(b,s.k), r;
+  if(typeof x==='string'||typeof y==='string'){ r=String(x||'').toLowerCase().localeCompare(String(y||'').toLowerCase(),undefined,{numeric:true}); }
+  else { r=(x||0)-(y||0); } return r*s.d; }; }
+function arInvGet(r,k){ if(k==='no') return r.number; if(k==='ord') return r.shopify_order||''; if(k==='ship'){ var f=r.shopify_fulfillments||[]; return f.length?(f[0].shipment||f[0].id||''):''; }
+  if(k==='date') return r.date||''; if(k==='due') return r.due||''; if(k==='days') return arDays(r); if(k==='amt') return Number(r.amount)||0; if(k==='bal') return arEff(r); if(k==='so') return r.so_num||''; return ''; }
+function arSortInv(l){ return l.slice().sort(srtCmp('arI',arInvGet)); }
+function arCustGet(it,k){ if(k==='name') return it.c.name||''; if(k==='n') return it.keep.length; return it.sub; }
+function apBillGet(b,k){ if(k==='no') return b.number; if(k==='date') return b.date||''; if(k==='due') return b.due||''; if(k==='days') return b.days_past_due||0; if(k==='bal') return b.balance||0;
+  if(k==='po') return (b.pos||[]).map(function(p){return p.po;}).join(','); if(k==='so') return (b.pos||[]).map(function(p){return p.so;}).join(','); if(k==='cust') return (b.customers||[]).join(','); return ''; }
+function apVenGet(it,k){ if(k==='name') return it.v.vendor||''; if(k==='n') return it.v.bills.length; if(k==='pd') return it.v.pastdue||0; return it.v.balance||0; }
 function arDays(r){ var s=(arBasis==='due'?(r.due||r.date):r.date); if(!s) return 0;
   var d=new Date(s+'T00:00:00'); if(isNaN(d)) return 0; var t=new Date(); t.setHours(0,0,0,0);
   return Math.round((t.getTime()-d.getTime())/86400000); }
@@ -3802,7 +3817,7 @@ function arRenderAR(){
     '<label style="cursor:pointer;white-space:nowrap;"><input type="checkbox" onchange="arSetRec(this)"'+(arRecOnly?' checked':'')+'> Needs reconcile (paid in Shopify, still open in QuickBooks) only &mdash; '+recN+' invoice'+(recN===1?'':'s')+', '+payMoney(recAmt)+' in QuickBooks</label>'+
     '<a href="#" onclick="arExpandAll(true);return false;">Expand all</a><a href="#" onclick="arExpandAll(false);return false;">Collapse all</a>'+
     '<span style="color:#7f8c8d;">Aging = '+basisLbl+'</span></div>';
-  var rows='', shownC=0, shownInv=0, shownAmt=0;
+  var rows='', shownC=0, shownInv=0, shownAmt=0, items=[];
   for(var i=0;i<cs.length;i++){
     var c=cs[i], iv=c.invoices||[], keep=[];
     var custHit=(q&&(c.name||'').toLowerCase().indexOf(q)>=0);
@@ -3814,12 +3829,16 @@ function arRenderAR(){
     if(!keep.length) continue;
     var sub=0; for(var k=0;k<keep.length;k++) sub+=arEff(keep[k]);
     shownC++; shownInv+=keep.length; shownAmt+=sub;
+    items.push({i:i,c:c,keep:keep,sub:sub}); }
+  items.sort(srtCmp('arC',arCustGet));
+  for(var ii=0;ii<items.length;ii++){ var i=items[ii].i, c=items[ii].c, keep=items[ii].keep, sub=items[ii].sub;
     var open=!!arOpen[i];
     rows+='<tr class="so-group" style="cursor:pointer;" onclick="arToggle('+i+')"><td style="font-weight:700;">'+(open?'&#9660;':'&#9654;')+' '+escapeHtml(c.name)+(function(){var n=0;for(var z=0;z<keep.length;z++) if(keep[z].reconcile) n++; return n?' <span title="'+n+' invoice(s) paid in Shopify but still open in QuickBooks" style="background:#e6f4ea;color:#137333;border-radius:10px;padding:0 7px;font-size:11px;">&#128179; '+n+' to reconcile</span>':'';})()+'</td>'+
       '<td class="c">'+keep.length+'</td><td style="text-align:right;font-weight:700;">'+payMoney(sub)+'</td></tr>';
     if(open){
-      var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr><th>Invoice #</th><th>Shopify order</th><th>Shipment</th><th>Date</th><th>Due</th><th class="c">Days</th><th style="text-align:right;">Amount</th><th style="text-align:right;">Balance</th><th>Vtiger SO</th></tr></thead><tbody>';
-      for(var k=0;k<keep.length;k++){ var r=keep[k], dd=arDays(r), col=dd>60?'#c0392b':(dd>30?'#d35400':(dd>0?'#b7950b':'#27ae60'));
+      var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr>'+srtTh('arI','no','s','Invoice #')+srtTh('arI','ord','s','Shopify order')+srtTh('arI','ship','s','Shipment')+srtTh('arI','date','s','Date')+srtTh('arI','due','s','Due')+srtTh('arI','days','n','Days','c')+srtTh('arI','amt','n','Amount','r')+srtTh('arI','bal','n','Balance','r')+srtTh('arI','so','s','Vtiger SO')+'</tr></thead><tbody>';
+      var keepS=arSortInv(keep);
+      for(var k=0;k<keepS.length;k++){ var r=keepS[k], dd=arDays(r), col=dd>60?'#c0392b':(dd>30?'#d35400':(dd>0?'#b7950b':'#27ae60'));
         t+='<tr><td>'+escapeHtml(r.number)+'</td>'+
           '<td>'+(r.shopify_order?escapeHtml(r.shopify_order):'<span style="color:#999;">&mdash;</span>')+arShopBadge(r)+'</td>'+
           '<td>'+arFulCell(r)+'</td>'+
@@ -3833,7 +3852,7 @@ function arRenderAR(){
   }
   if(!rows) rows='<tr><td colspan="3" class="empty" style="padding:16px;">No open invoices for this selection.</td></tr>';
   rows+='<tr class="so-group"><td style="font-weight:700;">Total ('+shownC+' customer'+(shownC===1?'':'s')+')</td><td class="c" style="font-weight:700;">'+shownInv+'</td><td style="text-align:right;font-weight:700;color:#c0392b;">'+payMoney(shownAmt)+'</td></tr>';
-  return bar+'<table class="tbl" style="width:100%;"><thead><tr><th>Customer</th><th class="c">Open invoices</th><th style="text-align:right;">Balance</th></tr></thead><tbody>'+rows+'</tbody></table>';
+  return bar+'<table class="tbl" style="width:100%;"><thead><tr>'+srtTh('arC','name','s','Customer')+srtTh('arC','n','n','Open invoices','c')+srtTh('arC','bal','n','Balance','r')+'</tr></thead><tbody>'+rows+'</tbody></table>';
 }
 function arRenderAP(){
   var vs=PAY.ap.vendors||[], rows='';
@@ -3842,13 +3861,14 @@ function arRenderAP(){
     '<div style="flex:1;min-width:130px;border:2px solid #e6ebf1;border-radius:8px;padding:8px 12px;"><div style="font-size:11px;color:#7f8c8d;">Past due</div><div style="font-size:18px;font-weight:700;color:#c0392b;">'+payMoney(PAY.ap.past_due)+'</div></div>'+
     '<div style="flex:1;min-width:130px;border:2px solid #e6ebf1;border-radius:8px;padding:8px 12px;"><div style="font-size:11px;color:#7f8c8d;">Open bills</div><div style="font-size:18px;font-weight:700;color:#1f3a5f;">'+PAY.ap.count+'</div></div></div>'+
     '<div style="margin-bottom:10px;font-size:13px;"><a href="#" onclick="apExpandAll(true);return false;">Expand all</a> &nbsp; <a href="#" onclick="apExpandAll(false);return false;">Collapse all</a></div>';
-  for(var i=0;i<vs.length;i++){
-    var v=vs[i], open=!!apOpen[i];
+  var items=[]; for(var q0=0;q0<vs.length;q0++) items.push({i:q0,v:vs[q0]}); items.sort(srtCmp('apV',apVenGet));
+  for(var ii=0;ii<items.length;ii++){ var i=items[ii].i, v=items[ii].v, open=!!apOpen[i];
     rows+='<tr class="so-group" style="cursor:pointer;" onclick="apToggle('+i+')"><td style="font-weight:700;">'+(open?'&#9660;':'&#9654;')+' '+escapeHtml(v.vendor)+'</td><td class="c">'+v.bills.length+'</td>'+
       '<td style="text-align:right;color:'+(v.pastdue>0.005?'#c0392b':'#7f8c8d')+';">'+payMoney(v.pastdue)+'</td><td style="text-align:right;font-weight:700;">'+payMoney(v.balance)+'</td></tr>';
     if(open){
-      var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr><th>Bill / invoice #</th><th>Date</th><th>Due</th><th class="c">Past due (days)</th><th style="text-align:right;">Balance</th><th>Purchase order(s)</th><th>Sales order</th><th>Customer</th></tr></thead><tbody>';
-      for(var k=0;k<v.bills.length;k++){ var b=v.bills[k], pos=[], sos=[];
+      var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr>'+srtTh('apB','no','s','Bill / invoice #')+srtTh('apB','date','s','Date')+srtTh('apB','due','s','Due')+srtTh('apB','days','n','Past due (days)','c')+srtTh('apB','bal','n','Balance','r')+srtTh('apB','po','s','Purchase order(s)')+srtTh('apB','so','s','Sales order')+srtTh('apB','cust','s','Customer')+'</tr></thead><tbody>';
+      var billsS=v.bills.slice().sort(srtCmp('apB',apBillGet));
+      for(var k=0;k<billsS.length;k++){ var b=billsS[k], pos=[], sos=[];
         for(var m=0;m<(b.pos||[]).length;m++){ pos.push(escapeHtml(b.pos[m].po)); if(b.pos[m].so) sos.push(escapeHtml(b.pos[m].so)); }
         t+='<tr><td>'+escapeHtml(b.number)+'</td><td>'+fmtDate(b.date)+'</td><td>'+fmtDate(b.due)+'</td>'+
           '<td class="c" style="color:'+(b.days_past_due>0?'#c0392b':'#27ae60')+';font-weight:600;">'+(b.days_past_due>0?b.days_past_due:'—')+'</td>'+
@@ -3861,7 +3881,7 @@ function arRenderAP(){
     }
   }
   if(!rows) rows='<tr><td colspan="4" class="empty" style="padding:16px;">No open bills.</td></tr>';
-  return bar+'<table class="tbl" style="width:100%;"><thead><tr><th>Supplier</th><th class="c">Open bills</th><th style="text-align:right;">Past due</th><th style="text-align:right;">Balance</th></tr></thead><tbody>'+rows+'</tbody></table>';
+  return bar+'<table class="tbl" style="width:100%;"><thead><tr>'+srtTh('apV','name','s','Supplier')+srtTh('apV','n','n','Open bills','c')+srtTh('apV','pd','n','Past due','r')+srtTh('apV','bal','n','Balance','r')+'</tr></thead><tbody>'+rows+'</tbody></table>';
 }
 
 function setMode(m){
