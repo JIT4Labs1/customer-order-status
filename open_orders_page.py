@@ -3865,10 +3865,13 @@ function arRenderAR(){
     var sub=0; for(var k=0;k<keep.length;k++) sub+=arCnt(keep[k]);
     shownC++; shownInv+=keep.length; shownAmt+=sub;
     items.push({i:i,c:c,keep:keep,sub:sub}); }
-  items.sort(srtCmp('arC',arCustGet)); arLast=items;
+  items.sort(srtCmp('arC',arCustGet));
+  function exN(it){ var n=0; for(var z=0;z<it.keep.length;z++) if(arIsExcl(it.keep[z])) n++; return n; }
+  var itA=[], itB=[]; for(var z0=0;z0<items.length;z0++){ items[z0].exn=exN(items[z0]); (items[z0].exn?itB:itA).push(items[z0]); }
+  items=itA.concat(itB); arLast=items;   // customers with manually excluded rows sink to the bottom
   for(var ii=0;ii<items.length;ii++){ var i=items[ii].i, c=items[ii].c, keep=items[ii].keep, sub=items[ii].sub;
     var open=!!arOpen[i];
-    rows+='<tr class="so-group" style="cursor:pointer;" onclick="arToggle('+i+')"><td style="font-weight:700;">'+(open?'&#9660;':'&#9654;')+' '+escapeHtml(c.name)+(function(){var n=0;for(var z=0;z<keep.length;z++) if(keep[z].reconcile) n++; return n?' <span title="'+n+' invoice(s) paid in Shopify but still open in QuickBooks" style="background:#e6f4ea;color:#137333;border-radius:10px;padding:0 7px;font-size:11px;">&#128179; '+n+' to reconcile</span>':'';})()+'</td>'+
+    rows+='<tr class="so-group" style="cursor:pointer;" onclick="arToggle('+i+')"><td style="font-weight:700;'+(items[ii].exn?'color:#c0392b;':'')+'">'+(open?'&#9660;':'&#9654;')+' '+escapeHtml(c.name)+(items[ii].exn?' <span style="font-size:11px;font-weight:400;" title="Rows you excluded from the totals">('+items[ii].exn+' excluded)</span>':'')+(function(){var n=0;for(var z=0;z<keep.length;z++) if(keep[z].reconcile) n++; return n?' <span title="'+n+' invoice(s) paid in Shopify but still open in QuickBooks" style="background:#e6f4ea;color:#137333;border-radius:10px;padding:0 7px;font-size:11px;">&#128179; '+n+' to reconcile</span>':'';})()+'</td>'+
       '<td class="c">'+keep.length+'</td><td style="text-align:right;font-weight:700;">'+payMoney(sub)+'</td></tr>';
     if(open){
       var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr><th class="c" title="Tick to exclude a row from all totals (saved in this browser)">Excl.</th>'+srtTh('arI','no','s','Invoice #')+srtTh('arI','ord','s','Shopify order')+srtTh('arI','paid','s','Paid in Shopify','c')+srtTh('arI','ship','s','Shipment')+srtTh('arI','date','s','Date')+srtTh('arI','due','s','Due')+srtTh('arI','days','n','Days','c')+srtTh('arI','amt','n','Amount','r')+srtTh('arI','bal','n','Balance','r')+'</tr></thead><tbody>';
