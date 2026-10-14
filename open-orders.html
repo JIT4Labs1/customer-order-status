@@ -3209,6 +3209,12 @@ function copyPayTable(){
 // ── A/R & A/P tab (replaces the old Payment Status view) ──────────────────────────────
 // Data: PAY.ar (open QuickBooks invoices per customer) and PAY.ap (open QuickBooks bills per supplier).
 var arHideZero=false, arRecOnly=false, arSub='ar', arAge='all', arBasis='due', arOpen={}, apOpen={}, arSearch='';
+var arExcl=null;
+function arExclMap(){ if(arExcl==null){ arExcl={}; try{ var p=JSON.parse(localStorage.getItem('jit4_ar_excl')||'{}'); for(var k in p){ if(p.hasOwnProperty(k)) arExcl[k]=1; } }catch(e){} } return arExcl; }
+function arIsExcl(r){ return !!arExclMap()[r.number]; }
+function arToggleExcl(n){ var m=arExclMap(); if(m[n]) delete m[n]; else m[n]=1; try{ localStorage.setItem('jit4_ar_excl', JSON.stringify(m)); }catch(e){} renderPayPanel(); }
+function arClearExcl(){ arExcl={}; try{ localStorage.setItem('jit4_ar_excl','{}'); }catch(e){} renderPayPanel(); }
+function arCnt(r){ return arIsExcl(r)?0:arEff(r); }
 function arEff(r){ return r.reconcile?0:(Number(r.balance)||0); }
 // ── sortable headers ──
 var srt={arC:{k:'bal',d:-1},arI:{k:'due',d:1},apV:{k:'bal',d:-1},apB:{k:'due',d:1}};
@@ -3271,18 +3277,19 @@ function arRenderAR(){
   var cs=PAY.ar.customers||[], tot={all:0,current:0,b1:0,b2:0,b3:0}, nAll=0;
   var q=(arSearch||'').toLowerCase();
   var recN=0, recAmt=0;
-  for(var i=0;i<cs.length;i++){ var iv=cs[i].invoices||[]; for(var j=0;j<iv.length;j++){ var b=arEff(iv[j]); if(iv[j].reconcile){ recN++; recAmt+=Number(iv[j].balance)||0; } tot.all+=b; tot[arBucket(arDays(iv[j]))]+=b; nAll++; } }
+  for(var i=0;i<cs.length;i++){ var iv=cs[i].invoices||[]; for(var j=0;j<iv.length;j++){ var b=arCnt(iv[j]); if(iv[j].reconcile){ recN++; recAmt+=Number(iv[j].balance)||0; } tot.all+=b; tot[arBucket(arDays(iv[j]))]+=b; nAll++; } }
   function kpi(label,val,key){ var on=(arAge===key);
     return '<div onclick="arSetAge(&quot;'+key+'&quot;)" style="cursor:pointer;flex:1;min-width:130px;border:2px solid '+(on?'#008080':'#e6ebf1')+';background:'+(on?'#e8f5f5':'#fff')+';border-radius:8px;padding:8px 12px;">'+
       '<div style="font-size:11px;color:#7f8c8d;">'+label+'</div><div style="font-size:18px;font-weight:700;color:#1f3a5f;">'+payMoney(val)+'</div></div>'; }
   var basisLbl=(arBasis==='due'?'days past due date':'days since invoice date');
   var bar='<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">'+
-    kpi('All open (excl. paid in Shopify)',tot.all,'all')+kpi('Current (not yet due)',tot.current,'current')+kpi('1 – 30 days',tot.b1,'b1')+kpi('31 – 60 days',tot.b2,'b2')+kpi('Over 60 days',tot.b3,'b3')+'</div>'+
+    kpi('Total open balance',tot.all,'all')+kpi('1 – 30 days',tot.b1,'b1')+kpi('31 – 60 days',tot.b2,'b2')+kpi('Over 60 days',tot.b3,'b3')+'</div>'+
     '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:10px;font-size:13px;">'+
     '<span>Age by:</span>'+arBtn('Due date',arBasis==='due',"arSetBasis('due')")+arBtn('Invoice date',arBasis==='inv',"arSetBasis('inv')")+
     '<input id="arSearchBox" type="text" placeholder="Filter customer / invoice / SO / Shopify order" value="'+escapeHtml(arSearch)+'" oninput="arSetSearch(this.value)" style="padding:5px 8px;border:1px solid #cfd8e3;border-radius:6px;min-width:260px;">'+
     '<label style="cursor:pointer;white-space:nowrap;"><input type="checkbox" onchange="arSetHideZero(this)"'+(arHideZero?' checked':'')+'> Hide $0 balance lines</label>'+
     '<label style="cursor:pointer;white-space:nowrap;"><input type="checkbox" onchange="arSetRec(this)"'+(arRecOnly?' checked':'')+'> Needs reconcile (paid in Shopify, still open in QuickBooks) only &mdash; '+recN+' invoice'+(recN===1?'':'s')+', '+payMoney(recAmt)+' in QuickBooks</label>'+
+    (function(){var n=0,m=arExclMap();for(var k in m) if(m.hasOwnProperty(k)) n++; return n?'<a href="#" onclick="arClearExcl();return false;" title="Put all manually excluded rows back into the totals">Clear '+n+' excluded</a>':'';})()+
     '<a href="#" onclick="arExpandAll(true);return false;">Expand all</a><a href="#" onclick="arExpandAll(false);return false;">Collapse all</a>'+
     '<span style="color:#7f8c8d;">Aging = '+basisLbl+'</span></div>';
   var rows='', shownC=0, shownInv=0, shownAmt=0, items=[];
@@ -3296,7 +3303,7 @@ function arRenderAR(){
       if(q&&!custHit){ var hay=((r.number||'')+' '+(r.so_num||'')+' '+(r.shopify_order||'')).toLowerCase(); if(hay.indexOf(q)<0) continue; }
       keep.push(r); }
     if(!keep.length) continue;
-    var sub=0; for(var k=0;k<keep.length;k++) sub+=arEff(keep[k]);
+    var sub=0; for(var k=0;k<keep.length;k++) sub+=arCnt(keep[k]);
     shownC++; shownInv+=keep.length; shownAmt+=sub;
     items.push({i:i,c:c,keep:keep,sub:sub}); }
   items.sort(srtCmp('arC',arCustGet));
@@ -3305,10 +3312,11 @@ function arRenderAR(){
     rows+='<tr class="so-group" style="cursor:pointer;" onclick="arToggle('+i+')"><td style="font-weight:700;">'+(open?'&#9660;':'&#9654;')+' '+escapeHtml(c.name)+(function(){var n=0;for(var z=0;z<keep.length;z++) if(keep[z].reconcile) n++; return n?' <span title="'+n+' invoice(s) paid in Shopify but still open in QuickBooks" style="background:#e6f4ea;color:#137333;border-radius:10px;padding:0 7px;font-size:11px;">&#128179; '+n+' to reconcile</span>':'';})()+'</td>'+
       '<td class="c">'+keep.length+'</td><td style="text-align:right;font-weight:700;">'+payMoney(sub)+'</td></tr>';
     if(open){
-      var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr>'+srtTh('arI','no','s','Invoice #')+srtTh('arI','ord','s','Shopify order')+srtTh('arI','paid','s','Paid in Shopify','c')+srtTh('arI','ship','s','Shipment')+srtTh('arI','date','s','Date')+srtTh('arI','due','s','Due')+srtTh('arI','days','n','Days','c')+srtTh('arI','amt','n','Amount','r')+srtTh('arI','bal','n','Balance','r')+'</tr></thead><tbody>';
+      var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr><th class="c" title="Tick to exclude a row from all totals (saved in this browser)">Excl.</th>'+srtTh('arI','no','s','Invoice #')+srtTh('arI','ord','s','Shopify order')+srtTh('arI','paid','s','Paid in Shopify','c')+srtTh('arI','ship','s','Shipment')+srtTh('arI','date','s','Date')+srtTh('arI','due','s','Due')+srtTh('arI','days','n','Days','c')+srtTh('arI','amt','n','Amount','r')+srtTh('arI','bal','n','Balance','r')+'</tr></thead><tbody>';
       var keepS=arSortInv(keep);
       for(var k=0;k<keepS.length;k++){ var r=keepS[k], dd=arDays(r), col=dd>60?'#c0392b':(dd>30?'#d35400':(dd>0?'#b7950b':'#27ae60'));
-        t+='<tr><td>'+escapeHtml(r.number)+'</td>'+
+        var ex=arIsExcl(r);
+        t+='<tr'+(ex?' style="opacity:.45;"':'')+'><td class="c"><input type="checkbox" '+(ex?'checked ':'')+'onclick="arToggleExcl(&quot;'+escapeHtml(r.number)+'&quot;)"></td><td>'+escapeHtml(r.number)+'</td>'+
           '<td>'+(r.shopify_order?escapeHtml(r.shopify_order):'<span style="color:#999;">&mdash;</span>')+arShopBadge(r)+'</td>'+
           '<td class="c">'+arPaidCell(r)+'</td>'+
           '<td>'+arFulCell(r)+'</td>'+
