@@ -50,6 +50,12 @@ def build_ar(access, invoices=None):
     ful = _load(SHOPIFY_FUL, {})
     sord = _load(SHOPIFY_ORD, {})
     spay = {p["name"]: p for p in _load(SHOPIFY_PAY, [])}
+    all_trk = {}   # any tracking number -> Shopify fulfillment (label), across every order
+    for _o, _fl in ful.items():
+        for f_ in _fl:
+            for t_ in (f_.get("trackings") or [f_.get("tracking")]):
+                if t_:
+                    all_trk.setdefault(t_, f_)
     def _norm(x):
         return re.sub(r"[^a-z0-9]", "", (x or "").lower())
     def _find_by_amount(cname, amt):
@@ -122,7 +128,7 @@ def build_ar(access, invoices=None):
                     if t_:
                         by_trk.setdefault(t_, f_)
             for e_ in fl:
-                hit = by_id.get(e_.get("id")) or by_trk.get(e_.get("tracking"))
+                hit = by_id.get(e_.get("id")) or by_trk.get(e_.get("tracking")) or all_trk.get(e_.get("tracking"))
                 if hit:
                     e_["shipment"] = hit.get("shipment", "")
                     e_["id"] = e_.get("id") or hit.get("id", "")
