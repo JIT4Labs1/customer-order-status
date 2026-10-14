@@ -12,6 +12,7 @@ import build_payment_status as B
 
 QB = B.QB
 SHOPIFY_FUL = os.path.join(QB, "_shopify_fulfillments.json")
+SHOPIFY_ORD = os.path.join(QB, "_shopify_orders.json")   # {order: {status,total,outstanding}} from Shopify MCP
 
 
 def _load(p, d):
@@ -46,6 +47,7 @@ def build_ar(access, invoices=None):
         if sonum and sonum not in so2ship:
             so2ship[sonum] = order_name
     ful = _load(SHOPIFY_FUL, {})
+    sord = _load(SHOPIFY_ORD, {})
     custs = {}
     for i in invs:
         bal = B._fnum(i.get("Balance"))
@@ -66,6 +68,16 @@ def build_ar(access, invoices=None):
                "amount": round(B._fnum(i.get("TotalAmt")), 2), "balance": round(bal, 2),
                "so_num": so.get("so_num", ""), "shopify_order": order,
                "shopify_fulfillments": fl}
+        so_ = sord.get(order) if order else None
+        pis = "paid in shopify" in note.lower()
+        if so_:
+            row["shopify_status"] = so_.get("status", "")
+            row["shopify_total"] = so_.get("total")
+            row["shopify_outstanding"] = so_.get("outstanding")
+        elif pis:
+            row["shopify_status"] = "PAID"
+        # Shopify says the order is paid but QuickBooks still shows the invoice open -> needs reconcile.
+        row["reconcile"] = (row.get("shopify_status") == "PAID")
         c = custs.setdefault(cname, {"name": cname, "balance": 0.0, "invoices": []})
         c["balance"] += bal
         c["invoices"].append(row)
