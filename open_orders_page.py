@@ -3748,7 +3748,7 @@ function copyPayTable(){
 
 // ── A/R & A/P tab (replaces the old Payment Status view) ──────────────────────────────
 // Data: PAY.ar (open QuickBooks invoices per customer) and PAY.ap (open QuickBooks bills per supplier).
-var arSub='ar', arAge='all', arBasis='due', arOpen={}, apOpen={}, arSearch='';
+var arRecOnly=false, arSub='ar', arAge='all', arBasis='due', arOpen={}, apOpen={}, arSearch='';
 function arDays(r){ var s=(arBasis==='due'?(r.due||r.date):r.date); if(!s) return 0;
   var d=new Date(s+'T00:00:00'); if(isNaN(d)) return 0; var t=new Date(); t.setHours(0,0,0,0);
   return Math.round((t.getTime()-d.getTime())/86400000); }
@@ -3767,6 +3767,12 @@ function arFulCell(r){
     h.push('<span title="'+escapeHtml(tip)+'" style="display:inline-block;background:#eef3f8;border-radius:4px;padding:1px 6px;margin:1px 3px 1px 0;font-size:11px;font-family:monospace;">'+escapeHtml(x.id)+'</span>'); }
   return h.join('');
 }
+function arShopBadge(r){
+  if(r.reconcile) return ' <span title="Shopify shows this order as PAID, but the QuickBooks invoice is still open. Apply the payment / reconcile in QuickBooks." style="display:inline-block;background:#fdecea;color:#b42318;border:1px solid #f4b6ae;border-radius:10px;padding:0 7px;font-size:11px;font-weight:700;white-space:nowrap;">&#128179; Paid in Shopify &mdash; reconcile</span>';
+  if(r.shopify_status==='PARTIALLY_PAID') return ' <span title="Shopify shows this order partially paid ('+payMoney((r.shopify_total||0)-(r.shopify_outstanding||0))+' of '+payMoney(r.shopify_total||0)+'). Check whether a payment needs to be applied to this invoice in QuickBooks." style="display:inline-block;background:#fff4e5;color:#b54708;border:1px solid #f7d9a8;border-radius:10px;padding:0 7px;font-size:11px;font-weight:700;white-space:nowrap;">&#128179; Part-paid in Shopify</span>';
+  return '';
+}
+function arSetRec(cb){ arRecOnly=!!cb.checked; renderPayPanel(); }
 function arBtn(label,on,fn){ return '<button class="mode-btn'+(on?' active':'')+'" style="margin:0 4px 4px 0;" onclick="'+fn+'">'+label+'</button>'; }
 function renderPayPanel(){
   var P=document.getElementById('panel');
@@ -3781,7 +3787,8 @@ function renderPayPanel(){
 function arRenderAR(){
   var cs=PAY.ar.customers||[], tot={all:0,current:0,b1:0,b2:0,b3:0}, nAll=0;
   var q=(arSearch||'').toLowerCase();
-  for(var i=0;i<cs.length;i++){ var iv=cs[i].invoices||[]; for(var j=0;j<iv.length;j++){ var b=Number(iv[j].balance)||0; tot.all+=b; tot[arBucket(arDays(iv[j]))]+=b; nAll++; } }
+  var recN=0, recAmt=0;
+  for(var i=0;i<cs.length;i++){ var iv=cs[i].invoices||[]; for(var j=0;j<iv.length;j++){ var b=Number(iv[j].balance)||0; if(iv[j].reconcile){ recN++; recAmt+=b; } tot.all+=b; tot[arBucket(arDays(iv[j]))]+=b; nAll++; } }
   function kpi(label,val,key){ var on=(arAge===key);
     return '<div onclick="arSetAge(&quot;'+key+'&quot;)" style="cursor:pointer;flex:1;min-width:130px;border:2px solid '+(on?'#008080':'#e6ebf1')+';background:'+(on?'#e8f5f5':'#fff')+';border-radius:8px;padding:8px 12px;">'+
       '<div style="font-size:11px;color:#7f8c8d;">'+label+'</div><div style="font-size:18px;font-weight:700;color:#1f3a5f;">'+payMoney(val)+'</div></div>'; }
@@ -3791,6 +3798,7 @@ function arRenderAR(){
     '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:10px;font-size:13px;">'+
     '<span>Age by:</span>'+arBtn('Due date',arBasis==='due',"arSetBasis('due')")+arBtn('Invoice date',arBasis==='inv',"arSetBasis('inv')")+
     '<input id="arSearchBox" type="text" placeholder="Filter customer / invoice / SO / Shopify order" value="'+escapeHtml(arSearch)+'" oninput="arSetSearch(this.value)" style="padding:5px 8px;border:1px solid #cfd8e3;border-radius:6px;min-width:260px;">'+
+    '<label style="cursor:pointer;white-space:nowrap;"><input type="checkbox" onchange="arSetRec(this)"'+(arRecOnly?' checked':'')+'> Needs reconcile (paid in Shopify) only &mdash; '+recN+' invoice'+(recN===1?'':'s')+', '+payMoney(recAmt)+'</label>'+
     '<a href="#" onclick="arExpandAll(true);return false;">Expand all</a><a href="#" onclick="arExpandAll(false);return false;">Collapse all</a>'+
     '<span style="color:#7f8c8d;">Aging = '+basisLbl+'</span></div>';
   var rows='', shownC=0, shownInv=0, shownAmt=0;
@@ -3799,19 +3807,20 @@ function arRenderAR(){
     var custHit=(q&&(c.name||'').toLowerCase().indexOf(q)>=0);
     for(var j=0;j<iv.length;j++){ var r=iv[j], bk=arBucket(arDays(r));
       if(arAge!=='all'&&bk!==arAge) continue;
+      if(arRecOnly&&!r.reconcile) continue;
       if(q&&!custHit){ var hay=((r.number||'')+' '+(r.so_num||'')+' '+(r.shopify_order||'')).toLowerCase(); if(hay.indexOf(q)<0) continue; }
       keep.push(r); }
     if(!keep.length) continue;
     var sub=0; for(var k=0;k<keep.length;k++) sub+=Number(keep[k].balance)||0;
     shownC++; shownInv+=keep.length; shownAmt+=sub;
     var open=!!arOpen[i];
-    rows+='<tr class="so-group" style="cursor:pointer;" onclick="arToggle('+i+')"><td style="font-weight:700;">'+(open?'&#9660;':'&#9654;')+' '+escapeHtml(c.name)+'</td>'+
+    rows+='<tr class="so-group" style="cursor:pointer;" onclick="arToggle('+i+')"><td style="font-weight:700;">'+(open?'&#9660;':'&#9654;')+' '+escapeHtml(c.name)+(function(){var n=0;for(var z=0;z<keep.length;z++) if(keep[z].reconcile) n++; return n?' <span title="'+n+' invoice(s) paid in Shopify but still open in QuickBooks" style="background:#fdecea;color:#b42318;border-radius:10px;padding:0 7px;font-size:11px;">&#128179; '+n+' to reconcile</span>':'';})()+'</td>'+
       '<td class="c">'+keep.length+'</td><td style="text-align:right;font-weight:700;">'+payMoney(sub)+'</td></tr>';
     if(open){
       var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr><th>Invoice #</th><th>Shopify order</th><th>Shopify fulfillment ID</th><th>Date</th><th>Due</th><th class="c">Days</th><th style="text-align:right;">Amount</th><th style="text-align:right;">Balance</th><th>Vtiger SO</th></tr></thead><tbody>';
       for(var k=0;k<keep.length;k++){ var r=keep[k], dd=arDays(r), col=dd>60?'#c0392b':(dd>30?'#d35400':(dd>0?'#b7950b':'#27ae60'));
         t+='<tr><td>'+escapeHtml(r.number)+'</td>'+
-          '<td>'+(r.shopify_order?escapeHtml(r.shopify_order):'<span style="color:#999;">&mdash;</span>')+'</td>'+
+          '<td>'+(r.shopify_order?escapeHtml(r.shopify_order):'<span style="color:#999;">&mdash;</span>')+arShopBadge(r)+'</td>'+
           '<td>'+arFulCell(r)+'</td>'+
           '<td>'+fmtDate(r.date)+'</td><td>'+fmtDate(r.due)+'</td>'+
           '<td class="c" style="color:'+col+';font-weight:600;">'+(dd>0?dd:'—')+'</td>'+
