@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-14 10:57 PM UTC",
+  "generated_at": "2026-10-14 11:07 PM UTC",
   "year": 2026,
   "customers": [
     {
@@ -3684,7 +3684,7 @@
     }
   ],
   "payables": {
-    "generated_at": "2026-10-14 10:57 PM UTC",
+    "generated_at": "2026-10-14 11:07 PM UTC",
     "grand_total": 15232.4,
     "past_due": 5392.31,
     "count": 29,
@@ -3916,17 +3916,19 @@
     "source": "Bank balance",
     "book_balance": 54616.81,
     "bank_asof": "2026-07-23",
-    "as_of": "2026-10-14 10:57 PM UTC"
+    "as_of": "2026-10-14 11:07 PM UTC"
   },
   "ar": {
-    "generated_at": "2026-10-14 10:57 PM UTC",
+    "generated_at": "2026-10-14 11:07 PM UTC",
     "as_of": "2026-10-14",
-    "total": 111787.82,
+    "total": 96667.44,
+    "qb_total": 110871.22,
     "count": 68,
     "customers": [
       {
         "name": "Mercedes Scientific",
         "balance": 27935.73,
+        "qb_balance": 27935.73,
         "invoices": [
           {
             "number": "SO546",
@@ -4078,6 +4080,7 @@
       {
         "name": "Primex Lab",
         "balance": 21084.6,
+        "qb_balance": 21084.6,
         "invoices": [
           {
             "number": "SO723",
@@ -4128,6 +4131,7 @@
       {
         "name": "LabX Diagnostic Systems",
         "balance": 15152.99,
+        "qb_balance": 15152.99,
         "invoices": [
           {
             "number": "SO425",
@@ -4432,62 +4436,9 @@
         ]
       },
       {
-        "name": "CliniCore Labs",
-        "balance": 13553.53,
-        "invoices": [
-          {
-            "number": "SO687",
-            "date": "2026-09-23",
-            "due": "2026-09-23",
-            "amount": 1790.19,
-            "balance": 1790.19,
-            "so_num": "",
-            "shopify_order": "#1193",
-            "shopify_fulfillments": [],
-            "shopify_status": "PAID",
-            "shopify_total": 1790.19,
-            "shopify_received": 1790.19,
-            "shopify_outstanding": null,
-            "shopify_match": "amount",
-            "reconcile": true
-          },
-          {
-            "number": "SO732",
-            "date": "2026-10-07",
-            "due": "2026-10-07",
-            "amount": 7186.24,
-            "balance": 7186.24,
-            "so_num": "",
-            "shopify_order": "#1223",
-            "shopify_fulfillments": [],
-            "shopify_status": "PAID",
-            "shopify_total": 7221.64,
-            "shopify_received": 7221.64,
-            "shopify_outstanding": null,
-            "shopify_match": "amount",
-            "reconcile": true
-          },
-          {
-            "number": "SO756",
-            "date": "2026-10-13",
-            "due": "2026-10-13",
-            "amount": 4577.1,
-            "balance": 4577.1,
-            "so_num": "",
-            "shopify_order": "#1232",
-            "shopify_fulfillments": [],
-            "shopify_status": "PARTIALLY_PAID",
-            "shopify_total": 4611.55,
-            "shopify_received": 4577.1,
-            "shopify_outstanding": 34.45,
-            "shopify_match": "note",
-            "reconcile": true
-          }
-        ]
-      },
-      {
         "name": "Healthquest Esoterics",
         "balance": 5571.05,
+        "qb_balance": 5571.05,
         "invoices": [
           {
             "number": "SO752",
@@ -4516,6 +4467,7 @@
       {
         "name": "OM Diagnostic Laboratories",
         "balance": 4808.4,
+        "qb_balance": 4808.4,
         "invoices": [
           {
             "number": "SO471",
@@ -4662,6 +4614,7 @@
       {
         "name": "Allora Biotech",
         "balance": 3892.96,
+        "qb_balance": 3892.96,
         "invoices": [
           {
             "number": "SO571",
@@ -4688,8 +4641,64 @@
         ]
       },
       {
+        "name": "CliniCore Labs",
+        "balance": 3660.5,
+        "qb_balance": 12636.93,
+        "invoices": [
+          {
+            "number": "SO687",
+            "date": "2026-09-23",
+            "due": "2026-09-23",
+            "amount": 1790.19,
+            "balance": 1790.19,
+            "so_num": "",
+            "shopify_order": "#1193",
+            "shopify_fulfillments": [],
+            "shopify_status": "PAID",
+            "shopify_total": 1790.19,
+            "shopify_received": 1790.19,
+            "shopify_outstanding": null,
+            "shopify_match": "amount",
+            "reconcile": true
+          },
+          {
+            "number": "SO732",
+            "date": "2026-10-07",
+            "due": "2026-10-07",
+            "amount": 7186.24,
+            "balance": 7186.24,
+            "so_num": "",
+            "shopify_order": "#1223",
+            "shopify_fulfillments": [],
+            "shopify_status": "PAID",
+            "shopify_total": 7221.64,
+            "shopify_received": 7221.64,
+            "shopify_outstanding": null,
+            "shopify_match": "amount",
+            "reconcile": true
+          },
+          {
+            "number": "SO756",
+            "date": "2026-10-13",
+            "due": "2026-10-13",
+            "amount": 3660.5,
+            "balance": 3660.5,
+            "so_num": "",
+            "shopify_order": "#1232",
+            "shopify_fulfillments": [],
+            "shopify_status": "PARTIALLY_PAID",
+            "shopify_total": 4611.55,
+            "shopify_received": 4577.1,
+            "shopify_outstanding": 34.45,
+            "shopify_match": "note",
+            "reconcile": false
+          }
+        ]
+      },
+      {
         "name": "Suncoast Labs, LLC",
         "balance": 2970.49,
+        "qb_balance": 2970.49,
         "invoices": [
           {
             "number": "INV409",
@@ -4732,6 +4741,7 @@
       {
         "name": "Summit Urgent Care Center",
         "balance": 2196.26,
+        "qb_balance": 2196.26,
         "invoices": [
           {
             "number": "SO453",
@@ -4750,6 +4760,7 @@
       {
         "name": "Clearchem",
         "balance": 2163.8,
+        "qb_balance": 2163.8,
         "invoices": [
           {
             "number": "SO357",
@@ -4768,6 +4779,7 @@
       {
         "name": "Lucid Labs",
         "balance": 2155.27,
+        "qb_balance": 2155.27,
         "invoices": [
           {
             "number": "SO350",
@@ -4796,52 +4808,9 @@
         ]
       },
       {
-        "name": "Phillip Wortley",
-        "balance": 1737.16,
-        "invoices": [
-          {
-            "number": "SO753",
-            "date": "2026-10-12",
-            "due": "2026-10-12",
-            "amount": 1737.16,
-            "balance": 1737.16,
-            "so_num": "",
-            "shopify_order": "#1230",
-            "shopify_fulfillments": [],
-            "shopify_status": "PAID",
-            "shopify_total": 1737.16,
-            "shopify_received": 1737.16,
-            "shopify_outstanding": 0,
-            "shopify_match": "note",
-            "reconcile": true
-          }
-        ]
-      },
-      {
-        "name": "Neeta Mitchell",
-        "balance": 1727.04,
-        "invoices": [
-          {
-            "number": "SO750",
-            "date": "2026-10-09",
-            "due": "2026-10-09",
-            "amount": 1727.04,
-            "balance": 1727.04,
-            "so_num": "",
-            "shopify_order": "#1227",
-            "shopify_fulfillments": [],
-            "shopify_status": "PAID",
-            "shopify_total": 1727.04,
-            "shopify_received": 1727.04,
-            "shopify_outstanding": 0,
-            "shopify_match": "note",
-            "reconcile": true
-          }
-        ]
-      },
-      {
         "name": "Rejuv Aesthetics + Wellness",
         "balance": 1706.86,
+        "qb_balance": 1706.86,
         "invoices": [
           {
             "number": "SO486",
@@ -4858,8 +4827,222 @@
         ]
       },
       {
+        "name": "Radiance Diagnostics",
+        "balance": 878.56,
+        "qb_balance": 878.56,
+        "invoices": [
+          {
+            "number": "SO730",
+            "date": "2026-10-06",
+            "due": "2026-10-06",
+            "amount": 878.56,
+            "balance": 878.56,
+            "so_num": "",
+            "shopify_order": "#1154",
+            "shopify_fulfillments": [
+              {
+                "id": "6534262128884",
+                "shipment": "#1154-F9",
+                "tracking": "878270532618"
+              }
+            ],
+            "shopify_status": "PENDING",
+            "shopify_total": 5955.86,
+            "shopify_received": null,
+            "shopify_outstanding": 5065.86,
+            "shopify_match": "note",
+            "reconcile": false
+          }
+        ]
+      },
+      {
+        "name": "Prominis Medical Services",
+        "balance": 578.65,
+        "qb_balance": 578.65,
+        "invoices": [
+          {
+            "number": "SO743",
+            "date": "2026-09-16",
+            "due": "2026-09-16",
+            "amount": 9150.0,
+            "balance": 550.0,
+            "so_num": "",
+            "shopify_order": "",
+            "shopify_fulfillments": [],
+            "shopify_status": "",
+            "reconcile": false
+          },
+          {
+            "number": "SO758",
+            "date": "2026-10-14",
+            "due": "2026-10-14",
+            "amount": 28.65,
+            "balance": 28.65,
+            "so_num": "",
+            "shopify_order": "#1194",
+            "shopify_fulfillments": [
+              {
+                "id": "6547761529076",
+                "shipment": "#1194-F21",
+                "tracking": "878659770378"
+              }
+            ],
+            "shopify_status": "PARTIALLY_PAID",
+            "shopify_total": 9178.65,
+            "shopify_received": 8600.0,
+            "shopify_outstanding": 578.65,
+            "shopify_match": "note",
+            "reconcile": false
+          }
+        ]
+      },
+      {
+        "name": "Clinical Diagnostic Laboratories, LLC",
+        "balance": 499.72,
+        "qb_balance": 499.72,
+        "invoices": [
+          {
+            "number": "SO683",
+            "date": "2026-09-23",
+            "due": "2026-09-23",
+            "amount": 499.72,
+            "balance": 499.72,
+            "so_num": "",
+            "shopify_order": "",
+            "shopify_fulfillments": [],
+            "shopify_status": "",
+            "reconcile": false
+          }
+        ]
+      },
+      {
+        "name": "MEDICAL HEALTH LAB",
+        "balance": 494.96,
+        "qb_balance": 494.96,
+        "invoices": [
+          {
+            "number": "SO627",
+            "date": "2026-08-19",
+            "due": "2026-08-19",
+            "amount": 137.11,
+            "balance": 137.11,
+            "so_num": "",
+            "shopify_order": "",
+            "shopify_fulfillments": [],
+            "shopify_status": "",
+            "reconcile": false
+          },
+          {
+            "number": "SO649",
+            "date": "2026-09-01",
+            "due": "2026-09-01",
+            "amount": 153.82,
+            "balance": 153.82,
+            "so_num": "",
+            "shopify_order": "",
+            "shopify_fulfillments": [],
+            "shopify_status": "",
+            "reconcile": false
+          },
+          {
+            "number": "SO653",
+            "date": "2026-09-02",
+            "due": "2026-09-02",
+            "amount": 23.43,
+            "balance": 23.43,
+            "so_num": "",
+            "shopify_order": "",
+            "shopify_fulfillments": [],
+            "shopify_status": "",
+            "reconcile": false
+          },
+          {
+            "number": "SO657",
+            "date": "2026-09-08",
+            "due": "2026-09-08",
+            "amount": 180.6,
+            "balance": 180.6,
+            "so_num": "",
+            "shopify_order": "",
+            "shopify_fulfillments": [],
+            "shopify_status": "",
+            "reconcile": false
+          }
+        ]
+      },
+      {
+        "name": "Radiance Diagnostic",
+        "balance": 419.76,
+        "qb_balance": 419.76,
+        "invoices": [
+          {
+            "number": "SO620",
+            "date": "2026-08-17",
+            "due": "2026-08-17",
+            "amount": 101.76,
+            "balance": 101.76,
+            "so_num": "",
+            "shopify_order": "",
+            "shopify_fulfillments": [],
+            "shopify_status": "",
+            "reconcile": false
+          },
+          {
+            "number": "SO632",
+            "date": "2026-08-24",
+            "due": "2026-08-24",
+            "amount": 318.0,
+            "balance": 318.0,
+            "so_num": "",
+            "shopify_order": "",
+            "shopify_fulfillments": [],
+            "shopify_status": "",
+            "reconcile": false
+          }
+        ]
+      },
+      {
+        "name": "Seemas Botox and aesthetics",
+        "balance": 321.18,
+        "qb_balance": 321.18,
+        "invoices": [
+          {
+            "number": "SO418",
+            "date": "2026-04-24",
+            "due": "2026-04-24",
+            "amount": 321.18,
+            "balance": 321.18,
+            "so_num": "",
+            "shopify_order": "",
+            "shopify_fulfillments": [],
+            "shopify_status": "",
+            "reconcile": false
+          }
+        ]
+      },
+      {
+        "name": "My clinical lab INC",
+        "balance": 175.7,
+        "qb_balance": 175.7,
+        "invoices": [
+          {
+            "number": "SO293",
+            "date": "2026-03-31",
+            "due": "2026-03-31",
+            "amount": 175.7,
+            "balance": 175.7,
+            "so_num": "",
+            "shopify_order": "",
+            "shopify_fulfillments": [],
+            "shopify_status": "",
+            "reconcile": false
+          }
+        ]
+      },
+      {
         "name": "Well Health Labs",
-        "balance": 925.65,
+        "balance": 0.0,
+        "qb_balance": 925.65,
         "invoices": [
           {
             "number": "SO749",
@@ -4924,36 +5107,9 @@
         ]
       },
       {
-        "name": "Radiance Diagnostics",
-        "balance": 878.56,
-        "invoices": [
-          {
-            "number": "SO730",
-            "date": "2026-10-06",
-            "due": "2026-10-06",
-            "amount": 878.56,
-            "balance": 878.56,
-            "so_num": "",
-            "shopify_order": "#1154",
-            "shopify_fulfillments": [
-              {
-                "id": "6534262128884",
-                "shipment": "#1154-F9",
-                "tracking": "878270532618"
-              }
-            ],
-            "shopify_status": "PENDING",
-            "shopify_total": 5955.86,
-            "shopify_received": null,
-            "shopify_outstanding": 5065.86,
-            "shopify_match": "note",
-            "reconcile": false
-          }
-        ]
-      },
-      {
         "name": "Pretty Please Aesthetics & Wellness, LLC",
-        "balance": 588.95,
+        "balance": 0.0,
+        "qb_balance": 588.95,
         "invoices": [
           {
             "number": "SO754",
@@ -4974,168 +5130,78 @@
         ]
       },
       {
-        "name": "Prominis Medical Services",
-        "balance": 578.65,
+        "name": "Phillip Wortley",
+        "balance": 0.0,
+        "qb_balance": 1737.16,
         "invoices": [
           {
-            "number": "SO743",
-            "date": "2026-09-16",
-            "due": "2026-09-16",
-            "amount": 9150.0,
-            "balance": 550.0,
+            "number": "SO753",
+            "date": "2026-10-12",
+            "due": "2026-10-12",
+            "amount": 1737.16,
+            "balance": 1737.16,
             "so_num": "",
-            "shopify_order": "",
+            "shopify_order": "#1230",
             "shopify_fulfillments": [],
-            "shopify_status": "",
-            "reconcile": false
-          },
-          {
-            "number": "SO758",
-            "date": "2026-10-14",
-            "due": "2026-10-14",
-            "amount": 28.65,
-            "balance": 28.65,
-            "so_num": "",
-            "shopify_order": "#1194",
-            "shopify_fulfillments": [
-              {
-                "id": "6547761529076",
-                "shipment": "#1194-F21",
-                "tracking": "878659770378"
-              }
-            ],
-            "shopify_status": "PARTIALLY_PAID",
-            "shopify_total": 9178.65,
-            "shopify_received": 8600.0,
-            "shopify_outstanding": 578.65,
+            "shopify_status": "PAID",
+            "shopify_total": 1737.16,
+            "shopify_received": 1737.16,
+            "shopify_outstanding": 0,
             "shopify_match": "note",
-            "reconcile": false
+            "reconcile": true
           }
         ]
       },
       {
-        "name": "Clinical Diagnostic Laboratories, LLC",
-        "balance": 499.72,
+        "name": "Neeta Mitchell",
+        "balance": 0.0,
+        "qb_balance": 1727.04,
         "invoices": [
           {
-            "number": "SO683",
-            "date": "2026-09-23",
-            "due": "2026-09-23",
-            "amount": 499.72,
-            "balance": 499.72,
+            "number": "SO750",
+            "date": "2026-10-09",
+            "due": "2026-10-09",
+            "amount": 1727.04,
+            "balance": 1727.04,
             "so_num": "",
-            "shopify_order": "",
+            "shopify_order": "#1227",
             "shopify_fulfillments": [],
-            "shopify_status": "",
-            "reconcile": false
+            "shopify_status": "PAID",
+            "shopify_total": 1727.04,
+            "shopify_received": 1727.04,
+            "shopify_outstanding": 0,
+            "shopify_match": "note",
+            "reconcile": true
           }
         ]
       },
       {
-        "name": "MEDICAL HEALTH LAB",
-        "balance": 494.96,
+        "name": "L&M LAB CORP",
+        "balance": 0.0,
+        "qb_balance": 61.33,
         "invoices": [
           {
-            "number": "SO627",
-            "date": "2026-08-19",
-            "due": "2026-08-19",
-            "amount": 137.11,
-            "balance": 137.11,
+            "number": "SO722",
+            "date": "2026-10-04",
+            "due": "2026-10-04",
+            "amount": 61.33,
+            "balance": 61.33,
             "so_num": "",
-            "shopify_order": "",
+            "shopify_order": "#1220",
             "shopify_fulfillments": [],
-            "shopify_status": "",
-            "reconcile": false
-          },
-          {
-            "number": "SO649",
-            "date": "2026-09-01",
-            "due": "2026-09-01",
-            "amount": 153.82,
-            "balance": 153.82,
-            "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
-            "shopify_status": "",
-            "reconcile": false
-          },
-          {
-            "number": "SO653",
-            "date": "2026-09-02",
-            "due": "2026-09-02",
-            "amount": 23.43,
-            "balance": 23.43,
-            "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
-            "shopify_status": "",
-            "reconcile": false
-          },
-          {
-            "number": "SO657",
-            "date": "2026-09-08",
-            "due": "2026-09-08",
-            "amount": 180.6,
-            "balance": 180.6,
-            "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
-            "shopify_status": "",
-            "reconcile": false
-          }
-        ]
-      },
-      {
-        "name": "Radiance Diagnostic",
-        "balance": 419.76,
-        "invoices": [
-          {
-            "number": "SO620",
-            "date": "2026-08-17",
-            "due": "2026-08-17",
-            "amount": 101.76,
-            "balance": 101.76,
-            "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
-            "shopify_status": "",
-            "reconcile": false
-          },
-          {
-            "number": "SO632",
-            "date": "2026-08-24",
-            "due": "2026-08-24",
-            "amount": 318.0,
-            "balance": 318.0,
-            "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
-            "shopify_status": "",
-            "reconcile": false
-          }
-        ]
-      },
-      {
-        "name": "Seemas Botox and aesthetics",
-        "balance": 321.18,
-        "invoices": [
-          {
-            "number": "SO418",
-            "date": "2026-04-24",
-            "due": "2026-04-24",
-            "amount": 321.18,
-            "balance": 321.18,
-            "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
-            "shopify_status": "",
-            "reconcile": false
+            "shopify_status": "PAID",
+            "shopify_total": 61.33,
+            "shopify_received": 61.33,
+            "shopify_outstanding": 0,
+            "shopify_match": "note",
+            "reconcile": true
           }
         ]
       },
       {
         "name": "Clinical Diagnostic Laboratory",
-        "balance": 187.22,
+        "balance": 0.0,
+        "qb_balance": 187.22,
         "invoices": [
           {
             "number": "SO619",
@@ -5165,51 +5231,11 @@
             "reconcile": true
           }
         ]
-      },
-      {
-        "name": "My clinical lab INC",
-        "balance": 175.7,
-        "invoices": [
-          {
-            "number": "SO293",
-            "date": "2026-03-31",
-            "due": "2026-03-31",
-            "amount": 175.7,
-            "balance": 175.7,
-            "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
-            "shopify_status": "",
-            "reconcile": false
-          }
-        ]
-      },
-      {
-        "name": "L&M LAB CORP",
-        "balance": 61.33,
-        "invoices": [
-          {
-            "number": "SO722",
-            "date": "2026-10-04",
-            "due": "2026-10-04",
-            "amount": 61.33,
-            "balance": 61.33,
-            "so_num": "",
-            "shopify_order": "#1220",
-            "shopify_fulfillments": [],
-            "shopify_status": "PAID",
-            "shopify_total": 61.33,
-            "shopify_received": 61.33,
-            "shopify_outstanding": 0,
-            "shopify_match": "note",
-            "reconcile": true
-          }
-        ]
       }
     ]
   },
   "ap": {
-    "generated_at": "2026-10-14 10:57 PM UTC",
+    "generated_at": "2026-10-14 11:07 PM UTC",
     "total": 15232.4,
     "past_due": 5392.31,
     "count": 29,
@@ -5746,5 +5772,5 @@
       }
     ]
   },
-  "pulled_at": "2026-10-14 03:57 PM PT"
+  "pulled_at": "2026-10-14 04:07 PM PT"
 }
