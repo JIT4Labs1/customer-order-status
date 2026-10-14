@@ -3218,7 +3218,7 @@ function srtTh(t,k,ty,label,al){ var s=srt[t], on=(s.k===k);
 function srtCmp(t,get){ var s=srt[t]; return function(a,b){ var x=get(a,s.k), y=get(b,s.k), r;
   if(typeof x==='string'||typeof y==='string'){ r=String(x||'').toLowerCase().localeCompare(String(y||'').toLowerCase(),undefined,{numeric:true}); }
   else { r=(x||0)-(y||0); } return r*s.d; }; }
-function arInvGet(r,k){ if(k==='no') return r.number; if(k==='ord') return r.shopify_order||''; if(k==='ship'){ var f=r.shopify_fulfillments||[]; return f.length?(f[0].shipment||f[0].id||''):''; }
+function arInvGet(r,k){ if(k==='no') return r.number; if(k==='ord') return r.shopify_order||''; if(k==='ship'){ var f=r.shopify_fulfillments||[]; return f.length?(f[0].shipment||''):''; }
   if(k==='paid') return arPaidVal(r); if(k==='date') return r.date||''; if(k==='due') return r.due||''; if(k==='days') return arDays(r); if(k==='amt') return Number(r.amount)||0; if(k==='bal') return arEff(r); if(k==='so') return r.so_num||''; return ''; }
 function arPaidVal(r){ return r.reconcile?'Yes':(r.shopify_status==='PARTIALLY_PAID'?'Partial':'No'); }
 function arPaidCell(r){ var v=arPaidVal(r);
@@ -3243,10 +3243,11 @@ function arSetSearch(v){ arSearch=v; renderPayPanel(); var e=document.getElement
 function arExpandAll(open){ var cs=(PAY&&PAY.ar&&PAY.ar.customers)||[]; for(var i=0;i<cs.length;i++) arOpen[i]=open; renderPayPanel(); }
 function apExpandAll(open){ var vs=(PAY&&PAY.ap&&PAY.ap.vendors)||[]; for(var i=0;i<vs.length;i++) apOpen[i]=open; renderPayPanel(); }
 function arFulCell(r){
-  var f=r.shopify_fulfillments||[]; if(!f.length) return '<span style="color:#999;">&mdash;</span>';
-  var h=[]; for(var i=0;i<f.length;i++){ var x=f[i]; var lbl=x.shipment||x.id||x.tracking; var tip=(x.id?'Fulfillment ID '+x.id:'Matched by tracking number')+(x.status?' · '+x.status:'')+(x.tracking?' · tracking '+x.tracking:'');
-    h.push('<span title="'+escapeHtml(tip)+'" style="display:inline-block;background:#eef3f8;border-radius:4px;padding:1px 6px;margin:1px 3px 1px 0;font-size:11px;font-family:monospace;">'+escapeHtml(lbl)+'</span>'); }
-  return h.join('');
+  var f=r.shopify_fulfillments||[], h=[];
+  for(var i=0;i<f.length;i++){ var x=f[i]; if(!x.shipment) continue;
+    var tip='Fulfillment ID '+(x.id||'')+(x.tracking?' · tracking '+x.tracking:'');
+    h.push('<span title="'+escapeHtml(tip)+'" style="display:inline-block;background:#eef3f8;border-radius:4px;padding:1px 6px;margin:1px 3px 1px 0;font-size:11px;font-family:monospace;">'+escapeHtml(x.shipment)+'</span>'); }
+  return h.length?h.join(''):'<span style="color:#999;">&mdash;</span>';
 }
 function arShopBadge(r){
   if(r.reconcile) return ' <span title="Shopify shows this order as PAID, but the QuickBooks invoice is still open. Apply the payment / reconcile in QuickBooks." style="display:inline-block;background:#e6f4ea;color:#137333;border:1px solid #a8d5b5;border-radius:10px;padding:0 7px;font-size:11px;font-weight:700;white-space:nowrap;">&#128179; Paid in Shopify &mdash; reconcile</span>';
