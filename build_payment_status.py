@@ -529,6 +529,13 @@ def main():
 
     payables = build_payables(access)
     bank = build_bank(access)
+    # A/R + A/P datasets for the "A/R & A/P" tab (open invoices per customer / open bills per supplier)
+    ar_ap = {}
+    try:
+        import build_ar_ap
+        ar_ap = {"ar": build_ar_ap.build_ar(access), "ap": build_ar_ap.build_ap(access)}
+    except Exception as e:
+        print("[WARN] A/R-A/P build failed:", e)
 
     out = {
         "generated_at": datetime.datetime.now().astimezone().strftime("%Y-%m-%d %I:%M %p %Z"),
@@ -537,6 +544,7 @@ def main():
         "payables": payables,
         "bank": bank,
     }
+    out.update(ar_ap)
     json.dump(out, open(OUT, "w"), indent=2)
     tot_inv = sum(c["totals"]["count"] for c in customers)
     print(f"payment-status-data.json: {len(customers)} IDL customers, {tot_inv} invoices "
