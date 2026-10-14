@@ -3219,7 +3219,12 @@ function srtCmp(t,get){ var s=srt[t]; return function(a,b){ var x=get(a,s.k), y=
   if(typeof x==='string'||typeof y==='string'){ r=String(x||'').toLowerCase().localeCompare(String(y||'').toLowerCase(),undefined,{numeric:true}); }
   else { r=(x||0)-(y||0); } return r*s.d; }; }
 function arInvGet(r,k){ if(k==='no') return r.number; if(k==='ord') return r.shopify_order||''; if(k==='ship'){ var f=r.shopify_fulfillments||[]; return f.length?(f[0].shipment||f[0].id||''):''; }
-  if(k==='date') return r.date||''; if(k==='due') return r.due||''; if(k==='days') return arDays(r); if(k==='amt') return Number(r.amount)||0; if(k==='bal') return arEff(r); if(k==='so') return r.so_num||''; return ''; }
+  if(k==='paid') return arPaidVal(r); if(k==='date') return r.date||''; if(k==='due') return r.due||''; if(k==='days') return arDays(r); if(k==='amt') return Number(r.amount)||0; if(k==='bal') return arEff(r); if(k==='so') return r.so_num||''; return ''; }
+function arPaidVal(r){ return r.reconcile?'Yes':(r.shopify_status==='PARTIALLY_PAID'?'Partial':'No'); }
+function arPaidCell(r){ var v=arPaidVal(r);
+  if(v==='Yes') return '<span style="color:#137333;font-weight:700;">Yes</span>';
+  if(v==='Partial') return '<span style="color:#b42318;font-weight:700;" title="Shopify shows only part of this order paid">Partial</span>';
+  return '<span style="color:#7f8c8d;">No</span>'; }
 function arSortInv(l){ return l.slice().sort(srtCmp('arI',arInvGet)); }
 function arCustGet(it,k){ if(k==='name') return it.c.name||''; if(k==='n') return it.keep.length; return it.sub; }
 function apBillGet(b,k){ if(k==='no') return b.number; if(k==='date') return b.date||''; if(k==='due') return b.due||''; if(k==='days') return b.days_past_due||0; if(k==='bal') return b.balance||0;
@@ -3296,12 +3301,13 @@ function arRenderAR(){
     rows+='<tr class="so-group" style="cursor:pointer;" onclick="arToggle('+i+')"><td style="font-weight:700;">'+(open?'&#9660;':'&#9654;')+' '+escapeHtml(c.name)+(function(){var n=0;for(var z=0;z<keep.length;z++) if(keep[z].reconcile) n++; return n?' <span title="'+n+' invoice(s) paid in Shopify but still open in QuickBooks" style="background:#e6f4ea;color:#137333;border-radius:10px;padding:0 7px;font-size:11px;">&#128179; '+n+' to reconcile</span>':'';})()+'</td>'+
       '<td class="c">'+keep.length+'</td><td style="text-align:right;font-weight:700;">'+payMoney(sub)+'</td></tr>';
     if(open){
-      var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr>'+srtTh('arI','no','s','Invoice #')+srtTh('arI','ord','s','Shopify order')+srtTh('arI','ship','s','Shipment')+srtTh('arI','date','s','Date')+srtTh('arI','due','s','Due')+srtTh('arI','days','n','Days','c')+srtTh('arI','amt','n','Amount','r')+srtTh('arI','bal','n','Balance','r')+'</tr></thead><tbody>';
+      var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr>'+srtTh('arI','no','s','Invoice #')+srtTh('arI','ord','s','Shopify order')+srtTh('arI','ship','s','Shipment')+srtTh('arI','paid','s','Paid in Shopify','c')+srtTh('arI','date','s','Date')+srtTh('arI','due','s','Due')+srtTh('arI','days','n','Days','c')+srtTh('arI','amt','n','Amount','r')+srtTh('arI','bal','n','Balance','r')+'</tr></thead><tbody>';
       var keepS=arSortInv(keep);
       for(var k=0;k<keepS.length;k++){ var r=keepS[k], dd=arDays(r), col=dd>60?'#c0392b':(dd>30?'#d35400':(dd>0?'#b7950b':'#27ae60'));
         t+='<tr><td>'+escapeHtml(r.number)+'</td>'+
           '<td>'+(r.shopify_order?escapeHtml(r.shopify_order):'<span style="color:#999;">&mdash;</span>')+arShopBadge(r)+'</td>'+
           '<td>'+arFulCell(r)+'</td>'+
+          '<td class="c">'+arPaidCell(r)+'</td>'+
           '<td>'+fmtDate(r.date)+'</td><td>'+fmtDate(r.due)+'</td>'+
           '<td class="c" style="color:'+col+';font-weight:600;">'+(dd>0?dd:'—')+'</td>'+
           '<td style="text-align:right;">'+payMoney(r.amount)+'</td><td style="text-align:right;font-weight:600;">'+payMoney(arEff(r))+(r.reconcile?'<div style="font-size:10px;font-weight:400;color:#b54708;" title="QuickBooks still shows this invoice open">QB open: '+payMoney(r.balance)+'</div>':'')+'</td>'+'</tr>'; }
