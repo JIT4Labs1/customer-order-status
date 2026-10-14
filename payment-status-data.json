@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-14 11:18 PM UTC",
+  "generated_at": "2026-10-14 11:45 PM UTC",
   "year": 2026,
   "customers": [
     {
@@ -3684,7 +3684,7 @@
     }
   ],
   "payables": {
-    "generated_at": "2026-10-14 11:18 PM UTC",
+    "generated_at": "2026-10-14 11:45 PM UTC",
     "grand_total": 15232.4,
     "past_due": 5392.31,
     "count": 29,
@@ -3916,10 +3916,10 @@
     "source": "Bank balance",
     "book_balance": 54616.81,
     "bank_asof": "2026-07-23",
-    "as_of": "2026-10-14 11:18 PM UTC"
+    "as_of": "2026-10-14 11:45 PM UTC"
   },
   "ar": {
-    "generated_at": "2026-10-14 11:18 PM UTC",
+    "generated_at": "2026-10-14 11:45 PM UTC",
     "as_of": "2026-10-14",
     "total": 92829.69,
     "qb_total": 110871.22,
@@ -3941,13 +3941,19 @@
             "shopify_fulfillments": [
               {
                 "id": "6509811400948",
-                "status": "CONFIRMED",
-                "tracking": "877641876028"
+                "shipment": "#1094-F2",
+                "tracking": "877641876028",
+                "trackings": [
+                  "877641876028"
+                ]
               },
               {
                 "id": "6271165628660",
-                "status": "CONFIRMED",
-                "tracking": "874131947502"
+                "shipment": "#1094-F1",
+                "tracking": "874131947502",
+                "trackings": [
+                  "874131947502"
+                ]
               }
             ],
             "shopify_status": "PENDING",
@@ -4491,13 +4497,13 @@
             "shopify_order": "#1049",
             "shopify_fulfillments": [
               {
-                "id": "",
-                "shipment": "",
+                "id": "6225840799988",
+                "shipment": "#1049-F1",
                 "tracking": "1Z0E1B331323442629"
               },
               {
-                "id": "",
-                "shipment": "",
+                "id": "6235910439156",
+                "shipment": "#1049-F2",
                 "tracking": "1Z2XH6681320019014"
               }
             ],
@@ -4516,23 +4522,35 @@
             "shopify_fulfillments": [
               {
                 "id": "6281795862772",
-                "status": "DELIVERED",
-                "tracking": "874446882395"
+                "shipment": "#1078-F4",
+                "tracking": "874446882395",
+                "trackings": [
+                  "874446882395"
+                ]
               },
               {
                 "id": "6274178187508",
-                "status": "DELIVERED",
-                "tracking": "874235745134"
+                "shipment": "#1078-F3",
+                "tracking": "874235745134",
+                "trackings": [
+                  "874235745134"
+                ]
               },
               {
                 "id": "6258287050996",
-                "status": "DELIVERED",
-                "tracking": "873791765762"
+                "shipment": "#1078-F2",
+                "tracking": "873791765762",
+                "trackings": [
+                  "873791765762"
+                ]
               },
               {
                 "id": "6256683614452",
-                "status": "DELIVERED",
-                "tracking": "1Z2XH6680309899248"
+                "shipment": "#1078-F1",
+                "tracking": "1Z2XH6680309899248",
+                "trackings": [
+                  "1Z2XH6680309899248"
+                ]
               }
             ],
             "shopify_status": "PENDING",
@@ -4553,18 +4571,25 @@
             "shopify_fulfillments": [
               {
                 "id": "6321561731316",
-                "status": "FULFILLED",
-                "tracking": ""
+                "shipment": "#1114-F3",
+                "tracking": "",
+                "trackings": []
               },
               {
                 "id": "6321557635316",
-                "status": "DELIVERED",
-                "tracking": "875413309599"
+                "shipment": "#1114-F2",
+                "tracking": "875413309599",
+                "trackings": [
+                  "875413309599"
+                ]
               },
               {
                 "id": "6295581982964",
-                "status": "DELIVERED",
-                "tracking": "874741304224"
+                "shipment": "#1114-F1",
+                "tracking": "874741304224",
+                "trackings": [
+                  "874741304224"
+                ]
               }
             ],
             "shopify_status": "PENDING",
@@ -4585,33 +4610,57 @@
             "shopify_fulfillments": [
               {
                 "id": "6311063191796",
-                "status": "FULFILLED",
-                "tracking": ""
+                "shipment": "#1127-F7",
+                "tracking": "",
+                "trackings": []
               },
               {
                 "id": "6311061553396",
-                "status": "DELIVERED",
-                "tracking": "875127665220"
+                "shipment": "#1127-F6",
+                "tracking": "875127665220",
+                "trackings": [
+                  "875127665220"
+                ]
               },
               {
                 "id": "6311061258484",
-                "status": "DELIVERED",
-                "tracking": "875127650147"
+                "shipment": "#1127-F5",
+                "tracking": "875127650147",
+                "trackings": [
+                  "875127650147"
+                ]
               },
               {
                 "id": "6311060701428",
-                "status": "DELIVERED",
-                "tracking": "382912257803"
+                "shipment": "#1127-F4",
+                "tracking": "382912257803",
+                "trackings": [
+                  "382912257803"
+                ]
               },
               {
                 "id": "6311060340980",
-                "status": "DELIVERED",
-                "tracking": "875127617870"
+                "shipment": "#1127-F3",
+                "tracking": "875127617870",
+                "trackings": [
+                  "875127617870"
+                ]
               },
               {
                 "id": "6311058440436",
-                "status": "DELIVERED",
-                "tracking": "875127550350"
+                "shipment": "#1127-F2",
+                "tracking": "875127550350",
+                "trackings": [
+                  "875127550350"
+                ]
+              },
+              {
+                "id": "6311049167092",
+                "shipment": "#1127-F1",
+                "tracking": "875127340310",
+                "trackings": [
+                  "875127340310"
+                ]
               }
             ],
             "shopify_status": "PENDING",
@@ -4639,8 +4688,19 @@
             "shopify_fulfillments": [
               {
                 "id": "6291548373236",
-                "status": "DELIVERED",
-                "tracking": "874694557202"
+                "shipment": "#1113-F2",
+                "tracking": "874694557202",
+                "trackings": [
+                  "874694557202"
+                ]
+              },
+              {
+                "id": "6291530973428",
+                "shipment": "#1113-F1",
+                "tracking": "382740651822",
+                "trackings": [
+                  "382740651822"
+                ]
               }
             ],
             "shopify_status": "PENDING",
@@ -4868,8 +4928,8 @@
             "shopify_order": "#1186",
             "shopify_fulfillments": [
               {
-                "id": "",
-                "shipment": "",
+                "id": "6509746880756",
+                "shipment": "#1186-F2",
                 "tracking": "877638605300"
               }
             ],
@@ -4894,8 +4954,8 @@
             "shopify_order": "#1125",
             "shopify_fulfillments": [
               {
-                "id": "",
-                "shipment": "",
+                "id": "6340768760052",
+                "shipment": "#1125-F9",
                 "tracking": "1Z23C2X71307104081"
               }
             ],
@@ -4913,8 +4973,8 @@
             "shopify_order": "#1125",
             "shopify_fulfillments": [
               {
-                "id": "",
-                "shipment": "",
+                "id": "6354534498548",
+                "shipment": "#1125-F15",
                 "tracking": "383354001098"
               }
             ],
@@ -4958,13 +5018,13 @@
             "shopify_order": "#1148",
             "shopify_fulfillments": [
               {
-                "id": "",
-                "shipment": "",
+                "id": "6344969945332",
+                "shipment": "#1148-F3",
                 "tracking": "1Z23C2X71311436947"
               },
               {
-                "id": "",
-                "shipment": "",
+                "id": "6344989999348",
+                "shipment": "#1148-F4",
                 "tracking": "1Z23C2X7YW23079297"
               },
               {
@@ -4990,18 +5050,18 @@
             "shopify_order": "#1163",
             "shopify_fulfillments": [
               {
-                "id": "",
-                "shipment": "",
+                "id": "6368138199284",
+                "shipment": "#1163-F1",
                 "tracking": "876596097455"
               },
               {
-                "id": "",
-                "shipment": "",
+                "id": "6368285130996",
+                "shipment": "#1163-F2",
                 "tracking": "1Z23C2X71311646998"
               },
               {
-                "id": "",
-                "shipment": "",
+                "id": "6368338477300",
+                "shipment": "#1163-F3",
                 "tracking": "383494725528"
               }
             ],
@@ -5022,8 +5082,8 @@
             "shopify_order": "#1147",
             "shopify_fulfillments": [
               {
-                "id": "",
-                "shipment": "",
+                "id": "6370322350324",
+                "shipment": "#1147-F4",
                 "tracking": "876659442734"
               }
             ],
@@ -5044,8 +5104,8 @@
             "shopify_order": "#1169",
             "shopify_fulfillments": [
               {
-                "id": "",
-                "shipment": "",
+                "id": "6380665602292",
+                "shipment": "#1169-F3",
                 "tracking": "383597608465"
               }
             ],
@@ -5090,13 +5150,17 @@
             "shopify_fulfillments": [
               {
                 "id": "6340696965364",
-                "status": "FULFILLED",
-                "tracking": ""
+                "shipment": "#1146-F2",
+                "tracking": "",
+                "trackings": []
               },
               {
                 "id": "6340694769908",
-                "status": "DELIVERED",
-                "tracking": "875904852569"
+                "shipment": "#1146-F1",
+                "tracking": "875904852569",
+                "trackings": [
+                  "875904852569"
+                ]
               }
             ],
             "shopify_status": "PAID",
@@ -5123,8 +5187,8 @@
             "shopify_order": "#1193",
             "shopify_fulfillments": [
               {
-                "id": "",
-                "shipment": "",
+                "id": "6509884113140",
+                "shipment": "#1193-F1",
                 "tracking": "383845476924"
               }
             ],
@@ -5143,7 +5207,24 @@
             "balance": 7186.24,
             "so_num": "",
             "shopify_order": "#1223",
-            "shopify_fulfillments": [],
+            "shopify_fulfillments": [
+              {
+                "id": "6536448016628",
+                "shipment": "#1223-F2",
+                "tracking": "384070296650",
+                "trackings": [
+                  "384070296650"
+                ]
+              },
+              {
+                "id": "6536222212340",
+                "shipment": "#1223-F1",
+                "tracking": "384068166313",
+                "trackings": [
+                  "384068166313"
+                ]
+              }
+            ],
             "shopify_status": "PAID",
             "shopify_total": 7221.64,
             "shopify_received": 7221.64,
@@ -5159,7 +5240,24 @@
             "balance": 3660.5,
             "so_num": "",
             "shopify_order": "#1232",
-            "shopify_fulfillments": [],
+            "shopify_fulfillments": [
+              {
+                "id": "6547737673972",
+                "shipment": "#1232-F2",
+                "tracking": "878658578311",
+                "trackings": [
+                  "878658578311"
+                ]
+              },
+              {
+                "id": "6547720995060",
+                "shipment": "#1232-F1",
+                "tracking": "878658001957",
+                "trackings": [
+                  "878658001957"
+                ]
+              }
+            ],
             "shopify_status": "PARTIALLY_PAID",
             "shopify_total": 4611.55,
             "shopify_received": 4577.1,
@@ -5182,7 +5280,16 @@
             "balance": 61.33,
             "so_num": "",
             "shopify_order": "#1220",
-            "shopify_fulfillments": [],
+            "shopify_fulfillments": [
+              {
+                "id": "6531771597044",
+                "shipment": "#1220-F1",
+                "tracking": "878194262102",
+                "trackings": [
+                  "878194262102"
+                ]
+              }
+            ],
             "shopify_status": "PAID",
             "shopify_total": 61.33,
             "shopify_received": 61.33,
@@ -5227,7 +5334,16 @@
             "balance": 397.0,
             "so_num": "",
             "shopify_order": "#1234",
-            "shopify_fulfillments": [],
+            "shopify_fulfillments": [
+              {
+                "id": "6547996901620",
+                "shipment": "#1234-F1",
+                "tracking": "384178802933",
+                "trackings": [
+                  "384178802933"
+                ]
+              }
+            ],
             "shopify_status": "PAID",
             "shopify_total": 431.65,
             "shopify_received": 431.65,
@@ -5272,7 +5388,17 @@
             "balance": 1727.04,
             "so_num": "",
             "shopify_order": "#1227",
-            "shopify_fulfillments": [],
+            "shopify_fulfillments": [
+              {
+                "id": "6546140004596",
+                "shipment": "#1227-F1",
+                "tracking": "1Z8W007Y0395386701",
+                "trackings": [
+                  "1Z8W007Y0395386701",
+                  "1Z8W007Y0397171091"
+                ]
+              }
+            ],
             "shopify_status": "PAID",
             "shopify_total": 1727.04,
             "shopify_received": 1727.04,
@@ -5331,7 +5457,7 @@
     ]
   },
   "ap": {
-    "generated_at": "2026-10-14 11:18 PM UTC",
+    "generated_at": "2026-10-14 11:45 PM UTC",
     "total": 15232.4,
     "past_due": 5392.31,
     "count": 29,
@@ -5868,5 +5994,5 @@
       }
     ]
   },
-  "pulled_at": "2026-10-14 04:18 PM PT"
+  "pulled_at": "2026-10-14 04:45 PM PT"
 }
