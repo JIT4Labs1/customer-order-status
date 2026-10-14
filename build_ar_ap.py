@@ -101,16 +101,19 @@ def build_ar(access, invoices=None):
         recvd = [a for a in (list((sp_ or {}).get("amounts") or []) + [(sp_ or {}).get("received")]) if a is not None]
         covers = any(abs(a - bal) < 0.015 for a in recvd) if st == "PARTIALLY_PAID" else False
         row["reconcile"] = (st == "PAID") or covers
-        c = custs.setdefault(cname, {"name": cname, "balance": 0.0, "invoices": []})
-        c["balance"] += bal
+        c = custs.setdefault(cname, {"name": cname, "balance": 0.0, "qb_balance": 0.0, "invoices": []})
+        c["qb_balance"] += bal
+        c["balance"] += 0.0 if row.get("reconcile") else bal   # A/R view: paid-in-Shopify invoices count as 0
         c["invoices"].append(row)
     out = sorted(custs.values(), key=lambda c: -c["balance"])
     for c in out:
         c["balance"] = round(c["balance"], 2)
+        c["qb_balance"] = round(c["qb_balance"], 2)
         c["invoices"].sort(key=lambda r: r["due"])
     return {"generated_at": datetime.datetime.now().astimezone().strftime("%Y-%m-%d %I:%M %p %Z"),
             "as_of": datetime.date.today().isoformat(),
             "total": round(sum(c["balance"] for c in out), 2),
+            "qb_total": round(sum(c["qb_balance"] for c in out), 2),
             "count": sum(len(c["invoices"]) for c in out), "customers": out}
 
 
