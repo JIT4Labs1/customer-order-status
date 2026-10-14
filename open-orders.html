@@ -3239,7 +3239,7 @@ function arExpandAll(open){ var cs=(PAY&&PAY.ar&&PAY.ar.customers)||[]; for(var 
 function apExpandAll(open){ var vs=(PAY&&PAY.ap&&PAY.ap.vendors)||[]; for(var i=0;i<vs.length;i++) apOpen[i]=open; renderPayPanel(); }
 function arFulCell(r){
   var f=r.shopify_fulfillments||[]; if(!f.length) return '<span style="color:#999;">&mdash;</span>';
-  var h=[]; for(var i=0;i<f.length;i++){ var x=f[i]; var lbl=x.shipment||x.id; var tip='Fulfillment ID '+x.id+(x.status?' · '+x.status:'')+(x.tracking?' · tracking '+x.tracking:'');
+  var h=[]; for(var i=0;i<f.length;i++){ var x=f[i]; var lbl=x.shipment||x.id||x.tracking; var tip=(x.id?'Fulfillment ID '+x.id:'Matched by tracking number')+(x.status?' · '+x.status:'')+(x.tracking?' · tracking '+x.tracking:'');
     h.push('<span title="'+escapeHtml(tip)+'" style="display:inline-block;background:#eef3f8;border-radius:4px;padding:1px 6px;margin:1px 3px 1px 0;font-size:11px;font-family:monospace;">'+escapeHtml(lbl)+'</span>'); }
   return h.join('');
 }
