@@ -3749,10 +3749,28 @@ function copyPayTable(){
 // ── A/R & A/P tab (replaces the old Payment Status view) ──────────────────────────────
 // Data: PAY.ar (open QuickBooks invoices per customer) and PAY.ap (open QuickBooks bills per supplier).
 var arHideZero=false, arRecOnly=false, arSub='ar', arAge='all', arBasis='due', arOpen={}, apOpen={}, arSearch='';
-var arExcl=null;
+var arLast=[], arExcl=null;
 function arExclMap(){ if(arExcl==null){ arExcl={}; try{ var p=JSON.parse(localStorage.getItem('jit4_ar_excl')||'{}'); for(var k in p){ if(p.hasOwnProperty(k)) arExcl[k]=1; } }catch(e){} } return arExcl; }
 function arIsExcl(r){ return !!arExclMap()[r.number]; }
 function arToggleExcl(n){ var m=arExclMap(); if(m[n]) delete m[n]; else m[n]=1; try{ localStorage.setItem('jit4_ar_excl', JSON.stringify(m)); }catch(e){} renderPayPanel(); }
+function arCsvCell(v){ var q=String.fromCharCode(34), nl=String.fromCharCode(10), s=(v==null?'':String(v));
+  if(s.indexOf(',')>=0||s.indexOf(q)>=0||s.indexOf(nl)>=0) s=q+s.split(q).join(q+q)+q; return s; }
+function arExportCsv(){
+  var rows=[['Customer','Invoice #','Shopify order','Paid in Shopify','Shipment','Date','Due','Days','Amount','Balance (A/R)','QuickBooks balance']];
+  var n=0, tot=0;
+  for(var a=0;a<arLast.length;a++){ var it=arLast[a], l=arSortInv(it.keep);
+    for(var b=0;b<l.length;b++){ var r=l[b]; if(arIsExcl(r)) continue;
+      var sh=[]; var f=r.shopify_fulfillments||[]; for(var z=0;z<f.length;z++){ if(f[z].shipment) sh.push(f[z].shipment); }
+      var dd=arDays(r);
+      rows.push([it.c.name,r.number,r.shopify_order||'',arPaidVal(r),sh.join(' '),r.date||'',r.due||'',dd>0?dd:0,(Number(r.amount)||0).toFixed(2),arEff(r).toFixed(2),(Number(r.balance)||0).toFixed(2)]);
+      n++; tot+=arEff(r); } }
+  if(!n){ alert('Nothing to export for this selection.'); return; }
+  var nl=String.fromCharCode(10), csv=rows.map(function(x){ return x.map(arCsvCell).join(','); }).join(nl)+nl;
+  var blob=new Blob([csv],{type:'text/csv;charset=utf-8'}), url=URL.createObjectURL(blob), a2=document.createElement('a');
+  var d=new Date(), stamp=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
+  a2.href=url; a2.download='JIT4You-AR-'+stamp+'.csv'; document.body.appendChild(a2); a2.click();
+  setTimeout(function(){ document.body.removeChild(a2); URL.revokeObjectURL(url); },500);
+}
 function arClearExcl(){ arExcl={}; try{ localStorage.setItem('jit4_ar_excl','{}'); }catch(e){} renderPayPanel(); }
 function arCnt(r){ return arIsExcl(r)?0:arEff(r); }
 function arEff(r){ return r.reconcile?0:(Number(r.balance)||0); }
@@ -3830,7 +3848,8 @@ function arRenderAR(){
     '<label style="cursor:pointer;white-space:nowrap;"><input type="checkbox" onchange="arSetHideZero(this)"'+(arHideZero?' checked':'')+'> Hide $0 balance lines</label>'+
     '<label style="cursor:pointer;white-space:nowrap;"><input type="checkbox" onchange="arSetRec(this)"'+(arRecOnly?' checked':'')+'> Needs reconcile (paid in Shopify, still open in QuickBooks) only &mdash; '+recN+' invoice'+(recN===1?'':'s')+', '+payMoney(recAmt)+' in QuickBooks</label>'+
     (function(){var n=0,m=arExclMap();for(var k in m) if(m.hasOwnProperty(k)) n++; return n?'<a href="#" onclick="arClearExcl();return false;" title="Put all manually excluded rows back into the totals">Clear '+n+' excluded</a>':'';})()+
-    '<a href="#" onclick="arExpandAll(true);return false;">Expand all</a><a href="#" onclick="arExpandAll(false);return false;">Collapse all</a>'+
+    '<button class="mode-btn" style="margin:0;" onclick="arExportCsv()" title="Download the invoices currently listed (filters and sort applied; rows ticked Excl. are left out) as CSV">&#11015; Export CSV</button>'+
+        '<a href="#" onclick="arExpandAll(true);return false;">Expand all</a><a href="#" onclick="arExpandAll(false);return false;">Collapse all</a>'+
     '<span style="color:#7f8c8d;">Aging = '+basisLbl+'</span></div>';
   var rows='', shownC=0, shownInv=0, shownAmt=0, items=[];
   for(var i=0;i<cs.length;i++){
@@ -3846,7 +3865,7 @@ function arRenderAR(){
     var sub=0; for(var k=0;k<keep.length;k++) sub+=arCnt(keep[k]);
     shownC++; shownInv+=keep.length; shownAmt+=sub;
     items.push({i:i,c:c,keep:keep,sub:sub}); }
-  items.sort(srtCmp('arC',arCustGet));
+  items.sort(srtCmp('arC',arCustGet)); arLast=items;
   for(var ii=0;ii<items.length;ii++){ var i=items[ii].i, c=items[ii].c, keep=items[ii].keep, sub=items[ii].sub;
     var open=!!arOpen[i];
     rows+='<tr class="so-group" style="cursor:pointer;" onclick="arToggle('+i+')"><td style="font-weight:700;">'+(open?'&#9660;':'&#9654;')+' '+escapeHtml(c.name)+(function(){var n=0;for(var z=0;z<keep.length;z++) if(keep[z].reconcile) n++; return n?' <span title="'+n+' invoice(s) paid in Shopify but still open in QuickBooks" style="background:#e6f4ea;color:#137333;border-radius:10px;padding:0 7px;font-size:11px;">&#128179; '+n+' to reconcile</span>':'';})()+'</td>'+
