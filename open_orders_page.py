@@ -5589,7 +5589,7 @@ function ibRevSave(){
   }).catch(function(e){ ibNote('warn','Saved in this browser only (could not sync: '+escapeHtml(e.message||String(e))+')'); });
 }
 function ibRevToggle(i){
-  var r=((IB.data&&IB.data.results)||[])[i]; if(!r) return;
+  var r=(IB.view||[])[i]; if(!r) return;
   IB.rev[r.key]={on:!ibIsRev(r.key),at:new Date().toISOString()};
   ibLsSet(IB_REV,JSON.stringify(IB.rev)); ibRender(); ibRevSave();
 }
@@ -5605,6 +5605,7 @@ function ibRender(){
   var host=document.getElementById('ib-list'); if(!host) return;
   var res=((IB.data&&IB.data.results)||[]).slice();
   res.sort(function(a,b){ return String(b.received||'').localeCompare(String(a.received||'')); });
+  IB.view=res;
   var seen=ibSeen(), nNew=0, nRev=0, body='';
   function money(v){ return v==null?'&mdash;':'$'+Number(v).toFixed(2); }
   res.forEach(function(r,i){
