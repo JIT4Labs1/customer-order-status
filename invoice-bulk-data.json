@@ -1,6 +1,984 @@
 {
   "version": 1,
-  "results": [],
-  "last_scan": null,
-  "pulled_at": "2026-10-15 01:43 PM PT"
+  "results": [
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArsBAvMAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002031 from PMA Services -Next Day Reagents",
+      "received": "2026-10-15T15:54:36Z",
+      "filename": "INV-002031.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "PO947",
+      "lines": [
+        {
+          "sku": "OSR6196-BK",
+          "desc": "LDL Cholesterol",
+          "qty": 1,
+          "rate": 0.0,
+          "po_unit": 750.0,
+          "delta": -750.0,
+          "status": "under"
+        },
+        {
+          "sku": "OSR6112-BK",
+          "desc": "Total Bilirubin",
+          "qty": 1,
+          "rate": 88.0,
+          "po_unit": 85.0,
+          "delta": 3.0,
+          "status": "over"
+        },
+        {
+          "sku": "A48618-BK",
+          "desc": "SHBG Calibrator",
+          "qty": 1,
+          "rate": 169.8,
+          "po_unit": 169.8,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "33580-BK",
+          "desc": "hGH Reagent",
+          "qty": 1,
+          "rate": 0.0,
+          "po_unit": 170.0,
+          "delta": -170.0,
+          "status": "under"
+        }
+      ],
+      "po_key": "PO947",
+      "po_status": "Partially received",
+      "po_missing": [
+        "33830"
+      ],
+      "summary": {
+        "ok": 1,
+        "bad": 3,
+        "miss": 0
+      },
+      "verdict": "discrepancy",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArsBAvMAAA=|INV-002031.pdf",
+      "found_at": "2026-10-15T20:50:28Z",
+      "scan_id": "manual-20261015-month"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArsBAvGAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002030 from PMA Services -Next Day Reagents",
+      "received": "2026-10-15T15:43:03Z",
+      "filename": "INV-002030.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "PO950",
+      "lines": [
+        {
+          "sku": "B24838-BK",
+          "desc": "Total Vitamin D",
+          "qty": 1,
+          "rate": 228.0,
+          "po_unit": 228.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO950",
+      "po_status": "Received Shipment",
+      "po_missing": [],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArsBAvGAAA=|INV-002030.pdf",
+      "found_at": "2026-10-15T20:50:28Z",
+      "scan_id": "manual-20261015-month"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArsBAu6AAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002028 from PMA Services -Next Day Reagents",
+      "received": "2026-10-15T14:37:32Z",
+      "filename": "INV-002028.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "PO948",
+      "lines": [
+        {
+          "sku": "OSR6112-BK",
+          "desc": "Total Bilirubin",
+          "qty": 1,
+          "rate": 88.0,
+          "po_unit": 85.0,
+          "delta": 3.0,
+          "status": "over"
+        },
+        {
+          "sku": "B24838-BK",
+          "desc": "Total Vitamin D",
+          "qty": 10,
+          "rate": 228.0,
+          "po_unit": 228.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6179-BK",
+          "desc": "Creatine Kinase NAC",
+          "qty": 2,
+          "rate": 191.0,
+          "po_unit": 183.42,
+          "delta": 7.58,
+          "status": "over"
+        },
+        {
+          "sku": "OSR6122-BK",
+          "desc": "Phosphorus",
+          "qty": 3,
+          "rate": 70.0,
+          "po_unit": 70.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6221-BK",
+          "desc": "Glucose Hexokinase",
+          "qty": 2,
+          "rate": 135.0,
+          "po_unit": 135.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "A85264-BK",
+          "desc": "Total B-hCG",
+          "qty": 8,
+          "rate": 75.5,
+          "po_unit": 75.0,
+          "delta": 0.5,
+          "status": "over"
+        },
+        {
+          "sku": "C76421-BK",
+          "desc": "FT4",
+          "qty": 40,
+          "rate": 45.0,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO948",
+      "po_status": "Partially received",
+      "po_missing": [
+        "33830",
+        "33560",
+        "33880"
+      ],
+      "summary": {
+        "ok": 3,
+        "bad": 3,
+        "miss": 1
+      },
+      "verdict": "discrepancy",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArsBAu6AAA=|INV-002028.pdf",
+      "found_at": "2026-10-15T20:50:28Z",
+      "scan_id": "manual-20261015-month"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArsBAuqAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002026 from PMA Services -Next Day Reagents",
+      "received": "2026-10-15T13:33:49Z",
+      "filename": "INV-002026.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "PO887",
+      "lines": [
+        {
+          "sku": "OSR6137-BK",
+          "desc": "Bicarbonate",
+          "qty": 1,
+          "rate": 215.0,
+          "po_unit": 215.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "A16364",
+          "desc": "EPO Access",
+          "qty": 2,
+          "rate": 590.5,
+          "po_unit": 590.5,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR0001-BK",
+          "desc": "Wash Solution",
+          "qty": 1,
+          "rate": 332.6,
+          "po_unit": 332.6,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO887",
+      "po_status": "Partially received",
+      "po_missing": [
+        "OSR6121",
+        "33565",
+        "AUH1012",
+        "81901",
+        "OSR60118",
+        "33025",
+        "B00389",
+        "OSR6295",
+        "OSR6189",
+        "OSR6122",
+        "OSR6178",
+        "OSR6132",
+        "OSR6006",
+        "B24838",
+        "A16792"
+      ],
+      "summary": {
+        "ok": 3,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArsBAuqAAA=|INV-002026.pdf",
+      "found_at": "2026-10-15T20:50:28Z",
+      "scan_id": "manual-20261015-month"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArsBAv2AAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002026 from PMA Services -Next Day Reagents",
+      "received": "2026-10-15T20:09:11Z",
+      "filename": "INV-002026.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "PO887",
+      "lines": [
+        {
+          "sku": "OSR6137-BK",
+          "desc": "Bicarbonate",
+          "qty": 1,
+          "rate": 215.0,
+          "po_unit": 215.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "A16364",
+          "desc": "EPO Access",
+          "qty": 1,
+          "rate": 590.5,
+          "po_unit": 590.5,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR0001-BK",
+          "desc": "Wash Solution",
+          "qty": 1,
+          "rate": 332.6,
+          "po_unit": 332.6,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO887",
+      "po_status": "Partially received",
+      "po_missing": [
+        "OSR6121",
+        "33565",
+        "AUH1012",
+        "81901",
+        "OSR60118",
+        "33025",
+        "B00389",
+        "OSR6295",
+        "OSR6189",
+        "OSR6122",
+        "OSR6178",
+        "OSR6132",
+        "OSR6006",
+        "B24838",
+        "A16792"
+      ],
+      "summary": {
+        "ok": 3,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArsBAv2AAA=|INV-002026.pdf",
+      "found_at": "2026-10-15T20:50:28Z",
+      "scan_id": "manual-20261015-month"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArldRKdAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-001997 from PMA Services -Next Day Reagents",
+      "received": "2026-10-08T17:34:58Z",
+      "filename": "INV-001997.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "PO935",
+      "lines": [
+        {
+          "sku": "A48617-BK",
+          "desc": "SHBG Reagent",
+          "qty": 5,
+          "rate": 255.0,
+          "po_unit": 255.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "33530-BK",
+          "desc": "Prolactin",
+          "qty": 5,
+          "rate": 54.48,
+          "po_unit": 54.0,
+          "delta": 0.48,
+          "status": "over"
+        },
+        {
+          "sku": "33410-BK",
+          "desc": "Insulin",
+          "qty": 5,
+          "rate": 126.5,
+          "po_unit": 125.0,
+          "delta": 1.5,
+          "status": "over"
+        },
+        {
+          "sku": "C76421-BK",
+          "desc": "FT4",
+          "qty": 5,
+          "rate": 45.0,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO935",
+      "po_status": "Partially received",
+      "po_missing": [
+        "33800",
+        "33880",
+        "ODC0026"
+      ],
+      "summary": {
+        "ok": 1,
+        "bad": 2,
+        "miss": 1
+      },
+      "verdict": "discrepancy",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArldRKdAAA=|INV-001997.pdf",
+      "found_at": "2026-10-15T20:50:28Z",
+      "scan_id": "manual-20261015-month"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArldRKcAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-001996 from PMA Services -Next Day Reagents",
+      "received": "2026-10-08T17:33:27Z",
+      "filename": "INV-001996.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "PO936",
+      "lines": [
+        {
+          "sku": "OSR6107-BK",
+          "desc": "ALT",
+          "qty": 1,
+          "rate": 110.0,
+          "po_unit": 102.0,
+          "delta": 8.0,
+          "status": "over"
+        },
+        {
+          "sku": "37200-BK",
+          "desc": "PSA",
+          "qty": 1,
+          "rate": 105.0,
+          "po_unit": 105.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6189-BK",
+          "desc": "Magnesium",
+          "qty": 1,
+          "rate": 78.0,
+          "po_unit": 75.0,
+          "delta": 3.0,
+          "status": "over"
+        },
+        {
+          "sku": "OSR6121-BK",
+          "desc": "Glucose Hexokinase",
+          "qty": 1,
+          "rate": 85.0,
+          "po_unit": 85.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO936",
+      "po_status": "Received Shipment",
+      "po_missing": [],
+      "summary": {
+        "ok": 2,
+        "bad": 2,
+        "miss": 0
+      },
+      "verdict": "discrepancy",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArldRKcAAA=|INV-001996.pdf",
+      "found_at": "2026-10-15T20:50:28Z",
+      "scan_id": "manual-20261015-month"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArldRKYAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-001995 from PMA Services -Next Day Reagents",
+      "received": "2026-10-08T16:55:58Z",
+      "filename": "INV-001995.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "PO892",
+      "lines": [
+        {
+          "sku": "B84493-BK",
+          "desc": "Sensitive Estradiol",
+          "qty": 2,
+          "rate": 56.93,
+          "po_unit": 56.93,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO892",
+      "po_status": "Received Shipment",
+      "po_missing": [
+        "37200",
+        "33800",
+        "A13422",
+        "33020",
+        "A48617",
+        "A48618",
+        "33005",
+        "33000"
+      ],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArldRKYAAA=|INV-001995.pdf",
+      "found_at": "2026-10-15T20:50:28Z",
+      "scan_id": "manual-20261015-month"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArldRHQAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-001792 from PMA Services -Next Day Reagents",
+      "received": "2026-10-06T14:36:57Z",
+      "filename": "INV-001792.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "PO824",
+      "lines": [
+        {
+          "sku": "OSR6004-BK",
+          "desc": "ALP",
+          "qty": 2,
+          "rate": 52.62,
+          "po_unit": 52.62,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6111-BK",
+          "desc": "Direct Bilirubin",
+          "qty": 2,
+          "rate": 46.97,
+          "po_unit": 46.97,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "81904-BK",
+          "desc": "Waste Bags",
+          "qty": 5,
+          "rate": 17.1,
+          "po_unit": 17.1,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "81901-BK",
+          "desc": "Reaction Vessels",
+          "qty": 5,
+          "rate": 27.5,
+          "po_unit": 27.5,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6106-BK",
+          "desc": "Amylase",
+          "qty": 1,
+          "rate": 0.0,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO824",
+      "po_status": "Received Shipment",
+      "po_missing": [
+        "OSR6137",
+        "OSR6006"
+      ],
+      "summary": {
+        "ok": 4,
+        "bad": 0,
+        "miss": 1
+      },
+      "verdict": "partial",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArldRHQAAA=|INV-001792.pdf",
+      "found_at": "2026-10-15T20:50:28Z",
+      "scan_id": "manual-20261015-month"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArldRHOAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-001960 from PMA Services -Next Day Reagents",
+      "received": "2026-10-06T14:09:31Z",
+      "filename": "INV-001960.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "PO921",
+      "lines": [
+        {
+          "sku": "A13422-BK",
+          "desc": "FT3",
+          "qty": 3,
+          "rate": 61.2,
+          "po_unit": 52.1,
+          "delta": 9.1,
+          "status": "over"
+        },
+        {
+          "sku": "33020-BK",
+          "desc": "Ferritin",
+          "qty": 3,
+          "rate": 70.0,
+          "po_unit": 65.0,
+          "delta": 5.0,
+          "status": "over"
+        },
+        {
+          "sku": "33550-BK",
+          "desc": "Progesterone",
+          "qty": 3,
+          "rate": 55.0,
+          "po_unit": 55.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "B24838-BK",
+          "desc": "Total Vitamin D",
+          "qty": 1,
+          "rate": 228.0,
+          "po_unit": 228.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "81901-BK",
+          "desc": "Reaction Vessels",
+          "qty": 3,
+          "rate": 27.5,
+          "po_unit": 27.5,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "33560-BK",
+          "desc": "Testosterone",
+          "qty": 3,
+          "rate": 62.25,
+          "po_unit": 62.0,
+          "delta": 0.25,
+          "status": "over"
+        },
+        {
+          "sku": "B63284-BK",
+          "desc": "TSH 3rd IS",
+          "qty": 4,
+          "rate": 79.0,
+          "po_unit": 79.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "A48617-BK",
+          "desc": "SHBG Reagent",
+          "qty": 3,
+          "rate": 255.0,
+          "po_unit": 255.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO921",
+      "po_status": "Partially received",
+      "po_missing": [
+        "B84493",
+        "ODC0023",
+        "ODC0026",
+        "OSR6137",
+        "OSR6102"
+      ],
+      "summary": {
+        "ok": 5,
+        "bad": 3,
+        "miss": 0
+      },
+      "verdict": "discrepancy",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArldRHOAAA=|INV-001960.pdf",
+      "found_at": "2026-10-15T20:50:28Z",
+      "scan_id": "manual-20261015-month"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArldRGyAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-001966 from PMA Services -Next Day Reagents",
+      "received": "2026-10-05T21:27:06Z",
+      "filename": "INV-001966.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "PO892",
+      "lines": [
+        {
+          "sku": "A16792-BK",
+          "desc": "Access Wash Buffer II",
+          "qty": 2,
+          "rate": 49.0,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO892",
+      "po_status": "Received Shipment",
+      "po_missing": [
+        "37200",
+        "B84493",
+        "33800",
+        "A13422",
+        "33020",
+        "A48617",
+        "A48618",
+        "33005",
+        "33000"
+      ],
+      "summary": {
+        "ok": 0,
+        "bad": 0,
+        "miss": 1
+      },
+      "verdict": "partial",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArldRGyAAA=|INV-001966.pdf",
+      "found_at": "2026-10-15T20:50:28Z",
+      "scan_id": "manual-20261015-month"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArldREpAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-001956 from PMA Services -Next Day Reagents",
+      "received": "2026-10-02T15:26:20Z",
+      "filename": "INV-001956.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "9253",
+      "lines": [
+        {
+          "sku": "AUH1012-BK",
+          "desc": "ISE Mid Standard",
+          "qty": 1,
+          "rate": 229.0,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "verdict": "no_po",
+      "po_key": "",
+      "summary": {
+        "ok": 0,
+        "bad": 0,
+        "miss": 1
+      },
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArldREpAAA=|INV-001956.pdf",
+      "found_at": "2026-10-15T20:50:28Z",
+      "scan_id": "manual-20261015-month"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArldRDGAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-001949 from PMA Services -Next Day Reagents",
+      "received": "2026-10-01T14:01:28Z",
+      "filename": "INV-001949.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "PO903",
+      "lines": [
+        {
+          "sku": "OSR6102-BK",
+          "desc": "Albumin",
+          "qty": 1,
+          "rate": 65.0,
+          "po_unit": 65.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO903",
+      "po_status": "Partially received",
+      "po_missing": [
+        "OSR6132"
+      ],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArldRDGAAA=|INV-001949.pdf",
+      "found_at": "2026-10-15T20:50:28Z",
+      "scan_id": "manual-20261015-month"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArldRCwAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-001948 from PMA Services -Next Day Reagents",
+      "received": "2026-10-01T13:31:44Z",
+      "filename": "INV-001948.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "PO902",
+      "lines": [
+        {
+          "sku": "A98032-BK",
+          "desc": "Folate",
+          "qty": 4,
+          "rate": 70.0,
+          "po_unit": 70.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO902",
+      "po_status": "Received Shipment",
+      "po_missing": [],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArldRCwAAA=|INV-001948.pdf",
+      "found_at": "2026-10-15T20:50:28Z",
+      "scan_id": "manual-20261015-month"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArsBAu0AAA=",
+      "source": "quickbooks",
+      "sender": "quickbooks@notification.intuit.com",
+      "subject": "New payment request from Allora Biotech LLC - invoice 1748",
+      "received": "2026-10-15T14:09:55Z",
+      "filename": "Invoice_1748_from_Allora_Biotech_LLC.pdf",
+      "vendor": "Allora Biotech LLC",
+      "po_raw": "949",
+      "lines": [
+        {
+          "sku": "OSR6134",
+          "desc": "Urea/BUN",
+          "qty": 4,
+          "rate": 79,
+          "po_unit": 79.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR60118",
+          "desc": "Triglycerides",
+          "qty": 4,
+          "rate": 80,
+          "po_unit": 80.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6098",
+          "desc": "Uric Acid",
+          "qty": 4,
+          "rate": 56,
+          "po_unit": 56.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "33020",
+          "desc": "Ferritin",
+          "qty": 10,
+          "rate": 55,
+          "po_unit": 55.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "A13422",
+          "desc": "Free T3",
+          "qty": 20,
+          "rate": 45,
+          "po_unit": 45.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "A98032",
+          "desc": "Folate",
+          "qty": 20,
+          "rate": 60,
+          "po_unit": 60.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "A98856",
+          "desc": "25(OH) Vitamin D Total",
+          "qty": 20,
+          "rate": 200,
+          "po_unit": 200.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "B63284",
+          "desc": "TSH 3rd IS",
+          "qty": 40,
+          "rate": 65,
+          "po_unit": 65.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6102",
+          "desc": "Albumin",
+          "qty": 5,
+          "rate": 40,
+          "po_unit": 40.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6107",
+          "desc": "ALT",
+          "qty": 5,
+          "rate": 98,
+          "po_unit": 98.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "A48617",
+          "desc": "SHBG",
+          "qty": 5,
+          "rate": 213,
+          "po_unit": 213.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6178",
+          "desc": "Creatinine",
+          "qty": 10,
+          "rate": 72,
+          "po_unit": 72.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6006",
+          "desc": "Amylase",
+          "qty": 3,
+          "rate": 55,
+          "po_unit": 55.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "387687",
+          "desc": "CA19-9",
+          "qty": 1,
+          "rate": 136,
+          "po_unit": 136.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "A16793",
+          "desc": "Wash buffer II",
+          "qty": 40,
+          "rate": 27,
+          "po_unit": 27.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR61205",
+          "desc": "UIBC",
+          "qty": 8,
+          "rate": 160,
+          "po_unit": 160.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO949",
+      "po_status": "Received Shipment",
+      "po_missing": [],
+      "summary": {
+        "ok": 16,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAArsBAu0AAA=|Invoice_1748_from_Allora_Biotech_LLC.pdf",
+      "found_at": "2026-10-15T20:50:28Z",
+      "scan_id": "manual-20261015-month"
+    }
+  ],
+  "last_scan": {
+    "id": "manual-20261015-month",
+    "at": "2026-10-15T20:50:28Z",
+    "window": "month",
+    "since": "2026-10-01T00:00:00-07:00",
+    "scanned": 15,
+    "added": 15
+  },
+  "pulled_at": "2026-10-15 01:51 PM PT"
 }

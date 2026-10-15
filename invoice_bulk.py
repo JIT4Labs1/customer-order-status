@@ -9,7 +9,7 @@ Merges into invoice-bulk-data.json (NEVER drops existing results — only the pa
 matches each PO in Vtiger (PO949 / 949 / PO 949 / PO-949 variants) and compares invoice unit rate to the
 PO line-item list price per SKU. Fetches the current repo copy first so a Clear done on the page is honoured.
 """
-import json, sys, re, os, base64, datetime, urllib.request
+import json, sys, re, os, base64, datetime, time, urllib.request
 import build_payment_status as B
 
 OUT = "invoice-bulk-data.json"
@@ -39,7 +39,11 @@ def lookup_po(raw):
     if not vs:
         return None
     inlist = ",".join("'" + x.replace("'", "") + "'" for x in vs)
-    rows = B.vtiger_query(f"SELECT id, purchaseorder_no, postatus, vendor_id FROM PurchaseOrder WHERE purchaseorder_no IN ({inlist});")
+    rows = []
+    for attempt in range(3):   # vtiger_query swallows throttling errors and returns [] -> retry before declaring "not found"
+        rows = B.vtiger_query(f"SELECT id, purchaseorder_no, postatus, vendor_id FROM PurchaseOrder WHERE purchaseorder_no IN ({inlist});")
+        if rows: break
+        time.sleep(6)
     rows = [r for r in rows if (r.get("postatus") or "").lower() != "cancelled"] or rows
     if not rows:
         return None
@@ -97,7 +101,7 @@ def compare(item):
     out["lines"] = lines
     out["po_missing"] = [k for k in po["skus"] if k not in seen]
     out["summary"] = {"ok": ok, "bad": bad, "miss": miss}
-    out["verdict"] = "discrepancy" if bad else (("ok" if not miss else "partial") if ok else "unreadable")
+    out["verdict"] = "discrepancy" if bad else (("ok" if not miss else "partial") if ok else ("partial" if miss else "unreadable"))
     return out
 
 def load_base():
@@ -120,6 +124,14 @@ def main():
     now = datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
     sid = meta.get("request_id") or ("manual-" + now)
     added = 0
+    for i, r in enumerate(base.get("results", [])):   # re-check earlier lookups that failed / found no PO
+        if r.get("verdict") in ("no_po", "unreadable") and r.get("lines") is not None:
+            src = dict(r); src["lines"] = [{"sku": l.get("sku"), "desc": l.get("desc"), "qty": l.get("qty"), "rate": l.get("rate")} for l in r["lines"]]
+            for k in ("po_missing", "summary", "verdict", "po_key", "po_status"): src.pop(k, None)
+            nr = compare(src)
+            if nr["verdict"] not in ("no_po", "unreadable"):
+                nr["key"], nr["found_at"], nr["scan_id"] = r["key"], r.get("found_at"), r.get("scan_id")
+                base["results"][i] = nr
     for it in inc:
         key = f"{it['msg_id']}|{it.get('filename','')}"
         if key in have:
