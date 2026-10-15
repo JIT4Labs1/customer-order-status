@@ -161,6 +161,15 @@ def build_ar(access, invoices=None):
             order = _find_by_amount(cname, bal) or _find_by_amount(cname, B._fnum(i.get("TotalAmt")))
             if order:
                 matched_by = "amount"
+        if not order:
+            # Same customer + this invoice's total plus the other QB invoices that already name the order
+            # add up to the Shopify order total (e.g. a big invoice with no note + a small one that cites the order).
+            tot_ = B._fnum(i.get("TotalAmt"))
+            for p_ in spay.values():
+                if abs(tot_ + qb_noted.get(p_["name"], 0.0) - (p_.get("total") or 0.0)) < 0.02 and tot_ > 0.005:
+                    n_ = _norm(cname)
+                    if any(k and n_ and (k == n_ or k in n_ or n_ in k) for k in (_norm(p_.get("company")), _norm(p_.get("contact")))):
+                        order = p_["name"]; matched_by = "sum"; break
         fl_pdf = [{"id": "", "shipment": l_, "tracking": ""} for l_ in pdf_labels] or [{"id": x_, "shipment": "", "tracking": ""} for x_ in pdf_ids]
         fl = fl_pdf if (fl_pdf and not mf) else [{"id": mf.group(1), "shipment": ms.group(1) if ms else "", "tracking": i.get("TrackingNum") or ""}] if mf else ([{"id": "", "shipment": "", "tracking": t_} for t_ in trk_hits] if trk_hits else (ful.get(order, []) if order else []))
         row = {"number": num, "date": i.get("TxnDate", ""), "due": i.get("DueDate", "") or i.get("TxnDate", ""),
