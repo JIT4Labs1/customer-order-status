@@ -5633,7 +5633,7 @@ function ibRender(){
       '<td>'+escapeHtml(String(r.received||'').slice(0,16).replace('T',' '))+'</td>'+
       '<td>'+escapeHtml(r.source==='quickbooks'?'QuickBooks':'Zoho')+'</td>'+
       '<td>'+escapeHtml(r.vendor||'')+'</td>'+
-      '<td>'+(r.msg_id?'<a class="ib-link" target="_blank" rel="noopener" title="Open the email in Outlook (invoice is attached)" href="https://outlook.office365.com/owa/?ItemID='+encodeURIComponent(r.msg_id)+'&exvsurl=1&viewmodel=ReadMessageItem">&#9993; '+escapeHtml(r.filename||'')+'</a>':escapeHtml(r.filename||''))+'</td>'+
+      '<td>'+(r.file?'<a class="ib-link" target="_blank" rel="noopener" title="Open invoice copy (PDF)" href="'+escapeHtml(r.file)+'">&#128196; '+escapeHtml(r.filename||'')+'</a>':escapeHtml(r.filename||''))+(r.msg_id?' <a class="ib-link" target="_blank" rel="noopener" title="Open the original email in Outlook" href="https://outlook.office365.com/owa/?ItemID='+encodeURIComponent(r.msg_id)+'&exvsurl=1&viewmodel=ReadMessageItem">&#9993;</a>':'')+'</td>'+
       '<td>'+escapeHtml(r.po_raw||'')+(r.po_key&&r.po_key!==String(r.po_raw||'').toUpperCase()?' &rarr; '+escapeHtml(r.po_key):'')+'</td>'+
       '<td>'+chip+'</td>'+
       '<td><span class="ib-link" onclick="ibTog('+i+')">details</span></td></tr>'+
