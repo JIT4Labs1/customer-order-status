@@ -4877,7 +4877,7 @@ function renderInvPanel(){
        '<button class="inv-go" id="ib-go" onclick="ibSearch()">Search</button>'+
        '<button class="ib-sec" onclick="ibSeenAll()">Mark all as seen</button>'+
        '<button class="ib-sec" onclick="ibRevAll(true)">Mark all reviewed</button>'+
-       '<label style="font-size:12px;margin-left:8px;cursor:pointer;"><input type="checkbox" onchange="ibHideRev(this.checked)"'+(IB.hideRev?' checked':'')+'> Hide reviewed</label>'+
+       '<label style="font-size:12px;margin-left:8px;cursor:pointer;"><input type="checkbox" onchange="ibHideRev(!this.checked)"'+(IB.hideRev?'':' checked')+'> Show reviewed</label>'+
        '<button class="ib-sec danger" onclick="ibClear()">Clear list</button></div>'+
        '<div class="inv-note" id="ib-note"></div><div id="ib-list"></div></div>'+
    '</div>';
@@ -4970,7 +4970,7 @@ function _invCompare(poKey, lines, fname){
 
 
 // ── Bulk invoice check (mailbox scan results; scan is run by Claude, see invoice_bulk.py) ──
-var IB={data:null, polling:false, rev:{}, hideRev:false};
+var IB={data:null, polling:false, rev:{}, hideRev:true};
 var IB_SEEN='jit4_ibulk_seen', IB_PEND='jit4_ibulk_pending';
 function ibLs(k){ try{ return window.localStorage.getItem(k); }catch(e){ return null; } }
 function ibLsSet(k,v){ try{ window.localStorage.setItem(k,v); }catch(e){} }
@@ -5058,7 +5058,8 @@ function ibRevAll(on){
   ((IB.data&&IB.data.results)||[]).forEach(function(r){ IB.rev[r.key]={on:!!on,at:t}; });
   ibLsSet(IB_REV,JSON.stringify(IB.rev)); ibRender(); ibRevSave();
 }
-function ibHideRev(on){ IB.hideRev=!!on; ibRender(); }
+function ibHideRev(on){ IB.hideRev=!!on; ibLsSet('jit4_ibulk_hiderev',on?'1':'0'); ibRender(); }
+if(ibLs('jit4_ibulk_hiderev')==='0') IB.hideRev=false;
 IB.open={};
 function ibTog(i){ var r=document.getElementById('ib-det-'+i); if(r){ var show=(r.style.display==='none'); r.style.display=show?'':'none'; IB.open[i]=show; } }
 function ibRender(){
@@ -5100,7 +5101,7 @@ function ibRender(){
   });
   var ls=(IB.data&&IB.data.last_scan)||null;
   var meta=ls?('Last scan: '+escapeHtml(String(ls.at||'').slice(0,16).replace('T',' '))+' UTC &middot; window: '+escapeHtml(ls.window||'')+' &middot; '+(ls.scanned||0)+' emails checked'):'No scan has been run yet.';
-  host.innerHTML='<div class="sub" style="margin:4px 0 8px;">'+meta+' &middot; '+res.length+' result'+(res.length===1?'':'s')+' in list, '+nNew+' new, '+nRev+' reviewed</div>'+
+  host.innerHTML='<div class="sub" style="margin:4px 0 8px;">'+meta+' &middot; '+res.length+' result'+(res.length===1?'':'s')+' in list, '+nNew+' new, '+nRev+' reviewed'+(IB.hideRev&&nRev?' (hidden &mdash; tick &ldquo;Show reviewed&rdquo; to see them)':'')+'</div>'+
     (res.length?'<table><thead><tr><td>Reviewed</td><td>New?</td><td>Received (UTC)</td><td>Source</td><td>Vendor</td><td>Invoice file</td><td>PO</td><td>Result</td><td></td></tr></thead><tbody>'+body+'</tbody></table>':'<div class="inv-hint">Nothing here yet. Choose a window and press Search.</div>');
 }
 
