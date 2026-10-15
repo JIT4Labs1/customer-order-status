@@ -49,10 +49,26 @@ def _pdf_fields(access, inv, cache):
     fields, cache by invoice Id + SyncToken (re-fetched only when the invoice is edited)."""
     key = str(inv.get("Id"))
     ent = cache.get(key)
-    if ent and ent.get("st") == str(inv.get("SyncToken")):
+    if ent and ent.get("st") == str(inv.get("SyncToken")) and "link" in ent:
         return ent
     import urllib.request, subprocess, tempfile
-    ent = {"st": str(inv.get("SyncToken")), "ful": "", "po": "", "ok": False}
+    def _link():
+        try:
+            rq = urllib.request.Request(f"{B.BASE}/company/{B.REALM}/invoice/{inv['Id']}?minorversion=65&include=invoiceLink",
+                                        headers={"Authorization": "Bearer " + access, "Accept": "application/json"})
+            return (json.load(urllib.request.urlopen(rq, timeout=60)).get("Invoice") or {}).get("InvoiceLink", "") or ""
+        except Exception as e:
+            print("[WARN] invoice link fetch failed for", inv.get("DocNumber"), e)
+            return ""
+    if ent and ent.get("st") == str(inv.get("SyncToken")):
+        ent["link"] = _link()          # PDF fields already cached; only the customer payment link is missing
+        cache[key] = ent
+        try:
+            json.dump(cache, open(PDF_CACHE, "w"))
+        except Exception:
+            pass
+        return ent
+    ent = {"st": str(inv.get("SyncToken")), "ful": "", "po": "", "ok": False, "link": _link()}
     try:
         req = urllib.request.Request(f"{B.BASE}/company/{B.REALM}/invoice/{inv['Id']}/pdf?minorversion=65",
                                      headers={"Authorization": "Bearer " + access, "Accept": "application/pdf"})
@@ -175,7 +191,7 @@ def build_ar(access, invoices=None):
         row = {"number": num, "date": i.get("TxnDate", ""), "due": i.get("DueDate", "") or i.get("TxnDate", ""),
                "amount": round(B._fnum(i.get("TotalAmt")), 2), "balance": round(bal, 2),
                "so_num": so.get("so_num", ""), "shopify_order": order,
-               "shopify_fulfillments": fl}
+               "shopify_fulfillments": fl, "pay_link": pf.get("link", "")}
         # Resolve Shopify shipment labels (#order-Fn) from the Shopify fulfillment map: by fulfillment id, then tracking.
         if order and ful.get(order):
             by_id = {f_["id"]: f_ for f_ in ful[order]}
