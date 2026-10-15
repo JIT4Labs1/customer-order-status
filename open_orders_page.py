@@ -661,6 +661,18 @@ def build_html(page_data, embeds=None):
   .invchk .inv-badge.over { background:#fdecea; color:#c0392b; }
   .invchk .inv-badge.under { background:#fff4e0; color:#b9770e; }
   .invchk .inv-badge.miss { background:#f1f3f5; color:#777; }
+  .invchk .ib-wrap { margin-top:28px; border-top:2px solid #e6e2f5; padding-top:18px; }
+  .invchk .ib-wrap h3 { margin:0 0 4px; font-size:16px; color:#3b2a66; }
+  .invchk .ib-bar { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; background:#faf9ff; border:1px solid #e6e2f5; border-radius:10px; padding:14px 16px; margin:10px 0; }
+  .invchk .ib-bar select { padding:8px 10px; border:1px solid #cdc4ea; border-radius:6px; font-size:13px; font-family:inherit; }
+  .invchk .ib-sec { padding:9px 14px; background:#fff; color:#5a3e8e; border:1px solid #cdc4ea; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; font-family:inherit; }
+  .invchk .ib-sec:hover { background:#f3effc; }
+  .invchk .ib-sec.danger { color:#c0392b; border-color:#f0b9b3; }
+  .invchk .ib-new { background:#7c3aed; color:#fff; } .invchk .ib-old { background:#eceff3; color:#777; }
+  .invchk .ib-tag { display:inline-block; font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; letter-spacing:.4px; }
+  .invchk tr.ib-newrow td { background:#faf6ff; }
+  .invchk tr.ib-det td { background:#fbfbfd; padding:6px 8px 12px 28px; }
+  .invchk .ib-link { cursor:pointer; color:#6d28d9; font-weight:600; }
   .invchk .inv-hint { font-size:11px; color:#888; margin-top:10px; line-height:1.5; }
   .pnl-wrap { overflow-x:auto; padding:20px 22px; }
   .pnl-wrap h2, .pnl-wrap h3 { color:#2c3e50; }
@@ -5394,7 +5406,15 @@ function renderInvPanel(){
      '<div class="inv-note" id="inv-note"></div>'+
      '<div id="inv-results"></div>'+
      '<div class="inv-hint">Works on normal text-based PDF invoices; scanned/photo (image-only) invoices can\\'t be read automatically. Only the unit price is compared, per SKU. Invoice lines whose SKU is not on this PO are not priced.</div>'+
+     '<div class="ib-wrap"><h3>Bulk invoice check</h3>'+
+       '<div class="sub">Scans customersupport@jit4you.com for vendor invoices (Zoho Books: subject contains &ldquo;Invoice&rdquo; with an INV* attachment; QuickBooks: Invoice* attachment), matches each PO# in Vtiger (PO949 or 949) and compares unit prices. Results accumulate &mdash; new ones are flagged.</div>'+
+       '<div class="ib-bar"><div class="inv-fld"><label for="ib-win">Search window</label><select id="ib-win"><option value="month">Current month</option><option value="week">Last week (7 days)</option><option value="2weeks">Last 2 weeks (14 days)</option></select></div>'+
+       '<button class="inv-go" id="ib-go" onclick="ibSearch()">Search</button>'+
+       '<button class="ib-sec" onclick="ibSeenAll()">Mark all as seen</button>'+
+       '<button class="ib-sec danger" onclick="ibClear()">Clear list</button></div>'+
+       '<div class="inv-note" id="ib-note"></div><div id="ib-list"></div></div>'+
    '</div>';
+  ibLoad();
 }
 function runInvoiceCheck(){
   var poRaw=(document.getElementById('inv-po').value||'');
@@ -5479,6 +5499,99 @@ function _invCompare(poKey, lines, fname){
   else if(nOk>0 && nMiss>0) _invNote('warn','All matched SKUs are at the PO price. '+nMiss+' PO SKU'+(nMiss===1?'':'s')+' not found on the invoice.');
   else if(nOk>0) _invNote('ok','All '+nOk+' invoice price'+(nOk===1?'':'s')+' match the PO.');
   else _invNote('warn','No PO SKUs were located in this invoice — check that it matches PO '+escapeHtml(poKey)+'.');
+}
+
+
+// ── Bulk invoice check (mailbox scan results; scan is run by Claude, see invoice_bulk.py) ──
+var IB={data:null, polling:false};
+var IB_SEEN='jit4_ibulk_seen', IB_PEND='jit4_ibulk_pending';
+function ibLs(k){ try{ return window.localStorage.getItem(k); }catch(e){ return null; } }
+function ibLsSet(k,v){ try{ window.localStorage.setItem(k,v); }catch(e){} }
+function ibSeen(){ try{ return JSON.parse(ibLs(IB_SEEN)||'{}'); }catch(e){ return {}; } }
+function ibMarkSeen(){ var o=ibSeen(); ((IB.data&&IB.data.results)||[]).forEach(function(r){ o[r.key]=1; }); ibLsSet(IB_SEEN,JSON.stringify(o)); }
+function ibNote(cls,msg){ var n=document.getElementById('ib-note'); if(n){ n.className='inv-note '+(cls||''); n.innerHTML=msg||''; } }
+function ibHdr(){ return {'Authorization':'Bearer '+BTN.token,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}; }
+function ibPut(path,obj,msg){
+  if(!BTN||!BTN.token) return Promise.reject(new Error('No GitHub token configured on this page'));
+  var base='https://api.github.com/repos/'+BTN.repo+'/contents/'+path;
+  return fetch(base+'?ref='+encodeURIComponent(BTN.branch)+'&cb='+Date.now(),{headers:ibHdr(),cache:'no-store'})
+   .then(function(r){ return r.ok?r.json():{}; })
+   .then(function(st){ return fetch(base,{method:'PUT',headers:ibHdr(),body:JSON.stringify({message:msg,content:_b64enc(JSON.stringify(obj,null,2)+String.fromCharCode(10)),sha:st.sha||undefined,branch:BTN.branch})}); })
+   .then(function(r){ if(!r.ok) throw new Error('GitHub '+r.status); return r.json(); });
+}
+function ibLoad(){
+  return fetch('invoice-bulk-data.json?cb='+Date.now(),{cache:'no-store'})
+   .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+   .then(function(d){ IB.data=d; })
+   .catch(function(){ if(!IB.data) IB.data={results:[]}; })
+   .then(function(){ ibRender(); ibCheckPending(); });
+}
+function ibCheckPending(){
+  var id=ibLs(IB_PEND); if(!id) return;
+  var ls=(IB.data&&IB.data.last_scan)||{};
+  if(ls.id===id){ ibLsSet(IB_PEND,''); ibNote('ok','Scan complete: '+(ls.added||0)+' new result'+((ls.added||0)===1?'':'s')+' ('+(ls.scanned||0)+' emails checked).'); return; }
+  ibNote('warn','Search queued ('+escapeHtml(id)+'). Waiting for Claude to run the scan &mdash; results appear here automatically.');
+  if(!IB.polling){ IB.polling=true; var n=0; var t=setInterval(function(){ n++;
+    fetch('invoice-bulk-data.json?cb='+Date.now(),{cache:'no-store'}).then(function(r){ return r.json(); }).then(function(d){
+      IB.data=d; if(((d.last_scan||{}).id)===id || n>90){ clearInterval(t); IB.polling=false; ibRender(); ibCheckPending(); }
+    }).catch(function(){}); },20000); }
+}
+function ibSearch(){
+  var w=document.getElementById('ib-win').value;
+  var id='req-'+new Date().toISOString().replace(/[^0-9]/g,'').slice(0,14);
+  ibMarkSeen();
+  var b=document.getElementById('ib-go'); if(b) b.disabled=true;
+  ibNote('warn','Queuing search&hellip;');
+  ibPut('invoice-bulk-request.json',{id:id,window:w,requested_at:new Date().toISOString(),status:'pending'},'Invoice bulk check request '+id)
+   .then(function(){ ibLsSet(IB_PEND,id); ibRender(); ibCheckPending(); })
+   .catch(function(e){ ibNote('err','Could not queue the search: '+escapeHtml(e.message||String(e))); })
+   .finally(function(){ var g=document.getElementById('ib-go'); if(g) g.disabled=false; });
+}
+function ibClear(){
+  if(!window.confirm('Clear the whole bulk invoice list? This cannot be undone.')) return;
+  var d={version:1,results:[],cleared_at:new Date().toISOString(),last_scan:(IB.data&&IB.data.last_scan)||null};
+  ibPut('invoice-bulk-data.json',d,'Clear bulk invoice list').then(function(){ IB.data=d; ibLsSet(IB_SEEN,'{}'); ibRender(); ibNote('ok','List cleared.'); })
+   .catch(function(e){ ibNote('err','Could not clear: '+escapeHtml(e.message||String(e))); });
+}
+function ibSeenAll(){ ibMarkSeen(); ibRender(); }
+function ibTog(i){ var r=document.getElementById('ib-det-'+i); if(r) r.style.display=(r.style.display==='none')?'':'none'; }
+function ibRender(){
+  var host=document.getElementById('ib-list'); if(!host) return;
+  var res=((IB.data&&IB.data.results)||[]).slice();
+  res.sort(function(a,b){ return String(b.received||'').localeCompare(String(a.received||'')); });
+  var seen=ibSeen(), nNew=0, body='';
+  function money(v){ return v==null?'&mdash;':'$'+Number(v).toFixed(2); }
+  res.forEach(function(r,i){
+    var isNew=!seen[r.key]; if(isNew) nNew++;
+    var chip, v=r.verdict;
+    if(v==='ok') chip='<span class="inv-badge ok">All match</span>';
+    else if(v==='discrepancy') chip='<span class="inv-badge over">'+(r.summary&&r.summary.bad||0)+' discrepanc'+((r.summary&&r.summary.bad)===1?'y':'ies')+'</span>';
+    else if(v==='partial') chip='<span class="inv-badge under">'+(r.summary&&r.summary.ok||0)+' ok, '+(r.summary&&r.summary.miss||0)+' not on PO</span>';
+    else if(v==='no_po') chip='<span class="inv-badge under">PO not found</span>';
+    else chip='<span class="inv-badge miss">Unreadable</span>';
+    var det='<table><thead><tr><td>SKU</td><td>Description</td><td class="num">Qty</td><td class="num">Invoice rate</td><td class="num">PO unit</td><td class="num">&Delta;</td><td>Status</td></tr></thead><tbody>';
+    (r.lines||[]).forEach(function(l){
+      var st=l.status, bc=st==='ok'?'ok':(st==='over'?'over':(st==='under'?'under':'miss'));
+      var lbl=st==='ok'?'OK':(st==='over'?'Overbilled':(st==='under'?'Underbilled':'Not on PO'));
+      det+='<tr><td>'+escapeHtml(l.sku||'')+'</td><td>'+escapeHtml(String(l.desc||'').slice(0,70))+'</td><td class="num">'+escapeHtml(l.qty==null?'':l.qty)+'</td><td class="num">'+money(l.rate)+'</td><td class="num">'+money(l.po_unit)+'</td><td class="num delta">'+(l.delta==null?'&mdash;':((l.delta>0?'+':'')+'$'+Number(l.delta).toFixed(2)))+'</td><td><span class="inv-badge '+bc+'">'+lbl+'</span></td></tr>';
+    });
+    (r.po_missing||[]).forEach(function(sku){ det+='<tr class="inv-miss"><td>'+escapeHtml(sku)+'</td><td colspan="5">On the PO but not on this invoice</td><td><span class="inv-badge miss">Not on invoice</span></td></tr>'; });
+    det+='</tbody></table>';
+    body+='<tr class="'+(isNew?'ib-newrow':'')+'">'+
+      '<td><span class="ib-tag '+(isNew?'ib-new':'ib-old')+'">'+(isNew?'&#9733; NEW':'Old')+'</span></td>'+
+      '<td>'+escapeHtml(String(r.received||'').slice(0,16).replace('T',' '))+'</td>'+
+      '<td>'+escapeHtml(r.source==='quickbooks'?'QuickBooks':'Zoho')+'</td>'+
+      '<td>'+escapeHtml(r.vendor||'')+'</td>'+
+      '<td>'+escapeHtml(r.filename||'')+'</td>'+
+      '<td>'+escapeHtml(r.po_raw||'')+(r.po_key&&r.po_key!==String(r.po_raw||'').toUpperCase()?' &rarr; '+escapeHtml(r.po_key):'')+'</td>'+
+      '<td>'+chip+'</td>'+
+      '<td><span class="ib-link" onclick="ibTog('+i+')">details</span></td></tr>'+
+      '<tr class="ib-det" id="ib-det-'+i+'" style="display:none"><td colspan="8"><div class="sub" style="margin-bottom:6px;">'+escapeHtml(r.subject||'')+(r.po_status?' &middot; PO status: '+escapeHtml(r.po_status):'')+'</div>'+det+'</td></tr>';
+  });
+  var ls=(IB.data&&IB.data.last_scan)||null;
+  var meta=ls?('Last scan: '+escapeHtml(String(ls.at||'').slice(0,16).replace('T',' '))+' UTC &middot; window: '+escapeHtml(ls.window||'')+' &middot; '+(ls.scanned||0)+' emails checked'):'No scan has been run yet.';
+  host.innerHTML='<div class="sub" style="margin:4px 0 8px;">'+meta+' &middot; '+res.length+' result'+(res.length===1?'':'s')+' in list, '+nNew+' new</div>'+
+    (res.length?'<table><thead><tr><td>New?</td><td>Received (UTC)</td><td>Source</td><td>Vendor</td><td>Invoice file</td><td>PO</td><td>Result</td><td></td></tr></thead><tbody>'+body+'</tbody></table>':'<div class="inv-hint">Nothing here yet. Choose a window and press Search.</div>');
 }
 
 function renderAll(){ _ioppOpenSkuCache=null; loadIopp(); renderKpis(); renderTabs(); renderPanel(); renderAsOf(); }
