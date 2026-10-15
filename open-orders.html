@@ -3291,6 +3291,88 @@ function renderPayPanel(){
     '<span style="color:#7f8c8d;font-size:12px;margin-left:8px;">QuickBooks open balances &middot; as of '+escapeHtml((arSub==='ar'?PAY.ar.generated_at:PAY.ap.generated_at)||'')+'</span></div>';
   P.innerHTML=head+(arSub==='ar'?arRenderAR():arRenderAP());
 }
+var arMail={ci:-1,sel:{},html:''};
+function arMailDays(r){ var s=r.due||r.date; if(!s) return 0; var d=Math.floor((Date.now()-new Date(s+'T00:00:00').getTime())/86400000); return d>0?d:0; }
+function arMailRows(){ var c=(PAY.ar.customers||[])[arMail.ci]; if(!c) return []; var a=(c.invoices||[]).filter(function(r){return (Number(r.balance)||0)>0.005;}); a.sort(function(x,y){return String(x.due||'').localeCompare(String(y.due||''));}); return a; }
+function arMailOpen(){
+  var m=document.getElementById('arMailModal'); if(m) m.parentNode.removeChild(m);
+  arMail={ci:-1,sel:{},html:''};
+  var cs=PAY.ar.customers||[], opts='<option value="-1">Select a customer...</option>';
+  for(var i=0;i<cs.length;i++){ var n=0,t=0; for(var j=0;j<(cs[i].invoices||[]).length;j++){ var b=Number(cs[i].invoices[j].balance)||0; if(b>0.005){n++;t+=b;} }
+    if(n) opts+='<option value="'+i+'">'+escapeHtml(cs[i].name)+' ('+n+' invoice'+(n===1?'':'s')+', '+payMoney(t)+')</option>'; }
+  var d=document.createElement('div'); d.id='arMailModal';
+  d.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(16,30,62,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;';
+  d.innerHTML='<div style="background:#fff;border-radius:10px;max-width:760px;width:100%;max-height:92vh;overflow:auto;padding:18px 20px;box-shadow:0 10px 40px rgba(0,0,0,.35);">'+
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><b style="font-size:16px;color:#101E3E;">&#9993; Email customer &mdash; open invoice status request</b><a href="#" onclick="arMailClose();return false;" style="font-size:20px;text-decoration:none;color:#555;">&times;</a></div>'+
+    '<div style="margin-bottom:10px;"><label style="font-size:13px;">Customer: <select id="arMailCust" onchange="arMailPick(this.value)" style="padding:5px 8px;min-width:320px;">'+opts+'</select></label></div>'+
+    '<div id="arMailBody" style="font-size:13px;color:#7f8c8d;">Choose a customer to pick the invoices to include.</div></div>';
+  document.body.appendChild(d);
+}
+function arMailClose(){ var m=document.getElementById('arMailModal'); if(m) m.parentNode.removeChild(m); }
+function arMailPick(v){ arMail.ci=Number(v); arMail.sel={}; arMail.html=''; var rows=arMailRows();
+  for(var i=0;i<rows.length;i++){ var r=rows[i]; arMail.sel[r.number]=!(r.reconcile||arIsExcl(r)); }
+  arMailDrawList(); }
+function arMailDrawList(){
+  var el=document.getElementById('arMailBody'); if(!el) return;
+  var rows=arMailRows(); if(!rows.length){ el.innerHTML='Choose a customer to pick the invoices to include.'; return; }
+  var h='<div style="margin-bottom:6px;font-size:13px;"><a href="#" onclick="arMailAll(true);return false;">Select all</a> &nbsp; <a href="#" onclick="arMailAll(false);return false;">Select none</a> &nbsp; <span style="color:#7f8c8d;">Invoices paid in Shopify or excluded in the A/R view start unticked.</span></div>'+
+    '<table class="tbl" style="width:100%;"><thead><tr><th class="c"></th><th>Invoice #</th><th>Issued</th><th>Due</th><th class="c">Days past due</th><th style="text-align:right;">Amount</th></tr></thead><tbody>';
+  var tot=0,n=0;
+  for(var i=0;i<rows.length;i++){ var r=rows[i], on=!!arMail.sel[r.number]; if(on){tot+=Number(r.balance)||0;n++;}
+    h+='<tr><td class="c"><input type="checkbox" '+(on?'checked ':'')+'onclick="arMailTog(&quot;'+escapeHtml(r.number)+'&quot;)"></td><td>'+escapeHtml(r.number)+(r.reconcile?' <span style="font-size:10px;color:#137333;">paid in Shopify</span>':'')+(arIsExcl(r)?' <span style="font-size:10px;color:#c0392b;">excluded</span>':'')+'</td><td>'+fmtDate(r.date)+'</td><td>'+fmtDate(r.due)+'</td><td class="c">'+(arMailDays(r)||'&mdash;')+'</td><td style="text-align:right;">'+payMoney(r.balance)+'</td></tr>'; }
+  h+='<tr class="so-group"><td></td><td colspan="4" style="font-weight:700;">Selected: '+n+' invoice'+(n===1?'':'s')+'</td><td style="text-align:right;font-weight:700;">'+payMoney(tot)+'</td></tr></tbody></table>'+
+    '<div style="margin-top:12px;"><button class="mode-btn" style="margin:0;" '+(n?'':'disabled ')+'onclick="arMailGen()">Create email</button></div><div id="arMailOut"></div>';
+  el.innerHTML=h; }
+function arMailTog(num){ arMail.sel[num]=!arMail.sel[num]; var keep=document.getElementById('arMailOut'); arMail.html=''; arMailDrawList(); }
+function arMailAll(on){ var rows=arMailRows(); for(var i=0;i<rows.length;i++) arMail.sel[rows[i].number]=on; arMail.html=''; arMailDrawList(); }
+function arMailBuild(name,rows){
+  var tot=0, tr='';
+  for(var i=0;i<rows.length;i++){ var r=rows[i], dp=arMailDays(r); tot+=Number(r.balance)||0;
+    var td='padding:7px 10px;border-bottom:1px solid #e3e7ee;';
+    tr+='<tr><td style="'+td+'">'+escapeHtml(r.number)+'</td><td style="'+td+'">'+fmtDate(r.date)+'</td><td style="'+td+'">'+fmtDate(r.due)+'</td><td align="center" style="'+td+(dp>0?'color:#c0392b;font-weight:700;':'')+'">'+(dp>0?dp:'&mdash;')+'</td><td align="right" style="'+td+'">'+payMoney(r.balance)+'</td></tr>'; }
+  var th='padding:8px 10px;';
+  return '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Status of your open invoices</title>'+
+  '<style>@media only screen and (max-width:620px){.wrapcell{padding:16px !important;}}</style></head><body style="margin:0;padding:0;background:#f4f6f9">'+
+  '<div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#f4f6f9">Please send us a status update on your open JIT4Labs invoices.</div>'+
+  '<table cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#f4f6f9"><tr><td align="center" style="padding:18px 10px">'+
+  '<table cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:700px;width:100%;background:#fff;border:1px solid #e3e7ee">'+
+  '<tr><td style="padding:18px 24px;border-bottom:3px solid #008080"><a href="https://jit4labs.com" target="_blank" style="text-decoration:none;color:#101E3E"><img src="https://jit4labs.com/cdn/shop/files/JIT4LABS-Logo.png" alt="JIT4LABS" width="175" height="30" border="0" style="display:block;width:175px;max-width:175px;height:30px;border:0;outline:none;text-decoration:none;font:bold 22px Arial,Helvetica,sans-serif;color:#101E3E;line-height:30px"></a></td></tr>'+
+  '<tr><td class="wrapcell" style="padding:24px;font:14px/1.6 Arial,Helvetica,sans-serif;color:#101E3E">'+
+  '<p style="margin:0 0 12px">Dear '+escapeHtml(name)+',<br><br>We’re writing to ask for a <b style="color:#008080">status update</b> on the open invoices listed below. Could you please let us know when we can expect payment, or if you need a copy of any invoice or have a question about it?</p>'+
+  '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;font-size:13px;color:#101E3E;margin:6px 0 14px">'+
+  '<thead><tr style="background:#101E3E;color:#fff"><th align="left" style="'+th+'">Invoice #</th><th align="left" style="'+th+'">Date issued</th><th align="left" style="'+th+'">Due date</th><th align="center" style="'+th+'">Days past due</th><th align="right" style="'+th+'">Amount</th></tr></thead><tbody>'+tr+
+  '<tr style="background:#f4f6f9"><td colspan="4" style="padding:9px 10px;font-weight:700;border-top:2px solid #008080">Total</td><td align="right" style="padding:9px 10px;font-weight:700;border-top:2px solid #008080">'+payMoney(tot)+'</td></tr></tbody></table>'+
+  '<p style="margin:0 0 12px">Payment terms are NET 10. If you have already sent payment, please disregard this note and let us know the date so we can match it. Reply to this email or call us at <a href="tel:+18882422301" style="color:#008080;text-decoration:underline">(888) 242-2301</a>.<br><br>Thank you,<br>JIT4Labs team</p></td></tr>'+
+  '<tr><td style="padding:14px 24px;border-top:3px solid #008080;font:12px/1.6 Arial,Helvetica,sans-serif;color:#6b7280">JIT4Labs &middot; <a href="mailto:CustomerSupport@jit4you.com" style="color:#008080;text-decoration:none">CustomerSupport@jit4you.com</a> &middot; <a href="tel:+18882422301" style="color:#008080;text-decoration:none">(888) 242-2301</a> &middot; <a href="https://jit4labs.com" style="color:#008080;text-decoration:none">jit4labs.com</a></td></tr>'+
+  '</table></td></tr></table></body></html>'; }
+function arMailGen(){
+  var c=(PAY.ar.customers||[])[arMail.ci]; if(!c) return;
+  var rows=arMailRows().filter(function(r){return arMail.sel[r.number];}); if(!rows.length) return;
+  arMail.html=arMailBuild(c.name,rows);
+  var out=document.getElementById('arMailOut');
+  out.innerHTML='<div style="margin:12px 0 6px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">'+
+    '<button class="mode-btn" style="margin:0;" onclick="arMailCopy(true)">Copy for pasting into email</button>'+
+    '<button class="mode-btn" style="margin:0;" onclick="arMailCopy(false)">Copy HTML source</button>'+
+    '<button class="mode-btn" style="margin:0;" onclick="arMailDl()">&#11015; Download .html</button>'+
+    '<span id="arMailMsg" style="font-size:12px;color:#137333;"></span></div>'+
+    '<iframe id="arMailFrame" style="width:100%;height:440px;border:1px solid #e3e7ee;border-radius:6px;"></iframe>';
+  document.getElementById('arMailFrame').srcdoc=arMail.html; }
+function arMailMsg(t){ var e=document.getElementById('arMailMsg'); if(e) e.textContent=t; }
+function arMailCopy(rich){
+  var h=arMail.html; if(!h) return;
+  function fb(){ var ta=document.createElement('textarea'); ta.value=h; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); arMailMsg('Copied HTML source.'); }catch(e){ arMailMsg('Copy failed - use Download.'); } document.body.removeChild(ta); }
+  try{
+    if(rich&&window.ClipboardItem&&navigator.clipboard&&navigator.clipboard.write){
+      var item=new ClipboardItem({'text/html':new Blob([h],{type:'text/html'}),'text/plain':new Blob([h],{type:'text/plain'})});
+      navigator.clipboard.write([item]).then(function(){arMailMsg('Copied - paste into a new email.');},function(){fb();});
+    } else if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(h).then(function(){arMailMsg('Copied HTML source.');},function(){fb();}); }
+    else fb();
+  }catch(e){ fb(); } }
+function arMailDl(){
+  var c=(PAY.ar.customers||[])[arMail.ci]; if(!c||!arMail.html) return;
+  var nm='', s=c.name||'customer'; for(var i=0;i<s.length;i++){ nm+=/[a-z0-9]/i.test(s.charAt(i))?s.charAt(i):'_'; }
+  var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([arMail.html],{type:'text/html'})); a.download='JIT4Labs_Open_Invoices_'+nm+'.html';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); }
 function arRenderAR(){
   var cs=PAY.ar.customers||[], tot={all:0,current:0,b1:0,b2:0,b3:0}, nAll=0;
   var q=(arSearch||'').toLowerCase();
@@ -3309,6 +3391,7 @@ function arRenderAR(){
     '<label style="cursor:pointer;white-space:nowrap;"><input type="checkbox" onchange="arSetRec(this)"'+(arRecOnly?' checked':'')+'> Needs reconcile (paid in Shopify, still open in QuickBooks) only &mdash; '+recN+' invoice'+(recN===1?'':'s')+', '+payMoney(recAmt)+' in QuickBooks</label>'+
     (function(){var n=0,m=arExclMap();for(var k in m) if(m.hasOwnProperty(k)) n++; return n?'<a href="#" onclick="arClearExcl();return false;" title="Put all manually excluded rows back into the totals">Clear '+n+' excluded</a>':'';})()+
     '<button class="mode-btn" style="margin:0;" onclick="arExportCsv()" title="Download the invoices currently listed (filters and sort applied; rows ticked Excl. are left out) as CSV">&#11015; Export CSV</button>'+
+    '<button class="mode-btn" style="margin:0;" onclick="arMailOpen()" title="Create an HTML email asking the customer for a status update on selected open invoices">&#9993; Email customer</button>'+
         '<a href="#" onclick="arExpandAll(true);return false;">Expand all</a><a href="#" onclick="arExpandAll(false);return false;">Collapse all</a>'+
     '<span style="color:#7f8c8d;">Aging = '+basisLbl+'</span></div>';
   var rows='', shownC=0, shownInv=0, shownAmt=0, items=[];
