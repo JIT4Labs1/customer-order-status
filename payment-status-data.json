@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-15 03:24 PM UTC",
+  "generated_at": "2026-10-15 05:05 PM UTC",
   "year": 2026,
   "customers": [
     {
@@ -774,16 +774,9 @@
           "invoice_link": "",
           "so_num": "SO434",
           "shopify_order": "",
-          "fulfillment": "Partially",
+          "fulfillment": "Fulfilled",
           "so_date": "2026-06-15",
-          "open_items": [
-            {
-              "product": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
-              "open_qty": 3.0,
-              "po": "PO689",
-              "vendor": "PMA Services"
-            }
-          ]
+          "open_items": []
         },
         {
           "number": "SO423",
@@ -1724,6 +1717,20 @@
       "qb_id": "1486",
       "invoices": [
         {
+          "number": "SO765",
+          "status": "Not Paid",
+          "amount": 1583.1,
+          "balance": 1583.1,
+          "date": "2026-10-15",
+          "link": "",
+          "invoice_link": "https://connect.intuit.com/t/scs-v1-b295163d2775436bb2774c8e53c08d8a35678f945ded460687e36d58deff500a9c739aafd4644bb88bf85245deeff972-0?locale=en_US&cta=v3invoicelink",
+          "so_num": "",
+          "shopify_order": "",
+          "fulfillment": "",
+          "so_date": "",
+          "open_items": []
+        },
+        {
           "number": "SO668",
           "status": "Paid",
           "amount": 45.63,
@@ -1949,10 +1956,10 @@
         }
       ],
       "totals": {
-        "count": 16,
-        "amount": 14515.17,
+        "count": 17,
+        "amount": 16098.27,
         "paid": 14020.21,
-        "unpaid": 494.96
+        "unpaid": 2078.06
       }
     },
     {
@@ -3705,7 +3712,7 @@
     }
   ],
   "payables": {
-    "generated_at": "2026-10-15 03:23 PM UTC",
+    "generated_at": "2026-10-15 05:05 PM UTC",
     "grand_total": 15232.4,
     "past_due": 5392.31,
     "count": 29,
@@ -3937,14 +3944,14 @@
     "source": "Bank balance",
     "book_balance": 54680.17,
     "bank_asof": "2026-07-23",
-    "as_of": "2026-10-15 03:23 PM UTC"
+    "as_of": "2026-10-15 05:05 PM UTC"
   },
   "ar": {
-    "generated_at": "2026-10-15 03:24 PM UTC",
+    "generated_at": "2026-10-15 05:05 PM UTC",
     "as_of": "2026-10-15",
     "total": 93429.63,
-    "qb_total": 112277.56,
-    "count": 70,
+    "qb_total": 113860.66,
+    "count": 71,
     "customers": [
       {
         "name": "Mercedes Scientific",
@@ -5340,7 +5347,7 @@
       {
         "name": "MEDICAL HEALTH LAB",
         "balance": 317.71,
-        "qb_balance": 494.96,
+        "qb_balance": 2078.06,
         "invoices": [
           {
             "number": "SO627",
@@ -5450,6 +5457,20 @@
             "shopify_status": "",
             "shopify_match": "tracking",
             "reconcile": false
+          },
+          {
+            "number": "SO765",
+            "date": "2026-10-15",
+            "due": "2026-10-15",
+            "amount": 1583.1,
+            "balance": 1583.1,
+            "so_num": "",
+            "shopify_order": "#1236",
+            "shopify_fulfillments": [],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-b295163d2775436bb2774c8e53c08d8a35678f945ded460687e36d58deff500a9c739aafd4644bb88bf85245deeff972-0?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PAID",
+            "shopify_match": "note",
+            "reconcile": true
           }
         ]
       },
@@ -5795,7 +5816,7 @@
     ]
   },
   "ap": {
-    "generated_at": "2026-10-15 03:24 PM UTC",
+    "generated_at": "2026-10-15 05:05 PM UTC",
     "total": 15232.4,
     "past_due": 5392.31,
     "count": 29,
@@ -6332,5 +6353,5 @@
       }
     ]
   },
-  "pulled_at": "2026-10-15 08:24 AM PT"
+  "pulled_at": "2026-10-15 10:07 AM PT"
 }
