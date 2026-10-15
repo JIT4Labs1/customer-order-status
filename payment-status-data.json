@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-14 11:48 PM UTC",
+  "generated_at": "2026-10-15 12:23 AM UTC",
   "year": 2026,
   "customers": [
     {
@@ -3684,7 +3684,7 @@
     }
   ],
   "payables": {
-    "generated_at": "2026-10-14 11:48 PM UTC",
+    "generated_at": "2026-10-15 12:21 AM UTC",
     "grand_total": 15232.4,
     "past_due": 5392.31,
     "count": 29,
@@ -3916,12 +3916,12 @@
     "source": "Bank balance",
     "book_balance": 54616.81,
     "bank_asof": "2026-07-23",
-    "as_of": "2026-10-14 11:48 PM UTC"
+    "as_of": "2026-10-15 12:21 AM UTC"
   },
   "ar": {
-    "generated_at": "2026-10-14 11:48 PM UTC",
-    "as_of": "2026-10-14",
-    "total": 92829.69,
+    "generated_at": "2026-10-15 12:23 AM UTC",
+    "as_of": "2026-10-15",
+    "total": 92023.29,
     "qb_total": 110871.22,
     "count": 68,
     "customers": [
@@ -3986,9 +3986,19 @@
             "amount": 157.1,
             "balance": 157.1,
             "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
-            "shopify_status": "",
+            "shopify_order": "#1094",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1094-F2",
+                "tracking": ""
+              }
+            ],
+            "shopify_status": "PENDING",
+            "shopify_total": 195.7,
+            "shopify_received": null,
+            "shopify_outstanding": 195.7,
+            "shopify_match": "qb_field",
             "reconcile": false
           },
           {
@@ -3998,9 +4008,16 @@
             "amount": 327.6,
             "balance": 327.6,
             "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
+            "shopify_order": "#1209",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1209-F1",
+                "tracking": ""
+              }
+            ],
             "shopify_status": "",
+            "shopify_match": "qb_field",
             "reconcile": false
           },
           {
@@ -4032,9 +4049,16 @@
             "amount": 243.0,
             "balance": 243.0,
             "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
+            "shopify_order": "#1118",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1118-F14",
+                "tracking": ""
+              }
+            ],
             "shopify_status": "",
+            "shopify_match": "qb_field",
             "reconcile": false
           },
           {
@@ -4136,7 +4160,7 @@
       },
       {
         "name": "LabX Diagnostic Systems",
-        "balance": 15152.99,
+        "balance": 14346.59,
         "qb_balance": 15152.99,
         "invoices": [
           {
@@ -4170,9 +4194,16 @@
             "amount": 232.11,
             "balance": 232.11,
             "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
+            "shopify_order": "#1175",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1175-F1",
+                "tracking": ""
+              }
+            ],
             "shopify_status": "",
+            "shopify_match": "qb_field",
             "reconcile": false
           },
           {
@@ -4182,9 +4213,16 @@
             "amount": 544.9,
             "balance": 544.9,
             "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
+            "shopify_order": "#1175",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1175-F2",
+                "tracking": ""
+              }
+            ],
             "shopify_status": "",
+            "shopify_match": "qb_field",
             "reconcile": false
           },
           {
@@ -4194,9 +4232,16 @@
             "amount": 1973.6,
             "balance": 206.57,
             "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
+            "shopify_order": "#1175",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1175-F3",
+                "tracking": ""
+              }
+            ],
             "shopify_status": "",
+            "shopify_match": "qb_field",
             "reconcile": false
           },
           {
@@ -4206,9 +4251,16 @@
             "amount": 1046.8,
             "balance": 1046.8,
             "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
+            "shopify_order": "#1181",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1181-F1",
+                "tracking": ""
+              }
+            ],
             "shopify_status": "",
+            "shopify_match": "qb_field",
             "reconcile": false
           },
           {
@@ -4218,10 +4270,20 @@
             "amount": 168.8,
             "balance": 168.8,
             "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
-            "shopify_status": "",
-            "reconcile": false
+            "shopify_order": "#1173",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1173-F2",
+                "tracking": ""
+              }
+            ],
+            "shopify_status": "PAID",
+            "shopify_total": 1757.4,
+            "shopify_received": 1757.4,
+            "shopify_outstanding": null,
+            "shopify_match": "qb_field",
+            "reconcile": true
           },
           {
             "number": "SO675",
@@ -4230,9 +4292,16 @@
             "amount": 880.0,
             "balance": 880.0,
             "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
+            "shopify_order": "#1188",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1188-F1",
+                "tracking": ""
+              }
+            ],
             "shopify_status": "",
+            "shopify_match": "qb_field",
             "reconcile": false
           },
           {
@@ -4242,9 +4311,16 @@
             "amount": 1152.0,
             "balance": 1152.0,
             "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
+            "shopify_order": "#1187",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1187-F1",
+                "tracking": ""
+              }
+            ],
             "shopify_status": "",
+            "shopify_match": "qb_field",
             "reconcile": false
           },
           {
@@ -4254,9 +4330,16 @@
             "amount": 191.0,
             "balance": 191.0,
             "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
+            "shopify_order": "#1187",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1187-F2",
+                "tracking": ""
+              }
+            ],
             "shopify_status": "",
+            "shopify_match": "qb_field",
             "reconcile": false
           },
           {
@@ -4266,9 +4349,16 @@
             "amount": 486.3,
             "balance": 486.3,
             "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
+            "shopify_order": "#1175",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1175-F4",
+                "tracking": ""
+              }
+            ],
             "shopify_status": "",
+            "shopify_match": "qb_field",
             "reconcile": false
           },
           {
@@ -4278,9 +4368,19 @@
             "amount": 2398.12,
             "balance": 2398.12,
             "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
-            "shopify_status": "",
+            "shopify_order": "#1196",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1196-F1",
+                "tracking": ""
+              }
+            ],
+            "shopify_status": "PENDING",
+            "shopify_total": 2772.18,
+            "shopify_received": null,
+            "shopify_outstanding": 2772.18,
+            "shopify_match": "qb_field",
             "reconcile": false
           },
           {
@@ -4390,10 +4490,20 @@
             "amount": 637.6,
             "balance": 637.6,
             "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
-            "shopify_status": "",
-            "reconcile": false
+            "shopify_order": "#1173",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1173-F3",
+                "tracking": ""
+              }
+            ],
+            "shopify_status": "PAID",
+            "shopify_total": 1757.4,
+            "shopify_received": 1757.4,
+            "shopify_outstanding": null,
+            "shopify_match": "qb_field",
+            "reconcile": true
           },
           {
             "number": "SO733",
@@ -4482,9 +4592,16 @@
             "amount": 1186.5,
             "balance": 1186.5,
             "so_num": "SO417",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
+            "shopify_order": "#1038",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1038-F1",
+                "tracking": ""
+              }
+            ],
             "shopify_status": "",
+            "shopify_match": "qb_field",
             "reconcile": false
           },
           {
@@ -4925,16 +5042,21 @@
             "amount": 499.72,
             "balance": 499.72,
             "so_num": "",
-            "shopify_order": "#1186",
+            "shopify_order": "#1178",
             "shopify_fulfillments": [
               {
-                "id": "6509746880756",
+                "id": "",
+                "shipment": "#1178-F2",
+                "tracking": ""
+              },
+              {
+                "id": "",
                 "shipment": "#1186-F2",
-                "tracking": "877638605300"
+                "tracking": ""
               }
             ],
             "shopify_status": "",
-            "shopify_match": "tracking",
+            "shopify_match": "qb_field",
             "reconcile": false
           }
         ]
@@ -5187,16 +5309,16 @@
             "shopify_order": "#1193",
             "shopify_fulfillments": [
               {
-                "id": "6509884113140",
+                "id": "",
                 "shipment": "#1193-F1",
-                "tracking": "383845476924"
+                "tracking": ""
               }
             ],
             "shopify_status": "PAID",
             "shopify_total": 1790.19,
             "shopify_received": 1790.19,
             "shopify_outstanding": null,
-            "shopify_match": "tracking",
+            "shopify_match": "qb_field",
             "reconcile": true
           },
           {
@@ -5242,20 +5364,9 @@
             "shopify_order": "#1232",
             "shopify_fulfillments": [
               {
-                "id": "6547737673972",
-                "shipment": "#1232-F2",
-                "tracking": "878658578311",
-                "trackings": [
-                  "878658578311"
-                ]
-              },
-              {
-                "id": "6547720995060",
+                "id": "",
                 "shipment": "#1232-F1",
-                "tracking": "878658001957",
-                "trackings": [
-                  "878658001957"
-                ]
+                "tracking": ""
               }
             ],
             "shopify_status": "PARTIALLY_PAID",
@@ -5282,12 +5393,9 @@
             "shopify_order": "#1220",
             "shopify_fulfillments": [
               {
-                "id": "6531771597044",
+                "id": "",
                 "shipment": "#1220-F1",
-                "tracking": "878194262102",
-                "trackings": [
-                  "878194262102"
-                ]
+                "tracking": ""
               }
             ],
             "shopify_status": "PAID",
@@ -5390,13 +5498,9 @@
             "shopify_order": "#1227",
             "shopify_fulfillments": [
               {
-                "id": "6546140004596",
+                "id": "",
                 "shipment": "#1227-F1",
-                "tracking": "1Z8W007Y0395386701",
-                "trackings": [
-                  "1Z8W007Y0395386701",
-                  "1Z8W007Y0397171091"
-                ]
+                "tracking": ""
               }
             ],
             "shopify_status": "PAID",
@@ -5444,12 +5548,18 @@
             "balance": 588.95,
             "so_num": "",
             "shopify_order": "#1231",
-            "shopify_fulfillments": [],
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1231-F1",
+                "tracking": ""
+              }
+            ],
             "shopify_status": "PAID",
             "shopify_total": 588.95,
             "shopify_received": 588.95,
             "shopify_outstanding": null,
-            "shopify_match": "amount",
+            "shopify_match": "qb_field",
             "reconcile": true
           }
         ]
@@ -5457,7 +5567,7 @@
     ]
   },
   "ap": {
-    "generated_at": "2026-10-14 11:48 PM UTC",
+    "generated_at": "2026-10-15 12:23 AM UTC",
     "total": 15232.4,
     "past_due": 5392.31,
     "count": 29,
@@ -5473,7 +5583,7 @@
             "due": "2026-10-01",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": 13,
+            "days_past_due": 14,
             "pos": [
               {
                 "po": "PO834",
@@ -5491,7 +5601,7 @@
             "due": "2026-10-01",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": 13,
+            "days_past_due": 14,
             "pos": [
               {
                 "po": "PO834",
@@ -5509,7 +5619,7 @@
             "due": "2026-10-01",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": 13,
+            "days_past_due": 14,
             "pos": [
               {
                 "po": "PO835",
@@ -5527,7 +5637,7 @@
             "due": "2026-10-03",
             "amount": 623.46,
             "balance": 623.46,
-            "days_past_due": 11,
+            "days_past_due": 12,
             "pos": [
               {
                 "po": "PO842",
@@ -5545,7 +5655,7 @@
             "due": "2026-10-08",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": 6,
+            "days_past_due": 7,
             "pos": [
               {
                 "po": "PO851",
@@ -5563,7 +5673,7 @@
             "due": "2026-10-08",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": 6,
+            "days_past_due": 7,
             "pos": [
               {
                 "po": "PO851",
@@ -5581,7 +5691,7 @@
             "due": "2026-10-15",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": -1,
+            "days_past_due": 0,
             "pos": [
               {
                 "po": "PO860",
@@ -5599,7 +5709,7 @@
             "due": "2026-10-15",
             "amount": 311.73,
             "balance": 311.73,
-            "days_past_due": -1,
+            "days_past_due": 0,
             "pos": [
               {
                 "po": "PO861",
@@ -5617,7 +5727,7 @@
             "due": "2026-10-15",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": -1,
+            "days_past_due": 0,
             "pos": [
               {
                 "po": "PO860",
@@ -5635,7 +5745,7 @@
             "due": "2026-10-18",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": -4,
+            "days_past_due": -3,
             "pos": [
               {
                 "po": "PO873",
@@ -5653,7 +5763,7 @@
             "due": "2026-10-18",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": -4,
+            "days_past_due": -3,
             "pos": [
               {
                 "po": "PO873",
@@ -5671,7 +5781,7 @@
             "due": "2026-10-22",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": -8,
+            "days_past_due": -7,
             "pos": [
               {
                 "po": "PO880",
@@ -5689,7 +5799,7 @@
             "due": "2026-10-22",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": -8,
+            "days_past_due": -7,
             "pos": [
               {
                 "po": "PO880",
@@ -5707,7 +5817,7 @@
             "due": "2026-10-23",
             "amount": 158.5,
             "balance": 158.5,
-            "days_past_due": -9,
+            "days_past_due": -8,
             "pos": [
               {
                 "po": "PO882",
@@ -5725,7 +5835,7 @@
             "due": "2026-10-25",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": -11,
+            "days_past_due": -10,
             "pos": [
               {
                 "po": "PO896",
@@ -5743,7 +5853,7 @@
             "due": "2026-10-25",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": -11,
+            "days_past_due": -10,
             "pos": [
               {
                 "po": "PO896",
@@ -5761,7 +5871,7 @@
             "due": "2026-10-26",
             "amount": 158.5,
             "balance": 158.5,
-            "days_past_due": -12,
+            "days_past_due": -11,
             "pos": [
               {
                 "po": "PO889",
@@ -5779,7 +5889,7 @@
             "due": "2026-10-26",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": -12,
+            "days_past_due": -11,
             "pos": [
               {
                 "po": "PO889",
@@ -5797,7 +5907,7 @@
             "due": "2026-10-29",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": -15,
+            "days_past_due": -14,
             "pos": [
               {
                 "po": "PO899",
@@ -5815,7 +5925,7 @@
             "due": "2026-10-31",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": -17,
+            "days_past_due": -16,
             "pos": [
               {
                 "po": "PO906",
@@ -5833,7 +5943,7 @@
             "due": "2026-10-31",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": -17,
+            "days_past_due": -16,
             "pos": [
               {
                 "po": "PO908",
@@ -5858,7 +5968,7 @@
             "due": "2026-06-11",
             "amount": 135.2,
             "balance": 135.2,
-            "days_past_due": 125,
+            "days_past_due": 126,
             "pos": [
               {
                 "po": "PO682",
@@ -5876,7 +5986,7 @@
             "due": "2026-07-29",
             "amount": 82.0,
             "balance": 82.0,
-            "days_past_due": 77,
+            "days_past_due": 78,
             "pos": [
               {
                 "po": "PO708",
@@ -5894,7 +6004,7 @@
             "due": "2026-08-06",
             "amount": 695.0,
             "balance": 695.0,
-            "days_past_due": 69,
+            "days_past_due": 70,
             "pos": [
               {
                 "po": "PO646",
@@ -5912,7 +6022,7 @@
             "due": "2026-09-26",
             "amount": 92.4,
             "balance": 92.4,
-            "days_past_due": 18,
+            "days_past_due": 19,
             "pos": [
               {
                 "po": "PO827",
@@ -5930,7 +6040,7 @@
             "due": "2026-10-01",
             "amount": 61.6,
             "balance": 61.6,
-            "days_past_due": 13,
+            "days_past_due": 14,
             "pos": [],
             "customers": [
               "MEDICAL HEALTH LAB"
@@ -5942,7 +6052,7 @@
             "due": "2026-10-01",
             "amount": 76.6,
             "balance": 76.6,
-            "days_past_due": 13,
+            "days_past_due": 14,
             "pos": [
               {
                 "po": "PO838",
@@ -5960,7 +6070,7 @@
             "due": "2026-10-02",
             "amount": 34.79,
             "balance": 34.79,
-            "days_past_due": 12,
+            "days_past_due": 13,
             "pos": [
               {
                 "po": "PO841",
@@ -5978,7 +6088,7 @@
             "due": "2026-10-10",
             "amount": 137.0,
             "balance": 137.0,
-            "days_past_due": 4,
+            "days_past_due": 5,
             "pos": [
               {
                 "po": "PO859",
@@ -5994,5 +6104,5 @@
       }
     ]
   },
-  "pulled_at": "2026-10-14 04:48 PM PT"
+  "pulled_at": "2026-10-14 05:23 PM PT"
 }

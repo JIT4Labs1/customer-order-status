@@ -40,6 +40,43 @@ def open_invoices(access):
     return _all(access, "Invoice", "Balance > '0'")
 
 
+PDF_CACHE = os.path.join(QB, "_qb_invoice_pdf_cache.json")
+
+
+def _pdf_fields(access, inv, cache):
+    """The QB REST API does not return invoice custom fields, but the printed invoice does
+    ("Shopify Fulfillment ID: #1094-F2", "Customer PO: ..."). Pull the invoice PDF, extract those two
+    fields, cache by invoice Id + SyncToken (re-fetched only when the invoice is edited)."""
+    key = str(inv.get("Id"))
+    ent = cache.get(key)
+    if ent and ent.get("st") == str(inv.get("SyncToken")):
+        return ent
+    import urllib.request, subprocess, tempfile
+    ent = {"st": str(inv.get("SyncToken")), "ful": "", "po": "", "ok": False}
+    try:
+        req = urllib.request.Request(f"{B.BASE}/company/{B.REALM}/invoice/{inv['Id']}/pdf?minorversion=65",
+                                     headers={"Authorization": "Bearer " + access, "Accept": "application/pdf"})
+        data = urllib.request.urlopen(req, timeout=60).read()
+        with tempfile.NamedTemporaryFile(suffix=".pdf") as tf:
+            tf.write(data); tf.flush()
+            txt = subprocess.run(["pdftotext", "-layout", tf.name, "-"], capture_output=True, text=True, timeout=30).stdout
+        m = re.search(r"Shopify Fulfillment ID:[ \t]*([^\n]*)", txt, re.I)
+        ent["ful"] = re.sub(r"\s{2,}.*$", "", m.group(1).strip()) if m else ""
+        m = re.search(r"Customer PO:[ \t]*([^\n]*)", txt, re.I)
+        ent["po"] = re.sub(r"\s{2,}.*$", "", m.group(1).strip()) if m else ""
+        ent["ok"] = True
+    except Exception as e:
+        print("[WARN] invoice PDF read failed for", inv.get("DocNumber"), e)
+        if ent.get("ok") is False and cache.get(key):
+            return cache[key]
+    cache[key] = ent
+    try:
+        json.dump(cache, open(PDF_CACHE, "w"))
+    except Exception:
+        pass
+    return ent
+
+
 def build_ar(access, invoices=None):
     invs = invoices if invoices is not None else open_invoices(access)
     somap = B.vtiger_so_map([i.get("DocNumber", "") for i in invs])
@@ -84,6 +121,7 @@ def build_ar(access, invoices=None):
         o_ = sh_.get("shopify_order") or sh_.get("order") or ""
         if sh_.get("tracking") and str(o_).startswith("#"):
             trk2order[str(sh_["tracking"]).strip()] = o_
+    pdfc = _load(PDF_CACHE, {})
     custs = {}
     for i in sorted(invs, key=lambda x: (x.get("TxnDate") or "", x.get("DocNumber") or "")):
         bal = B._fnum(i.get("Balance"))
@@ -98,8 +136,17 @@ def build_ar(access, invoices=None):
         mo = re.search(r"Shopify order\s*(#\d+)", note)
         mf = re.search(r"fulfil+ment id\s*(\d+)", note, re.I)
         ms = re.search(r"shipment\s*(#[\w-]+)", note)
-        order = mo.group(1) if mo else (so2ship.get(so.get("so_num", ""), "") if so.get("so_num") else "")
-        matched_by = "note" if mo else ("vtiger" if order else "")
+        # QuickBooks custom field "Shopify Fulfillment ID" (only visible on the printed invoice) holds the shipment label.
+        pf = _pdf_fields(access, i, pdfc) if bal > 0.005 else {}
+        pdf_labels = re.findall(r"#\d+-F\d+", pf.get("ful", "") or "")
+        pdf_ids = [] if pdf_labels else re.findall(r"\b\d{8,}\b", pf.get("ful", "") or "")
+        pdf_order = pdf_labels[0].split("-F")[0] if pdf_labels else ""
+        if not pdf_order and pdf_ids:
+            for o_, fl_ in ful.items():
+                if any(f_.get("id") in pdf_ids for f_ in fl_):
+                    pdf_order = o_; break
+        order = mo.group(1) if mo else (pdf_order or (so2ship.get(so.get("so_num", ""), "") if so.get("so_num") else ""))
+        matched_by = "note" if mo else ("qb_field" if pdf_order else ("vtiger" if order else ""))
         trk_hits = []
         if not order:
             toks = [str(i.get("TrackingNum") or "")] + [l.get("Description") or "" for l in i.get("Line", [])]
@@ -114,7 +161,8 @@ def build_ar(access, invoices=None):
             order = _find_by_amount(cname, bal) or _find_by_amount(cname, B._fnum(i.get("TotalAmt")))
             if order:
                 matched_by = "amount"
-        fl = [{"id": mf.group(1), "shipment": ms.group(1) if ms else "", "tracking": i.get("TrackingNum") or ""}] if mf else ([{"id": "", "shipment": "", "tracking": t_} for t_ in trk_hits] if trk_hits else (ful.get(order, []) if order else []))
+        fl_pdf = [{"id": "", "shipment": l_, "tracking": ""} for l_ in pdf_labels] or [{"id": x_, "shipment": "", "tracking": ""} for x_ in pdf_ids]
+        fl = fl_pdf if (fl_pdf and not mf) else [{"id": mf.group(1), "shipment": ms.group(1) if ms else "", "tracking": i.get("TrackingNum") or ""}] if mf else ([{"id": "", "shipment": "", "tracking": t_} for t_ in trk_hits] if trk_hits else (ful.get(order, []) if order else []))
         row = {"number": num, "date": i.get("TxnDate", ""), "due": i.get("DueDate", "") or i.get("TxnDate", ""),
                "amount": round(B._fnum(i.get("TotalAmt")), 2), "balance": round(bal, 2),
                "so_num": so.get("so_num", ""), "shopify_order": order,
@@ -161,6 +209,10 @@ def build_ar(access, invoices=None):
         c["qb_balance"] += bal
         c["balance"] += 0.0 if row.get("reconcile") else bal   # A/R view: paid-in-Shopify invoices count as 0
         c["invoices"].append(row)
+    try:
+        json.dump(pdfc, open(PDF_CACHE, "w"))
+    except Exception:
+        pass
     out = sorted(custs.values(), key=lambda c: -c["balance"])
     for c in out:
         c["balance"] = round(c["balance"], 2)
