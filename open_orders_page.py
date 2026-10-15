@@ -672,6 +672,7 @@ def build_html(page_data, embeds=None):
   .invchk .ib-tag { display:inline-block; font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; letter-spacing:.4px; }
   .invchk tr.ib-newrow td { background:#faf6ff; }
   .invchk tr.ib-det td { background:#fbfbfd; padding:6px 8px 12px 28px; }
+  .invchk .ib-revrow td { opacity:.55; }
   .invchk .ib-link { cursor:pointer; color:#6d28d9; font-weight:600; }
   .invchk .inv-hint { font-size:11px; color:#888; margin-top:10px; line-height:1.5; }
   .pnl-wrap { overflow-x:auto; padding:20px 22px; }
@@ -5411,6 +5412,8 @@ function renderInvPanel(){
        '<div class="ib-bar"><div class="inv-fld"><label for="ib-win">Search window</label><select id="ib-win"><option value="month">Current month</option><option value="week">Last week (7 days)</option><option value="2weeks">Last 2 weeks (14 days)</option></select></div>'+
        '<button class="inv-go" id="ib-go" onclick="ibSearch()">Search</button>'+
        '<button class="ib-sec" onclick="ibSeenAll()">Mark all as seen</button>'+
+       '<button class="ib-sec" onclick="ibRevAll(true)">Mark all reviewed</button>'+
+       '<label style="font-size:12px;margin-left:8px;cursor:pointer;"><input type="checkbox" onchange="ibHideRev(this.checked)"'+(IB.hideRev?' checked':'')+'> Hide reviewed</label>'+
        '<button class="ib-sec danger" onclick="ibClear()">Clear list</button></div>'+
        '<div class="inv-note" id="ib-note"></div><div id="ib-list"></div></div>'+
    '</div>';
@@ -5503,7 +5506,7 @@ function _invCompare(poKey, lines, fname){
 
 
 // ── Bulk invoice check (mailbox scan results; scan is run by Claude, see invoice_bulk.py) ──
-var IB={data:null, polling:false};
+var IB={data:null, polling:false, rev:{}, hideRev:false};
 var IB_SEEN='jit4_ibulk_seen', IB_PEND='jit4_ibulk_pending';
 function ibLs(k){ try{ return window.localStorage.getItem(k); }catch(e){ return null; } }
 function ibLsSet(k,v){ try{ window.localStorage.setItem(k,v); }catch(e){} }
@@ -5524,6 +5527,7 @@ function ibLoad(){
    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
    .then(function(d){ IB.data=d; })
    .catch(function(){ if(!IB.data) IB.data={results:[]}; })
+   .then(function(){ return ibRevLoad(); })
    .then(function(){ ibRender(); ibCheckPending(); });
 }
 function ibCheckPending(){
@@ -5554,12 +5558,33 @@ function ibClear(){
    .catch(function(e){ ibNote('err','Could not clear: '+escapeHtml(e.message||String(e))); });
 }
 function ibSeenAll(){ ibMarkSeen(); ibRender(); }
+var IB_REV='jit4_ibulk_reviewed';
+function ibRevLocal(){ try{ return JSON.parse(ibLs(IB_REV)||'{}'); }catch(e){ return {}; } }
+function ibIsRev(k){ return !!(IB.rev&&IB.rev[k]); }
+function ibRevLoad(){
+  var loc=ibRevLocal();
+  return fetch('invoice-bulk-reviewed.json?cb='+Date.now(),{cache:'no-store'})
+   .then(function(r){ return r.ok?r.json():{}; }).catch(function(){ return {}; })
+   .then(function(d){ var o={},k; for(k in loc) o[k]=loc[k]; for(k in (d||{})) o[k]=d[k]; IB.rev=o; });
+}
+function ibRevToggle(i){
+  var r=((IB.data&&IB.data.results)||[])[i]; if(!r) return;
+  if(ibIsRev(r.key)) delete IB.rev[r.key]; else IB.rev[r.key]={at:new Date().toISOString()};
+  ibLsSet(IB_REV,JSON.stringify(IB.rev)); ibRender();
+  ibPut('invoice-bulk-reviewed.json',IB.rev,'Invoice bulk check: reviewed update').catch(function(e){ ibNote('warn','Saved in this browser only (could not sync: '+escapeHtml(e.message||String(e))+')'); });
+}
+function ibRevAll(on){
+  ((IB.data&&IB.data.results)||[]).forEach(function(r){ if(on) IB.rev[r.key]=IB.rev[r.key]||{at:new Date().toISOString()}; else delete IB.rev[r.key]; });
+  ibLsSet(IB_REV,JSON.stringify(IB.rev)); ibRender();
+  ibPut('invoice-bulk-reviewed.json',IB.rev,'Invoice bulk check: reviewed update').catch(function(e){ ibNote('warn','Saved in this browser only ('+escapeHtml(e.message||String(e))+')'); });
+}
+function ibHideRev(on){ IB.hideRev=!!on; ibRender(); }
 function ibTog(i){ var r=document.getElementById('ib-det-'+i); if(r) r.style.display=(r.style.display==='none')?'':'none'; }
 function ibRender(){
   var host=document.getElementById('ib-list'); if(!host) return;
   var res=((IB.data&&IB.data.results)||[]).slice();
   res.sort(function(a,b){ return String(b.received||'').localeCompare(String(a.received||'')); });
-  var seen=ibSeen(), nNew=0, body='';
+  var seen=ibSeen(), nNew=0, nRev=0, body='';
   function money(v){ return v==null?'&mdash;':'$'+Number(v).toFixed(2); }
   res.forEach(function(r,i){
     var isNew=!seen[r.key]; if(isNew) nNew++;
@@ -5577,7 +5602,9 @@ function ibRender(){
     });
     (r.po_missing||[]).forEach(function(sku){ det+='<tr class="inv-miss"><td>'+escapeHtml(sku)+'</td><td colspan="5">On the PO but not on this invoice</td><td><span class="inv-badge miss">Not on invoice</span></td></tr>'; });
     det+='</tbody></table>';
-    body+='<tr class="'+(isNew?'ib-newrow':'')+'">'+
+    var rv=ibIsRev(r.key); if(rv) nRev++; if(rv&&IB.hideRev) return;
+    body+='<tr class="'+(isNew?'ib-newrow':'')+(rv?' ib-revrow':'')+'">'+
+      '<td><input type="checkbox" title="Mark as reviewed" '+(rv?'checked ':'')+'onchange="ibRevToggle('+i+')"></td>'+
       '<td><span class="ib-tag '+(isNew?'ib-new':'ib-old')+'">'+(isNew?'&#9733; NEW':'Old')+'</span></td>'+
       '<td>'+escapeHtml(String(r.received||'').slice(0,16).replace('T',' '))+'</td>'+
       '<td>'+escapeHtml(r.source==='quickbooks'?'QuickBooks':'Zoho')+'</td>'+
@@ -5586,12 +5613,12 @@ function ibRender(){
       '<td>'+escapeHtml(r.po_raw||'')+(r.po_key&&r.po_key!==String(r.po_raw||'').toUpperCase()?' &rarr; '+escapeHtml(r.po_key):'')+'</td>'+
       '<td>'+chip+'</td>'+
       '<td><span class="ib-link" onclick="ibTog('+i+')">details</span></td></tr>'+
-      '<tr class="ib-det" id="ib-det-'+i+'" style="display:none"><td colspan="8"><div class="sub" style="margin-bottom:6px;">'+escapeHtml(r.subject||'')+(r.po_status?' &middot; PO status: '+escapeHtml(r.po_status):'')+'</div>'+det+'</td></tr>';
+      '<tr class="ib-det" id="ib-det-'+i+'" style="display:none"><td colspan="9"><div class="sub" style="margin-bottom:6px;">'+escapeHtml(r.subject||'')+(r.po_status?' &middot; PO status: '+escapeHtml(r.po_status):'')+'</div>'+det+'</td></tr>';
   });
   var ls=(IB.data&&IB.data.last_scan)||null;
   var meta=ls?('Last scan: '+escapeHtml(String(ls.at||'').slice(0,16).replace('T',' '))+' UTC &middot; window: '+escapeHtml(ls.window||'')+' &middot; '+(ls.scanned||0)+' emails checked'):'No scan has been run yet.';
-  host.innerHTML='<div class="sub" style="margin:4px 0 8px;">'+meta+' &middot; '+res.length+' result'+(res.length===1?'':'s')+' in list, '+nNew+' new</div>'+
-    (res.length?'<table><thead><tr><td>New?</td><td>Received (UTC)</td><td>Source</td><td>Vendor</td><td>Invoice file</td><td>PO</td><td>Result</td><td></td></tr></thead><tbody>'+body+'</tbody></table>':'<div class="inv-hint">Nothing here yet. Choose a window and press Search.</div>');
+  host.innerHTML='<div class="sub" style="margin:4px 0 8px;">'+meta+' &middot; '+res.length+' result'+(res.length===1?'':'s')+' in list, '+nNew+' new, '+nRev+' reviewed</div>'+
+    (res.length?'<table><thead><tr><td>Reviewed</td><td>New?</td><td>Received (UTC)</td><td>Source</td><td>Vendor</td><td>Invoice file</td><td>PO</td><td>Result</td><td></td></tr></thead><tbody>'+body+'</tbody></table>':'<div class="inv-hint">Nothing here yet. Choose a window and press Search.</div>');
 }
 
 function renderAll(){ _ioppOpenSkuCache=null; loadIopp(); renderKpis(); renderTabs(); renderPanel(); renderAsOf(); }
