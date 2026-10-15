@@ -132,7 +132,11 @@
   .invchk .ib-tag { display:inline-block; font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; letter-spacing:.4px; }
   .invchk tr.ib-newrow td { background:#faf6ff; }
   .invchk tr.ib-det td { background:#fbfbfd; padding:6px 8px 12px 28px; }
-  .invchk .ib-revrow td { opacity:.55; }
+  .invchk .ib-revrow td { background:#e5e7eb !important; color:#6b7280; }
+  .invchk .ib-revrow .ib-link { color:#6b7280; }
+  .invchk .ib-revrow .ib-tag { filter:grayscale(1); }
+  .invchk .ib-revbadge { background:#dbeafe !important; color:#1d4ed8 !important; border:1px solid #93c5fd !important; }
+  @media (prefers-color-scheme: dark) { .invchk .ib-revrow td { background:#374151 !important; color:#9ca3af; } .invchk .ib-revbadge { background:#1e3a8a !important; color:#bfdbfe !important; border-color:#3b82f6 !important; } }
   .invchk .ib-link { cursor:pointer; color:#6d28d9; font-weight:600; }
   .invchk .inv-hint { font-size:11px; color:#888; margin-top:10px; line-height:1.5; }
   .pnl-wrap { overflow-x:auto; padding:20px 22px; }
@@ -5063,6 +5067,7 @@ function ibRender(){
     (r.po_missing||[]).forEach(function(sku){ det+='<tr class="inv-miss"><td>'+escapeHtml(sku)+'</td><td colspan="5">On the PO but not on this invoice</td><td><span class="inv-badge miss">Not on invoice</span></td></tr>'; });
     det+='</tbody></table>';
     var rv=ibIsRev(r.key); if(rv) nRev++; if(rv&&IB.hideRev) return;
+    if(rv) chip='<span class="inv-badge ib-revbadge">Reviewed</span>';
     body+='<tr class="'+(isNew?'ib-newrow':'')+(rv?' ib-revrow':'')+'">'+
       '<td><input type="checkbox" title="Mark as reviewed" '+(rv?'checked ':'')+'onchange="ibRevToggle('+i+')"></td>'+
       '<td><span class="ib-tag '+(isNew?'ib-new':'ib-old')+'">'+(isNew?'&#9733; NEW':'Old')+'</span></td>'+
