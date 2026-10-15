@@ -3331,7 +3331,7 @@ function arMailBuild(name,rows){
     var td='padding:7px 10px;border-bottom:1px solid #e3e7ee;';
     tr+='<tr><td style="'+td+'">'+escapeHtml(r.number)+'</td><td style="'+td+'">'+fmtDate(r.date)+'</td><td style="'+td+'">'+fmtDate(r.due)+'</td><td align="center" style="'+td+(dp>0?'color:#c0392b;font-weight:700;':'')+'">'+(dp>0?dp:'&mdash;')+'</td><td align="right" style="'+td+'">'+payMoney(r.balance)+'</td></tr>'; }
   var th='padding:8px 10px;';
-  return '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Status of your open invoices</title>'+
+  return '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Status update on your open JIT4Labs invoices</title>'+
   '<style>@media only screen and (max-width:620px){.wrapcell{padding:16px !important;}}</style></head><body style="margin:0;padding:0;background:#f4f6f9">'+
   '<div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#f4f6f9">Please send us a status update on your open JIT4Labs invoices.</div>'+
   '<table cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#f4f6f9"><tr><td align="center" style="padding:18px 10px">'+
@@ -3349,14 +3349,19 @@ function arMailGen(){
   var c=(PAY.ar.customers||[])[arMail.ci]; if(!c) return;
   var rows=arMailRows().filter(function(r){return arMail.sel[r.number];}); if(!rows.length) return;
   arMail.html=arMailBuild(c.name,rows);
+  var stot=0; for(var q=0;q<rows.length;q++) stot+=Number(rows[q].balance)||0;
+  arMail.subject='JIT4Labs '+String.fromCharCode(8211)+' status update on your open invoices ('+c.name+', '+payMoney(stot)+')';
   var out=document.getElementById('arMailOut');
   out.innerHTML='<div style="margin:12px 0 6px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">'+
+    '<div style="flex-basis:100%;display:flex;gap:8px;align-items:center;"><b style="font-size:13px;">Subject:</b><input id="arMailSubj" type="text" readonly value="'+escapeHtml(arMail.subject)+'" style="flex:1;padding:5px 8px;border:1px solid #cfd8e3;border-radius:6px;"><button class="mode-btn" style="margin:0;" onclick="arMailCopySubj()">Copy subject</button></div>'+
     '<button class="mode-btn" style="margin:0;" onclick="arMailCopy(true)">Copy for pasting into email</button>'+
     '<button class="mode-btn" style="margin:0;" onclick="arMailCopy(false)">Copy HTML source</button>'+
     '<button class="mode-btn" style="margin:0;" onclick="arMailDl()">&#11015; Download .html</button>'+
     '<span id="arMailMsg" style="font-size:12px;color:#137333;"></span></div>'+
     '<iframe id="arMailFrame" style="width:100%;height:440px;border:1px solid #e3e7ee;border-radius:6px;"></iframe>';
   document.getElementById('arMailFrame').srcdoc=arMail.html; }
+function arMailCopySubj(){ var t=arMail.subject||''; function fb(){ var e=document.getElementById('arMailSubj'); if(e){ e.select(); try{ document.execCommand('copy'); arMailMsg('Subject copied.'); }catch(x){ arMailMsg('Select the subject and copy manually.'); } } }
+  try{ if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(function(){arMailMsg('Subject copied.');},function(){fb();}); else fb(); }catch(e){ fb(); } }
 function arMailMsg(t){ var e=document.getElementById('arMailMsg'); if(e) e.textContent=t; }
 function arMailCopy(rich){
   var h=arMail.html; if(!h) return;
