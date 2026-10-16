@@ -4877,6 +4877,7 @@ function renderInvPanel(){
        '<button class="inv-go" id="ib-go" onclick="ibSearch()">Search</button>'+
        '<button class="ib-sec" onclick="ibSeenAll()">Mark all as seen</button>'+
        '<button class="ib-sec" onclick="ibRevAll(true)">Mark all reviewed</button>'+
+       '<label style="font-size:12px;margin-left:8px;">QuickBooks <select onchange="ibQb(this.value)" style="font-size:12px;"><option value=""'+(IB.qbf?'':' selected')+'>All</option><option value="in"'+(IB.qbf==='in'?' selected':'')+'>Entered</option><option value="out"'+(IB.qbf==='out'?' selected':'')+'>Not entered</option></select></label>'+
        '<label style="font-size:12px;margin-left:8px;">Supplier <select onchange="ibSup(this.value)" style="font-size:12px;"><option value=""'+(IB.sup?'':' selected')+'>All</option><option value="pma"'+(IB.sup==='pma'?' selected':'')+'>PMA</option><option value="allora"'+(IB.sup==='allora'?' selected':'')+'>Allora</option></select></label>'+
        '<label style="font-size:12px;margin-left:8px;cursor:pointer;"><input type="checkbox" onchange="ibHideRev(!this.checked)"'+(IB.hideRev?'':' checked')+'> Show reviewed</label>'+
        '<button class="ib-sec danger" onclick="ibClear()">Clear list</button></div>'+
@@ -5061,9 +5062,11 @@ function ibRevAll(on){
 }
 function ibSup(v){ IB.sup=v||''; ibLsSet('jit4_ibulk_sup',IB.sup); ibRender(); }
 function ibSupOf(r){ var t=String((r.vendor||'')+' '+(r.sender||'')).toLowerCase(); if(t.indexOf('allora')>=0||r.source==='quickbooks') return 'allora'; if(t.indexOf('pma')>=0||r.source==='zoho') return 'pma'; return ''; }
+function ibQb(v){ IB.qbf=v||''; ibLsSet('jit4_ibulk_qbf',IB.qbf); ibRender(); }
 function ibHideRev(on){ IB.hideRev=!!on; ibLsSet('jit4_ibulk_hiderev',on?'1':'0'); ibRender(); }
 if(ibLs('jit4_ibulk_hiderev')==='0') IB.hideRev=false;
 IB.sup=ibLs('jit4_ibulk_sup')||'';
+IB.qbf=ibLs('jit4_ibulk_qbf')||'';
 IB.open={};
 function ibTog(i){ var r=document.getElementById('ib-det-'+i); if(r){ var show=(r.style.display==='none'); r.style.display=show?'':'none'; IB.open[i]=show; } }
 function ibRender(){
@@ -5071,6 +5074,7 @@ function ibRender(){
   var res=((IB.data&&IB.data.results)||[]).slice();
   res.sort(function(a,b){ return String(b.received||'').localeCompare(String(a.received||'')); });
   if(IB.sup) res=res.filter(function(r){ return ibSupOf(r)===IB.sup; });
+  if(IB.qbf) res=res.filter(function(r){ var e=!!(r.qb&&r.qb.entered); return IB.qbf==='in'?e:!e; });
   IB.view=res;
   var seen=ibSeen(), nNew=0, nRev=0, body='';
   function money(v){ return v==null?'&mdash;':'$'+Number(v).toFixed(2); }
@@ -5093,6 +5097,10 @@ function ibRender(){
     var tot=0, hasTot=false;
     (r.lines||[]).forEach(function(l){ var q=Number(l.qty), rt=Number(l.rate); if(isFinite(q)&&isFinite(rt)&&l.qty!=null&&l.rate!=null){ tot+=q*rt; hasTot=true; } });
     var totTxt=hasTot?'$'+tot.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'&mdash;';
+    var qbc;
+    if(r.qb&&r.qb.entered){ var q=r.qb; qbc='<span class="inv-badge ok" title="Bill '+escapeHtml(String(q.number||''))+' dated '+escapeHtml(String(q.date||''))+', bill total $'+Number(q.bill_total||0).toFixed(2)+(q.balance>0?', open balance $'+Number(q.balance).toFixed(2):', paid')+'">In QB</span>'; }
+    else if(r.qb){ qbc='<span class="inv-badge under" title="No bill with this invoice number from this supplier in QuickBooks">Not in QB</span>'; }
+    else qbc='<span class="inv-badge miss" title="Not checked yet - runs with the next scan">?</span>';
     var rv=ibIsRev(r.key); if(rv) nRev++; if(rv&&IB.hideRev) return;
     if(rv) chip='<span class="inv-badge ib-revbadge">Reviewed</span>';
     body+='<tr class="'+(isNew?'ib-newrow':'')+(rv?' ib-revrow':'')+'">'+
@@ -5104,14 +5112,15 @@ function ibRender(){
       '<td>'+(r.file?'<a class="ib-link" target="_blank" rel="noopener" title="Open invoice copy (PDF)" href="'+escapeHtml(r.file)+'">&#128196; '+escapeHtml(r.filename||'')+'</a>':escapeHtml(r.filename||''))+(r.msg_id?' <a class="ib-link" target="_blank" rel="noopener" title="Open the original email in Outlook" href="https://outlook.office365.com/owa/?ItemID='+encodeURIComponent(r.msg_id)+'&exvsurl=1&viewmodel=ReadMessageItem">&#9993;</a>':'')+'</td>'+
       '<td>'+escapeHtml(r.po_raw||'')+(r.po_key&&r.po_key!==String(r.po_raw||'').toUpperCase()?' &rarr; '+escapeHtml(r.po_key):'')+'</td>'+
       '<td class="num" style="text-align:right;white-space:nowrap;">'+totTxt+'</td>'+
+      '<td>'+qbc+'</td>'+
       '<td>'+chip+'</td>'+
       '<td><span class="ib-link" onclick="ibTog('+i+')">details</span></td></tr>'+
-      '<tr class="ib-det" id="ib-det-'+i+'" style="display:'+(IB.open[i]?'':'none')+'"><td colspan="10"><div class="sub" style="margin-bottom:6px;">'+escapeHtml(r.subject||'')+(r.po_status?' &middot; PO status: '+escapeHtml(r.po_status):'')+'</div>'+det+'</td></tr>';
+      '<tr class="ib-det" id="ib-det-'+i+'" style="display:'+(IB.open[i]?'':'none')+'"><td colspan="11"><div class="sub" style="margin-bottom:6px;">'+escapeHtml(r.subject||'')+(r.po_status?' &middot; PO status: '+escapeHtml(r.po_status):'')+'</div>'+det+'</td></tr>';
   });
   var ls=(IB.data&&IB.data.last_scan)||null;
   var meta=ls?('Last scan: '+escapeHtml(String(ls.at||'').slice(0,16).replace('T',' '))+' UTC &middot; window: '+escapeHtml(ls.window||'')+' &middot; '+(ls.scanned||0)+' emails checked'):'No scan has been run yet.';
   host.innerHTML='<div class="sub" style="margin:4px 0 8px;">'+meta+' &middot; '+res.length+' result'+(res.length===1?'':'s')+' in list, '+nNew+' new, '+nRev+' reviewed'+(IB.hideRev&&nRev?' (hidden &mdash; tick &ldquo;Show reviewed&rdquo; to see them)':'')+'</div>'+
-    (res.length?'<table><thead><tr><td>Reviewed</td><td>New?</td><td>Received (UTC)</td><td>Source</td><td>Vendor</td><td>Invoice file</td><td>PO</td><td style="text-align:right">Total</td><td>Result</td><td></td></tr></thead><tbody>'+body+'</tbody></table>':'<div class="inv-hint">Nothing here yet. Choose a window and press Search.</div>');
+    (res.length?'<table><thead><tr><td>Reviewed</td><td>New?</td><td>Received (UTC)</td><td>Source</td><td>Vendor</td><td>Invoice file</td><td>PO</td><td style="text-align:right">Total</td><td>QuickBooks</td><td>Result</td><td></td></tr></thead><tbody>'+body+'</tbody></table>':'<div class="inv-hint">Nothing here yet. Choose a window and press Search.</div>');
 }
 
 function renderAll(){ _ioppOpenSkuCache=null; loadIopp(); renderKpis(); renderTabs(); renderPanel(); renderAsOf(); }
