@@ -4877,6 +4877,7 @@ function renderInvPanel(){
        '<button class="inv-go" id="ib-go" onclick="ibSearch()">Search</button>'+
        '<button class="ib-sec" onclick="ibSeenAll()">Mark all as seen</button>'+
        '<button class="ib-sec" onclick="ibRevAll(true)">Mark all reviewed</button>'+
+       '<label style="font-size:12px;margin-left:8px;">Paid <select onchange="ibPaid(this.value)" style="font-size:12px;"><option value=""'+(IB.pdf?'':' selected')+'>All</option><option value="paid"'+(IB.pdf==='paid'?' selected':'')+'>Paid</option><option value="unpaid"'+(IB.pdf==='unpaid'?' selected':'')+'>Unpaid / part paid</option></select></label>'+
        '<label style="font-size:12px;margin-left:8px;">QuickBooks <select onchange="ibQb(this.value)" style="font-size:12px;"><option value=""'+(IB.qbf?'':' selected')+'>All</option><option value="in"'+(IB.qbf==='in'?' selected':'')+'>Entered</option><option value="out"'+(IB.qbf==='out'?' selected':'')+'>Not entered</option></select></label>'+
        '<label style="font-size:12px;margin-left:8px;">Supplier <select onchange="ibSup(this.value)" style="font-size:12px;"><option value=""'+(IB.sup?'':' selected')+'>All</option><option value="pma"'+(IB.sup==='pma'?' selected':'')+'>PMA</option><option value="allora"'+(IB.sup==='allora'?' selected':'')+'>Allora</option></select></label>'+
        '<label style="font-size:12px;margin-left:8px;cursor:pointer;"><input type="checkbox" onchange="ibHideRev(!this.checked)"'+(IB.hideRev?'':' checked')+'> Show reviewed</label>'+
@@ -5063,10 +5064,12 @@ function ibRevAll(on){
 function ibSup(v){ IB.sup=v||''; ibLsSet('jit4_ibulk_sup',IB.sup); ibRender(); }
 function ibSupOf(r){ var t=String((r.vendor||'')+' '+(r.sender||'')).toLowerCase(); if(t.indexOf('allora')>=0||r.source==='quickbooks') return 'allora'; if(t.indexOf('pma')>=0||r.source==='zoho') return 'pma'; return ''; }
 function ibQb(v){ IB.qbf=v||''; ibLsSet('jit4_ibulk_qbf',IB.qbf); ibRender(); }
+function ibPaid(v){ IB.pdf=v||''; ibLsSet('jit4_ibulk_pdf',IB.pdf); ibRender(); }
 function ibHideRev(on){ IB.hideRev=!!on; ibLsSet('jit4_ibulk_hiderev',on?'1':'0'); ibRender(); }
 if(ibLs('jit4_ibulk_hiderev')==='0') IB.hideRev=false;
 IB.sup=ibLs('jit4_ibulk_sup')||'';
 IB.qbf=ibLs('jit4_ibulk_qbf')||'';
+IB.pdf=ibLs('jit4_ibulk_pdf')||'';
 IB.open={};
 function ibTog(i){ var r=document.getElementById('ib-det-'+i); if(r){ var show=(r.style.display==='none'); r.style.display=show?'':'none'; IB.open[i]=show; } }
 function ibRender(){
@@ -5075,6 +5078,7 @@ function ibRender(){
   res.sort(function(a,b){ return String(b.received||'').localeCompare(String(a.received||'')); });
   if(IB.sup) res=res.filter(function(r){ return ibSupOf(r)===IB.sup; });
   if(IB.qbf) res=res.filter(function(r){ var e=!!(r.qb&&r.qb.entered); return IB.qbf==='in'?e:!e; });
+  if(IB.pdf) res=res.filter(function(r){ if(!(r.qb&&r.qb.entered)) return false; var paid=!(r.qb.balance>0); return IB.pdf==='paid'?paid:!paid; });
   IB.view=res;
   var seen=ibSeen(), nNew=0, nRev=0, body='';
   function money(v){ return v==null?'&mdash;':'$'+Number(v).toFixed(2); }
