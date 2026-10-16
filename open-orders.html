@@ -4877,6 +4877,7 @@ function renderInvPanel(){
        '<button class="inv-go" id="ib-go" onclick="ibSearch()">Search</button>'+
        '<button class="ib-sec" onclick="ibSeenAll()">Mark all as seen</button>'+
        '<button class="ib-sec" onclick="ibRevAll(true)">Mark all reviewed</button>'+
+       '<label style="font-size:12px;margin-left:8px;">Supplier <select onchange="ibSup(this.value)" style="font-size:12px;"><option value=""'+(IB.sup?'':' selected')+'>All</option><option value="pma"'+(IB.sup==='pma'?' selected':'')+'>PMA</option><option value="allora"'+(IB.sup==='allora'?' selected':'')+'>Allora</option></select></label>'+
        '<label style="font-size:12px;margin-left:8px;cursor:pointer;"><input type="checkbox" onchange="ibHideRev(!this.checked)"'+(IB.hideRev?'':' checked')+'> Show reviewed</label>'+
        '<button class="ib-sec danger" onclick="ibClear()">Clear list</button></div>'+
        '<div class="inv-note" id="ib-note"></div><div id="ib-list"></div></div>'+
@@ -5058,14 +5059,18 @@ function ibRevAll(on){
   ((IB.data&&IB.data.results)||[]).forEach(function(r){ IB.rev[r.key]={on:!!on,at:t}; });
   ibLsSet(IB_REV,JSON.stringify(IB.rev)); ibRender(); ibRevSave();
 }
+function ibSup(v){ IB.sup=v||''; ibLsSet('jit4_ibulk_sup',IB.sup); ibRender(); }
+function ibSupOf(r){ var t=String((r.vendor||'')+' '+(r.sender||'')).toLowerCase(); if(t.indexOf('allora')>=0||r.source==='quickbooks') return 'allora'; if(t.indexOf('pma')>=0||r.source==='zoho') return 'pma'; return ''; }
 function ibHideRev(on){ IB.hideRev=!!on; ibLsSet('jit4_ibulk_hiderev',on?'1':'0'); ibRender(); }
 if(ibLs('jit4_ibulk_hiderev')==='0') IB.hideRev=false;
+IB.sup=ibLs('jit4_ibulk_sup')||'';
 IB.open={};
 function ibTog(i){ var r=document.getElementById('ib-det-'+i); if(r){ var show=(r.style.display==='none'); r.style.display=show?'':'none'; IB.open[i]=show; } }
 function ibRender(){
   var host=document.getElementById('ib-list'); if(!host) return;
   var res=((IB.data&&IB.data.results)||[]).slice();
   res.sort(function(a,b){ return String(b.received||'').localeCompare(String(a.received||'')); });
+  if(IB.sup) res=res.filter(function(r){ return ibSupOf(r)===IB.sup; });
   IB.view=res;
   var seen=ibSeen(), nNew=0, nRev=0, body='';
   function money(v){ return v==null?'&mdash;':'$'+Number(v).toFixed(2); }
