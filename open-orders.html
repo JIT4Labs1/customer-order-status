@@ -5098,7 +5098,7 @@ function ibRender(){
     (r.lines||[]).forEach(function(l){ var q=Number(l.qty), rt=Number(l.rate); if(isFinite(q)&&isFinite(rt)&&l.qty!=null&&l.rate!=null){ tot+=q*rt; hasTot=true; } });
     var totTxt=hasTot?'$'+tot.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'&mdash;';
     var qbc;
-    if(r.qb&&r.qb.entered){ var q=r.qb; qbc='<span class="inv-badge ok" title="Bill '+escapeHtml(String(q.number||''))+' dated '+escapeHtml(String(q.date||''))+', bill total $'+Number(q.bill_total||0).toFixed(2)+(q.balance>0?', open balance $'+Number(q.balance).toFixed(2):', paid')+'">In QB</span>'; }
+    if(r.qb&&r.qb.entered){ var q=r.qb; qbc='<span class="inv-badge ok" title="Bill '+escapeHtml(String(q.number||''))+' dated '+escapeHtml(String(q.date||''))+', bill total $'+Number(q.bill_total||0).toFixed(2)+(q.balance>0?', open balance $'+Number(q.balance).toFixed(2):', paid')+'">In QB</span> '+(q.balance>0?'<span class="inv-badge '+(q.balance<q.bill_total?'under':'over')+'" title="Open balance on the QuickBooks bill">'+(q.balance<q.bill_total?'Part paid':'Unpaid')+' $'+Number(q.balance).toFixed(2)+'</span>':'<span class="inv-badge ok">Paid</span>'); }
     else if(r.qb){ qbc='<span class="inv-badge under" title="No bill with this invoice number from this supplier in QuickBooks">Not in QB</span>'; }
     else qbc='<span class="inv-badge miss" title="Not checked yet - runs with the next scan">?</span>';
     var rv=ibIsRev(r.key); if(rv) nRev++; if(rv&&IB.hideRev) return;
