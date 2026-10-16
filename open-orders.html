@@ -499,7 +499,8 @@ var COLS_CUST = [
   {key:'ordered_qty',label:'Ord',        type:'num',  c:true},
   {key:'delivered_qty',label:'Del',      type:'num',  c:true},
   {key:'open_qty',   label:'Open',       type:'num',  c:true},
-  {key:'pending_pos',label:'Pending PO', type:'str'}
+  {key:'pending_pos',label:'Pending PO', type:'str'},
+  {key:'soeta',      label:'ETA',        type:'date', c:true}
 ];
 // Vendor view: table grouped by customer (Customer appears in group headers).
 var COLS_VENDOR = [
@@ -2689,6 +2690,50 @@ function custOnSearch(v){
     if(!c || !custRows(c).length) active=-1; }
   renderCustTabList(); renderCustPanel();
 }
+
+// ── Manual ETA per open SO line (date picker) — stored in so-eta.json in the repo ──
+var SOETA={}, SOETA_FILE='so-eta.json', SOETA_LS='jit4_so_eta', SOETA_Q=Promise.resolve();
+function soEtaKey(r){ return String(r.so_num||'')+'|'+String(r.sku||r.product||''); }
+function soEtaGet(r){ var e=SOETA[soEtaKey(r)]; return (e&&e.d)||''; }
+function soEtaMerge(a,b){ var o={},k,x; for(k in (a||{})) o[k]=a[k]; for(k in (b||{})){ x=b[k]; if(!o[k]||String(x.at||'')>=String(o[k].at||'')) o[k]=x; } return o; }
+function soEtaLocal(){ try{ return JSON.parse(localStorage.getItem(SOETA_LS)||'{}')||{}; }catch(e){ return {}; } }
+function soEtaLsSet(){ try{ localStorage.setItem(SOETA_LS,JSON.stringify(SOETA)); }catch(e){} }
+function soEtaRemote(){
+  if(BTN&&BTN.token){
+    var u='https://api.github.com/repos/'+BTN.repo+'/contents/'+SOETA_FILE+'?ref='+encodeURIComponent(BTN.branch)+'&cb='+Date.now();
+    return fetch(u,{headers:ibHdr(),cache:'no-store'}).then(function(r){ if(r.status===404) return {sha:null,data:{}}; if(!r.ok) throw new Error('GitHub '+r.status);
+      return r.json().then(function(j){ var d={}; try{ d=JSON.parse(atob(String(j.content||'').split(String.fromCharCode(10)).join(''))); }catch(e){} return {sha:j.sha,data:d}; }); });
+  }
+  return fetch(SOETA_FILE+'?cb='+Date.now(),{cache:'no-store'}).then(function(r){ return r.ok?r.json():{}; }).catch(function(){ return {}; }).then(function(d){ return {sha:null,data:d}; });
+}
+function soEtaLoad(){
+  return soEtaRemote().catch(function(){ return {sha:null,data:{}}; }).then(function(x){
+    SOETA=soEtaMerge(soEtaLocal(),x.data); soEtaLsSet();
+    if(mode==='cust' && typeof DATA!=='undefined' && DATA && DATA.customers) renderPanel();
+  });
+}
+function soEtaSave(){
+  SOETA_Q=SOETA_Q.then(function(){
+    if(!BTN||!BTN.token) return;
+    return soEtaRemote().then(function(x){
+      var m=soEtaMerge(x.data,SOETA); SOETA=m; soEtaLsSet();
+      return fetch('https://api.github.com/repos/'+BTN.repo+'/contents/'+SOETA_FILE,{method:'PUT',headers:ibHdr(),body:JSON.stringify({message:'Open SO ETA update',content:_b64enc(JSON.stringify(m,null,1)+String.fromCharCode(10)),sha:x.sha||undefined,branch:BTN.branch})})
+        .then(function(r){ if(!r.ok) throw new Error('GitHub '+r.status); });
+    });
+  }).catch(function(e){ try{ console.warn('ETA saved in this browser only: '+(e.message||e)); }catch(x){} });
+}
+function soEtaSet(el){
+  var k=el.getAttribute('data-k'); if(!k) return;
+  SOETA[k]={d:el.value||'',at:new Date().toISOString()};
+  soEtaLsSet(); soEtaSave();
+}
+function soEtaClear(btn){ var inp=btn.parentNode.querySelector('input'); if(inp){ inp.value=''; soEtaSet(inp); } }
+function soEtaCell(r){
+  var v=soEtaGet(r), k=soEtaKey(r);
+  return '<td class="c" style="white-space:nowrap;"><input type="date" value="'+escapeHtml(v)+'" data-k="'+escapeHtml(k)+'" onchange="soEtaSet(this)" '+
+    'style="font-size:12px;padding:2px 4px;border:1px solid #cbd5e1;border-radius:4px;background:transparent;color:inherit;" title="Set the expected delivery date">'+
+    '<span onclick="soEtaClear(this)" title="Clear ETA" style="cursor:pointer;margin-left:4px;color:#94a3b8;">&times;</span></td>';
+}
 // SO-grouped <tbody> rows for one customer's (already filtered) open items.
 function custSoBody(rows, ncol){
   var groups={}, order=[], body='';
@@ -2715,6 +2760,7 @@ function custSoBody(rows, ncol){
         if(String(sortState.key).indexOf('inv:')===0){
           return col&&col.vendor ? ioppQtyVen(r.sku, col.vendor) : 0;
         }
+        if(sortState.key==='soeta') return soEtaGet(r);
         return r[sortState.key];
       };
       its.sort(function(p,q){ return sortState.dir*cmp(cval(p),cval(q),col?col.type:'str'); }); }
@@ -2734,6 +2780,7 @@ function custSoBody(rows, ncol){
         '<td class="c">'+fmtQty(r2.delivered_qty)+'</td>'+
         '<td class="c open">'+fmtQty(r2.open_qty)+'</td>'+
         '<td>'+poCell(r2.pending_pos)+'</td>'+
+        soEtaCell(r2)+
         custInvCells(r2)+
         '</tr>';
     }
@@ -5127,6 +5174,7 @@ function ibRender(){
     ((res.length&&body)?'<table><thead><tr><td>Reviewed</td><td>New?</td><td>Received (UTC)</td><td>Source</td><td>Vendor</td><td>Invoice file</td><td>PO</td><td style="text-align:right">Total</td><td>QuickBooks</td><td>Result</td><td></td></tr></thead><tbody>'+body+'</tbody></table>':'<div class="inv-hint">'+(res.length?'All '+res.length+' matching invoice'+(res.length===1?' is':'s are')+' marked reviewed and hidden &mdash; tick &ldquo;Show reviewed&rdquo; above to see them.':((IB.data&&IB.data.results&&IB.data.results.length)?'No invoices match the current filters.':'Nothing here yet. Choose a window and press Search.'))+'</div>');
 }
 
+soEtaLoad();
 function renderAll(){ _ioppOpenSkuCache=null; loadIopp(); renderKpis(); renderTabs(); renderPanel(); renderAsOf(); }
 
 function fetchData(){ return fetch(DATA_URL+'?cb='+Date.now(),{cache:'no-store'})
