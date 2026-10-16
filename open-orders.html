@@ -5085,6 +5085,9 @@ function ibRender(){
     });
     (r.po_missing||[]).forEach(function(sku){ det+='<tr class="inv-miss"><td>'+escapeHtml(sku)+'</td><td colspan="5">On the PO but not on this invoice</td><td><span class="inv-badge miss">Not on invoice</span></td></tr>'; });
     det+='</tbody></table>';
+    var tot=0, hasTot=false;
+    (r.lines||[]).forEach(function(l){ var q=Number(l.qty), rt=Number(l.rate); if(isFinite(q)&&isFinite(rt)&&l.qty!=null&&l.rate!=null){ tot+=q*rt; hasTot=true; } });
+    var totTxt=hasTot?'$'+tot.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'&mdash;';
     var rv=ibIsRev(r.key); if(rv) nRev++; if(rv&&IB.hideRev) return;
     if(rv) chip='<span class="inv-badge ib-revbadge">Reviewed</span>';
     body+='<tr class="'+(isNew?'ib-newrow':'')+(rv?' ib-revrow':'')+'">'+
@@ -5095,14 +5098,15 @@ function ibRender(){
       '<td>'+escapeHtml(r.vendor||'')+'</td>'+
       '<td>'+(r.file?'<a class="ib-link" target="_blank" rel="noopener" title="Open invoice copy (PDF)" href="'+escapeHtml(r.file)+'">&#128196; '+escapeHtml(r.filename||'')+'</a>':escapeHtml(r.filename||''))+(r.msg_id?' <a class="ib-link" target="_blank" rel="noopener" title="Open the original email in Outlook" href="https://outlook.office365.com/owa/?ItemID='+encodeURIComponent(r.msg_id)+'&exvsurl=1&viewmodel=ReadMessageItem">&#9993;</a>':'')+'</td>'+
       '<td>'+escapeHtml(r.po_raw||'')+(r.po_key&&r.po_key!==String(r.po_raw||'').toUpperCase()?' &rarr; '+escapeHtml(r.po_key):'')+'</td>'+
+      '<td class="num" style="text-align:right;white-space:nowrap;">'+totTxt+'</td>'+
       '<td>'+chip+'</td>'+
       '<td><span class="ib-link" onclick="ibTog('+i+')">details</span></td></tr>'+
-      '<tr class="ib-det" id="ib-det-'+i+'" style="display:'+(IB.open[i]?'':'none')+'"><td colspan="9"><div class="sub" style="margin-bottom:6px;">'+escapeHtml(r.subject||'')+(r.po_status?' &middot; PO status: '+escapeHtml(r.po_status):'')+'</div>'+det+'</td></tr>';
+      '<tr class="ib-det" id="ib-det-'+i+'" style="display:'+(IB.open[i]?'':'none')+'"><td colspan="10"><div class="sub" style="margin-bottom:6px;">'+escapeHtml(r.subject||'')+(r.po_status?' &middot; PO status: '+escapeHtml(r.po_status):'')+'</div>'+det+'</td></tr>';
   });
   var ls=(IB.data&&IB.data.last_scan)||null;
   var meta=ls?('Last scan: '+escapeHtml(String(ls.at||'').slice(0,16).replace('T',' '))+' UTC &middot; window: '+escapeHtml(ls.window||'')+' &middot; '+(ls.scanned||0)+' emails checked'):'No scan has been run yet.';
   host.innerHTML='<div class="sub" style="margin:4px 0 8px;">'+meta+' &middot; '+res.length+' result'+(res.length===1?'':'s')+' in list, '+nNew+' new, '+nRev+' reviewed'+(IB.hideRev&&nRev?' (hidden &mdash; tick &ldquo;Show reviewed&rdquo; to see them)':'')+'</div>'+
-    (res.length?'<table><thead><tr><td>Reviewed</td><td>New?</td><td>Received (UTC)</td><td>Source</td><td>Vendor</td><td>Invoice file</td><td>PO</td><td>Result</td><td></td></tr></thead><tbody>'+body+'</tbody></table>':'<div class="inv-hint">Nothing here yet. Choose a window and press Search.</div>');
+    (res.length?'<table><thead><tr><td>Reviewed</td><td>New?</td><td>Received (UTC)</td><td>Source</td><td>Vendor</td><td>Invoice file</td><td>PO</td><td style="text-align:right">Total</td><td>Result</td><td></td></tr></thead><tbody>'+body+'</tbody></table>':'<div class="inv-hint">Nothing here yet. Choose a window and press Search.</div>');
 }
 
 function renderAll(){ _ioppOpenSkuCache=null; loadIopp(); renderKpis(); renderTabs(); renderPanel(); renderAsOf(); }
