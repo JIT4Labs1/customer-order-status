@@ -5080,7 +5080,7 @@ function ibRender(){
   if(IB.qbf) res=res.filter(function(r){ var e=!!(r.qb&&r.qb.entered); return IB.qbf==='in'?e:!e; });
   if(IB.pdf) res=res.filter(function(r){ if(!(r.qb&&r.qb.entered)) return false; var paid=!(r.qb.balance>0); return IB.pdf==='paid'?paid:!paid; });
   IB.view=res;
-  var seen=ibSeen(), nNew=0, nRev=0, body='';
+  var seen=ibSeen(), nNew=0, nRev=0, nHid=0, body='';
   function money(v){ return v==null?'&mdash;':'$'+Number(v).toFixed(2); }
   res.forEach(function(r,i){
     var isNew=!seen[r.key]; if(isNew) nNew++;
@@ -5105,7 +5105,7 @@ function ibRender(){
     if(r.qb&&r.qb.entered){ var q=r.qb; qbc='<span class="inv-badge ok" title="Bill '+escapeHtml(String(q.number||''))+' dated '+escapeHtml(String(q.date||''))+', bill total $'+Number(q.bill_total||0).toFixed(2)+(q.balance>0?', open balance $'+Number(q.balance).toFixed(2):', paid')+'">In QB</span> '+(q.balance>0?'<span class="inv-badge '+(q.balance<q.bill_total?'under':'over')+'" title="Open balance on the QuickBooks bill">'+(q.balance<q.bill_total?'Part paid':'Unpaid')+' $'+Number(q.balance).toFixed(2)+'</span>':'<span class="inv-badge ok">Paid</span>'); }
     else if(r.qb){ qbc='<span class="inv-badge under" title="No bill with this invoice number from this supplier in QuickBooks">Not in QB</span>'; }
     else qbc='<span class="inv-badge miss" title="Not checked yet - runs with the next scan">?</span>';
-    var rv=ibIsRev(r.key); if(rv) nRev++; if(rv&&IB.hideRev) return;
+    var rv=ibIsRev(r.key); if(rv) nRev++; if(rv&&IB.hideRev){ nHid++; return; }
     if(rv) chip='<span class="inv-badge ib-revbadge">Reviewed</span>';
     body+='<tr class="'+(isNew?'ib-newrow':'')+(rv?' ib-revrow':'')+'">'+
       '<td><input type="checkbox" title="Mark as reviewed" '+(rv?'checked ':'')+'onchange="ibRevToggle('+i+')"></td>'+
@@ -5123,8 +5123,8 @@ function ibRender(){
   });
   var ls=(IB.data&&IB.data.last_scan)||null;
   var meta=ls?('Last scan: '+escapeHtml(String(ls.at||'').slice(0,16).replace('T',' '))+' UTC &middot; window: '+escapeHtml(ls.window||'')+' &middot; '+(ls.scanned||0)+' emails checked'):'No scan has been run yet.';
-  host.innerHTML='<div class="sub" style="margin:4px 0 8px;">'+meta+' &middot; '+res.length+' result'+(res.length===1?'':'s')+' in list, '+nNew+' new, '+nRev+' reviewed'+(IB.hideRev&&nRev?' (hidden &mdash; tick &ldquo;Show reviewed&rdquo; to see them)':'')+'</div>'+
-    (res.length?'<table><thead><tr><td>Reviewed</td><td>New?</td><td>Received (UTC)</td><td>Source</td><td>Vendor</td><td>Invoice file</td><td>PO</td><td style="text-align:right">Total</td><td>QuickBooks</td><td>Result</td><td></td></tr></thead><tbody>'+body+'</tbody></table>':'<div class="inv-hint">Nothing here yet. Choose a window and press Search.</div>');
+  host.innerHTML='<div class="sub" style="margin:4px 0 8px;">'+meta+' &middot; '+res.length+' result'+(res.length===1?'':'s')+' in list, '+nNew+' new, '+nRev+' reviewed'+(IB.hideRev&&nHid?' <b style="color:#b45309;">&mdash; '+nHid+' matching reviewed row'+(nHid===1?' is':'s are')+' hidden: tick &ldquo;Show reviewed&rdquo; to see '+(nHid===1?'it':'them')+'</b>':'')+'</div>'+
+    ((res.length&&body)?'<table><thead><tr><td>Reviewed</td><td>New?</td><td>Received (UTC)</td><td>Source</td><td>Vendor</td><td>Invoice file</td><td>PO</td><td style="text-align:right">Total</td><td>QuickBooks</td><td>Result</td><td></td></tr></thead><tbody>'+body+'</tbody></table>':'<div class="inv-hint">'+(res.length?'All '+res.length+' matching invoice'+(res.length===1?' is':'s are')+' marked reviewed and hidden &mdash; tick &ldquo;Show reviewed&rdquo; above to see them.':((IB.data&&IB.data.results&&IB.data.results.length)?'No invoices match the current filters.':'Nothing here yet. Choose a window and press Search.'))+'</div>');
 }
 
 function renderAll(){ _ioppOpenSkuCache=null; loadIopp(); renderKpis(); renderTabs(); renderPanel(); renderAsOf(); }
