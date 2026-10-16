@@ -59,11 +59,29 @@ jobs:
             exit 1
           fi
 
+      - name: Install poppler (pdftotext for QB invoice PDFs)
+        run: sudo apt-get install -y poppler-utils
+
+      - name: Refresh A/R and A/P data (build_payment_status.py)
+        run: |
+          set +e
+          pip install requests >/dev/null 2>&1
+          for i in 1 2 3; do
+            python build_payment_status.py > _bps.log 2>&1
+            code=$?
+            tail -5 _bps.log
+            if [ $code -eq 0 ] && python -c "import json;d=json.load(open('payment-status-data.json'));assert d.get('ar',{}).get('customers') and d.get('ap',{}).get('vendors')"; then
+              echo "A/R & A/P OK on attempt $i"; break
+            fi
+            echo "A/R & A/P incomplete; sleeping 60s"; sleep 60
+          done
+          exit 0
+
       - name: Commit & push updated page
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add open-orders.html open-orders-data.json
+          git add open-orders.html open-orders-data.json payment-status-data.json _qb_invoice_pdf_cache.json
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
