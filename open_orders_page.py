@@ -204,6 +204,7 @@ def build_page_data(open_items):
                 "ordered_qty": it.get("ordered_qty", 0),
                 "delivered_qty": it.get("delivered_qty", 0),
                 "open_qty": it.get("open_qty", 0),
+                "so_total_lines": it.get("so_total_lines", 0),
                 "pending_pos": it.get("pending_pos", ""),
                 "eta": (it.get("eta", "") or "").split(" ")[0],
             })
@@ -1039,7 +1040,8 @@ var COLS_CUST = [
   {key:'ordered_qty',label:'Ord',        type:'num',  c:true},
   {key:'delivered_qty',label:'Del',      type:'num',  c:true},
   {key:'open_qty',   label:'Open',       type:'num',  c:true},
-  {key:'pending_pos',label:'Pending PO', type:'str'}
+  {key:'pending_pos',label:'Pending PO', type:'str'},
+  {key:'soeta',      label:'ETA',        type:'date', c:true}
 ];
 // Vendor view: table grouped by customer (Customer appears in group headers).
 var COLS_VENDOR = [
@@ -3229,6 +3231,50 @@ function custOnSearch(v){
     if(!c || !custRows(c).length) active=-1; }
   renderCustTabList(); renderCustPanel();
 }
+
+// ── Manual ETA per open SO line (date picker) — stored in so-eta.json in the repo ──
+var SOETA={}, SOETA_FILE='so-eta.json', SOETA_LS='jit4_so_eta', SOETA_Q=Promise.resolve();
+function soEtaKey(r){ return String(r.so_num||'')+'|'+String(r.sku||r.product||''); }
+function soEtaGet(r){ var e=SOETA[soEtaKey(r)]; return (e&&e.d)||''; }
+function soEtaMerge(a,b){ var o={},k,x; for(k in (a||{})) o[k]=a[k]; for(k in (b||{})){ x=b[k]; if(!o[k]||String(x.at||'')>=String(o[k].at||'')) o[k]=x; } return o; }
+function soEtaLocal(){ try{ return JSON.parse(localStorage.getItem(SOETA_LS)||'{}')||{}; }catch(e){ return {}; } }
+function soEtaLsSet(){ try{ localStorage.setItem(SOETA_LS,JSON.stringify(SOETA)); }catch(e){} }
+function soEtaRemote(){
+  if(BTN&&BTN.token){
+    var u='https://api.github.com/repos/'+BTN.repo+'/contents/'+SOETA_FILE+'?ref='+encodeURIComponent(BTN.branch)+'&cb='+Date.now();
+    return fetch(u,{headers:ibHdr(),cache:'no-store'}).then(function(r){ if(r.status===404) return {sha:null,data:{}}; if(!r.ok) throw new Error('GitHub '+r.status);
+      return r.json().then(function(j){ var d={}; try{ d=JSON.parse(atob(String(j.content||'').split(String.fromCharCode(10)).join(''))); }catch(e){} return {sha:j.sha,data:d}; }); });
+  }
+  return fetch(SOETA_FILE+'?cb='+Date.now(),{cache:'no-store'}).then(function(r){ return r.ok?r.json():{}; }).catch(function(){ return {}; }).then(function(d){ return {sha:null,data:d}; });
+}
+function soEtaLoad(){
+  return soEtaRemote().catch(function(){ return {sha:null,data:{}}; }).then(function(x){
+    SOETA=soEtaMerge(soEtaLocal(),x.data); soEtaLsSet();
+    if(mode==='cust' && typeof DATA!=='undefined' && DATA && DATA.customers) renderPanel();
+  });
+}
+function soEtaSave(){
+  SOETA_Q=SOETA_Q.then(function(){
+    if(!BTN||!BTN.token) return;
+    return soEtaRemote().then(function(x){
+      var m=soEtaMerge(x.data,SOETA); SOETA=m; soEtaLsSet();
+      return fetch('https://api.github.com/repos/'+BTN.repo+'/contents/'+SOETA_FILE,{method:'PUT',headers:ibHdr(),body:JSON.stringify({message:'Open SO ETA update',content:_b64enc(JSON.stringify(m,null,1)+String.fromCharCode(10)),sha:x.sha||undefined,branch:BTN.branch})})
+        .then(function(r){ if(!r.ok) throw new Error('GitHub '+r.status); });
+    });
+  }).catch(function(e){ try{ console.warn('ETA saved in this browser only: '+(e.message||e)); }catch(x){} });
+}
+function soEtaSet(el){
+  var k=el.getAttribute('data-k'); if(!k) return;
+  SOETA[k]={d:el.value||'',at:new Date().toISOString()};
+  soEtaLsSet(); soEtaSave();
+}
+function soEtaClear(btn){ var inp=btn.parentNode.querySelector('input'); if(inp){ inp.value=''; soEtaSet(inp); } }
+function soEtaCell(r){
+  var v=soEtaGet(r), k=soEtaKey(r);
+  return '<td class="c" style="white-space:nowrap;"><input type="date" value="'+escapeHtml(v)+'" data-k="'+escapeHtml(k)+'" onchange="soEtaSet(this)" '+
+    'style="font-size:12px;padding:2px 4px;border:1px solid #cbd5e1;border-radius:4px;background:transparent;color:inherit;" title="Set the expected delivery date">'+
+    '<span onclick="soEtaClear(this)" title="Clear ETA" style="cursor:pointer;margin-left:4px;color:#94a3b8;">&times;</span></td>';
+}
 // SO-grouped <tbody> rows for one customer's (already filtered) open items.
 function custSoBody(rows, ncol){
   var groups={}, order=[], body='';
@@ -3255,6 +3301,7 @@ function custSoBody(rows, ncol){
         if(String(sortState.key).indexOf('inv:')===0){
           return col&&col.vendor ? ioppQtyVen(r.sku, col.vendor) : 0;
         }
+        if(sortState.key==='soeta') return soEtaGet(r);
         return r[sortState.key];
       };
       its.sort(function(p,q){ return sortState.dir*cmp(cval(p),cval(q),col?col.type:'str'); }); }
@@ -3274,6 +3321,7 @@ function custSoBody(rows, ncol){
         '<td class="c">'+fmtQty(r2.delivered_qty)+'</td>'+
         '<td class="c open">'+fmtQty(r2.open_qty)+'</td>'+
         '<td>'+poCell(r2.pending_pos)+'</td>'+
+        soEtaCell(r2)+
         custInvCells(r2)+
         '</tr>';
     }
@@ -3324,7 +3372,8 @@ function renderCustPanel(){
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">'+
     '<h2 style="margin:0;">'+escapeHtml(c.name)+'</h2>'+
-    '<button class="copy-email-btn" onclick="custEmailToClipboard()" title="Copy this customer&#39;s open-order email (Product, List Price, quantities) — pastes as a formatted table into email/Word/Docs">📋 Copy email</button></div>'+
+    '<button class="copy-email-btn" onclick="custEmailToClipboard()" title="Copy this customer&#39;s open-order email (Product, List Price, quantities) — pastes as a formatted table into email/Word/Docs">📋 Copy email</button>'+
+    '<button class="copy-email-btn" onclick="custPdf()" title="Save this customer&#39;s open-order email as a PDF (same content as Copy email)">📄 PDF</button></div>'+
     '<div class="sub">'+sub+'</div></div>'+
     '<table><thead><tr>'+renderHead()+'</tr></thead><tbody>'+(body||'')+'</tbody></table>'+
     (body?'':'<div class="empty">No open item matches &ldquo;'+escapeHtml(custSku)+'&rdquo; for this customer.</div>');
@@ -3340,8 +3389,8 @@ function buildCustEmailHtml(c){
   var groups={}, order=[], rows=(c.rows||[]);
   for(var i=0;i<rows.length;i++){
     var r=rows[i], so=r.so_num||'(no SO)';
-    if(!groups[so]){ groups[so]={so:so, status:r.so_status, date:r.order_date, items:[]}; order.push(so); }
-    var g=groups[so]; g.items.push(r);
+    if(!groups[so]){ groups[so]={so:so, status:r.so_status, date:r.order_date, items:[], totalLines:0}; order.push(so); }
+    var g=groups[so]; g.items.push(r); if((r.so_total_lines||0)>g.totalLines) g.totalLines=r.so_total_lines;
     if(r.order_date && (!g.date || r.order_date<g.date)) g.date=r.order_date;
   }
   order.sort(function(a,b){ var d=cmp(groups[a].date,groups[b].date,'date'); return d!==0?d:cmp(groups[a].so,groups[b].so,'str'); });
@@ -3364,15 +3413,20 @@ function buildCustEmailHtml(c){
         '<td style="'+tdc+'">'+fmtQty(r2.ordered_qty)+'</td>'+
         '<td style="'+tdc+'">'+fmtQty(r2.delivered_qty)+'</td>'+
         '<td style="'+tdc+'font-weight:700;color:#c0392b;">'+fmtQty(r2.open_qty)+'</td>'+
+        '<td style="'+tdc+'">'+(soEtaGet(r2)?fmtDate(soEtaGet(r2)):'&mdash;')+'</td>'+
         '</tr>';
     }
-    sections+='<div style="margin:0 0 6px;font-size:13px;color:#1f3a5f;font-weight:700;">'+
+    sections+='<div class="so-sec" style="break-inside:avoid;page-break-inside:avoid;"><div style="margin:0 0 6px;font-size:13px;color:#1f3a5f;font-weight:700;">'+
       'SO '+escapeHtml(grp.so)+' &middot; '+escapeHtml(grp.status||'')+' &middot; '+fmtDate(grp.date)+
+      '</div>'+
+      '<div style="margin:0 0 6px;font-size:12px;color:#54657a;">'+
+      (grp.totalLines>0 ? 'Lines on original order: <b>'+grp.totalLines+'</b> &nbsp;&middot;&nbsp; Fulfilled: <b>'+Math.max(0,grp.totalLines-grp.items.length)+'</b> &nbsp;&middot;&nbsp; Still to fulfill: <b>'+grp.items.length+'</b>'
+                        : 'Lines still to fulfill: <b>'+grp.items.length+'</b>')+
       '</div>'+
       '<table cellspacing="0" cellpadding="0" style="border-collapse:collapse;width:100%;max-width:640px;margin:0 0 18px;border:1px solid #e6ebf1;">'+
       '<thead><tr><th style="'+th+'">Product</th><th style="'+thr+'">List Price</th>'+
-      '<th style="'+thc+'">Ordered</th><th style="'+thc+'">Delivered</th><th style="'+thc+'">Open</th></tr></thead>'+
-      '<tbody>'+rowsHtml+'</tbody></table>';
+      '<th style="'+thc+'">Ordered</th><th style="'+thc+'">Delivered</th><th style="'+thc+'">Open</th><th style="'+thc+'">ETA</th></tr></thead>'+
+      '<tbody>'+rowsHtml+'</tbody></table></div>';
   }
   if(!order.length) sections='<p style="font-size:13px;color:#2c3e50;">No open orders found.</p>';
   var today=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
@@ -3405,6 +3459,23 @@ function custEmailToClipboard(){
     }
   } catch(e){}
   fallbackCopyHtml(html, done);
+}
+function custPdf(){
+  if(active<0){ alert('Pick a single customer in the sidebar to create their PDF.'); return; }
+  var c=(DATA.customers||[])[active];
+  if(!c){ alert('No customer selected.'); return; }
+  var title='JIT4Labs Open Orders - '+String(c.name||'').replace(/[^A-Za-z0-9 ._-]/g,'')+' - '+new Date().toISOString().slice(0,10);
+  var doc='<!doctype html><html><head><meta charset="utf-8"><title>'+escapeHtml(title)+'</title>'+
+    '<style>@page{size:letter;margin:14mm;} body{margin:0;font-family:Arial,Helvetica,sans-serif;} table{page-break-inside:auto;max-width:none !important;width:100% !important;} tr{page-break-inside:avoid;break-inside:avoid;} .so-sec{break-inside:avoid;page-break-inside:avoid;} thead{display:table-header-group;} *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}</style>'+
+    '</head><body>'+buildCustEmailHtml(c)+'</body></html>';
+  var fr=document.createElement('iframe');
+  fr.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0;';
+  document.body.appendChild(fr);
+  var w=fr.contentWindow; w.document.open(); w.document.write(doc); w.document.close();
+  setTimeout(function(){
+    try{ w.focus(); w.print(); }catch(e){ alert('Could not open the print dialog: '+e); }
+    setTimeout(function(){ if(fr.parentNode) fr.parentNode.removeChild(fr); },60000);
+  },300);
 }
 function fallbackCopyHtml(html, cb){
   // Copy rendered rich content via a temporary contenteditable node so paste yields a table.
@@ -5417,6 +5488,9 @@ function renderInvPanel(){
        '<button class="inv-go" id="ib-go" onclick="ibSearch()">Search</button>'+
        '<button class="ib-sec" onclick="ibSeenAll()">Mark all as seen</button>'+
        '<button class="ib-sec" onclick="ibRevAll(true)">Mark all reviewed</button>'+
+       '<label style="font-size:12px;margin-left:8px;">Paid <select onchange="ibPaid(this.value)" style="font-size:12px;"><option value=""'+(IB.pdf?'':' selected')+'>All</option><option value="paid"'+(IB.pdf==='paid'?' selected':'')+'>Paid</option><option value="unpaid"'+(IB.pdf==='unpaid'?' selected':'')+'>Not paid (incl. not in QB)</option></select></label>'+
+       '<label style="font-size:12px;margin-left:8px;">QuickBooks <select onchange="ibQb(this.value)" style="font-size:12px;"><option value=""'+(IB.qbf?'':' selected')+'>All</option><option value="in"'+(IB.qbf==='in'?' selected':'')+'>Entered</option><option value="out"'+(IB.qbf==='out'?' selected':'')+'>Not entered</option></select></label>'+
+       '<label style="font-size:12px;margin-left:8px;">Supplier <select onchange="ibSup(this.value)" style="font-size:12px;"><option value=""'+(IB.sup?'':' selected')+'>All</option><option value="pma"'+(IB.sup==='pma'?' selected':'')+'>PMA</option><option value="allora"'+(IB.sup==='allora'?' selected':'')+'>Allora</option></select></label>'+
        '<label style="font-size:12px;margin-left:8px;cursor:pointer;"><input type="checkbox" onchange="ibHideRev(!this.checked)"'+(IB.hideRev?'':' checked')+'> Show reviewed</label>'+
        '<button class="ib-sec danger" onclick="ibClear()">Clear list</button></div>'+
        '<div class="inv-note" id="ib-note"></div><div id="ib-list"></div></div>'+
@@ -5598,16 +5672,26 @@ function ibRevAll(on){
   ((IB.data&&IB.data.results)||[]).forEach(function(r){ IB.rev[r.key]={on:!!on,at:t}; });
   ibLsSet(IB_REV,JSON.stringify(IB.rev)); ibRender(); ibRevSave();
 }
+function ibSup(v){ IB.sup=v||''; ibLsSet('jit4_ibulk_sup',IB.sup); ibRender(); }
+function ibSupOf(r){ var t=String((r.vendor||'')+' '+(r.sender||'')).toLowerCase(); if(t.indexOf('allora')>=0||r.source==='quickbooks') return 'allora'; if(t.indexOf('pma')>=0||r.source==='zoho') return 'pma'; return ''; }
+function ibQb(v){ IB.qbf=v||''; ibLsSet('jit4_ibulk_qbf',IB.qbf); ibRender(); }
+function ibPaid(v){ IB.pdf=v||''; ibLsSet('jit4_ibulk_pdf',IB.pdf); ibRender(); }
 function ibHideRev(on){ IB.hideRev=!!on; ibLsSet('jit4_ibulk_hiderev',on?'1':'0'); ibRender(); }
 if(ibLs('jit4_ibulk_hiderev')==='0') IB.hideRev=false;
+IB.sup=ibLs('jit4_ibulk_sup')||'';
+IB.qbf=ibLs('jit4_ibulk_qbf')||'';
+IB.pdf=ibLs('jit4_ibulk_pdf')||'';
 IB.open={};
 function ibTog(i){ var r=document.getElementById('ib-det-'+i); if(r){ var show=(r.style.display==='none'); r.style.display=show?'':'none'; IB.open[i]=show; } }
 function ibRender(){
   var host=document.getElementById('ib-list'); if(!host) return;
   var res=((IB.data&&IB.data.results)||[]).slice();
   res.sort(function(a,b){ return String(b.received||'').localeCompare(String(a.received||'')); });
+  if(IB.sup) res=res.filter(function(r){ return ibSupOf(r)===IB.sup; });
+  if(IB.qbf) res=res.filter(function(r){ var e=!!(r.qb&&r.qb.entered); return IB.qbf==='in'?e:!e; });
+  if(IB.pdf) res=res.filter(function(r){ var paid=!!(r.qb&&r.qb.entered&&!(r.qb.balance>0)); return IB.pdf==='paid'?paid:!paid; });
   IB.view=res;
-  var seen=ibSeen(), nNew=0, nRev=0, body='';
+  var seen=ibSeen(), nNew=0, nRev=0, nHid=0, body='';
   function money(v){ return v==null?'&mdash;':'$'+Number(v).toFixed(2); }
   res.forEach(function(r,i){
     var isNew=!seen[r.key]; if(isNew) nNew++;
@@ -5625,7 +5709,14 @@ function ibRender(){
     });
     (r.po_missing||[]).forEach(function(sku){ det+='<tr class="inv-miss"><td>'+escapeHtml(sku)+'</td><td colspan="5">On the PO but not on this invoice</td><td><span class="inv-badge miss">Not on invoice</span></td></tr>'; });
     det+='</tbody></table>';
-    var rv=ibIsRev(r.key); if(rv) nRev++; if(rv&&IB.hideRev) return;
+    var tot=0, hasTot=false;
+    (r.lines||[]).forEach(function(l){ var q=Number(l.qty), rt=Number(l.rate); if(isFinite(q)&&isFinite(rt)&&l.qty!=null&&l.rate!=null){ tot+=q*rt; hasTot=true; } });
+    var totTxt=hasTot?'$'+tot.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'&mdash;';
+    var qbc;
+    if(r.qb&&r.qb.entered){ var q=r.qb; qbc='<span class="inv-badge ok" title="Bill '+escapeHtml(String(q.number||''))+' dated '+escapeHtml(String(q.date||''))+', bill total $'+Number(q.bill_total||0).toFixed(2)+(q.balance>0?', open balance $'+Number(q.balance).toFixed(2):', paid')+'">In QB</span> '+(q.balance>0?'<span class="inv-badge '+(q.balance<q.bill_total?'under':'over')+'" title="Open balance on the QuickBooks bill">'+(q.balance<q.bill_total?'Part paid':'Unpaid')+' $'+Number(q.balance).toFixed(2)+'</span>':'<span class="inv-badge ok">Paid</span>'); }
+    else if(r.qb){ qbc='<span class="inv-badge under" title="No bill with this invoice number from this supplier in QuickBooks">Not in QB</span>'; }
+    else qbc='<span class="inv-badge miss" title="Not checked yet - runs with the next scan">?</span>';
+    var rv=ibIsRev(r.key); if(rv) nRev++; if(rv&&IB.hideRev){ nHid++; return; }
     if(rv) chip='<span class="inv-badge ib-revbadge">Reviewed</span>';
     body+='<tr class="'+(isNew?'ib-newrow':'')+(rv?' ib-revrow':'')+'">'+
       '<td><input type="checkbox" title="Mark as reviewed" '+(rv?'checked ':'')+'onchange="ibRevToggle('+i+')"></td>'+
@@ -5635,16 +5726,19 @@ function ibRender(){
       '<td>'+escapeHtml(r.vendor||'')+'</td>'+
       '<td>'+(r.file?'<a class="ib-link" target="_blank" rel="noopener" title="Open invoice copy (PDF)" href="'+escapeHtml(r.file)+'">&#128196; '+escapeHtml(r.filename||'')+'</a>':escapeHtml(r.filename||''))+(r.msg_id?' <a class="ib-link" target="_blank" rel="noopener" title="Open the original email in Outlook" href="https://outlook.office365.com/owa/?ItemID='+encodeURIComponent(r.msg_id)+'&exvsurl=1&viewmodel=ReadMessageItem">&#9993;</a>':'')+'</td>'+
       '<td>'+escapeHtml(r.po_raw||'')+(r.po_key&&r.po_key!==String(r.po_raw||'').toUpperCase()?' &rarr; '+escapeHtml(r.po_key):'')+'</td>'+
+      '<td class="num" style="text-align:right;white-space:nowrap;">'+totTxt+'</td>'+
+      '<td>'+qbc+'</td>'+
       '<td>'+chip+'</td>'+
       '<td><span class="ib-link" onclick="ibTog('+i+')">details</span></td></tr>'+
-      '<tr class="ib-det" id="ib-det-'+i+'" style="display:'+(IB.open[i]?'':'none')+'"><td colspan="9"><div class="sub" style="margin-bottom:6px;">'+escapeHtml(r.subject||'')+(r.po_status?' &middot; PO status: '+escapeHtml(r.po_status):'')+'</div>'+det+'</td></tr>';
+      '<tr class="ib-det" id="ib-det-'+i+'" style="display:'+(IB.open[i]?'':'none')+'"><td colspan="11"><div class="sub" style="margin-bottom:6px;">'+escapeHtml(r.subject||'')+(r.po_status?' &middot; PO status: '+escapeHtml(r.po_status):'')+'</div>'+det+'</td></tr>';
   });
   var ls=(IB.data&&IB.data.last_scan)||null;
   var meta=ls?('Last scan: '+escapeHtml(String(ls.at||'').slice(0,16).replace('T',' '))+' UTC &middot; window: '+escapeHtml(ls.window||'')+' &middot; '+(ls.scanned||0)+' emails checked'):'No scan has been run yet.';
-  host.innerHTML='<div class="sub" style="margin:4px 0 8px;">'+meta+' &middot; '+res.length+' result'+(res.length===1?'':'s')+' in list, '+nNew+' new, '+nRev+' reviewed'+(IB.hideRev&&nRev?' (hidden &mdash; tick &ldquo;Show reviewed&rdquo; to see them)':'')+'</div>'+
-    (res.length?'<table><thead><tr><td>Reviewed</td><td>New?</td><td>Received (UTC)</td><td>Source</td><td>Vendor</td><td>Invoice file</td><td>PO</td><td>Result</td><td></td></tr></thead><tbody>'+body+'</tbody></table>':'<div class="inv-hint">Nothing here yet. Choose a window and press Search.</div>');
+  host.innerHTML='<div class="sub" style="margin:4px 0 8px;">'+meta+' &middot; '+res.length+' result'+(res.length===1?'':'s')+' in list, '+nNew+' new, '+nRev+' reviewed'+(IB.hideRev&&nHid?' <b style="color:#b45309;">&mdash; '+nHid+' matching reviewed row'+(nHid===1?' is':'s are')+' hidden: tick &ldquo;Show reviewed&rdquo; to see '+(nHid===1?'it':'them')+'</b>':'')+'</div>'+
+    ((res.length&&body)?'<table><thead><tr><td>Reviewed</td><td>New?</td><td>Received (UTC)</td><td>Source</td><td>Vendor</td><td>Invoice file</td><td>PO</td><td style="text-align:right">Total</td><td>QuickBooks</td><td>Result</td><td></td></tr></thead><tbody>'+body+'</tbody></table>':'<div class="inv-hint">'+(res.length?'All '+res.length+' matching invoice'+(res.length===1?' is':'s are')+' marked reviewed and hidden &mdash; tick &ldquo;Show reviewed&rdquo; above to see them.':((IB.data&&IB.data.results&&IB.data.results.length)?'No invoices match the current filters.':'Nothing here yet. Choose a window and press Search.'))+'</div>');
 }
 
+soEtaLoad();
 function renderAll(){ _ioppOpenSkuCache=null; loadIopp(); renderKpis(); renderTabs(); renderPanel(); renderAsOf(); }
 
 function fetchData(){ return fetch(DATA_URL+'?cb='+Date.now(),{cache:'no-store'})
