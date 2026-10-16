@@ -113,6 +113,92 @@ def load_base():
             return json.load(open(OUT))
         return {"version": 1, "results": []}
 
+import re as _re, os as _os
+def make_pdf(r, outdir=None):
+    """Generate a readable PDF copy of an invoice from its extracted data. Returns repo-relative path."""
+    from reportlab.lib.pagesizes import letter
+    from reportlab.lib import colors
+    from reportlab.lib.styles import getSampleStyleSheet
+    from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Spacer
+    here = _os.path.dirname(_os.path.abspath(__file__))
+    outdir = outdir or _os.path.join(here, "invoices")
+    _os.makedirs(outdir, exist_ok=True)
+    base = _re.sub(r"[^A-Za-z0-9._-]+", "_", _os.path.splitext(r.get("filename") or "invoice")[0]).strip("_") or "invoice"
+    tag = _re.sub(r"[^A-Za-z0-9]", "", (r.get("msg_id") or ""))[-6:]
+    rel = f"invoices/{base}_{tag}.pdf" if tag else f"invoices/{base}.pdf"
+    st = getSampleStyleSheet()
+    doc = SimpleDocTemplate(_os.path.join(here, rel), pagesize=letter, title=base, leftMargin=36, rightMargin=36, topMargin=36, bottomMargin=36)
+    el = [Paragraph("Invoice copy", st["Title"]),
+          Paragraph("<i>Generated from the data extracted from the vendor email &mdash; not the vendor's original PDF.</i>", st["Italic"]), Spacer(1, 10)]
+    info = [["Vendor", r.get("vendor", "")], ["Invoice file", r.get("filename", "")], ["Source", "QuickBooks" if r.get("source") == "quickbooks" else "Zoho Books"],
+            ["Email subject", (r.get("subject") or "")[:90]], ["Received (UTC)", str(r.get("received", ""))[:16].replace("T", " ")],
+            ["PO # on invoice", r.get("po_raw", "")], ["Matched PO", f"{r.get('po_key','')} ({r.get('po_status','')})" if r.get("po_key") else "not found"]]
+    t = Table(info, colWidths=[110, 400]); t.setStyle(TableStyle([("FONTNAME", (0, 0), (0, -1), "Helvetica-Bold"), ("FONTSIZE", (0, 0), (-1, -1), 9), ("VALIGN", (0, 0), (-1, -1), "TOP")]))
+    el += [t, Spacer(1, 12)]
+    rows = [["SKU", "Description", "Qty", "Rate", "Amount", "PO unit", "Check"]]
+    total = 0.0
+    lab = {"ok": "OK", "over": "Overbilled", "under": "Underbilled", "notpo": "Not on PO"}
+    for l in r.get("lines", []):
+        q = l.get("qty") or 0; rt = l.get("rate") or 0; amt = q * rt; total += amt
+        pu = l.get("po_unit")
+        rows.append([str(l.get("sku", "")), str(l.get("desc", ""))[:34], f"{q:g}", f"${rt:,.2f}", f"${amt:,.2f}", "" if pu is None else f"${pu:,.2f}", lab.get(l.get("status"), str(l.get("status", "")))])
+    rows.append(["", "", "", "Total", f"${total:,.2f}", "", ""])
+    lt = Table(rows, repeatRows=1, colWidths=[78, 150, 34, 56, 62, 56, 74])
+    lt.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#e5e7eb")), ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"), ("FONTNAME", (3, -1), (4, -1), "Helvetica-Bold"),
+                            ("FONTSIZE", (0, 0), (-1, -1), 8), ("GRID", (0, 0), (-1, -2), 0.25, colors.grey), ("ALIGN", (2, 0), (5, -1), "RIGHT")]))
+    el.append(lt)
+    miss = r.get("po_missing") or []
+    if miss:
+        el += [Spacer(1, 10), Paragraph("On the PO but not on this invoice: " + ", ".join(map(str, miss)), st["Normal"])]
+    doc.build(el)
+    return rel
+
+def inv_number(r):
+    """Invoice number as it would be keyed as a QuickBooks Bill DocNumber."""
+    fn = (r.get("filename") or "")
+    m = _re.search(r"(INV-\d+)", fn, _re.I)
+    if m: return m.group(1).upper()
+    m = _re.search(r"[Ii]nvoice[_ ]+(\d+)", fn) or _re.search(r"invoice (\d+)", r.get("subject") or "", _re.I)
+    return m.group(1) if m else ""
+
+def _norm_doc(x):
+    x = _re.sub(r"[^A-Z0-9]", "", str(x or "").upper())
+    return x.lstrip("0") if x.isdigit() else x
+
+def qb_check(results):
+    """Mark each result with r['qb'] = {entered, number, bill_total, balance, date, id, total_match}.
+    A result counts as entered when a QuickBooks Bill exists from that vendor with the same document number."""
+    try:
+        access = B.refresh_token()
+        since = min([(r.get("received") or "9999")[:10] for r in results] + ["9999"])
+        if since == "9999": return
+        since = (datetime.date.fromisoformat(since) - datetime.timedelta(days=45)).isoformat()
+        bills, start = [], 1
+        while True:
+            q = B.qb_query(access, f"SELECT * FROM Bill WHERE TxnDate >= '{since}' ORDERBY TxnDate DESC STARTPOSITION {start} MAXRESULTS 200")
+            c = (q.get("QueryResponse", {}) or {}).get("Bill", []) or []
+            bills += c
+            if len(c) < 200: break
+            start += 200
+        idx = {}
+        for b in bills:
+            vn = ((b.get("VendorRef") or {}).get("name") or "").lower()
+            idx[(("allora" if "allora" in vn else "pma" if "pma" in vn else vn), _norm_doc(b.get("DocNumber")))] = b
+        now = datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+        for r in results:
+            sup = "allora" if (r.get("source") == "quickbooks" or "allora" in (r.get("vendor") or "").lower()) else "pma"
+            b = idx.get((sup, _norm_doc(inv_number(r))))
+            if b:
+                tot = sum((float(l.get("qty") or 0) * float(l.get("rate") or 0)) for l in (r.get("lines") or []))
+                bt = float(b.get("TotalAmt") or 0)
+                r["qb"] = {"entered": True, "id": b.get("Id"), "number": b.get("DocNumber"), "bill_total": bt,
+                           "balance": float(b.get("Balance") or 0), "date": b.get("TxnDate"),
+                           "total_match": abs(tot - bt) < 0.02 if tot else None, "checked": now}
+            else:
+                r["qb"] = {"entered": False, "checked": now}
+    except Exception as e:
+        print("qb_check failed:", e)
+
 def main():
     src = sys.argv[1] if len(sys.argv) > 1 else "_invbulk_incoming.json"
     inc = json.load(open(src))
@@ -137,7 +223,10 @@ def main():
         if key in have:
             continue
         r = compare(it); r["key"] = key; r["found_at"] = now; r["scan_id"] = sid
+        try: r["file"] = make_pdf(r)
+        except Exception as e: print("pdf failed", key, e)
         base.setdefault("results", []).append(r); have.add(key); added += 1
+    qb_check(base.get("results", []))
     base["last_scan"] = {"id": sid, "at": now, "window": meta.get("window", ""), "since": meta.get("since", ""),
                          "scanned": meta.get("scanned", len(inc)), "added": added}
     json.dump(base, open(OUT, "w"), indent=2)
