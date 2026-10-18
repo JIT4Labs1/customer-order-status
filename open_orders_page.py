@@ -3452,7 +3452,7 @@ function buildCustEmailHtml(c){
     '<tr><td style="padding:18px 24px;border-bottom:3px solid #008080"><a href="https://jit4labs.com" target="_blank" style="text-decoration:none;color:#101E3E">'+
     '<img src="https://jit4labs.com/cdn/shop/files/JIT4LABS-Logo.png" alt="JIT4LABS" width="175" height="30" border="0" style="display:block;width:175px;max-width:175px;height:30px;border:0;outline:none;text-decoration:none;font:bold 22px Arial, Helvetica, sans-serif;color:#101E3E;line-height:30px"></a></td></tr>'+
     '<tr><td style="padding:24px;font:14px/1.6 Arial, Helvetica, sans-serif;color:#101E3E">'+
-    '<p style="margin:0 0 12px">Hello,</p>'+
+    '<p style="margin:0 0 12px">Dear Customer,</p>'+
     '<p style="margin:0 0 16px">Please find below the current status of your open orders with JIT4Labs as of '+today+'. Quantities reflect the latest fulfillment status.</p>'+
     sections+
     '<p style="margin:0 0 16px;font-size:12px;color:#6b7280">If anything looks different from your records, reply and we will sort it out.</p>'+
