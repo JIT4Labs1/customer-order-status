@@ -3428,13 +3428,14 @@ function buildCustEmailHtml(c){
         '</tr>';
     }
     var nDays=openDays(grp.date);
+    var nn=parseInt(nDays,10); var pillBg='#008080', pillFg='#ffffff'; if(nn>=22){pillBg='#c62828';} else if(nn>=15){pillBg='#f4b400'; pillFg='#101E3E';}
     var sumTxt=(grp.totalLines>0 ? 'Lines on original order: <b>'+grp.totalLines+'</b> &nbsp;&middot;&nbsp; Fulfilled: <b>'+Math.max(0,grp.totalLines-grp.items.length)+'</b> &nbsp;&middot;&nbsp; Still to fulfill: <b>'+grp.items.length+'</b>'
                         : 'Lines still to fulfill: <b>'+grp.items.length+'</b>');
     sections+='<table class="so-sec" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;border-collapse:separate;border:1px solid #d5dbe5;border-left:5px solid #008080;break-inside:avoid;page-break-inside:avoid;">'+
       '<tr><td style="background:#eef3f6;padding:12px 14px;">'+
         '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'+
         '<td align="left" style="font:bold 15px Arial, Helvetica, sans-serif;color:#101E3E;">'+escapeHtml(grp.so)+' <span style="font-weight:normal;color:#6b7280;">&middot; '+escapeHtml(grp.status||'')+'</span>'+(grp.po?' <span style="font-weight:bold;color:#008080;">&middot; '+escapeHtml(grp.po)+'</span>':'')+'</td>'+
-        '<td align="right" style="white-space:nowrap;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" align="right"><tr><td bgcolor="#008080" style="background:#008080;color:#ffffff;font:bold 12px Arial, Helvetica, sans-serif;padding:6px 14px;border-radius:14px;white-space:nowrap;"><font color="#ffffff">Open '+nDays+' days</font></td></tr></table></td>'+
+        '<td align="right" style="white-space:nowrap;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" align="right"><tr><td bgcolor="'+pillBg+'" style="background:'+pillBg+';color:'+pillFg+';font:bold 13px Arial, Helvetica, sans-serif;padding:7px 18px;border-radius:20px;white-space:nowrap;"><font color="'+pillFg+'">Open '+nDays+' days</font></td></tr></table></td>'+
         '</tr></table></td></tr>'+
       '<tr><td style="padding:8px 14px;font:12.5px/1.5 Arial, Helvetica, sans-serif;color:#101E3E;">Created <b>'+fmtDate(grp.date)+'</b> &nbsp;&middot;&nbsp; Today <b>'+todayStr+'</b> &nbsp;|&nbsp; <span style="color:#6b7280;">'+sumTxt+'</span></td></tr>'+
       '<tr><td>'+
