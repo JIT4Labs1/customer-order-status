@@ -3394,12 +3394,10 @@ function buildCustEmailHtml(c){
     if(r.order_date && (!g.date || r.order_date<g.date)) g.date=r.order_date;
   }
   order.sort(function(a,b){ var d=cmp(groups[a].date,groups[b].date,'date'); return d!==0?d:cmp(groups[a].so,groups[b].so,'str'); });
-  var td='padding:8px 10px;border-bottom:1px solid #e6ebf1;font-size:13px;color:#2c3e50;';
-  var tdc=td+'text-align:center;';
-  var tdr=td+'text-align:right;white-space:nowrap;';
-  var th='padding:8px 10px;background:#1f3a5f;color:#fff;font-size:12px;text-align:left;';
-  var thc='padding:8px 10px;background:#1f3a5f;color:#fff;font-size:12px;text-align:center;';
-  var thr='padding:8px 10px;background:#1f3a5f;color:#fff;font-size:12px;text-align:right;';
+  var F='font:13px/1.5 Arial, Helvetica, sans-serif;';
+  var td='padding:8px 10px;border-bottom:1px solid #e3e7ee;';
+  var tdc=td+'white-space:nowrap;';
+  var thb='background:#101E3E;color:#ffffff;padding:8px 10px;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;';
   var sections='';
   for(var gi=0;gi<order.length;gi++){
     var grp=groups[order[gi]];
@@ -3408,37 +3406,39 @@ function buildCustEmailHtml(c){
     for(var j=0;j<its.length;j++){
       var r2=its[j];
       rowsHtml+='<tr>'+
-        '<td style="'+td+'">'+escapeHtml(r2.product)+'</td>'+
-        '<td style="'+tdr+'">'+fmtMoney(r2.list_price)+'</td>'+
-        '<td style="'+tdc+'">'+fmtQty(r2.ordered_qty)+'</td>'+
-        '<td style="'+tdc+'">'+fmtQty(r2.delivered_qty)+'</td>'+
-        '<td style="'+tdc+'font-weight:700;color:#c0392b;">'+fmtQty(r2.open_qty)+'</td>'+
-        '<td style="'+tdc+'">'+(soEtaGet(r2)?fmtDate(soEtaGet(r2)):'&mdash;')+'</td>'+
+        '<td align="left" valign="top" style="'+td+'">'+escapeHtml(r2.product)+'</td>'+
+        '<td align="right" valign="top" style="'+tdc+'">'+fmtMoney(r2.list_price)+'</td>'+
+        '<td align="center" valign="top" style="'+tdc+'">'+fmtQty(r2.ordered_qty)+'</td>'+
+        '<td align="center" valign="top" style="'+tdc+'">'+fmtQty(r2.delivered_qty)+'</td>'+
+        '<td align="center" valign="top" style="'+tdc+'font-weight:700;color:#008080;">'+fmtQty(r2.open_qty)+'</td>'+
+        '<td align="left" valign="top" style="'+tdc+'">'+(soEtaGet(r2)?fmtDate(soEtaGet(r2)):'&mdash;')+'</td>'+
         '</tr>';
     }
-    sections+='<div class="so-sec" style="break-inside:avoid;page-break-inside:avoid;"><div style="margin:0 0 6px;font-size:13px;color:#1f3a5f;font-weight:700;">'+
-      'SO '+escapeHtml(grp.so)+' &middot; '+escapeHtml(grp.status||'')+' &middot; '+fmtDate(grp.date)+
-      '</div>'+
-      '<div style="margin:0 0 6px;font-size:12px;color:#54657a;">'+
+    sections+='<div class="so-sec" style="break-inside:avoid;page-break-inside:avoid;margin:0 0 16px;">'+
+      '<p style="margin:0 0 4px;font-weight:700;color:#101E3E;">SO '+escapeHtml(grp.so)+' &middot; '+escapeHtml(grp.status||'')+' &middot; '+fmtDate(grp.date)+'</p>'+
+      '<p style="margin:0 0 6px;font-size:12.5px;color:#6b7280;">'+
       (grp.totalLines>0 ? 'Lines on original order: <b>'+grp.totalLines+'</b> &nbsp;&middot;&nbsp; Fulfilled: <b>'+Math.max(0,grp.totalLines-grp.items.length)+'</b> &nbsp;&middot;&nbsp; Still to fulfill: <b>'+grp.items.length+'</b>'
                         : 'Lines still to fulfill: <b>'+grp.items.length+'</b>')+
-      '</div>'+
-      '<table cellspacing="0" cellpadding="0" style="border-collapse:collapse;width:100%;max-width:640px;margin:0 0 18px;border:1px solid #e6ebf1;">'+
-      '<thead><tr><th style="'+th+'">Product</th><th style="'+thr+'">List Price</th>'+
-      '<th style="'+thc+'">Ordered</th><th style="'+thc+'">Delivered</th><th style="'+thc+'">Open</th><th style="'+thc+'">ETA</th></tr></thead>'+
-      '<tbody>'+rowsHtml+'</tbody></table></div>';
+      '</p>'+
+      '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;'+F+'color:#101E3E;">'+
+      '<tr><th align="left" style="'+thb+'">Product</th><th align="right" style="'+thb+'">List price</th>'+
+      '<th align="center" style="'+thb+'">Ordered</th><th align="center" style="'+thb+'">Delivered</th><th align="center" style="'+thb+'">Open</th><th align="left" style="'+thb+'">ETA</th></tr>'+
+      rowsHtml+'</table></div>';
   }
-  if(!order.length) sections='<p style="font-size:13px;color:#2c3e50;">No open orders found.</p>';
+  if(!order.length) sections='<p style="margin:0 0 12px;">No open orders found.</p>';
   var today=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
-  return '<div style="font-family:Arial,Helvetica,sans-serif;max-width:680px;margin:0 auto;color:#2c3e50;">'+
-    '<div style="background:#1f3a5f;color:#fff;padding:16px 18px;border-radius:6px 6px 0 0;">'+
-    '<div style="font-size:18px;font-weight:700;">JIT4Labs &mdash; Open Order Status</div>'+
-    '<div style="font-size:13px;color:#cdd9e6;margin-top:2px;">'+escapeHtml(c.name)+' &middot; '+today+'</div></div>'+
-    '<div style="padding:18px;border:1px solid #e6ebf1;border-top:none;border-radius:0 0 6px 6px;">'+
-    '<p style="font-size:13px;color:#2c3e50;margin:0 0 16px;">Please find below the current status of your open orders with JIT4Labs.</p>'+
+  return '<table cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#f4f6f9"><tr><td align="center" style="padding:18px 10px">'+
+    '<table cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:760px;width:100%;background:#fff;border:1px solid #e3e7ee">'+
+    '<tr><td style="padding:18px 24px;border-bottom:3px solid #008080"><a href="https://jit4labs.com" target="_blank" style="text-decoration:none;color:#101E3E">'+
+    '<img src="https://jit4labs.com/cdn/shop/files/JIT4LABS-Logo.png" alt="JIT4LABS" width="175" height="30" border="0" style="display:block;width:175px;max-width:175px;height:30px;border:0;outline:none;text-decoration:none;font:bold 22px Arial, Helvetica, sans-serif;color:#101E3E;line-height:30px"></a></td></tr>'+
+    '<tr><td style="padding:24px;font:14px/1.6 Arial, Helvetica, sans-serif;color:#101E3E">'+
+    '<p style="margin:0 0 12px">Hello,</p>'+
+    '<p style="margin:0 0 16px">Please find below the current status of your open orders with JIT4Labs as of '+today+'. Quantities reflect the latest fulfillment status, and prices shown are the unit list price from each sales order.</p>'+
     sections+
-    '<p style="font-size:12px;color:#8a97a6;margin:14px 0 0;">Prices shown are the unit list price from each sales order. Quantities reflect the latest fulfillment status. Questions? Reply to this email.</p>'+
-    '</div></div>';
+    '<p style="margin:0 0 16px;font-size:12px;color:#6b7280">If anything looks different from your records, reply and we will sort it out.</p>'+
+    '<p style="margin:18px 0 0">Thank you,<br><b>JIT4Labs team</b></p></td></tr>'+
+    '<tr><td style="padding:14px 24px;border-top:3px solid #008080;font:12px/1.6 Arial, Helvetica, sans-serif;color:#6b7280">JIT4Labs &middot; <a href="mailto:CustomerSupport@jit4you.com" style="color:#008080;text-decoration:none">CustomerSupport@jit4you.com</a> &middot; <a href="tel:+18882422301" style="color:#008080;text-decoration:none">(888) 242-2301</a> &middot; <a href="https://jit4labs.com" style="color:#008080;text-decoration:none">jit4labs.com</a></td></tr>'+
+    '</table></td></tr></table>';
 }
 function custEmailToClipboard(){
   if(active<0){ alert('Pick a single customer in the sidebar to copy their open-order email.'); return; }
