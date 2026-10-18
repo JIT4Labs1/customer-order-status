@@ -2831,7 +2831,7 @@ function renderCustPanel(){
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">'+
     '<h2 style="margin:0;">'+escapeHtml(c.name)+'</h2>'+
-    '<button class="copy-email-btn" onclick="custDraftEml()" title="Create an email draft for this customer (opens in your mail app, ready to review and send; nothing is sent)">✉ Create draft email</button>'+
+    '<button class="copy-email-btn" id="custDraftBtn" onclick="custOutlookDraft()" title="Create an UNSENT draft of this customer&#39;s open-order email in the customersupport@jit4you.com Outlook Drafts folder (takes about a minute)">✉ Create draft in Outlook</button>'+
     '<button class="copy-email-btn" onclick="custPdf()" title="Save this customer&#39;s open-order email as a PDF (same content as Copy email)">📄 PDF</button></div>'+
     '<div class="sub">'+sub+'</div></div>'+
     '<table><thead><tr>'+renderHead()+'</tr></thead><tbody>'+(body||'')+'</tbody></table>'+
@@ -2940,6 +2940,21 @@ function custDraftEml(){
   document.body.appendChild(a); a.click();
   setTimeout(function(){ URL.revokeObjectURL(a.href); if(a.parentNode) a.parentNode.removeChild(a); },2000);
   var bt=document.querySelector('.copy-email-btn'); if(bt){ var o=bt.innerHTML; bt.innerHTML='✓ Draft downloaded — open it'; setTimeout(function(){ bt.innerHTML=o; },2500); }
+}
+function custOutlookDraft(){
+  if(active<0){ alert('Pick a single customer in the sidebar first.'); return; }
+  var c=(DATA.customers||[])[active]; if(!c) return;
+  if(!BTN.token){ alert('Draft button is not configured on this copy of the page.'); return; }
+  var bt=document.getElementById('custDraftBtn'), o=bt?bt.innerHTML:'';
+  if(bt){ bt.disabled=true; bt.innerHTML='Creating draft...'; }
+  fetch('https://api.github.com/repos/'+BTN.repo+'/actions/workflows/create-draft-email.yml/dispatches',{method:'POST',headers:{
+      'Authorization':'Bearer '+BTN.token,'Accept':'application/vnd.github+json',
+      'X-GitHub-Api-Version':'2022-11-28','Content-Type':'application/json'},
+    body:JSON.stringify({ref:BTN.branch,inputs:{customer:c.name,to:''}})})
+    .then(function(r){ if(r.status!==204) return r.text().then(function(t){ throw new Error('('+r.status+') '+t.slice(0,160)); });
+      if(bt) bt.innerHTML='Requested - draft appears in Outlook Drafts in about a minute'; })
+    .catch(function(e){ alert('Could not request the draft: '+e.message); if(bt) bt.innerHTML=o; })
+    .finally(function(){ setTimeout(function(){ if(bt){ bt.disabled=false; bt.innerHTML=o; } },8000); });
 }
 function custPdf(){
   if(active<0){ alert('Pick a single customer in the sidebar to create their PDF.'); return; }
