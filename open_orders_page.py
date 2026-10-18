@@ -3398,6 +3398,10 @@ function buildCustEmailHtml(c){
   var td='padding:8px 10px;border-bottom:1px solid #e3e7ee;';
   var tdc=td+'white-space:nowrap;';
   var thb='background:#101E3E;color:#ffffff;padding:8px 10px;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;';
+  var todayStr=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  function openDays(d){ if(!d) return '&mdash;'; var p=String(d).slice(0,10).split('-'); if(p.length<3) return '&mdash;';
+    var a=Date.UTC(+p[0],+p[1]-1,+p[2]), n=new Date(), b=Date.UTC(n.getFullYear(),n.getMonth(),n.getDate());
+    var k=Math.round((b-a)/86400000); return k<0?0:k; }
   var sections='';
   for(var gi=0;gi<order.length;gi++){
     var grp=groups[order[gi]];
@@ -3415,7 +3419,8 @@ function buildCustEmailHtml(c){
         '</tr>';
     }
     sections+='<div class="so-sec" style="break-inside:avoid;page-break-inside:avoid;margin:0 0 16px;">'+
-      '<p style="margin:0 0 4px;font-weight:700;color:#101E3E;">SO '+escapeHtml(grp.so)+' &middot; '+escapeHtml(grp.status||'')+' &middot; '+fmtDate(grp.date)+'</p>'+
+      '<p style="margin:0 0 4px;font-weight:700;color:#101E3E;">SO '+escapeHtml(grp.so)+' &middot; '+escapeHtml(grp.status||'')+'</p>'+
+      '<p style="margin:0 0 4px;font-size:12.5px;color:#101E3E;">Created: <b>'+fmtDate(grp.date)+'</b> &nbsp;&middot;&nbsp; Today: <b>'+todayStr+'</b> &nbsp;&middot;&nbsp; Open: <b style="color:#008080;">'+openDays(grp.date)+' days</b></p>'+
       '<p style="margin:0 0 6px;font-size:12.5px;color:#6b7280;">'+
       (grp.totalLines>0 ? 'Lines on original order: <b>'+grp.totalLines+'</b> &nbsp;&middot;&nbsp; Fulfilled: <b>'+Math.max(0,grp.totalLines-grp.items.length)+'</b> &nbsp;&middot;&nbsp; Still to fulfill: <b>'+grp.items.length+'</b>'
                         : 'Lines still to fulfill: <b>'+grp.items.length+'</b>')+
