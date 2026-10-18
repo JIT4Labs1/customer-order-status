@@ -1,0 +1,34 @@
+name: Create Outlook draft (open orders)
+
+# Triggered by the "Create draft in Outlook" button on the Customer Open SO's tab.
+# Creates an UNSENT draft in the customersupport mailbox via Microsoft Graph.
+on:
+  workflow_dispatch:
+    inputs:
+      customer:
+        description: 'Customer name (exactly as on the page)'
+        required: true
+      to:
+        description: 'Optional recipient email(s), comma separated'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Create draft
+        env:
+          CUSTOMER: ${{ inputs.customer }}
+          DRAFT_TO: ${{ inputs.to }}
+          MS_TENANT_ID: ${{ secrets.MS_TENANT_ID }}
+          MS_CLIENT_ID: ${{ secrets.MS_CLIENT_ID }}
+          MS_CLIENT_SECRET: ${{ secrets.MS_CLIENT_SECRET }}
+        run: python create_outlook_draft.py
