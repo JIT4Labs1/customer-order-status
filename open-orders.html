@@ -2870,7 +2870,6 @@ function buildCustEmailHtml(c){
       var r2=its[j];
       rowsHtml+='<tr>'+
         '<td align="left" valign="top" style="'+td+'">'+escapeHtml(r2.product)+'</td>'+
-        '<td align="right" valign="top" style="'+tdc+'">'+fmtMoney(r2.list_price)+'</td>'+
         '<td align="center" valign="top" style="'+tdc+'">'+fmtQty(r2.ordered_qty)+'</td>'+
         '<td align="center" valign="top" style="'+tdc+'">'+fmtQty(r2.delivered_qty)+'</td>'+
         '<td align="center" valign="top" style="'+tdc+'font-weight:700;color:#008080;">'+fmtQty(r2.open_qty)+'</td>'+
@@ -2885,7 +2884,7 @@ function buildCustEmailHtml(c){
                         : 'Lines still to fulfill: <b>'+grp.items.length+'</b>')+
       '</p>'+
       '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;'+F+'color:#101E3E;">'+
-      '<tr><th align="left" style="'+thb+'">Product</th><th align="right" style="'+thb+'">List price</th>'+
+      '<tr><th align="left" style="'+thb+'">Product</th>'+
       '<th align="center" style="'+thb+'">Ordered</th><th align="center" style="'+thb+'">Delivered</th><th align="center" style="'+thb+'">Open</th><th align="left" style="'+thb+'">ETA</th></tr>'+
       rowsHtml+'</table></div>';
   }
@@ -2897,7 +2896,7 @@ function buildCustEmailHtml(c){
     '<img src="https://jit4labs.com/cdn/shop/files/JIT4LABS-Logo.png" alt="JIT4LABS" width="175" height="30" border="0" style="display:block;width:175px;max-width:175px;height:30px;border:0;outline:none;text-decoration:none;font:bold 22px Arial, Helvetica, sans-serif;color:#101E3E;line-height:30px"></a></td></tr>'+
     '<tr><td style="padding:24px;font:14px/1.6 Arial, Helvetica, sans-serif;color:#101E3E">'+
     '<p style="margin:0 0 12px">Hello,</p>'+
-    '<p style="margin:0 0 16px">Please find below the current status of your open orders with JIT4Labs as of '+today+'. Quantities reflect the latest fulfillment status, and prices shown are the unit list price from each sales order.</p>'+
+    '<p style="margin:0 0 16px">Please find below the current status of your open orders with JIT4Labs as of '+today+'. Quantities reflect the latest fulfillment status.</p>'+
     sections+
     '<p style="margin:0 0 16px;font-size:12px;color:#6b7280">If anything looks different from your records, reply and we will sort it out.</p>'+
     '<p style="margin:18px 0 0">Thank you,<br><b>JIT4Labs team</b></p></td></tr>'+
