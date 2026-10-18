@@ -344,6 +344,15 @@ def build_page_data(open_items):
         "vendors": len(vendors),
         "high_demand_skus": len(hd_items),
     }
+    # Customer PO tag from the Shopify order ("PO 1234567"), keyed by SO number.
+    # _so_customer_po.json is refreshed from Shopify by the scheduled task (STEP 10c-0b).
+    try:
+        _po_map = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "_so_customer_po.json")))
+    except Exception:
+        _po_map = {}
+    for _c in customers:
+        for _r in _c.get("rows", []):
+            _r["cust_po"] = _po_map.get(_r.get("so_num") or "", "")
     return {
         "generated_at": _pacific_now_str(),
         "totals": totals,
@@ -3389,7 +3398,8 @@ function buildCustEmailHtml(c){
   var groups={}, order=[], rows=(c.rows||[]);
   for(var i=0;i<rows.length;i++){
     var r=rows[i], so=r.so_num||'(no SO)';
-    if(!groups[so]){ groups[so]={so:so, status:r.so_status, date:r.order_date, items:[], totalLines:0}; order.push(so); }
+    if(!groups[so]){ groups[so]={so:so, status:r.so_status, date:r.order_date, items:[], totalLines:0, po:''}; order.push(so); }
+    if(r.cust_po && !groups[so].po) groups[so].po=r.cust_po;
     var g=groups[so]; g.items.push(r); if((r.so_total_lines||0)>g.totalLines) g.totalLines=r.so_total_lines;
     if(r.order_date && (!g.date || r.order_date<g.date)) g.date=r.order_date;
   }
@@ -3423,7 +3433,7 @@ function buildCustEmailHtml(c){
     sections+='<table class="so-sec" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;border-collapse:separate;border:1px solid #d5dbe5;border-left:5px solid #008080;break-inside:avoid;page-break-inside:avoid;">'+
       '<tr><td style="background:#eef3f6;padding:12px 14px;">'+
         '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'+
-        '<td align="left" style="font:bold 15px Arial, Helvetica, sans-serif;color:#101E3E;">'+escapeHtml(grp.so)+' <span style="font-weight:normal;color:#6b7280;">&middot; '+escapeHtml(grp.status||'')+'</span></td>'+
+        '<td align="left" style="font:bold 15px Arial, Helvetica, sans-serif;color:#101E3E;">'+escapeHtml(grp.so)+' <span style="font-weight:normal;color:#6b7280;">&middot; '+escapeHtml(grp.status||'')+'</span>'+(grp.po?' <span style="font-weight:bold;color:#008080;">&middot; '+escapeHtml(grp.po)+'</span>':'')+'</td>'+
         '<td align="right" style="white-space:nowrap;"><span style="background:#008080;color:#ffffff;font:bold 12px Arial, Helvetica, sans-serif;padding:4px 10px;border-radius:12px;white-space:nowrap;">Open '+nDays+' days</span></td>'+
         '</tr></table></td></tr>'+
       '<tr><td style="padding:8px 14px;font:12.5px/1.5 Arial, Helvetica, sans-serif;color:#101E3E;">Created <b>'+fmtDate(grp.date)+'</b> &nbsp;&middot;&nbsp; Today <b>'+todayStr+'</b> &nbsp;|&nbsp; <span style="color:#6b7280;">'+sumTxt+'</span></td></tr>'+
