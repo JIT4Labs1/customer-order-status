@@ -2831,7 +2831,7 @@ function renderCustPanel(){
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">'+
     '<h2 style="margin:0;">'+escapeHtml(c.name)+'</h2>'+
-    '<button class="copy-email-btn" onclick="custEmailToClipboard()" title="Copy this customer&#39;s open-order email (Product, List Price, quantities) — pastes as a formatted table into email/Word/Docs">📋 Copy email</button>'+
+    '<button class="copy-email-btn" onclick="custDraftEml()" title="Create an email draft for this customer (opens in your mail app, ready to review and send; nothing is sent)">✉ Create draft email</button>'+
     '<button class="copy-email-btn" onclick="custPdf()" title="Save this customer&#39;s open-order email as a PDF (same content as Copy email)">📄 PDF</button></div>'+
     '<div class="sub">'+sub+'</div></div>'+
     '<table><thead><tr>'+renderHead()+'</tr></thead><tbody>'+(body||'')+'</tbody></table>'+
@@ -2922,6 +2922,24 @@ function custEmailToClipboard(){
     }
   } catch(e){}
   fallbackCopyHtml(html, done);
+}
+function custDraftEml(){
+  if(active<0){ alert('Pick a single customer in the sidebar to create their draft email.'); return; }
+  var c=(DATA.customers||[])[active];
+  if(!c){ alert('No customer selected.'); return; }
+  var html='<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;background:#f4f6f9">'+buildCustEmailHtml(c)+'</body></html>';
+  var CRLF=String.fromCharCode(13,10);
+  var b64=btoa(unescape(encodeURIComponent(html))), lines=[];
+  for(var i=0;i<b64.length;i+=76) lines.push(b64.substr(i,76));
+  var subject='JIT4Labs - Open order status ('+String(c.name||'').replace(/[^A-Za-z0-9 .,&()-]/g,'')+')';
+  var eml=['X-Unsent: 1','Subject: '+subject,'MIME-Version: 1.0','Content-Type: text/html; charset=utf-8','Content-Transfer-Encoding: base64','',lines.join(CRLF),''].join(CRLF);
+  var blob=new Blob([eml],{type:'message/rfc822'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='Draft - Open orders - '+String(c.name||'customer').replace(/[^A-Za-z0-9 ._-]/g,'')+'.eml';
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); if(a.parentNode) a.parentNode.removeChild(a); },2000);
+  var bt=document.querySelector('.copy-email-btn'); if(bt){ var o=bt.innerHTML; bt.innerHTML='✓ Draft downloaded — open it'; setTimeout(function(){ bt.innerHTML=o; },2500); }
 }
 function custPdf(){
   if(active<0){ alert('Pick a single customer in the sidebar to create their PDF.'); return; }
