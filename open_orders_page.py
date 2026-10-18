@@ -3372,7 +3372,7 @@ function renderCustPanel(){
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">'+
     '<h2 style="margin:0;">'+escapeHtml(c.name)+'</h2>'+
-    '<button class="copy-email-btn" id="custDraftBtn" onclick="custOutlookDraft()" title="Create an UNSENT draft of this customer&#39;s open-order email in the customersupport@jit4you.com Outlook Drafts folder (takes about a minute)">✉ Create draft in Outlook</button>'+
+    '<button class="copy-email-btn" onclick="custEmailToClipboard()" title="Copy this customer&#39;s open-order email — pastes as a formatted table into email/Word/Docs">📋 Copy email</button>'+
     '<button class="copy-email-btn" onclick="custPdf()" title="Save this customer&#39;s open-order email as a PDF (same content as Copy email)">📄 PDF</button></div>'+
     '<div class="sub">'+sub+'</div></div>'+
     '<table><thead><tr>'+renderHead()+'</tr></thead><tbody>'+(body||'')+'</tbody></table>'+
