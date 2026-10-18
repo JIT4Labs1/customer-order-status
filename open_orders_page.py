@@ -3417,17 +3417,22 @@ function buildCustEmailHtml(c){
         '<td align="left" valign="top" style="'+tdc+'">'+(soEtaGet(r2)?fmtDate(soEtaGet(r2)):'&mdash;')+'</td>'+
         '</tr>';
     }
-    sections+='<div class="so-sec" style="break-inside:avoid;page-break-inside:avoid;margin:0 0 16px;">'+
-      '<p style="margin:0 0 4px;font-weight:700;color:#101E3E;">SO '+escapeHtml(grp.so)+' &middot; '+escapeHtml(grp.status||'')+'</p>'+
-      '<p style="margin:0 0 4px;font-size:12.5px;color:#101E3E;">Created: <b>'+fmtDate(grp.date)+'</b> &nbsp;&middot;&nbsp; Today: <b>'+todayStr+'</b> &nbsp;&middot;&nbsp; Open: <b style="color:#008080;">'+openDays(grp.date)+' days</b></p>'+
-      '<p style="margin:0 0 6px;font-size:12.5px;color:#6b7280;">'+
-      (grp.totalLines>0 ? 'Lines on original order: <b>'+grp.totalLines+'</b> &nbsp;&middot;&nbsp; Fulfilled: <b>'+Math.max(0,grp.totalLines-grp.items.length)+'</b> &nbsp;&middot;&nbsp; Still to fulfill: <b>'+grp.items.length+'</b>'
-                        : 'Lines still to fulfill: <b>'+grp.items.length+'</b>')+
-      '</p>'+
+    var nDays=openDays(grp.date);
+    var sumTxt=(grp.totalLines>0 ? 'Lines on original order: <b>'+grp.totalLines+'</b> &nbsp;&middot;&nbsp; Fulfilled: <b>'+Math.max(0,grp.totalLines-grp.items.length)+'</b> &nbsp;&middot;&nbsp; Still to fulfill: <b>'+grp.items.length+'</b>'
+                        : 'Lines still to fulfill: <b>'+grp.items.length+'</b>');
+    sections+='<table class="so-sec" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;border-collapse:separate;border:1px solid #d5dbe5;border-left:5px solid #008080;break-inside:avoid;page-break-inside:avoid;">'+
+      '<tr><td style="background:#eef3f6;padding:12px 14px;">'+
+        '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>'+
+        '<td align="left" style="font:bold 15px Arial, Helvetica, sans-serif;color:#101E3E;">'+escapeHtml(grp.so)+' <span style="font-weight:normal;color:#6b7280;">&middot; '+escapeHtml(grp.status||'')+'</span></td>'+
+        '<td align="right" style="white-space:nowrap;"><span style="background:#008080;color:#ffffff;font:bold 12px Arial, Helvetica, sans-serif;padding:4px 10px;border-radius:12px;white-space:nowrap;">Open '+nDays+' days</span></td>'+
+        '</tr></table></td></tr>'+
+      '<tr><td style="padding:8px 14px;font:12.5px/1.5 Arial, Helvetica, sans-serif;color:#101E3E;">Created <b>'+fmtDate(grp.date)+'</b> &nbsp;&middot;&nbsp; Today <b>'+todayStr+'</b> &nbsp;|&nbsp; <span style="color:#6b7280;">'+sumTxt+'</span></td></tr>'+
+      '<tr><td>'+
       '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;'+F+'color:#101E3E;">'+
       '<tr><th align="left" style="'+thb+'">Product</th>'+
       '<th align="center" style="'+thb+'">Ordered</th><th align="center" style="'+thb+'">Delivered</th><th align="center" style="'+thb+'">Open</th><th align="left" style="'+thb+'">ETA</th></tr>'+
-      rowsHtml+'</table></div>';
+      rowsHtml+'</table></td></tr></table>'+
+      '<div style="height:22px;line-height:22px;font-size:1px;">&nbsp;</div>';
   }
   if(!order.length) sections='<p style="margin:0 0 12px;">No open orders found.</p>';
   var today=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
