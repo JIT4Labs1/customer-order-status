@@ -4468,6 +4468,7 @@ var RE_IOPP_LOT  = new RegExp('lot[^A-Za-z0-9]*([A-Za-z0-9][A-Za-z0-9-]*)','i');
 var RE_IOPP_EXPD = new RegExp('exp[a-z]*[^A-Za-z0-9]*date[^A-Za-z0-9]*([0-9][0-9/.-]*)','i');
 var RE_IOPP_EXP  = new RegExp('exp[a-z]*[^A-Za-z0-9]*([0-9][0-9/.-]*)','i');
 var RE_IOPP_HASNUM = new RegExp('[0-9]');
+var RE_IOPP_NOTPROV = new RegExp('^(not provided|n/a|none|-)$','i');
 function _ioppFromDetails(txt, rec){
   var s=String(txt==null?'':txt); if(!s) return;
   // A lot value must contain a digit — stops prose like "no lot info here" from
@@ -4580,10 +4581,10 @@ function _ioppParseGrid(grid){
     }
 
     flushPend();
-    if(!sku) continue;
+    if(!sku || sku.toLowerCase()==='sku') continue;
     var rec={sku:sku, qty:qty};
-    if(map.lot!==undefined && row2[map.lot]!=null && String(row2[map.lot]).trim()) rec.lot=String(row2[map.lot]).trim().slice(0,40);
-    if(map.exp!==undefined) { var e=_ioppDate(row2[map.exp]); if(e) rec.exp=e; }
+    if(map.lot!==undefined && row2[map.lot]!=null && String(row2[map.lot]).trim() && !RE_IOPP_NOTPROV.test(String(row2[map.lot]))) rec.lot=String(row2[map.lot]).trim().slice(0,40);
+    if(map.exp!==undefined && !RE_IOPP_NOTPROV.test(String(row2[map.exp]))) { var e=_ioppDate(row2[map.exp]); if(e) rec.exp=e; }
     // Fill any gaps from a combined "Details" cell (dedicated columns win).
     if(map.details!==undefined) _ioppFromDetails(row2[map.details], rec);
     if(dcell!=null && String(dcell).trim()) rec.desc=String(dcell).trim().slice(0,120);
@@ -4593,6 +4594,33 @@ function _ioppParseGrid(grid){
   var cols=[]; for(var k in map){ if(map.hasOwnProperty(k)) cols.push(k); }
   if(lotRows) cols.push('lot-rows:'+lotRows);
   return {rows:out, skipped:skipped, cols:cols};
+}
+// PDF stock lists (e.g. Allora "Available Stock" report): rebuild a spreadsheet-like grid
+// from pdf.js text. Words closer than 8 units merge into one cell, so a description stays
+// a single cell while the SKU / lot / expiration / qty columns stay separate.
+function _ioppPdfGrid(buf){
+  return _loadPdfJs().then(function(){ return pdfjsLib.getDocument({data:new Uint8Array(buf)}).promise; })
+  .then(function(pdf){
+    var pages=[]; for(var i=1;i<=pdf.numPages;i++) pages.push(i);
+    return pages.reduce(function(chain,pn){
+      return chain.then(function(grid){
+        return pdf.getPage(pn).then(function(page){ return page.getTextContent(); }).then(function(tc){
+          var byY={};
+          tc.items.forEach(function(it){ if(!String(it.str).trim()) return; var y=Math.round(it.transform[5]/3);
+            (byY[y]=byY[y]||[]).push({x:it.transform[4], w:(it.width||0), s:String(it.str).trim()}); });
+          Object.keys(byY).map(Number).sort(function(a,b){ return b-a; }).forEach(function(y){
+            var arr=byY[y].sort(function(a,b){ return a.x-b.x; }), cells=[], last=null;
+            arr.forEach(function(o){
+              if(last && o.x-last.end<8){ last.s+=' '+o.s; last.end=o.x+o.w; }
+              else { last={s:o.s, end:o.x+o.w}; cells.push(last); }
+            });
+            grid.push(cells.map(function(c){ return c.s; }));
+          });
+          return grid;
+        });
+      });
+    }, Promise.resolve([]));
+  });
 }
 function ioppHandleFiles(fileList){
   var files=[]; for(var i=0;i<fileList.length;i++) files.push(fileList[i]);
@@ -4604,37 +4632,35 @@ function ioppHandleFiles(fileList){
   }
   _ioppNote('','Reading '+files.length+' file(s)…');
   _loadXlsx().then(function(XLSX){
+    function finishOne(f,res,err){
+      if(err){ errs.push(f.name+': '+err); }
+      else if(res.err){ errs.push(f.name+': '+res.err); }
+      else if(!res.rows.length){ errs.push(f.name+': no rows with a positive quantity.'); }
+      else {
+        if(!IOPP) IOPP=ioppBlank();
+        IOPP.files.push({name:f.name, vendor:(ioppGuessVendor(f.name)||_ioppVendorFromName(f.name)),
+                         uploaded_at:new Date().toISOString().slice(0,19).replace('T',' '),
+                         cols:res.cols, skipped:res.skipped, rows:res.rows});
+        added++;
+      }
+      done++;
+      if(done===files.length){
+        _ioppIdx=null;
+        if(added) ioppCommit();
+        _ioppNote(errs.length?'err':'ok',
+          (added?(added+' file(s) loaded. '):'')+(errs.length?errs.join(' | '):''));
+        renderIoppPanel(); if(mode==='vendor') renderVendorPanel();
+      }
+    }
     var done=0, added=0, errs=[];
     files.forEach(function(f){
-      var fr=new FileReader();
-      fr.onload=function(ev){
-        try{
-          var wb=XLSX.read(new Uint8Array(ev.target.result),{type:'array',cellDates:true});
-          var sh=wb.Sheets[wb.SheetNames[0]];
-          var grid=XLSX.utils.sheet_to_json(sh,{header:1,raw:true,defval:''});
-          var res=_ioppParseGrid(grid);
-          if(res.err){ errs.push(f.name+': '+res.err); }
-          else if(!res.rows.length){ errs.push(f.name+': no rows with a positive quantity.'); }
-          else {
-            if(!IOPP) IOPP=ioppBlank();
-            IOPP.files.push({name:f.name, vendor:(ioppGuessVendor(f.name)||_ioppVendorFromName(f.name)),
-                             uploaded_at:new Date().toISOString().slice(0,19).replace('T',' '),
-                             cols:res.cols, skipped:res.skipped, rows:res.rows});
-            added++;
-          }
-        }catch(e){ errs.push(f.name+': '+e.message); }
-        done++;
-        if(done===files.length){
-          _ioppIdx=null;
-          if(added) ioppCommit();
-          _ioppNote(errs.length?'err':'ok',
-            (added?(added+' file(s) loaded. '):'')+(errs.length?errs.join(' | '):''));
-          renderIoppPanel(); if(mode==='vendor') renderVendorPanel();
-        }
-      };
-      fr.onerror=function(){ done++; errs.push(f.name+': could not read file.');
-        if(done===files.length){ _ioppNote('err',errs.join(' | ')); renderIoppPanel(); } };
-      fr.readAsArrayBuffer(f);
+      f.arrayBuffer().then(function(buf){
+        if(/[.]pdf$/i.test(f.name)) return _ioppPdfGrid(buf);
+        var wb=XLSX.read(new Uint8Array(buf),{type:'array',cellDates:true});
+        var sh=wb.Sheets[wb.SheetNames[0]];
+        return XLSX.utils.sheet_to_json(sh,{header:1,raw:true,defval:''});
+      }).then(function(grid){ finishOne(f,_ioppParseGrid(grid),''); })
+        .catch(function(e){ finishOne(f,null,(e&&e.message)||'could not read file.'); });
     });
   }).catch(function(e){ _ioppNote('err',e.message); });
 }
@@ -4814,13 +4840,14 @@ function ioppGuessVendor(fname){
   var SUFFIX={LLC:1,INC:1,CORP:1,CORPORATION:1,LTD:1,CO:1,COMPANY:1,HOLDING:1,
               HOLDINGS:1,GMBH:1,PLC:1,LP:1,LLP:1,SA:1,NV:1,BV:1};
   for(var i=0;i<opts.length;i++){
-    var tokens=String(opts[i]).split(' '), hit=0, tot=0;
+    var tokens=String(opts[i]).split(' '), hit=0, tot=0, firstHit=false;
     for(var t=0;t<tokens.length;t++){
       var tk=ioppVenNorm(tokens[t]);
       if(tk.length<3 || SUFFIX[tk]) continue;   // skip LLC / INC / short noise
-      tot++; if(base.indexOf(tk)>-1) hit++;
+      tot++; if(base.indexOf(tk)>-1){ hit++; if(tot===1) firstHit=true; }
     }
-    if(tot && hit===tot && ioppVenNorm(opts[i]).length>bestLen){ best=opts[i]; bestLen=ioppVenNorm(opts[i]).length; }
+    // all words match, or the vendor's leading word does ("Allora_Available_Stock.pdf" -> Allora Biotech LLC)
+    if(tot && (hit===tot || firstHit) && ioppVenNorm(opts[i]).length>bestLen){ best=opts[i]; bestLen=ioppVenNorm(opts[i]).length; }
   }
   return best;
 }
@@ -4853,8 +4880,8 @@ function renderIoppPanel(){
   var up='<div class="iop-up" id="iopp-drop">'+
     '<div style="font-weight:700;color:#0D2B45;margin-bottom:6px;">Vendor inventory files</div>'+
     '<div style="font-size:12px;color:#6b7a8a;margin-bottom:10px;">Drop up to '+IOPP_MAX_FILES+
-      ' spreadsheets here, or <label style="color:#1F4E79;text-decoration:underline;cursor:pointer;">browse'+
-      '<input type="file" accept=".xlsx,.xls,.csv" multiple style="display:none;" '+
+      ' spreadsheets or PDF stock lists here, or <label style="color:#1F4E79;text-decoration:underline;cursor:pointer;">browse'+
+      '<input type="file" accept=".xlsx,.xls,.csv,.pdf" multiple style="display:none;" '+
       'onchange="ioppHandleFiles(this.files); this.value=String.fromCharCode();"></label>.'+
       ' Needs a SKU column and a quantity column; lot and expiration are picked up when present.</div>'+
     (chips||'<div style="font-size:12px;color:#9aa7b4;">No files loaded yet.</div>')+
