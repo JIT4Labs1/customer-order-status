@@ -1,6 +1,6 @@
 {
-  "pulled_at": "2026-10-19 09:54 AM PT",
-  "last_status_refresh": "2026-10-19 09:49 AM PT",
+  "pulled_at": "2026-10-19 06:05 PM PT",
+  "last_status_refresh": "2026-10-19 06:00 PM PT",
   "default_view": "Third Party",
   "billed_to": "W803J7 \u2013 JIT4U Third Party",
   "note": "Shipments come from UPS My Choice (Third Party), Pirate Ship, and Shopify fulfillments, de-duplicated by tracking number. Carrier is tagged per row. UPS statuses auto-refresh 4x/day via the UPS Track API; FedEx shows the label + a tracking link but live FedEx status requires a FedEx Developer API (not yet connected).",
@@ -478,16 +478,10 @@
       ],
       "order": "#1033",
       "so_num": "SO412",
-      "pos": [
-        {
-          "po": "PO654",
-          "vendor": "PMA Services",
-          "po_id": "151746"
-        }
-      ],
-      "po": "PO654",
+      "pos": [],
+      "po": "",
       "so_id": "151738",
-      "po_id": "151746",
+      "po_id": "",
       "shopify_order": "#1033"
     },
     {
@@ -857,16 +851,10 @@
       ],
       "order": "#1038",
       "so_num": "SO417",
-      "pos": [
-        {
-          "po": "PO661",
-          "vendor": "PMA Services",
-          "po_id": "153406"
-        }
-      ],
-      "po": "PO661",
+      "pos": [],
+      "po": "",
       "so_id": "153405",
-      "po_id": "153406",
+      "po_id": "",
       "shopify_order": "#1038"
     },
     {
@@ -959,16 +947,10 @@
       ],
       "contact": "Bart Pitula",
       "so_num": "SO446",
-      "pos": [
-        {
-          "po": "PO703",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "159193"
-        }
-      ],
-      "po": "PO703",
+      "pos": [],
+      "po": "",
       "so_id": "159190",
-      "po_id": "159193",
+      "po_id": "",
       "shopify_order": "#1071"
     },
     {
@@ -1141,11 +1123,6 @@
           "po": "PO682",
           "vendor": "ClearChem Diagnostics, Inc",
           "po_id": "156345"
-        },
-        {
-          "po": "PO683",
-          "vendor": "PMA Services",
-          "po_id": "156346"
         },
         {
           "po": "PO684",
@@ -1383,14 +1360,19 @@
       "so_num": "SO419",
       "pos": [
         {
+          "po": "PO665",
+          "vendor": "PMA Services",
+          "po_id": "153741"
+        },
+        {
           "po": "PO734",
           "vendor": "Allora Biotech LLC",
           "po_id": "162355"
         }
       ],
-      "po": "PO734",
+      "po": "",
       "so_id": "153740",
-      "po_id": "162355",
+      "po_id": "",
       "shopify_order": "#1039"
     },
     {
@@ -1774,10 +1756,16 @@
         }
       ],
       "so_num": "SO400",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO633",
+          "vendor": "ALDX Holding",
+          "po_id": "146602"
+        }
+      ],
+      "po": "PO633",
       "so_id": "146599",
-      "po_id": ""
+      "po_id": "146602"
     },
     {
       "tracking": "871501923240",
@@ -1806,10 +1794,16 @@
         }
       ],
       "so_num": "SO400",
-      "pos": [],
-      "po": "",
+      "pos": [
+        {
+          "po": "PO631",
+          "vendor": "Clearchem",
+          "po_id": "146600"
+        }
+      ],
+      "po": "PO631",
       "so_id": "146599",
-      "po_id": ""
+      "po_id": "146600"
     },
     {
       "tracking": "871501682126",
@@ -2901,16 +2895,11 @@
           "po": "PO722",
           "vendor": "PMA Services",
           "po_id": "161321"
-        },
-        {
-          "po": "PO732",
-          "vendor": "PMA Services",
-          "po_id": "162213"
         }
       ],
-      "po": "",
+      "po": "PO722",
       "so_id": "161320",
-      "po_id": ""
+      "po_id": "161321"
     },
     {
       "tracking": "382471428933",
@@ -2949,16 +2938,11 @@
           "po": "PO722",
           "vendor": "PMA Services",
           "po_id": "161321"
-        },
-        {
-          "po": "PO732",
-          "vendor": "PMA Services",
-          "po_id": "162213"
         }
       ],
-      "po": "",
+      "po": "PO722",
       "so_id": "161320",
-      "po_id": "",
+      "po_id": "161321",
       "shopify_order": "#1084"
     },
     {
@@ -3228,15 +3212,9 @@
       ],
       "so_num": "SO408",
       "so_id": "150060",
-      "pos": [
-        {
-          "po": "PO646",
-          "vendor": "ClearChem Diagnostics, Inc",
-          "po_id": "150062"
-        }
-      ],
-      "po": "PO646",
-      "po_id": "150062"
+      "pos": [],
+      "po": "",
+      "po_id": ""
     },
     {
       "tracking": "1Z8W007Y0394428819",
@@ -3354,9 +3332,15 @@
       ],
       "so_num": "SO470",
       "so_id": "162697",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO739",
+          "vendor": "PMA Services",
+          "po_id": "162699"
+        }
+      ],
+      "po": "PO739",
+      "po_id": "162699",
       "shopify_order": "#1094"
     },
     {
@@ -3687,13 +3671,13 @@
       "so_id": "151738",
       "pos": [
         {
-          "po": "PO654",
+          "po": "PO712",
           "vendor": "PMA Services",
-          "po_id": "151746"
+          "po_id": "160039"
         }
       ],
-      "po": "PO654",
-      "po_id": "151746",
+      "po": "PO712",
+      "po_id": "160039",
       "shopify_order": "#1033"
     },
     {
@@ -4066,13 +4050,18 @@
       "so_id": "153740",
       "pos": [
         {
+          "po": "PO665",
+          "vendor": "PMA Services",
+          "po_id": "153741"
+        },
+        {
           "po": "PO734",
           "vendor": "Allora Biotech LLC",
           "po_id": "162355"
         }
       ],
-      "po": "PO734",
-      "po_id": "162355",
+      "po": "",
+      "po_id": "",
       "shopify_order": "#1039"
     },
     {
@@ -4279,9 +4268,15 @@
       ],
       "so_num": "SO419",
       "so_id": "153740",
-      "pos": [],
-      "po": "",
-      "po_id": "",
+      "pos": [
+        {
+          "po": "PO665",
+          "vendor": "PMA Services",
+          "po_id": "153741"
+        }
+      ],
+      "po": "PO665",
+      "po_id": "153741",
       "shopify_order": "#1039"
     },
     {
@@ -5514,15 +5509,9 @@
       ],
       "so_num": "SO493",
       "so_id": "167019",
-      "pos": [
-        {
-          "po": "PO767",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "167026"
-        }
-      ],
-      "po": "PO767",
-      "po_id": "167026"
+      "pos": [],
+      "po": "",
+      "po_id": ""
     },
     {
       "tracking": "1Z8W007Y0392169175",
@@ -5684,10 +5673,15 @@
           "po": "PO778",
           "vendor": "PMA Services",
           "po_id": "168445"
+        },
+        {
+          "po": "PO820",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "176029"
         }
       ],
-      "po": "PO778",
-      "po_id": "168445",
+      "po": "",
+      "po_id": "",
       "shopify_order": "#1125"
     },
     {
@@ -5723,10 +5717,15 @@
           "po": "PO778",
           "vendor": "PMA Services",
           "po_id": "168445"
+        },
+        {
+          "po": "PO820",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "176029"
         }
       ],
-      "po": "PO778",
-      "po_id": "168445",
+      "po": "",
+      "po_id": "",
       "shopify_order": "#1125"
     },
     {
@@ -6025,15 +6024,9 @@
       ],
       "so_num": "SO493",
       "so_id": "167019",
-      "pos": [
-        {
-          "po": "PO767",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "167026"
-        }
-      ],
-      "po": "PO767",
-      "po_id": "167026",
+      "pos": [],
+      "po": "",
+      "po_id": "",
       "shopify_order": "#1118"
     },
     {
@@ -6731,10 +6724,15 @@
           "po": "PO788",
           "vendor": "PMA Services",
           "po_id": "170114"
+        },
+        {
+          "po": "PO789",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "170115"
         }
       ],
-      "po": "PO788",
-      "po_id": "170114",
+      "po": "",
+      "po_id": "",
       "url": "https://www.fedex.com/fedextrack/?trknbr=875378897489",
       "shopify_order": "#1132"
     },
@@ -6799,10 +6797,15 @@
           "po": "PO788",
           "vendor": "PMA Services",
           "po_id": "170114"
+        },
+        {
+          "po": "PO789",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "170115"
         }
       ],
-      "po": "PO788",
-      "po_id": "170114",
+      "po": "",
+      "po_id": "",
       "url": "https://www.fedex.com/fedextrack/?trknbr=875388483839",
       "shopify_order": "#1132"
     },
@@ -7228,15 +7231,9 @@
       ],
       "so_num": "SO493",
       "so_id": "167019",
-      "pos": [
-        {
-          "po": "PO767",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "167026"
-        }
-      ],
-      "po": "PO767",
-      "po_id": "167026",
+      "pos": [],
+      "po": "",
+      "po_id": "",
       "shopify_order": "#1118"
     },
     {
@@ -7809,15 +7806,9 @@
       "contact": "Misty Mcwhorter",
       "so_num": "SO493",
       "so_id": "167019",
-      "pos": [
-        {
-          "po": "PO767",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "167026"
-        }
-      ],
-      "po": "PO767",
-      "po_id": "167026",
+      "pos": [],
+      "po": "",
+      "po_id": "",
       "shopify_order": "#1118"
     },
     {
@@ -8905,10 +8896,15 @@
           "po": "PO778",
           "vendor": "PMA Services",
           "po_id": "168445"
+        },
+        {
+          "po": "PO820",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "176029"
         }
       ],
-      "po": "PO778",
-      "po_id": "168445"
+      "po": "",
+      "po_id": ""
     },
     {
       "tracking": "876269022606",
@@ -8942,10 +8938,15 @@
           "po": "PO778",
           "vendor": "PMA Services",
           "po_id": "168445"
+        },
+        {
+          "po": "PO820",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "176029"
         }
       ],
-      "po": "PO778",
-      "po_id": "168445"
+      "po": "",
+      "po_id": ""
     },
     {
       "tracking": "1Z23C2X71329444155",
@@ -9250,6 +9251,11 @@
           "po": "PO824",
           "vendor": "PMA Services",
           "po_id": "176659"
+        },
+        {
+          "po": "PO825",
+          "vendor": "PMA Services",
+          "po_id": "176660"
         }
       ],
       "po": "",
@@ -9363,6 +9369,11 @@
           "po": "PO824",
           "vendor": "PMA Services",
           "po_id": "176659"
+        },
+        {
+          "po": "PO825",
+          "vendor": "PMA Services",
+          "po_id": "176660"
         }
       ],
       "po": "",
@@ -9476,6 +9487,11 @@
           "po": "PO824",
           "vendor": "PMA Services",
           "po_id": "176659"
+        },
+        {
+          "po": "PO825",
+          "vendor": "PMA Services",
+          "po_id": "176660"
         }
       ],
       "po": "",
@@ -9589,6 +9605,11 @@
           "po": "PO824",
           "vendor": "PMA Services",
           "po_id": "176659"
+        },
+        {
+          "po": "PO825",
+          "vendor": "PMA Services",
+          "po_id": "176660"
         }
       ],
       "po": "",
@@ -10033,11 +10054,6 @@
           "po_id": "178678"
         },
         {
-          "po": "PO837",
-          "vendor": "PMA Services",
-          "po_id": "178679"
-        },
-        {
           "po": "PO838",
           "vendor": "ClearChem Diagnostics, Inc",
           "po_id": "178682"
@@ -10132,11 +10148,6 @@
           "po_id": "178678"
         },
         {
-          "po": "PO837",
-          "vendor": "PMA Services",
-          "po_id": "178679"
-        },
-        {
           "po": "PO838",
           "vendor": "ClearChem Diagnostics, Inc",
           "po_id": "178682"
@@ -10229,11 +10240,6 @@
           "po": "PO836",
           "vendor": "Allora Biotech LLC",
           "po_id": "178678"
-        },
-        {
-          "po": "PO837",
-          "vendor": "PMA Services",
-          "po_id": "178679"
         },
         {
           "po": "PO838",
@@ -10647,14 +10653,14 @@
       "so_num": "SO493",
       "pos": [
         {
-          "po": "PO767",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "167026"
-        },
-        {
           "po": "PO768",
           "vendor": "PMA Services",
           "po_id": "167027"
+        },
+        {
+          "po": "PO939",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "193807"
         }
       ],
       "po": "",
@@ -11408,6 +11414,11 @@
           "po_id": "181952"
         },
         {
+          "po": "PO858",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "181953"
+        },
+        {
           "po": "PO859",
           "vendor": "ClearChem Diagnostics, Inc",
           "po_id": "181954"
@@ -11534,15 +11545,10 @@
           "po": "PO855",
           "vendor": "Allora Biotech LLC",
           "po_id": "181656"
-        },
-        {
-          "po": "PO856",
-          "vendor": "PMA Services",
-          "po_id": "181657"
         }
       ],
-      "po": "",
-      "po_id": ""
+      "po": "PO855",
+      "po_id": "181656"
     },
     {
       "tracking": "383659421057",
@@ -11662,6 +11668,11 @@
           "po": "PO824",
           "vendor": "PMA Services",
           "po_id": "176659"
+        },
+        {
+          "po": "PO825",
+          "vendor": "PMA Services",
+          "po_id": "176660"
         }
       ],
       "po": "",
@@ -11785,6 +11796,11 @@
           "po": "PO824",
           "vendor": "PMA Services",
           "po_id": "176659"
+        },
+        {
+          "po": "PO825",
+          "vendor": "PMA Services",
+          "po_id": "176660"
         }
       ],
       "po": "",
@@ -12046,6 +12062,11 @@
           "po_id": "181952"
         },
         {
+          "po": "PO858",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "181953"
+        },
+        {
           "po": "PO859",
           "vendor": "ClearChem Diagnostics, Inc",
           "po_id": "181954"
@@ -12168,6 +12189,11 @@
           "po": "PO857",
           "vendor": "PMA Services",
           "po_id": "181952"
+        },
+        {
+          "po": "PO858",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "181953"
         },
         {
           "po": "PO859",
@@ -12346,11 +12372,6 @@
       "so_num": "SO550",
       "so_id": "183233",
       "pos": [
-        {
-          "po": "PO862",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "183234"
-        },
         {
           "po": "PO863",
           "vendor": "PMA Services",
@@ -12611,14 +12632,14 @@
       "so_id": "167019",
       "pos": [
         {
-          "po": "PO767",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "167026"
-        },
-        {
           "po": "PO768",
           "vendor": "PMA Services",
           "po_id": "167027"
+        },
+        {
+          "po": "PO939",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "193807"
         }
       ],
       "po": "",
@@ -12740,15 +12761,10 @@
           "po": "PO855",
           "vendor": "Allora Biotech LLC",
           "po_id": "181656"
-        },
-        {
-          "po": "PO856",
-          "vendor": "PMA Services",
-          "po_id": "181657"
         }
       ],
-      "po": "",
-      "po_id": ""
+      "po": "PO855",
+      "po_id": "181656"
     },
     {
       "tracking": "877306832614",
@@ -13367,10 +13383,15 @@
           "po": "PO738",
           "vendor": "PMA Services",
           "po_id": "162698"
+        },
+        {
+          "po": "PO739",
+          "vendor": "PMA Services",
+          "po_id": "162699"
         }
       ],
-      "po": "PO738",
-      "po_id": "162698"
+      "po": "",
+      "po_id": ""
     },
     {
       "tracking": "877639772626",
@@ -13698,6 +13719,11 @@
           "po": "PO824",
           "vendor": "PMA Services",
           "po_id": "176659"
+        },
+        {
+          "po": "PO825",
+          "vendor": "PMA Services",
+          "po_id": "176660"
         }
       ],
       "po": "",
@@ -13801,18 +13827,7 @@
       "so_num": "SO542",
       "shopify_order": "#1170",
       "so_id": "179912",
-      "pos": [
-        {
-          "po": "PO850",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "179914"
-        },
-        {
-          "po": "PO883",
-          "vendor": "PMA Services",
-          "po_id": "185750"
-        }
-      ],
+      "pos": [],
       "po": "",
       "po_id": ""
     },
@@ -13850,18 +13865,7 @@
       "so_num": "SO542",
       "shopify_order": "#1170",
       "so_id": "179912",
-      "pos": [
-        {
-          "po": "PO850",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "179914"
-        },
-        {
-          "po": "PO883",
-          "vendor": "PMA Services",
-          "po_id": "185750"
-        }
-      ],
+      "pos": [],
       "po": "",
       "po_id": ""
     },
@@ -14349,18 +14353,7 @@
       ],
       "order": "#1194",
       "so_num": "SO564",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        },
-        {
-          "po": "PO901",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "188341"
-        }
-      ],
+      "pos": [],
       "po": "",
       "so_id": "186423",
       "po_id": ""
@@ -14477,18 +14470,7 @@
       ],
       "order": "#1194",
       "so_num": "SO564",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        },
-        {
-          "po": "PO901",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "188341"
-        }
-      ],
+      "pos": [],
       "po": "",
       "so_id": "186423",
       "po_id": ""
@@ -14605,18 +14587,7 @@
       ],
       "order": "#1194",
       "so_num": "SO564",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        },
-        {
-          "po": "PO901",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "188341"
-        }
-      ],
+      "pos": [],
       "po": "",
       "so_id": "186423",
       "po_id": ""
@@ -14733,18 +14704,7 @@
       ],
       "order": "#1194",
       "so_num": "SO564",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        },
-        {
-          "po": "PO901",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "188341"
-        }
-      ],
+      "pos": [],
       "po": "",
       "so_id": "186423",
       "po_id": ""
@@ -14861,18 +14821,7 @@
       ],
       "order": "#1194",
       "so_num": "SO564",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        },
-        {
-          "po": "PO901",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "188341"
-        }
-      ],
+      "pos": [],
       "po": "",
       "so_id": "186423",
       "po_id": ""
@@ -14989,18 +14938,7 @@
       ],
       "order": "#1194",
       "so_num": "SO564",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        },
-        {
-          "po": "PO901",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "188341"
-        }
-      ],
+      "pos": [],
       "po": "",
       "so_id": "186423",
       "po_id": ""
@@ -15117,18 +15055,7 @@
       ],
       "order": "#1194",
       "so_num": "SO564",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        },
-        {
-          "po": "PO901",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "188341"
-        }
-      ],
+      "pos": [],
       "po": "",
       "so_id": "186423",
       "po_id": ""
@@ -15245,18 +15172,7 @@
       ],
       "order": "#1194",
       "so_num": "SO564",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        },
-        {
-          "po": "PO901",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "188341"
-        }
-      ],
+      "pos": [],
       "po": "",
       "so_id": "186423",
       "po_id": ""
@@ -15373,18 +15289,7 @@
       ],
       "order": "#1194",
       "so_num": "SO564",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        },
-        {
-          "po": "PO901",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "188341"
-        }
-      ],
+      "pos": [],
       "po": "",
       "so_id": "186423",
       "po_id": ""
@@ -15501,18 +15406,7 @@
       ],
       "order": "#1194",
       "so_num": "SO564",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        },
-        {
-          "po": "PO901",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "188341"
-        }
-      ],
+      "pos": [],
       "po": "",
       "so_id": "186423",
       "po_id": ""
@@ -15629,18 +15523,7 @@
       ],
       "order": "#1194",
       "so_num": "SO564",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        },
-        {
-          "po": "PO901",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "188341"
-        }
-      ],
+      "pos": [],
       "po": "",
       "so_id": "186423",
       "po_id": ""
@@ -15757,18 +15640,7 @@
       ],
       "order": "#1194",
       "so_num": "SO564",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        },
-        {
-          "po": "PO901",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "188341"
-        }
-      ],
+      "pos": [],
       "po": "",
       "so_id": "186423",
       "po_id": ""
@@ -15885,18 +15757,7 @@
       ],
       "order": "#1194",
       "so_num": "SO564",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        },
-        {
-          "po": "PO901",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "188341"
-        }
-      ],
+      "pos": [],
       "po": "",
       "so_id": "186423",
       "po_id": ""
@@ -16150,9 +16011,15 @@
         }
       ],
       "so_id": "188280",
-      "pos": [],
-      "po": "",
-      "po_id": ""
+      "pos": [
+        {
+          "po": "PO900",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "188281"
+        }
+      ],
+      "po": "PO900",
+      "po_id": "188281"
     },
     {
       "tracking": "877876214744",
@@ -16175,15 +16042,9 @@
         }
       ],
       "so_id": "188280",
-      "pos": [
-        {
-          "po": "PO902",
-          "vendor": "PMA Services",
-          "po_id": "188354"
-        }
-      ],
-      "po": "PO902",
-      "po_id": "188354"
+      "pos": [],
+      "po": "",
+      "po_id": ""
     },
     {
       "tracking": "1Z8W007Y0393795406",
@@ -16482,13 +16343,18 @@
       "so_id": "188495",
       "pos": [
         {
+          "po": "PO903",
+          "vendor": "PMA Services",
+          "po_id": "188496"
+        },
+        {
           "po": "PO904",
           "vendor": "Allora Biotech LLC",
           "po_id": "188497"
         }
       ],
-      "po": "PO904",
-      "po_id": "188497"
+      "po": "",
+      "po_id": ""
     },
     {
       "tracking": "383932191951",
@@ -16596,18 +16462,7 @@
         }
       ],
       "so_id": "186423",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        },
-        {
-          "po": "PO901",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "188341"
-        }
-      ],
+      "pos": [],
       "po": "",
       "po_id": ""
     },
@@ -16717,18 +16572,7 @@
         }
       ],
       "so_id": "186423",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        },
-        {
-          "po": "PO901",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "188341"
-        }
-      ],
+      "pos": [],
       "po": "",
       "po_id": ""
     },
@@ -16838,18 +16682,7 @@
         }
       ],
       "so_id": "186423",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        },
-        {
-          "po": "PO901",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "188341"
-        }
-      ],
+      "pos": [],
       "po": "",
       "po_id": ""
     },
@@ -16959,18 +16792,7 @@
         }
       ],
       "so_id": "186423",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        },
-        {
-          "po": "PO901",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "188341"
-        }
-      ],
+      "pos": [],
       "po": "",
       "po_id": ""
     },
@@ -17080,18 +16902,7 @@
         }
       ],
       "so_id": "186423",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        },
-        {
-          "po": "PO901",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "188341"
-        }
-      ],
+      "pos": [],
       "po": "",
       "po_id": ""
     },
@@ -17172,15 +16983,9 @@
         }
       ],
       "so_id": "183233",
-      "pos": [
-        {
-          "po": "PO862",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "183234"
-        }
-      ],
-      "po": "PO862",
-      "po_id": "183234"
+      "pos": [],
+      "po": "",
+      "po_id": ""
     },
     {
       "tracking": "383938258541",
@@ -17387,10 +17192,15 @@
           "po": "PO778",
           "vendor": "PMA Services",
           "po_id": "168445"
+        },
+        {
+          "po": "PO820",
+          "vendor": "ClearChem Diagnostics, Inc",
+          "po_id": "176029"
         }
       ],
-      "po": "PO778",
-      "po_id": "168445"
+      "po": "",
+      "po_id": ""
     },
     {
       "tracking": "878052920780",
@@ -17544,15 +17354,9 @@
         }
       ],
       "so_id": "186423",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        }
-      ],
-      "po": "PO887",
-      "po_id": "186425"
+      "pos": [],
+      "po": "",
+      "po_id": ""
     },
     {
       "tracking": "384025676613",
@@ -17802,11 +17606,6 @@
       "po_id": "",
       "so_id": "183233",
       "pos": [
-        {
-          "po": "PO862",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "183234"
-        },
         {
           "po": "PO863",
           "vendor": "PMA Services",
@@ -18091,9 +17890,15 @@
       ],
       "so_num": "SO591",
       "so_id": "191848",
-      "pos": [],
-      "po": "",
-      "po_id": ""
+      "pos": [
+        {
+          "po": "PO934",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "191851"
+        }
+      ],
+      "po": "PO934",
+      "po_id": "191851"
     },
     {
       "carrier": "FedEx",
@@ -18467,15 +18272,9 @@
       "order": "#1232",
       "so_num": "SO599",
       "so_id": "195266",
-      "pos": [
-        {
-          "po": "PO946",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "195267"
-        }
-      ],
-      "po": "PO946",
-      "po_id": "195267"
+      "pos": [],
+      "po": "",
+      "po_id": ""
     },
     {
       "tracking": "878608228586",
@@ -18563,18 +18362,7 @@
       "order": "#1194",
       "so_num": "SO564",
       "so_id": "186423",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        },
-        {
-          "po": "PO901",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "188341"
-        }
-      ],
+      "pos": [],
       "po": "",
       "po_id": ""
     },
@@ -18585,12 +18373,12 @@
       "receiver": "MEDICAL HEALTH LAB",
       "ship_to": "Sugar Land, TX",
       "service": "",
-      "status": "Out For Delivery",
-      "activity": "OUT_FOR_DELIVERY",
+      "status": "Delivered",
+      "activity": "DELIVERED",
       "location": "",
       "date": "",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "source": "Shopify",
       "carrier": "FedEx",
       "ship_date": "2026-10-15",
@@ -18626,9 +18414,15 @@
       "order": "#1236",
       "so_num": "SO603",
       "so_id": "196311",
-      "pos": [],
-      "po": "",
-      "po_id": ""
+      "pos": [
+        {
+          "po": "PO954",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "196313"
+        }
+      ],
+      "po": "PO954",
+      "po_id": "196313"
     },
     {
       "tracking": "384195934371",
@@ -18637,12 +18431,12 @@
       "receiver": "MEDICAL HEALTH LAB",
       "ship_to": "Sugar Land, TX",
       "service": "",
-      "status": "In Transit",
-      "activity": "IN_TRANSIT",
+      "status": "Delivered",
+      "activity": "DELIVERED",
       "location": "",
       "date": "",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "source": "Shopify",
       "carrier": "FedEx",
       "ship_date": "2026-10-15",
@@ -18658,15 +18452,9 @@
       "order": "#1236",
       "so_num": "SO603",
       "so_id": "196311",
-      "pos": [
-        {
-          "po": "PO953",
-          "vendor": "PMA Services",
-          "po_id": "196312"
-        }
-      ],
-      "po": "PO953",
-      "po_id": "196312"
+      "pos": [],
+      "po": "",
+      "po_id": ""
     },
     {
       "tracking": "878732835103",
@@ -18675,12 +18463,12 @@
       "receiver": "Mercedes Scientific",
       "ship_to": "Lakewood Ranch, FL",
       "service": "",
-      "status": "Out For Delivery",
-      "activity": "OUT_FOR_DELIVERY",
+      "status": "Delivered",
+      "activity": "DELIVERED",
       "location": "",
       "date": "",
       "time": "",
-      "delivered": false,
+      "delivered": true,
       "source": "Shopify",
       "carrier": "FedEx",
       "ship_date": "2026-10-15",
@@ -19122,18 +18910,7 @@
       "order": "#1194",
       "so_num": "SO564",
       "so_id": "186423",
-      "pos": [
-        {
-          "po": "PO887",
-          "vendor": "PMA Services",
-          "po_id": "186425"
-        },
-        {
-          "po": "PO901",
-          "vendor": "Allora Biotech LLC",
-          "po_id": "188341"
-        }
-      ],
+      "pos": [],
       "po": "",
       "po_id": ""
     },
@@ -19250,7 +19027,184 @@
       ],
       "po": "PO855",
       "po_id": "181656"
+    },
+    {
+      "tracking": "384245821274",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "Personal",
+      "ship_to": "",
+      "service": "",
+      "status": "Label Printed",
+      "activity": "LABEL_PRINTED",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "FedEx",
+      "ship_date": "2026-10-19",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1237",
+      "items": [
+        {
+          "name": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
+          "sku": "37200",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter 33560 Access Testosterone Reagent",
+          "sku": "33560",
+          "qty": 2
+        },
+        {
+          "name": "Beckman Coulter A10826 Access DHEA-S Reagent, 100 Determinations",
+          "sku": "A10826",
+          "qty": 4
+        },
+        {
+          "name": "Beckman Coulter B84493 Access Sensitive Estradiol Reagent",
+          "sku": "B84493",
+          "qty": 4
+        }
+      ],
+      "order": "#1237",
+      "so_num": "SO604",
+      "so_id": "197300",
+      "pos": [
+        {
+          "po": "PO955",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "197302"
+        }
+      ],
+      "po": "PO955",
+      "po_id": "197302"
+    },
+    {
+      "tracking": "384252498975",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "OM Diagnostic Laboratories",
+      "ship_to": "",
+      "service": "",
+      "status": "Label Purchased",
+      "activity": "LABEL_PURCHASED",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "FedEx",
+      "ship_date": "2026-10-19",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1238",
+      "items": [
+        {
+          "name": "Beckman Coulter 33000 Access Vitamin B12 Reagent, 100 Determinations",
+          "sku": "33000",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter 33880 (c76421) Access Free T4 Reagent, 100 Determinations",
+          "sku": "33880",
+          "qty": 1
+        },
+        {
+          "name": "Beckman Coulter B63284 Access TSH Stimulating Hormone (3rd IS) 2 x 100 Determinations",
+          "sku": "B63284",
+          "qty": 1
+        }
+      ],
+      "order": "#1238",
+      "so_num": "SO605",
+      "so_id": "197328",
+      "pos": [
+        {
+          "po": "PO958",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "197330"
+        }
+      ],
+      "po": "PO958",
+      "po_id": "197330"
+    },
+    {
+      "tracking": "878891308987",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "OM Diagnostic Laboratories",
+      "ship_to": "",
+      "service": "",
+      "status": "Confirmed",
+      "activity": "CONFIRMED",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "FedEx",
+      "ship_date": "2026-10-19",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1238",
+      "items": [
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 2
+        }
+      ],
+      "order": "#1238",
+      "so_num": "SO605",
+      "so_id": "197328",
+      "pos": [
+        {
+          "po": "PO958",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "197330"
+        }
+      ],
+      "po": "PO958",
+      "po_id": "197330"
+    },
+    {
+      "tracking": "878891295413",
+      "view": "Shopify",
+      "shipper": "JIT4You",
+      "receiver": "OM Diagnostic Laboratories",
+      "ship_to": "",
+      "service": "",
+      "status": "Confirmed",
+      "activity": "CONFIRMED",
+      "location": "",
+      "date": "",
+      "time": "",
+      "delivered": false,
+      "source": "Shopify",
+      "carrier": "FedEx",
+      "ship_date": "2026-10-19",
+      "shopify_fulfilled": true,
+      "shopify_order": "#1238",
+      "items": [
+        {
+          "name": "Beckman Coulter A16792 Access Wash Buffer II",
+          "sku": "A16792",
+          "qty": 2
+        }
+      ],
+      "order": "#1238",
+      "so_num": "SO605",
+      "so_id": "197328",
+      "pos": [
+        {
+          "po": "PO958",
+          "vendor": "Allora Biotech LLC",
+          "po_id": "197330"
+        }
+      ],
+      "po": "PO958",
+      "po_id": "197330"
     }
   ],
-  "last_shopify_sync": "2026-10-16 16:30"
+  "last_shopify_sync": "2026-10-20 01:05"
 }
