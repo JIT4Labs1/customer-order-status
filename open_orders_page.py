@@ -5783,6 +5783,7 @@ function ibVmVendorEmail(name){
   for(var j=0;j<vs.length;j++){ if(w && String(vs[j].name||'').toLowerCase().indexOf(w)===0 && vs[j].email) return vs[j].email; }
   return '';
 }
+function ibVmName(v){ v=String(v||''); if(/^PMA Services/i.test(v)) return 'PMA Services'; var k=v.indexOf(' - '); return (k>0?v.slice(0,k):v).trim(); }
 function ibVmBuild(r){
   var th='background:#101E3E;color:#ffffff;padding:8px 10px;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;';
   var td='padding:8px 10px;border-bottom:1px solid #e3e7ee;';
@@ -5802,7 +5803,7 @@ function ibVmBuild(r){
   var h='<!DOCTYPE html><html><head><meta charset="utf-8"><title>JIT4Labs - invoice rate correction</title></head><body style="margin:0;padding:0;background:#f4f6f9"><table cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#f4f6f9"><tr><td align="center" style="padding:18px 10px"><table cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:760px;width:100%;background:#fff;border:1px solid #e3e7ee">'+
    '<tr><td style="padding:18px 24px;border-bottom:3px solid #008080"><a href="https://jit4labs.com" target="_blank" style="text-decoration:none;color:#101E3E"><img src="https://jit4labs.com/cdn/shop/files/JIT4LABS-Logo.png" alt="JIT4LABS" width="175" height="30" border="0" style="display:block;width:175px;max-width:175px;height:30px;border:0;outline:none;text-decoration:none;font:bold 22px Arial, Helvetica, sans-serif;color:#101E3E;line-height:30px"></a></td></tr>'+
    '<tr><td style="padding:24px;font:14px/1.6 Arial, Helvetica, sans-serif;color:#101E3E">'+
-   '<p style="margin:0 0 12px">Dear '+escapeHtml(r.vendor||'')+' team,</p>'+
+   '<p style="margin:0 0 12px">Dear '+escapeHtml(ibVmName(r.vendor))+' team,</p>'+
    '<p style="margin:0 0 12px">While reviewing invoice <b>'+escapeHtml(inv)+'</b> against our purchase order <b>'+escapeHtml(po)+'</b>, we found '+ls.length+' line'+(ls.length===1?'':'s')+' where the invoiced rate does not match the rate on the PO. The line'+(ls.length===1?'':'s')+' concerned '+(ls.length===1?'is':'are')+' shown below.</p>'+
    '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;font:13px/1.5 Arial, Helvetica, sans-serif;color:#101E3E;margin:0 0 16px"><tr>'+
    '<th align="left" style="'+th+'">SKU</th><th align="left" style="'+th+'">Item</th><th align="center" style="'+th+'">Qty</th><th align="right" style="'+th+'">PO rate</th><th align="right" style="'+th+'">Invoice rate</th><th align="right" style="'+th+'">Difference</th></tr>'+rows+'</table>'+
