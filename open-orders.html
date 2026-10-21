@@ -5356,8 +5356,8 @@ function ibRender(){
       '<td>'+escapeHtml(r.po_raw||'')+(r.po_key&&r.po_key!==String(r.po_raw||'').toUpperCase()?' &rarr; '+escapeHtml(r.po_key):'')+'</td>'+
       '<td class="num" style="text-align:right;white-space:nowrap;">'+totTxt+'</td>'+
       '<td>'+qbc+'</td>'+
-      '<td>'+chip+'</td>'+
-      '<td><span class="ib-link" onclick="ibTog('+i+')">details</span>'+((r.verdict==='discrepancy'&&ibDiscLines(r).length)?' <button class="mode-btn" style="margin:0 0 0 6px;padding:2px 8px;font-size:11px;" onclick="ibVmOpen('+i+')">&#9993; Email vendor</button>':'')+'</td></tr>'+
+      '<td>'+chip+((r.verdict==='discrepancy'&&ibDiscLines(r).length)?'<br><button class="mode-btn" style="margin:6px 0 0;padding:5px 12px;font-size:12px;background:#008080;color:#fff;border-color:#008080;font-weight:700;" onclick="ibVmOpen('+i+')">&#9993; Email vendor</button>':'')+'</td>'+
+      '<td><span class="ib-link" onclick="ibTog('+i+')">details</span>'+'</td></tr>'+
       '<tr class="ib-det" id="ib-det-'+i+'" style="display:'+(IB.open[i]?'':'none')+'"><td colspan="11"><div class="sub" style="margin-bottom:6px;">'+escapeHtml(r.subject||'')+(r.po_status?' &middot; PO status: '+escapeHtml(r.po_status):'')+'</div>'+det+'</td></tr>';
   });
   var ls=(IB.data&&IB.data.last_scan)||null;
