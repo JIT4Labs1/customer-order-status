@@ -150,6 +150,9 @@
   .invchk .ib-wrap .sub { margin-bottom:12px; line-height:1.55; }
   .invchk .inv-go, .invchk .ib-sec { padding:10px 18px; }
   .invchk .inv-form { padding:20px 24px; }
+  .invchk tr.ib-discrow > td { background:#fdecea !important; border-bottom:1px solid #f5c6cb; }
+  .invchk tr.ib-discrow > td:first-child { box-shadow:inset 5px 0 0 #c62828; }
+  .invchk tr.ib-discrow + tr.ib-det > td { background:#fff5f4; }
   .invchk .inv-hint { font-size:11px; color:#888; margin-top:10px; line-height:1.5; }
   .pnl-wrap { overflow-x:auto; padding:20px 22px; }
   .pnl-wrap h2, .pnl-wrap h3 { color:#2c3e50; }
@@ -5033,6 +5036,7 @@ function renderInvPanel(){
        '<label style="font-size:12px;margin-left:8px;">Paid <select onchange="ibPaid(this.value)" style="font-size:12px;"><option value=""'+(IB.pdf?'':' selected')+'>All</option><option value="paid"'+(IB.pdf==='paid'?' selected':'')+'>Paid</option><option value="unpaid"'+(IB.pdf==='unpaid'?' selected':'')+'>Not paid (incl. not in QB)</option></select></label>'+
        '<label style="font-size:12px;margin-left:8px;">QuickBooks <select onchange="ibQb(this.value)" style="font-size:12px;"><option value=""'+(IB.qbf?'':' selected')+'>All</option><option value="in"'+(IB.qbf==='in'?' selected':'')+'>Entered</option><option value="out"'+(IB.qbf==='out'?' selected':'')+'>Not entered</option></select></label>'+
        '<label style="font-size:12px;margin-left:8px;">Supplier <select onchange="ibSup(this.value)" style="font-size:12px;"><option value=""'+(IB.sup?'':' selected')+'>All</option><option value="pma"'+(IB.sup==='pma'?' selected':'')+'>PMA</option><option value="allora"'+(IB.sup==='allora'?' selected':'')+'>Allora</option></select></label>'+
+       '<label style="font-size:12px;margin-left:8px;cursor:pointer;font-weight:700;color:#c62828;"><input type="checkbox" onchange="ibDiscOnly(this.checked)"'+(IB.discOnly?' checked':'')+'> Discrepancies only</label>'+
        '<label style="font-size:12px;margin-left:8px;cursor:pointer;"><input type="checkbox" onchange="ibHideRev(!this.checked)"'+(IB.hideRev?'':' checked')+'> Show reviewed</label>'+
        '<button class="ib-sec danger" onclick="ibClear()">Clear list</button></div>'+
        '<div class="inv-note" id="ib-note"></div><div id="ib-list"></div></div>'+
@@ -5218,8 +5222,10 @@ function ibSup(v){ IB.sup=v||''; ibLsSet('jit4_ibulk_sup',IB.sup); ibRender(); }
 function ibSupOf(r){ var t=String((r.vendor||'')+' '+(r.sender||'')).toLowerCase(); if(t.indexOf('allora')>=0||r.source==='quickbooks') return 'allora'; if(t.indexOf('pma')>=0||r.source==='zoho') return 'pma'; return ''; }
 function ibQb(v){ IB.qbf=v||''; ibLsSet('jit4_ibulk_qbf',IB.qbf); ibRender(); }
 function ibPaid(v){ IB.pdf=v||''; ibLsSet('jit4_ibulk_pdf',IB.pdf); ibRender(); }
+function ibDiscOnly(on){ IB.discOnly=!!on; ibLsSet('jit4_ibulk_disc',on?'1':'0'); ibRender(); }
 function ibHideRev(on){ IB.hideRev=!!on; ibLsSet('jit4_ibulk_hiderev',on?'1':'0'); ibRender(); }
 if(ibLs('jit4_ibulk_hiderev')==='0') IB.hideRev=false;
+IB.discOnly=(ibLs('jit4_ibulk_disc')==='1');
 IB.sup=ibLs('jit4_ibulk_sup')||'';
 IB.qbf=ibLs('jit4_ibulk_qbf')||'';
 IB.pdf=ibLs('jit4_ibulk_pdf')||'';
@@ -5308,8 +5314,9 @@ function ibRender(){
   if(IB.sup) res=res.filter(function(r){ return ibSupOf(r)===IB.sup; });
   if(IB.qbf) res=res.filter(function(r){ var e=!!(r.qb&&r.qb.entered); return IB.qbf==='in'?e:!e; });
   if(IB.pdf) res=res.filter(function(r){ var paid=!!(r.qb&&r.qb.entered&&!(r.qb.balance>0)); return IB.pdf==='paid'?paid:!paid; });
+  if(IB.discOnly) res=res.filter(function(r){ return r.verdict==='discrepancy'; });
   IB.view=res;
-  var seen=ibSeen(), nNew=0, nRev=0, nHid=0, body='';
+  var seen=ibSeen(), nNew=0, nRev=0, nHid=0, nDisc=0, body='';
   function money(v){ return v==null?'&mdash;':'$'+Number(v).toFixed(2); }
   res.forEach(function(r,i){
     var isNew=!seen[r.key]; if(isNew) nNew++;
@@ -5336,7 +5343,10 @@ function ibRender(){
     else qbc='<span class="inv-badge miss" title="Not checked yet - runs with the next scan">?</span>';
     var rv=ibIsRev(r.key); if(rv) nRev++; if(rv&&IB.hideRev){ nHid++; return; }
     if(rv) chip='<span class="inv-badge ib-revbadge">Reviewed</span>';
-    body+='<tr class="'+(isNew?'ib-newrow':'')+(rv?' ib-revrow':'')+'">'+
+    var isDisc=(r.verdict==='discrepancy'&&!rv);
+    if(isDisc) nDisc++;
+    if(isDisc) chip='<span class="inv-badge over" style="font-size:11px;padding:3px 9px;">&#9888; '+(r.summary&&r.summary.bad||0)+' discrepanc'+((r.summary&&r.summary.bad)===1?'y':'ies')+' &mdash; action needed</span>';
+    body+='<tr class="'+(isNew?'ib-newrow':'')+(rv?' ib-revrow':'')+(isDisc?' ib-discrow':'')+'">'+
       '<td><input type="checkbox" title="Mark as reviewed" '+(rv?'checked ':'')+'onchange="ibRevToggle('+i+')"></td>'+
       '<td><span class="ib-tag '+(isNew?'ib-new':'ib-old')+'">'+(isNew?'&#9733; NEW':'Old')+'</span></td>'+
       '<td>'+escapeHtml(String(r.received||'').slice(0,16).replace('T',' '))+'</td>'+
@@ -5352,7 +5362,7 @@ function ibRender(){
   });
   var ls=(IB.data&&IB.data.last_scan)||null;
   var meta=ls?('Last scan: '+escapeHtml(String(ls.at||'').slice(0,16).replace('T',' '))+' UTC &middot; window: '+escapeHtml(ls.window||'')+' &middot; '+(ls.scanned||0)+' emails checked'):'No scan has been run yet.';
-  host.innerHTML='<div class="sub" style="margin:4px 0 8px;">'+meta+' &middot; '+res.length+' result'+(res.length===1?'':'s')+' in list, '+nNew+' new, '+nRev+' reviewed'+(IB.hideRev&&nHid?' <b style="color:#b45309;">&mdash; '+nHid+' matching reviewed row'+(nHid===1?' is':'s are')+' hidden: tick &ldquo;Show reviewed&rdquo; to see '+(nHid===1?'it':'them')+'</b>':'')+'</div>'+
+  host.innerHTML='<div class="sub" style="margin:4px 0 8px;">'+meta+' &middot; '+res.length+' result'+(res.length===1?'':'s')+' in list, '+nNew+' new, '+nRev+' reviewed'+(nDisc?', <b style="color:#c62828;">'+nDisc+' with discrepancies to act on</b>':'')+(IB.hideRev&&nHid?' <b style="color:#b45309;">&mdash; '+nHid+' matching reviewed row'+(nHid===1?' is':'s are')+' hidden: tick &ldquo;Show reviewed&rdquo; to see '+(nHid===1?'it':'them')+'</b>':'')+'</div>'+
     ((res.length&&body)?'<table><thead><tr><td>Reviewed</td><td>New?</td><td>Received (UTC)</td><td>Source</td><td>Vendor</td><td>Invoice file</td><td>PO</td><td style="text-align:right">Total</td><td>QuickBooks</td><td>Result</td><td></td></tr></thead><tbody>'+body+'</tbody></table>':'<div class="inv-hint">'+(res.length?'All '+res.length+' matching invoice'+(res.length===1?' is':'s are')+' marked reviewed and hidden &mdash; tick &ldquo;Show reviewed&rdquo; above to see them.':((IB.data&&IB.data.results&&IB.data.results.length)?'No invoices match the current filters.':'Nothing here yet. Choose a window and press Search.'))+'</div>');
 }
 
