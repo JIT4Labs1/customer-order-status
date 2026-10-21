@@ -5211,6 +5211,81 @@ if(ibLs('jit4_ibulk_hiderev')==='0') IB.hideRev=false;
 IB.sup=ibLs('jit4_ibulk_sup')||'';
 IB.qbf=ibLs('jit4_ibulk_qbf')||'';
 IB.pdf=ibLs('jit4_ibulk_pdf')||'';
+
+// ── Bulk invoice check: "Email vendor" (rate discrepancy -> correction request) ──
+var IBVM={html:'',subject:'',email:''};
+function ibDiscLines(r){ return (r.lines||[]).filter(function(l){ return l.status==='over'||l.status==='under'; }); }
+function ibVmVendorEmail(name){
+  var vs=(DATA&&DATA.vendors)||[], n=String(name||'').toLowerCase(), w=n.split(' ')[0];
+  for(var i=0;i<vs.length;i++){ if(String(vs[i].name||'').toLowerCase()===n && vs[i].email) return vs[i].email; }
+  for(var j=0;j<vs.length;j++){ if(w && String(vs[j].name||'').toLowerCase().indexOf(w)===0 && vs[j].email) return vs[j].email; }
+  return '';
+}
+function ibVmBuild(r){
+  var th='background:#101E3E;color:#ffffff;padding:8px 10px;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;';
+  var td='padding:8px 10px;border-bottom:1px solid #e3e7ee;';
+  function m(v){ return v==null?'&mdash;':'$'+Number(v).toFixed(2); }
+  var rows='', ls=ibDiscLines(r);
+  ls.forEach(function(l){
+    var d=Number(l.rate)-Number(l.po_unit), ds=(d>0?'+':'-')+'$'+Math.abs(d).toFixed(2);
+    rows+='<tr><td align="left" valign="top" style="'+td+'font-weight:700;">'+escapeHtml(l.sku||'')+'</td>'+
+      '<td align="left" valign="top" style="'+td+'">'+escapeHtml(l.desc||'')+'</td>'+
+      '<td align="center" valign="top" style="'+td+'white-space:nowrap;">'+escapeHtml(l.qty==null?'':l.qty)+'</td>'+
+      '<td align="right" valign="top" style="'+td+'white-space:nowrap;">'+m(l.po_unit)+'</td>'+
+      '<td align="right" valign="top" style="'+td+'white-space:nowrap;color:#c62828;font-weight:700;">'+m(l.rate)+'</td>'+
+      '<td align="right" valign="top" style="'+td+'white-space:nowrap;">'+ds+'</td></tr>';
+  });
+  var inv=(r.qb&&r.qb.number)||String(r.filename||'').replace(/[.]pdf$/i,'');
+  var po=r.po_key||r.po_raw||'';
+  var h='<!DOCTYPE html><html><head><meta charset="utf-8"><title>JIT4Labs - invoice rate correction</title></head><body style="margin:0;padding:0;background:#f4f6f9"><table cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#f4f6f9"><tr><td align="center" style="padding:18px 10px"><table cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:760px;width:100%;background:#fff;border:1px solid #e3e7ee">'+
+   '<tr><td style="padding:18px 24px;border-bottom:3px solid #008080"><a href="https://jit4labs.com" target="_blank" style="text-decoration:none;color:#101E3E"><img src="https://jit4labs.com/cdn/shop/files/JIT4LABS-Logo.png" alt="JIT4LABS" width="175" height="30" border="0" style="display:block;width:175px;max-width:175px;height:30px;border:0;outline:none;text-decoration:none;font:bold 22px Arial, Helvetica, sans-serif;color:#101E3E;line-height:30px"></a></td></tr>'+
+   '<tr><td style="padding:24px;font:14px/1.6 Arial, Helvetica, sans-serif;color:#101E3E">'+
+   '<p style="margin:0 0 12px">Dear '+escapeHtml(r.vendor||'')+' team,</p>'+
+   '<p style="margin:0 0 12px">While reviewing invoice <b>'+escapeHtml(inv)+'</b> against our purchase order <b>'+escapeHtml(po)+'</b>, we found '+ls.length+' line'+(ls.length===1?'':'s')+' where the invoiced rate does not match the rate on the PO. The line'+(ls.length===1?'':'s')+' concerned '+(ls.length===1?'is':'are')+' shown below.</p>'+
+   '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;font:13px/1.5 Arial, Helvetica, sans-serif;color:#101E3E;margin:0 0 16px"><tr>'+
+   '<th align="left" style="'+th+'">SKU</th><th align="left" style="'+th+'">Item</th><th align="center" style="'+th+'">Qty</th><th align="right" style="'+th+'">PO rate</th><th align="right" style="'+th+'">Invoice rate</th><th align="right" style="'+th+'">Difference</th></tr>'+rows+'</table>'+
+   '<p style="margin:0 0 12px">Could you please review these lines and send us a corrected invoice (or a credit memo) so that the rates match our purchase order? If you believe the invoiced rate is correct, please let us know the reason and we will review it on our side.</p>'+
+   '<p style="margin:18px 0 0">Thank you,<br><b>JIT4Labs team</b></p></td></tr>'+
+   '<tr><td style="padding:14px 24px;border-top:3px solid #008080;font:12px/1.6 Arial, Helvetica, sans-serif;color:#6b7280">JIT4Labs &middot; <a href="mailto:CustomerSupport@jit4you.com" style="color:#008080;text-decoration:none">CustomerSupport@jit4you.com</a> &middot; <a href="tel:+18882422301" style="color:#008080;text-decoration:none">(888) 242-2301</a> &middot; <a href="https://jit4labs.com" style="color:#008080;text-decoration:none">jit4labs.com</a></td></tr></table></td></tr></table></body></html>';
+  IBVM.subject='JIT4Labs '+String.fromCharCode(8211)+' invoice '+inv+' vs PO '+po+': rate correction needed';
+  return h;
+}
+function ibVmMsg(t){ var e=document.getElementById('ibVmMsg'); if(e) e.textContent=t; }
+function ibVmOpen(i){
+  var r=IB.view&&IB.view[i]; if(!r) return;
+  var m=document.getElementById('ibVmModal'); if(m) m.parentNode.removeChild(m);
+  IBVM.html=ibVmBuild(r); IBVM.email=ibVmVendorEmail(r.vendor); IBVM.vendor=r.vendor||'';
+  var d=document.createElement('div'); d.id='ibVmModal';
+  d.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(16,30,62,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;';
+  d.innerHTML='<div style="background:#fff;border-radius:10px;max-width:820px;width:100%;max-height:92vh;overflow:auto;padding:18px 20px;box-shadow:0 10px 40px rgba(0,0,0,.35);">'+
+   '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><b style="font-size:16px;color:#101E3E;">&#9993; Email vendor &mdash; invoice rate correction</b><a href="#" onclick="ibVmClose();return false;" style="font-size:20px;text-decoration:none;color:#555;">&times;</a></div>'+
+   '<div style="font-size:13px;margin-bottom:6px;"><b>To:</b> '+(IBVM.email?escapeHtml(IBVM.email):'<span style="color:#7f8c8d">(no vendor email on file - add it manually)</span>')+' &middot; '+escapeHtml(r.vendor||'')+'</div>'+
+   '<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0;"><div style="flex-basis:100%;display:flex;gap:8px;align-items:center;"><b style="font-size:13px;">Subject:</b><input id="ibVmSubj" type="text" readonly value="'+escapeHtml(IBVM.subject)+'" style="flex:1;padding:5px 8px;border:1px solid #cfd8e3;border-radius:6px;"><button class="mode-btn" style="margin:0;" onclick="ibVmCopySubj()">Copy subject</button></div>'+
+   '<button class="mode-btn" style="margin:0;" onclick="ibVmCopy(true)">Copy for pasting into email</button>'+
+   '<button class="mode-btn" style="margin:0;" onclick="ibVmCopy(false)">Copy HTML source</button>'+
+   '<button class="mode-btn" style="margin:0;" onclick="ibVmDl()">&#11015; Download .html</button>'+
+   '<span id="ibVmMsg" style="font-size:12px;color:#137333;"></span></div>'+
+   '<iframe id="ibVmFrame" style="width:100%;height:460px;border:1px solid #e3e7ee;border-radius:6px;"></iframe></div>';
+  document.body.appendChild(d);
+  document.getElementById('ibVmFrame').srcdoc=IBVM.html;
+}
+function ibVmClose(){ var m=document.getElementById('ibVmModal'); if(m) m.parentNode.removeChild(m); }
+function ibVmCopySubj(){ var t=IBVM.subject||''; function fb(){ var e=document.getElementById('ibVmSubj'); if(e){ e.select(); try{ document.execCommand('copy'); ibVmMsg('Subject copied.'); }catch(x){ ibVmMsg('Select the subject and copy manually.'); } } }
+  try{ if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(function(){ibVmMsg('Subject copied.');},function(){fb();}); else fb(); }catch(e){ fb(); } }
+function ibVmCopy(rich){
+  var h=IBVM.html; if(!h) return;
+  function fb(){ var ta=document.createElement('textarea'); ta.value=h; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); ibVmMsg('Copied HTML source.'); }catch(e){ ibVmMsg('Copy failed - use Download.'); } document.body.removeChild(ta); }
+  try{
+    if(rich&&window.ClipboardItem&&navigator.clipboard&&navigator.clipboard.write){
+      var item=new ClipboardItem({'text/html':new Blob([h],{type:'text/html'}),'text/plain':new Blob([h],{type:'text/plain'})});
+      navigator.clipboard.write([item]).then(function(){ibVmMsg('Copied - paste into a new email.');},function(){fb();});
+    } else if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(h).then(function(){ibVmMsg('Copied HTML source.');},function(){fb();}); }
+    else fb();
+  }catch(e){ fb(); } }
+function ibVmDl(){
+  if(!IBVM.html) return; var nm='', s=IBVM.vendor||'vendor'; for(var i=0;i<s.length;i++){ nm+=/[a-z0-9]/i.test(s.charAt(i))?s.charAt(i):'_'; }
+  var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([IBVM.html],{type:'text/html'})); a.download='JIT4Labs_Invoice_Correction_'+nm+'.html';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); }
 IB.open={};
 function ibTog(i){ var r=document.getElementById('ib-det-'+i); if(r){ var show=(r.style.display==='none'); r.style.display=show?'':'none'; IB.open[i]=show; } }
 function ibRender(){
@@ -5259,7 +5334,7 @@ function ibRender(){
       '<td class="num" style="text-align:right;white-space:nowrap;">'+totTxt+'</td>'+
       '<td>'+qbc+'</td>'+
       '<td>'+chip+'</td>'+
-      '<td><span class="ib-link" onclick="ibTog('+i+')">details</span></td></tr>'+
+      '<td><span class="ib-link" onclick="ibTog('+i+')">details</span>'+((r.verdict==='discrepancy'&&ibDiscLines(r).length)?' <button class="mode-btn" style="margin:0 0 0 6px;padding:2px 8px;font-size:11px;" onclick="ibVmOpen('+i+')">&#9993; Email vendor</button>':'')+'</td></tr>'+
       '<tr class="ib-det" id="ib-det-'+i+'" style="display:'+(IB.open[i]?'':'none')+'"><td colspan="11"><div class="sub" style="margin-bottom:6px;">'+escapeHtml(r.subject||'')+(r.po_status?' &middot; PO status: '+escapeHtml(r.po_status):'')+'</div>'+det+'</td></tr>';
   });
   var ls=(IB.data&&IB.data.last_scan)||null;
