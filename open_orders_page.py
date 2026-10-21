@@ -5582,6 +5582,7 @@ function renderInvPanel(){
        '<div class="ib-bar"><div class="inv-fld"><label for="ib-win">Search window</label><select id="ib-win"><option value="month">Current month</option><option value="week">Last week (7 days)</option><option value="2weeks">Last 2 weeks (14 days)</option></select></div>'+
        '<button class="inv-go" id="ib-go" onclick="ibSearch()">Search</button>'+
        '<button class="inv-go" style="background:#101E3E;" onclick="ibVmOpenSel()">&#9993; Email vendor</button>'+
+       '<button class="inv-go" onclick="ibRvOpen()" title="Scan all invoices for the same item charged at different rates">&#9878; Rate variance scan</button>'+
        '<button class="ib-sec" onclick="ibSeenAll()">Mark all as seen</button>'+
        '<button class="ib-sec" onclick="ibRevAll(true)">Mark all reviewed</button>'+
        '<label style="font-size:12px;margin-left:8px;">Paid <select onchange="ibPaid(this.value)" style="font-size:12px;"><option value=""'+(IB.pdf?'':' selected')+'>All</option><option value="paid"'+(IB.pdf==='paid'?' selected':'')+'>Paid</option><option value="unpaid"'+(IB.pdf==='unpaid'?' selected':'')+'>Not paid (incl. not in QB)</option></select></label>'+
@@ -5863,6 +5864,90 @@ function ibVmDl(){
   if(!IBVM.html) return; var nm='', s=IBVM.vendor||'vendor'; for(var i=0;i<s.length;i++){ nm+=/[a-z0-9]/i.test(s.charAt(i))?s.charAt(i):'_'; }
   var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([IBVM.html],{type:'text/html'})); a.download='JIT4Labs_Invoice_Correction_'+nm+'.html';
   document.body.appendChild(a); a.click(); document.body.removeChild(a); }
+
+// ── Bulk invoice check: same item charged at different rates across invoices ──
+var IBRV={groups:[],vi:0,off:{}};
+function ibInvNo(r){ var f=String(r.filename||''), m=/^Invoice_(\d+)/i.exec(f); if(m) return m[1]; return (r.qb&&r.qb.number)||f.replace(/[.]pdf$/i,''); }
+function ibRvScan(){
+  var res=(IB.data&&IB.data.results)||[], map={};
+  res.forEach(function(r){ (r.lines||[]).forEach(function(l){
+    var rt=Number(l.rate); if(!l.sku||!(rt>0)) return;
+    var k=(r.vendor||'')+'|'+l.sku; if(!map[k]) map[k]={vendor:r.vendor||'',sku:l.sku,desc:l.desc||'',rows:[]};
+    map[k].rows.push({inv:ibInvNo(r),date:String(r.received||'').slice(0,10),qty:l.qty,rate:rt,po:(l.po_unit==null?null:Number(l.po_unit)),key:r.key});
+  }); });
+  var byV={}, out=[];
+  Object.keys(map).forEach(function(k){ var g=map[k], lo=1e12, hi=0; g.rows.forEach(function(x){ if(x.rate<lo) lo=x.rate; if(x.rate>hi) hi=x.rate; });
+    if(hi-lo>0.005){ g.lo=lo; g.hi=hi; g.rows.sort(function(a,b){ return a.date.localeCompare(b.date)||String(a.inv).localeCompare(String(b.inv)); }); (byV[g.vendor]=byV[g.vendor]||[]).push(g); } });
+  Object.keys(byV).sort().forEach(function(v){ byV[v].sort(function(a,b){ return a.sku.localeCompare(b.sku); }); out.push({vendor:v,items:byV[v]}); });
+  return out;
+}
+function ibRvOpen(){
+  IBRV.groups=ibRvScan(); IBRV.vi=0; IBRV.off={};
+  var m=document.getElementById('ibVmModal'); if(m) m.parentNode.removeChild(m);
+  if(!IBRV.groups.length){ ibNote('ok','Rate variance scan: no item was charged at different rates across the invoices in the list.'); return; }
+  var d=document.createElement('div'); d.id='ibVmModal';
+  d.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(16,30,62,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;';
+  var opts=''; IBRV.groups.forEach(function(g,i){ opts+='<option value="'+i+'">'+escapeHtml(g.vendor)+' ('+g.items.length+' item'+(g.items.length===1?'':'s')+')</option>'; });
+  d.innerHTML='<div style="background:#fff;border-radius:10px;max-width:1040px;width:100%;max-height:92vh;overflow:auto;padding:26px 30px;box-shadow:0 10px 40px rgba(0,0,0,.35);">'+
+   '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><b style="font-size:16px;color:#101E3E;">&#9878; Rate variance &mdash; same item, different rates</b><a href="#" onclick="ibVmClose();return false;" style="font-size:20px;text-decoration:none;color:#555;">&times;</a></div>'+
+   '<div style="font-size:13px;margin-bottom:10px;">Vendor: <select id="ibRvVen" onchange="ibRvVen(this.value)" style="padding:6px 10px;min-width:300px;">'+opts+'</select></div>'+
+   '<div id="ibRvList" style="margin-bottom:10px;"></div>'+
+   '<div id="ibRvOut"></div></div>';
+  document.body.appendChild(d); ibRvDraw();
+}
+function ibRvVen(v){ IBRV.vi=Number(v); IBRV.off={}; ibRvDraw(); document.getElementById('ibRvOut').innerHTML=''; }
+function ibRvTog(k){ IBRV.off[k]=!IBRV.off[k]; ibRvDraw(); document.getElementById('ibRvOut').innerHTML=''; }
+function ibRvDraw(){
+  var g=IBRV.groups[IBRV.vi]; if(!g) return;
+  var h='<table style="width:100%;border-collapse:collapse;font-size:13px;"><thead><tr><td style="padding:8px 10px;font-size:11px;font-weight:700;text-transform:uppercase;color:#666;border-bottom:2px solid #dee5ec;">Include</td><td style="padding:8px 10px;font-size:11px;font-weight:700;text-transform:uppercase;color:#666;border-bottom:2px solid #dee5ec;">SKU</td><td style="padding:8px 10px;font-size:11px;font-weight:700;text-transform:uppercase;color:#666;border-bottom:2px solid #dee5ec;">Item</td><td style="padding:8px 10px;font-size:11px;font-weight:700;text-transform:uppercase;color:#666;border-bottom:2px solid #dee5ec;">Rates charged</td><td style="padding:8px 10px;font-size:11px;font-weight:700;text-transform:uppercase;color:#666;border-bottom:2px solid #dee5ec;">Spread</td></tr></thead><tbody>';
+  g.items.forEach(function(it,ix){
+    var rates=[]; it.rows.forEach(function(x){ var t='$'+x.rate.toFixed(2); if(rates.indexOf(t)<0) rates.push(t); });
+    h+='<tr><td style="padding:8px 10px;border-bottom:1px solid #eef2f6;"><input type="checkbox" '+(IBRV.off[ix]?'':'checked ')+'onchange="ibRvTog('+ix+')"></td><td style="padding:8px 10px;border-bottom:1px solid #eef2f6;font-weight:700;white-space:nowrap;">'+escapeHtml(it.sku)+'</td><td style="padding:8px 10px;border-bottom:1px solid #eef2f6;">'+escapeHtml(it.desc)+'</td><td style="padding:8px 10px;border-bottom:1px solid #eef2f6;white-space:nowrap;">'+rates.join(' / ')+'</td><td style="padding:8px 10px;border-bottom:1px solid #eef2f6;white-space:nowrap;color:#c62828;font-weight:700;">$'+(it.hi-it.lo).toFixed(2)+'</td></tr>';
+  });
+  h+='</tbody></table><div style="margin-top:12px;"><button class="inv-go" onclick="ibRvGen()">Create email</button></div>';
+  document.getElementById('ibRvList').innerHTML=h;
+}
+function ibRvGen(){
+  var g=IBRV.groups[IBRV.vi]; if(!g) return;
+  var items=g.items.filter(function(it,ix){ return !IBRV.off[ix]; }); if(!items.length) return;
+  var th='background:#101E3E;color:#ffffff;padding:8px 10px;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;';
+  var td='padding:8px 10px;border-bottom:1px solid #e3e7ee;';
+  var rows='', invs={};
+  items.forEach(function(it){
+    it.rows.forEach(function(x,ri){ invs[x.inv]=1;
+      var hi=Math.abs(x.rate-it.hi)<0.005, lo=Math.abs(x.rate-it.lo)<0.005;
+      var df=x.rate-it.lo, dtxt=df<0.005?'&mdash;':'+$'+df.toFixed(2);
+      rows+='<tr><td align="left" valign="top" style="'+td+'font-weight:700;">'+(ri===0?escapeHtml(it.sku):'')+'</td>'+
+       '<td align="left" valign="top" style="'+td+'">'+(ri===0?escapeHtml(it.desc):'')+'</td>'+
+       '<td align="left" valign="top" style="'+td+'white-space:nowrap;">'+escapeHtml(x.inv)+'</td>'+
+       '<td align="left" valign="top" style="'+td+'white-space:nowrap;">'+escapeHtml(x.date)+'</td>'+
+       '<td align="center" valign="top" style="'+td+'white-space:nowrap;">'+escapeHtml(x.qty==null?'':x.qty)+'</td>'+
+       '<td align="right" valign="top" style="'+td+'white-space:nowrap;font-weight:700;'+(hi?'color:#c62828;':'')+'">$'+x.rate.toFixed(2)+'</td>'+
+       '<td align="right" valign="top" style="'+td+'white-space:nowrap;">'+dtxt+'</td></tr>';
+    });
+  });
+  var nInv=Object.keys(invs).length;
+  var h='<!DOCTYPE html><html><head><meta charset="utf-8"><title>JIT4Labs - invoice rate clarification</title></head><body style="margin:0;padding:0;background:#f4f6f9"><table cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#f4f6f9"><tr><td align="center" style="padding:18px 10px"><table cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:760px;width:100%;background:#fff;border:1px solid #e3e7ee">'+
+   '<tr><td style="padding:18px 24px;border-bottom:3px solid #008080"><a href="https://jit4labs.com" target="_blank" style="text-decoration:none;color:#101E3E"><img src="https://jit4labs.com/cdn/shop/files/JIT4LABS-Logo.png" alt="JIT4LABS" width="175" height="30" border="0" style="display:block;width:175px;max-width:175px;height:30px;border:0;outline:none;text-decoration:none;font:bold 22px Arial, Helvetica, sans-serif;color:#101E3E;line-height:30px"></a></td></tr>'+
+   '<tr><td style="padding:24px;font:14px/1.6 Arial, Helvetica, sans-serif;color:#101E3E">'+
+   '<p style="margin:0 0 12px">Dear '+escapeHtml(ibVmName(g.vendor))+' team,</p>'+
+   '<p style="margin:0 0 12px">While reviewing your recent invoices ('+nInv+' invoice'+(nInv===1?'':'s')+'), we noticed that '+(items.length===1?'the item below was':'the items below were')+' charged at different rates on different invoices. The rates charged are shown below, with the highest rate in red.</p>'+
+   '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;font:13px/1.5 Arial, Helvetica, sans-serif;color:#101E3E;margin:0 0 16px"><tr>'+
+   '<th align="left" style="'+th+'">SKU</th><th align="left" style="'+th+'">Item</th><th align="left" style="'+th+'">Invoice</th><th align="left" style="'+th+'">Date</th><th align="center" style="'+th+'">Qty</th><th align="right" style="'+th+'">Rate charged</th><th align="right" style="'+th+'">Above lowest</th></tr>'+rows+'</table>'+
+   '<p style="margin:0 0 12px">Could you please clarify why the rate differs between these invoices and confirm the correct rate for '+(items.length===1?'this item':'each item')+'? If any invoice was billed at the wrong rate, please send us a corrected invoice or a credit memo.</p>'+
+   '<p style="margin:18px 0 0">Thank you,<br><b>JIT4Labs team</b></p></td></tr>'+
+   '<tr><td style="padding:14px 24px;border-top:3px solid #008080;font:12px/1.6 Arial, Helvetica, sans-serif;color:#6b7280">JIT4Labs &middot; <a href="mailto:CustomerSupport@jit4you.com" style="color:#008080;text-decoration:none">CustomerSupport@jit4you.com</a> &middot; <a href="tel:+18882422301" style="color:#008080;text-decoration:none">(888) 242-2301</a> &middot; <a href="https://jit4labs.com" style="color:#008080;text-decoration:none">jit4labs.com</a></td></tr></table></td></tr></table></body></html>';
+  IBVM.html=h; IBVM.vendor=g.vendor; IBVM.email=ibVmVendorEmail(g.vendor);
+  IBVM.subject='JIT4Labs '+String.fromCharCode(8211)+' please clarify different rates charged for the same item';
+  document.getElementById('ibRvOut').innerHTML='<div style="font-size:13px;margin-bottom:6px;"><b>To:</b> '+(IBVM.email?escapeHtml(IBVM.email):'<span style="color:#7f8c8d">(no vendor email on file - add it manually)</span>')+' &middot; '+escapeHtml(g.vendor)+'</div>'+
+   '<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0;"><div style="flex-basis:100%;display:flex;gap:8px;align-items:center;"><b style="font-size:13px;">Subject:</b><input id="ibVmSubj" type="text" readonly value="'+escapeHtml(IBVM.subject)+'" style="flex:1;padding:5px 8px;border:1px solid #cfd8e3;border-radius:6px;"><button class="mode-btn" style="margin:0;" onclick="ibVmCopySubj()">Copy subject</button></div>'+
+   '<button class="mode-btn" style="margin:0;" onclick="ibVmCopy(true)">Copy for pasting into email</button>'+
+   '<button class="mode-btn" style="margin:0;" onclick="ibVmCopy(false)">Copy HTML source</button>'+
+   '<button class="mode-btn" style="margin:0;" onclick="ibVmDl()">&#11015; Download .html</button>'+
+   '<span id="ibVmMsg" style="font-size:12px;color:#137333;"></span></div>'+
+   '<iframe id="ibVmFrame" style="width:100%;height:520px;border:1px solid #e3e7ee;border-radius:6px;"></iframe>';
+  document.getElementById('ibVmFrame').srcdoc=h;
+}
 IB.open={};
 function ibTog(i){ var r=document.getElementById('ib-det-'+i); if(r){ var show=(r.style.display==='none'); r.style.display=show?'':'none'; IB.open[i]=show; } }
 function ibRender(){
