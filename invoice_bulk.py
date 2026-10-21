@@ -17,7 +17,8 @@ REPO_BASE = "https://jit4labs1.github.io/customer-order-status/"
 
 def po_variants(raw):
     raw = str(raw or "").strip().upper()
-    digits = re.sub(r"[^0-9]", "", raw)
+    _m = re.findall(r"PO[\s\-#]*([0-9]+)", raw)   # "SO1047--PO822" -> 822 (not 1047822)
+    digits = _m[-1] if _m else re.sub(r"[^0-9]", "", raw)
     v = []
     for c in [raw, raw.replace(" ", ""), ("PO" + digits) if digits else "", digits,
               ("PO " + digits) if digits else "", ("PO-" + digits) if digits else ""]:
