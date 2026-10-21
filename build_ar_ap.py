@@ -186,8 +186,13 @@ def build_ar(access, invoices=None):
                     n_ = _norm(cname)
                     if any(k and n_ and (k == n_ or k in n_ or n_ in k) for k in (_norm(p_.get("company")), _norm(p_.get("contact")))):
                         order = p_["name"]; matched_by = "sum"; break
+        ov_ = (_load(os.path.join(QB, "_ar_shopify_overrides.json"), {}) or {}).get(num)
+        if ov_:   # manual invoice -> Shopify order link (file maintained by hand / by request)
+            order = ov_; matched_by = "manual"
         fl_pdf = [{"id": "", "shipment": l_, "tracking": ""} for l_ in pdf_labels] or [{"id": x_, "shipment": "", "tracking": ""} for x_ in pdf_ids]
         fl = fl_pdf if (fl_pdf and not mf) else [{"id": mf.group(1), "shipment": ms.group(1) if ms else "", "tracking": i.get("TrackingNum") or ""}] if mf else ([{"id": "", "shipment": "", "tracking": t_} for t_ in trk_hits] if trk_hits else (ful.get(order, []) if order else []))
+        if ov_ and not fl and ful.get(ov_):
+            fl = [{"id": f_.get("id", ""), "shipment": f_.get("shipment", ""), "tracking": f_.get("tracking", "")} for f_ in ful[ov_]]
         row = {"number": num, "date": i.get("TxnDate", ""), "due": i.get("DueDate", "") or i.get("TxnDate", ""),
                "amount": round(B._fnum(i.get("TotalAmt")), 2), "balance": round(bal, 2),
                "so_num": so.get("so_num", ""), "shopify_order": order,

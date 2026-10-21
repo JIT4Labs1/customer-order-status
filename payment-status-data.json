@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-21 04:24 PM UTC",
+  "generated_at": "2026-10-21 07:07 PM UTC",
   "year": 2026,
   "customers": [
     {
@@ -1759,6 +1759,20 @@
       "qb_id": "1486",
       "invoices": [
         {
+          "number": "SO790",
+          "status": "Not Paid",
+          "amount": 28.61,
+          "balance": 28.61,
+          "date": "2026-10-21",
+          "link": "",
+          "invoice_link": "https://connect.intuit.com/t/scs-v1-d268cbe7979440b5b1e62d9f5ffd6296dc0a1d45f95440708cdd1cd0615461b1de35096894d24b8b8f7cab1cd33cc5a7-0?locale=en_US&cta=v3invoicelink",
+          "so_num": "",
+          "shopify_order": "",
+          "fulfillment": "",
+          "so_date": "",
+          "open_items": []
+        },
+        {
           "number": "SO769",
           "status": "Paid",
           "amount": 42.16,
@@ -2026,10 +2040,10 @@
         }
       ],
       "totals": {
-        "count": 19,
-        "amount": 16149.06,
+        "count": 20,
+        "amount": 16177.67,
         "paid": 14071.0,
-        "unpaid": 2078.06
+        "unpaid": 2106.67
       }
     },
     {
@@ -3908,7 +3922,7 @@
     }
   ],
   "payables": {
-    "generated_at": "2026-10-21 04:24 PM UTC",
+    "generated_at": "2026-10-21 07:07 PM UTC",
     "grand_total": 33415.14,
     "past_due": 20528.88,
     "count": 41,
@@ -4240,14 +4254,14 @@
     "source": "Bank balance",
     "book_balance": 38688.67,
     "bank_asof": "2026-07-23",
-    "as_of": "2026-10-21 04:24 PM UTC"
+    "as_of": "2026-10-21 07:07 PM UTC"
   },
   "ar": {
-    "generated_at": "2026-10-21 04:24 PM UTC",
+    "generated_at": "2026-10-21 07:07 PM UTC",
     "as_of": "2026-10-21",
-    "total": 112832.56,
-    "qb_total": 128203.04,
-    "count": 79,
+    "total": 104640.1,
+    "qb_total": 127265.08,
+    "count": 80,
     "customers": [
       {
         "name": "Mercedes Scientific",
@@ -4697,10 +4711,31 @@
             "amount": 274.3,
             "balance": 274.3,
             "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
+            "shopify_order": "#1215",
+            "shopify_fulfillments": [
+              {
+                "id": "6525689692404",
+                "shipment": "#1215-F2",
+                "tracking": "878052920780",
+                "trackings": [
+                  "878052920780"
+                ]
+              },
+              {
+                "id": "6525677076724",
+                "shipment": "#1215-F1",
+                "tracking": "878052204784",
+                "trackings": [
+                  "878052204784"
+                ]
+              }
+            ],
             "pay_link": "https://connect.intuit.com/t/scs-v1-ad48c50027d84d60b9512d2bcacd851544a0cd92617c4451bb1e74f5610eb00ed5382e9110054d8382e2f1a7f4a5f225-1?locale=en_US&cta=v3invoicelink",
-            "shopify_status": "",
+            "shopify_status": "PENDING",
+            "shopify_total": 274.3,
+            "shopify_received": null,
+            "shopify_outstanding": 245.5,
+            "shopify_match": "manual",
             "reconcile": false
           },
           {
@@ -4955,72 +4990,6 @@
             "shopify_outstanding": 1771.7,
             "shopify_match": "note",
             "reconcile": false
-          }
-        ]
-      },
-      {
-        "name": "CliniCore Labs",
-        "balance": 7186.24,
-        "qb_balance": 12636.93,
-        "invoices": [
-          {
-            "number": "SO687",
-            "date": "2026-09-23",
-            "due": "2026-09-23",
-            "amount": 1790.19,
-            "balance": 1790.19,
-            "so_num": "",
-            "shopify_order": "#1193",
-            "shopify_fulfillments": [
-              {
-                "id": "",
-                "shipment": "#1193-F1",
-                "tracking": ""
-              }
-            ],
-            "pay_link": "https://connect.intuit.com/t/scs-v1-30e239c6f9d943eab13236a11d4daf584145fb394c4b4d75b7557e912d48c17510e9504d36c54bfaa8e7d2baed9c5418-0?locale=en_US&cta=v3invoicelink",
-            "shopify_status": "PAID",
-            "shopify_total": 1790.19,
-            "shopify_received": 1790.19,
-            "shopify_outstanding": 0.0,
-            "shopify_match": "qb_field",
-            "reconcile": true
-          },
-          {
-            "number": "SO732",
-            "date": "2026-10-07",
-            "due": "2026-10-07",
-            "amount": 7186.24,
-            "balance": 7186.24,
-            "so_num": "",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
-            "pay_link": "https://connect.intuit.com/t/scs-v1-585ee81b68ce4cf2b729ded09c887ea8c535fcfa41e54d48ab60a697ebdf90385d5861798fc9445bac51214ce946c4d7-1?locale=en_US&cta=v3invoicelink",
-            "shopify_status": "",
-            "reconcile": false
-          },
-          {
-            "number": "SO756",
-            "date": "2026-10-13",
-            "due": "2026-10-13",
-            "amount": 3660.5,
-            "balance": 3660.5,
-            "so_num": "",
-            "shopify_order": "#1232",
-            "shopify_fulfillments": [
-              {
-                "id": "",
-                "shipment": "#1232-F1",
-                "tracking": ""
-              }
-            ],
-            "pay_link": "https://connect.intuit.com/t/scs-v1-8f8cbbca9d6a4ee08811e942cffdabf7e6e52aa246c343f3b360b5071116c10ea2f81f57ed5445e4826545a5051c5f31-1?locale=en_US&cta=v3invoicelink",
-            "shopify_status": "PARTIALLY_PAID",
-            "shopify_total": 4611.55,
-            "shopify_received": 4577.1,
-            "shopify_outstanding": 34.45,
-            "shopify_match": "note",
-            "reconcile": true
           }
         ]
       },
@@ -5540,39 +5509,9 @@
         ]
       },
       {
-        "name": "Personal",
-        "balance": 1942.96,
-        "qb_balance": 1942.96,
-        "invoices": [
-          {
-            "number": "SO772",
-            "date": "2026-10-19",
-            "due": "2026-10-19",
-            "amount": 1942.96,
-            "balance": 1942.96,
-            "so_num": "",
-            "shopify_order": "#1237",
-            "shopify_fulfillments": [
-              {
-                "id": "6555610087668",
-                "shipment": "#1237-F1",
-                "tracking": "384245821274"
-              }
-            ],
-            "pay_link": "https://connect.intuit.com/t/scs-v1-0d9975d8f8da4d5d8477b61ed507090b26a7b65a43974896ab9d84c5a43e8466d06b833ec6f747d3a0e546373d6a1cb0?locale=en_US&cta=v3invoicelink",
-            "shopify_status": "PENDING",
-            "shopify_total": 2858.96,
-            "shopify_received": null,
-            "shopify_outstanding": 2858.96,
-            "shopify_match": "note",
-            "reconcile": false
-          }
-        ]
-      },
-      {
         "name": "MEDICAL HEALTH LAB",
         "balance": 1900.81,
-        "qb_balance": 2078.06,
+        "qb_balance": 2106.67,
         "invoices": [
           {
             "number": "SO627",
@@ -5718,6 +5657,82 @@
             "shopify_received": 1583.1,
             "shopify_outstanding": 50.79,
             "shopify_match": "note",
+            "reconcile": false
+          },
+          {
+            "number": "SO790",
+            "date": "2026-10-21",
+            "due": "2026-10-21",
+            "amount": 28.61,
+            "balance": 28.61,
+            "so_num": "",
+            "shopify_order": "#1236",
+            "shopify_fulfillments": [
+              {
+                "id": "6559495946484",
+                "shipment": "#1236-F3",
+                "tracking": "879010621994"
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-d268cbe7979440b5b1e62d9f5ffd6296dc0a1d45f95440708cdd1cd0615461b1de35096894d24b8b8f7cab1cd33cc5a7-0?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PARTIALLY_PAID",
+            "shopify_total": 1633.89,
+            "shopify_received": 1583.1,
+            "shopify_outstanding": 50.79,
+            "shopify_match": "note",
+            "reconcile": true
+          }
+        ]
+      },
+      {
+        "name": "Prime Diagnostics",
+        "balance": 1095.35,
+        "qb_balance": 1095.35,
+        "invoices": [
+          {
+            "number": "SO781",
+            "date": "2026-10-20",
+            "due": "2026-10-20",
+            "amount": 130.0,
+            "balance": 130.0,
+            "so_num": "",
+            "shopify_order": "#1205",
+            "shopify_fulfillments": [
+              {
+                "id": "6557850239220",
+                "shipment": "#1205-F3",
+                "tracking": "384270993244"
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-7caa37b555a94a928bc5c06b779ae56fb7449ac4322e467cae2f0f065f3e2a801bbf6c3e61bc4ef7a7f780500f265398-1?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PENDING",
+            "shopify_total": 1154.7,
+            "shopify_received": null,
+            "shopify_outstanding": 1154.7,
+            "shopify_match": "note",
+            "reconcile": false
+          },
+          {
+            "number": "SO792",
+            "date": "2026-10-21",
+            "due": "2026-10-21",
+            "amount": 965.35,
+            "balance": 965.35,
+            "so_num": "",
+            "shopify_order": "#1244",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1244-F1",
+                "tracking": ""
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-6b3090d1a5d8480dbd4baad9710f21e0a239abb9ba5a4e44b01de8285397fabc7671c4594de44e47a78417a2155450d7-0?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PENDING",
+            "shopify_total": 975.2,
+            "shopify_received": null,
+            "shopify_outstanding": 975.2,
+            "shopify_match": "qb_field",
             "reconcile": false
           }
         ]
@@ -5881,36 +5896,6 @@
         ]
       },
       {
-        "name": "Prime Diagnostics",
-        "balance": 130.0,
-        "qb_balance": 130.0,
-        "invoices": [
-          {
-            "number": "SO781",
-            "date": "2026-10-20",
-            "due": "2026-10-20",
-            "amount": 130.0,
-            "balance": 130.0,
-            "so_num": "",
-            "shopify_order": "#1205",
-            "shopify_fulfillments": [
-              {
-                "id": "6557850239220",
-                "shipment": "#1205-F3",
-                "tracking": "384270993244"
-              }
-            ],
-            "pay_link": "https://connect.intuit.com/t/scs-v1-7caa37b555a94a928bc5c06b779ae56fb7449ac4322e467cae2f0f065f3e2a801bbf6c3e61bc4ef7a7f780500f265398-1?locale=en_US&cta=v3invoicelink",
-            "shopify_status": "PENDING",
-            "shopify_total": 1154.7,
-            "shopify_received": null,
-            "shopify_outstanding": 1154.7,
-            "shopify_match": "note",
-            "reconcile": false
-          }
-        ]
-      },
-      {
         "name": "Envol Biomedical",
         "balance": 118.85,
         "qb_balance": 812.85,
@@ -5998,36 +5983,6 @@
         ]
       },
       {
-        "name": "Prominis Medical Services",
-        "balance": 28.61,
-        "qb_balance": 28.61,
-        "invoices": [
-          {
-            "number": "SO784",
-            "date": "2026-10-20",
-            "due": "2026-10-20",
-            "amount": 28.61,
-            "balance": 28.61,
-            "so_num": "",
-            "shopify_order": "#1194",
-            "shopify_fulfillments": [
-              {
-                "id": "6557877633268",
-                "shipment": "#1194-F24",
-                "tracking": "878955167356"
-              }
-            ],
-            "pay_link": "https://connect.intuit.com/t/scs-v1-f7100745bfde4b61a4d06b4f2c23c4dc0a311442ca994f599273edc10bbabd9772465391813c4e8bb82adb849a868084-1?locale=en_US&cta=v3invoicelink",
-            "shopify_status": "PARTIALLY_PAID",
-            "shopify_total": 9226.65,
-            "shopify_received": 8619.39,
-            "shopify_outstanding": 607.26,
-            "shopify_match": "note",
-            "reconcile": false
-          }
-        ]
-      },
-      {
         "name": "Clinical Diagnostic Laboratory",
         "balance": 0.0,
         "qb_balance": 187.22,
@@ -6062,6 +6017,132 @@
             "shopify_received": 187.22,
             "shopify_outstanding": 0.0,
             "shopify_match": "vtiger",
+            "reconcile": true
+          }
+        ]
+      },
+      {
+        "name": "CliniCore Labs",
+        "balance": 0.0,
+        "qb_balance": 12676.58,
+        "invoices": [
+          {
+            "number": "SO687",
+            "date": "2026-09-23",
+            "due": "2026-09-23",
+            "amount": 1790.19,
+            "balance": 1790.19,
+            "so_num": "",
+            "shopify_order": "#1193",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1193-F1",
+                "tracking": ""
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-30e239c6f9d943eab13236a11d4daf584145fb394c4b4d75b7557e912d48c17510e9504d36c54bfaa8e7d2baed9c5418-0?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PAID",
+            "shopify_total": 1790.19,
+            "shopify_received": 1790.19,
+            "shopify_outstanding": 0.0,
+            "shopify_match": "qb_field",
+            "reconcile": true
+          },
+          {
+            "number": "SO732",
+            "date": "2026-10-07",
+            "due": "2026-10-07",
+            "amount": 7186.24,
+            "balance": 7186.24,
+            "so_num": "",
+            "shopify_order": "#1223",
+            "shopify_fulfillments": [
+              {
+                "id": "6557847683316",
+                "shipment": "#1223-F4",
+                "tracking": "384270925847",
+                "trackings": [
+                  "384270925847"
+                ]
+              },
+              {
+                "id": "6549460287732",
+                "shipment": "#1223-F3",
+                "tracking": "384193531780",
+                "trackings": [
+                  "384193531780"
+                ]
+              },
+              {
+                "id": "6536448016628",
+                "shipment": "#1223-F2",
+                "tracking": "384070296650",
+                "trackings": [
+                  "384070296650"
+                ]
+              },
+              {
+                "id": "6536222212340",
+                "shipment": "#1223-F1",
+                "tracking": "384068166313",
+                "trackings": [
+                  "384068166313"
+                ]
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-585ee81b68ce4cf2b729ded09c887ea8c535fcfa41e54d48ab60a697ebdf90385d5861798fc9445bac51214ce946c4d7-1?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PAID",
+            "shopify_total": 7221.64,
+            "shopify_received": 7221.64,
+            "shopify_outstanding": 0.0,
+            "shopify_match": "manual",
+            "reconcile": true
+          },
+          {
+            "number": "SO756",
+            "date": "2026-10-13",
+            "due": "2026-10-13",
+            "amount": 3660.5,
+            "balance": 3660.5,
+            "so_num": "",
+            "shopify_order": "#1232",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1232-F1",
+                "tracking": ""
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-8f8cbbca9d6a4ee08811e942cffdabf7e6e52aa246c343f3b360b5071116c10ea2f81f57ed5445e4826545a5051c5f31-1?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PARTIALLY_PAID",
+            "shopify_total": 4611.55,
+            "shopify_received": 4577.1,
+            "shopify_outstanding": 34.45,
+            "shopify_match": "note",
+            "reconcile": true
+          },
+          {
+            "number": "SO791",
+            "date": "2026-10-21",
+            "due": "2026-10-21",
+            "amount": 39.65,
+            "balance": 39.65,
+            "so_num": "",
+            "shopify_order": "#1232",
+            "shopify_fulfillments": [
+              {
+                "id": "6559552569588",
+                "shipment": "#1232-F3",
+                "tracking": "879012181852"
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-dfc3e7d98ed34701a58a377b5ac6a7e21ea962632ad54aadacee1a25ad76318082f661c3faa64735a75c5ddeb378eae5-1?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PARTIALLY_PAID",
+            "shopify_total": 4611.55,
+            "shopify_received": 4577.1,
+            "shopify_outstanding": 34.45,
+            "shopify_match": "note",
             "reconcile": true
           }
         ]
@@ -6278,7 +6359,18 @@
             "balance": 919.5,
             "so_num": "",
             "shopify_order": "#1242",
-            "shopify_fulfillments": [],
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1242-F1",
+                "tracking": ""
+              },
+              {
+                "id": "",
+                "shipment": "#1242-F2",
+                "tracking": ""
+              }
+            ],
             "pay_link": "https://connect.intuit.com/t/scs-v1-7634e342ada04aabbf6215b4859c77eb67faa921e17a4c7dbbe2ca911ba716dcfd055c76b82249c7b042c1b2e6cc6611-1?locale=en_US&cta=v3invoicelink",
             "shopify_status": "PAID",
             "shopify_total": 919.5,
@@ -6316,7 +6408,7 @@
     ]
   },
   "ap": {
-    "generated_at": "2026-10-21 04:24 PM UTC",
+    "generated_at": "2026-10-21 07:07 PM UTC",
     "total": 33415.14,
     "past_due": 20528.88,
     "count": 41,
@@ -6337,7 +6429,7 @@
               {
                 "po": "PO834",
                 "so": "SO533",
-                "vtiger_customer": ""
+                "vtiger_customer": "Setzer Personal Physicians"
               }
             ],
             "customers": [
@@ -6355,7 +6447,7 @@
               {
                 "po": "PO834",
                 "so": "SO533",
-                "vtiger_customer": ""
+                "vtiger_customer": "Setzer Personal Physicians"
               }
             ],
             "customers": [
@@ -6373,7 +6465,7 @@
               {
                 "po": "PO835",
                 "so": "SO534",
-                "vtiger_customer": ""
+                "vtiger_customer": "La Clinique Privee"
               }
             ],
             "customers": [
@@ -6391,7 +6483,7 @@
               {
                 "po": "PO842",
                 "so": "SO537",
-                "vtiger_customer": ""
+                "vtiger_customer": "Luxus Aesthetics"
               }
             ],
             "customers": [
@@ -6409,7 +6501,7 @@
               {
                 "po": "PO851",
                 "so": "SO543",
-                "vtiger_customer": ""
+                "vtiger_customer": "931 Skin + Company Aesthetics & Wellness"
               }
             ],
             "customers": [
@@ -6427,7 +6519,7 @@
               {
                 "po": "PO851",
                 "so": "SO543",
-                "vtiger_customer": ""
+                "vtiger_customer": "931 Skin + Company Aesthetics & Wellness"
               }
             ],
             "customers": [
@@ -6445,7 +6537,7 @@
               {
                 "po": "PO860",
                 "so": "SO548",
-                "vtiger_customer": ""
+                "vtiger_customer": "Ivy En Rose Medical Clinic"
               }
             ],
             "customers": [
@@ -6463,7 +6555,7 @@
               {
                 "po": "PO861",
                 "so": "SO549",
-                "vtiger_customer": ""
+                "vtiger_customer": "MedRevive MedSpa"
               }
             ],
             "customers": [
@@ -6481,7 +6573,7 @@
               {
                 "po": "PO860",
                 "so": "SO548",
-                "vtiger_customer": ""
+                "vtiger_customer": "Ivy En Rose Medical Clinic"
               }
             ],
             "customers": [
@@ -6499,7 +6591,7 @@
               {
                 "po": "PO873",
                 "so": "SO555",
-                "vtiger_customer": ""
+                "vtiger_customer": "Brand Surgical Institute"
               }
             ],
             "customers": [
@@ -6517,7 +6609,7 @@
               {
                 "po": "PO873",
                 "so": "SO555",
-                "vtiger_customer": ""
+                "vtiger_customer": "Brand Surgical Institute"
               }
             ],
             "customers": [
@@ -6535,7 +6627,7 @@
               {
                 "po": "PO880",
                 "so": "SO560",
-                "vtiger_customer": ""
+                "vtiger_customer": "Parkway Medical Care PLLC"
               }
             ],
             "customers": [
@@ -6553,7 +6645,7 @@
               {
                 "po": "PO880",
                 "so": "SO560",
-                "vtiger_customer": ""
+                "vtiger_customer": "Parkway Medical Care PLLC"
               }
             ],
             "customers": [
@@ -6571,7 +6663,7 @@
               {
                 "po": "PO882",
                 "so": "SO562",
-                "vtiger_customer": ""
+                "vtiger_customer": "Parkway Medical Care PLLC"
               }
             ],
             "customers": [
@@ -6589,7 +6681,7 @@
               {
                 "po": "PO896",
                 "so": "SO570",
-                "vtiger_customer": ""
+                "vtiger_customer": "Euphoria Skin & Hair"
               }
             ],
             "customers": [
@@ -6607,7 +6699,7 @@
               {
                 "po": "PO896",
                 "so": "SO570",
-                "vtiger_customer": ""
+                "vtiger_customer": "Euphoria Skin & Hair"
               }
             ],
             "customers": [
@@ -6625,7 +6717,7 @@
               {
                 "po": "PO889",
                 "so": "SO565",
-                "vtiger_customer": ""
+                "vtiger_customer": "Georgia Plastic & Recon Surgery"
               }
             ],
             "customers": [
@@ -6643,7 +6735,7 @@
               {
                 "po": "PO889",
                 "so": "SO565",
-                "vtiger_customer": ""
+                "vtiger_customer": "Georgia Plastic & Recon Surgery"
               }
             ],
             "customers": [
@@ -6661,7 +6753,7 @@
               {
                 "po": "PO899",
                 "so": "SO573",
-                "vtiger_customer": ""
+                "vtiger_customer": "Clinica Medica Dr. Vizcarra"
               }
             ],
             "customers": [
@@ -6679,7 +6771,7 @@
               {
                 "po": "PO906",
                 "so": "SO577",
-                "vtiger_customer": ""
+                "vtiger_customer": "Flourish Wellness"
               }
             ],
             "customers": [
@@ -6697,7 +6789,7 @@
               {
                 "po": "PO908",
                 "so": "SO579",
-                "vtiger_customer": ""
+                "vtiger_customer": "What\u2019s age got to do with it?"
               }
             ],
             "customers": [
@@ -6715,7 +6807,7 @@
               {
                 "po": "PO940",
                 "so": "SO594",
-                "vtiger_customer": ""
+                "vtiger_customer": "North Fork Medical PLLC"
               }
             ],
             "customers": [
@@ -6733,7 +6825,7 @@
               {
                 "po": "PO945",
                 "so": "SO598",
-                "vtiger_customer": ""
+                "vtiger_customer": "Resilient Skin Lab"
               }
             ],
             "customers": [
@@ -6758,10 +6850,12 @@
               {
                 "po": "PO942",
                 "so": "SO596",
-                "vtiger_customer": ""
+                "vtiger_customer": "Healthquest Esoterics"
               }
             ],
-            "customers": []
+            "customers": [
+              "Healthquest Esoterics"
+            ]
           },
           {
             "number": "1743",
@@ -6774,10 +6868,12 @@
               {
                 "po": "PO941",
                 "so": "SO595",
-                "vtiger_customer": ""
+                "vtiger_customer": "Primex Lab"
               }
             ],
-            "customers": []
+            "customers": [
+              "Primex Lab"
+            ]
           }
         ]
       },
@@ -6797,10 +6893,12 @@
               {
                 "po": "PO804",
                 "so": "SO516",
-                "vtiger_customer": ""
+                "vtiger_customer": "GENOLAB DIAGNOSTICS"
               }
             ],
-            "customers": []
+            "customers": [
+              "GENOLAB DIAGNOSTICS"
+            ]
           },
           {
             "number": "INV-002031",
@@ -6813,10 +6911,12 @@
               {
                 "po": "PO947",
                 "so": "SO599",
-                "vtiger_customer": ""
+                "vtiger_customer": "CliniCore Labs"
               }
             ],
-            "customers": []
+            "customers": [
+              "CliniCore Labs"
+            ]
           },
           {
             "number": "INV-002030",
@@ -6829,7 +6929,7 @@
               {
                 "po": "PO950",
                 "so": "SO601",
-                "vtiger_customer": ""
+                "vtiger_customer": "Well Health Labs"
               }
             ],
             "customers": [
@@ -6847,10 +6947,12 @@
               {
                 "po": "PO824",
                 "so": "SO526",
-                "vtiger_customer": ""
+                "vtiger_customer": "Radiance Diagnostics"
               }
             ],
-            "customers": []
+            "customers": [
+              "Radiance Diagnostics"
+            ]
           },
           {
             "number": "INV-002040",
@@ -6863,10 +6965,12 @@
               {
                 "po": "PO921",
                 "so": "SO586",
-                "vtiger_customer": ""
+                "vtiger_customer": "LabX Diagnostic Systems"
               }
             ],
-            "customers": []
+            "customers": [
+              "LabX Diagnostic Systems"
+            ]
           },
           {
             "number": "INV-002039",
@@ -6879,10 +6983,12 @@
               {
                 "po": "PO935",
                 "so": "SO591",
-                "vtiger_customer": ""
+                "vtiger_customer": "CliniCore Labs"
               }
             ],
-            "customers": []
+            "customers": [
+              "CliniCore Labs"
+            ]
           },
           {
             "number": "INV-002026",
@@ -6895,10 +7001,12 @@
               {
                 "po": "PO887",
                 "so": "SO564",
-                "vtiger_customer": ""
+                "vtiger_customer": "Prominis Medical Services"
               }
             ],
-            "customers": []
+            "customers": [
+              "Prominis Medical Services"
+            ]
           },
           {
             "number": "INV-002036",
@@ -6911,10 +7019,12 @@
               {
                 "po": "PO953",
                 "so": "SO603",
-                "vtiger_customer": ""
+                "vtiger_customer": "MEDICAL HEALTH LAB"
               }
             ],
-            "customers": []
+            "customers": [
+              "MEDICAL HEALTH LAB"
+            ]
           }
         ]
       },
@@ -6934,7 +7044,7 @@
               {
                 "po": "PO682",
                 "so": "SO429",
-                "vtiger_customer": ""
+                "vtiger_customer": "MEDICAL HEALTH LAB"
               }
             ],
             "customers": [
@@ -6952,7 +7062,7 @@
               {
                 "po": "PO708",
                 "so": "SO448",
-                "vtiger_customer": ""
+                "vtiger_customer": "MEDICAL HEALTH LAB"
               }
             ],
             "customers": [
@@ -6970,7 +7080,7 @@
               {
                 "po": "PO646",
                 "so": "SO408",
-                "vtiger_customer": ""
+                "vtiger_customer": "Mercedes Scientific"
               }
             ],
             "customers": [
@@ -6988,7 +7098,7 @@
               {
                 "po": "PO827",
                 "so": "SO516",
-                "vtiger_customer": ""
+                "vtiger_customer": "GENOLAB DIAGNOSTICS"
               }
             ],
             "customers": [
@@ -7018,7 +7128,7 @@
               {
                 "po": "PO838",
                 "so": "SO535",
-                "vtiger_customer": ""
+                "vtiger_customer": "MEDICAL HEALTH LAB"
               }
             ],
             "customers": [
@@ -7036,7 +7146,7 @@
               {
                 "po": "PO841",
                 "so": "SO516",
-                "vtiger_customer": ""
+                "vtiger_customer": "GENOLAB DIAGNOSTICS"
               }
             ],
             "customers": [
@@ -7054,7 +7164,7 @@
               {
                 "po": "PO859",
                 "so": "SO547",
-                "vtiger_customer": ""
+                "vtiger_customer": "LabX Diagnostic Systems"
               }
             ],
             "customers": [
@@ -7065,5 +7175,5 @@
       }
     ]
   },
-  "pulled_at": "2026-10-21 09:27 AM PT"
+  "pulled_at": "2026-10-21 12:07 PM PT"
 }
