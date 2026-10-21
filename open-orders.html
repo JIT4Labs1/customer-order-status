@@ -53,9 +53,9 @@
   .mode-btn.mode-pay { color:#0f766e; border-color:#99f6e4; background:#f0fdfa; }
   .mode-btn.mode-pay:hover { background:#ccfbf1; }
   .mode-btn.mode-pay.active { background:#0d9488; color:#fff; border-color:#0d9488; }
-  .mode-btn.mode-inv { color:#7c3aed; border-color:#ddd6fe; background:#f5f3ff; }
-  .mode-btn.mode-inv:hover { background:#ede9fe; }
-  .mode-btn.mode-inv.active { background:#7c3aed; color:#fff; border-color:#7c3aed; }
+  .mode-btn.mode-inv { color:#008080; border-color:#b7dede; background:#e8f5f5; }
+  .mode-btn.mode-inv:hover { background:#d3ecec; }
+  .mode-btn.mode-inv.active { background:#008080; color:#fff; border-color:#008080; }
   /* ── Inventory Opportunities: per-vendor INV columns in Open Vendor POs ── */
   @keyframes fopPulse {
     0%   { opacity:1;   transform:scale(1);    box-shadow:0 0 0 0 rgba(34,160,70,.65); }
@@ -90,17 +90,17 @@
   .iop-scroll table { border-collapse:separate; border-spacing:0; }
   .iop-scroll tbody td { border-bottom:1px solid #eef2f6; }
   /* Invoice Check tab */
-  .invchk { max-width:1000px; }
-  .invchk .inv-form { display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end; background:#faf9ff; border:1px solid #e6e2f5;
+  .invchk { max-width:none; padding:12px 28px 28px; }
+  .invchk .inv-form { display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end; background:#f4f8f9; border:1px solid #d5e4e4;
                       border-radius:10px; padding:16px 18px; margin-bottom:16px; }
   .invchk .inv-fld { display:flex; flex-direction:column; gap:4px; }
-  .invchk .inv-fld label { font-size:11px; font-weight:700; color:#5a3e8e; text-transform:uppercase; letter-spacing:.4px; }
-  .invchk .inv-fld input[type=text] { padding:8px 10px; border:1px solid #cdc4ea; border-radius:6px; font-size:14px; font-family:inherit; min-width:160px; text-transform:uppercase; }
+  .invchk .inv-fld label { font-size:11px; font-weight:700; color:#101E3E; text-transform:uppercase; letter-spacing:.4px; }
+  .invchk .inv-fld input[type=text] { padding:8px 10px; border:1px solid #b7cfd0; border-radius:6px; font-size:14px; font-family:inherit; min-width:160px; text-transform:uppercase; }
   .invchk .inv-fld input[type=file] { font-size:12px; font-family:inherit; }
-  .invchk .inv-fld input:focus { outline:none; border-color:#7c3aed; }
-  .invchk .inv-go { padding:9px 18px; background:#7c3aed; color:#fff; border:none; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; }
-  .invchk .inv-go:hover { background:#6d28d9; }
-  .invchk .inv-go:disabled { background:#c4b5e8; cursor:default; }
+  .invchk .inv-fld input:focus { outline:none; border-color:#008080; }
+  .invchk .inv-go { padding:9px 18px; background:#008080; color:#fff; border:none; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; }
+  .invchk .inv-go:hover { background:#006666; }
+  .invchk .inv-go:disabled { background:#9fc9c9; cursor:default; }
   .invchk .inv-note { font-size:12px; margin:4px 0 12px; min-height:16px; }
   .invchk .inv-note.err { color:#c0392b; } .invchk .inv-note.ok { color:#1e7e34; } .invchk .inv-note.warn { color:#b9770e; }
   .invchk .inv-sum { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
@@ -121,23 +121,35 @@
   .invchk .inv-badge.over { background:#fdecea; color:#c0392b; }
   .invchk .inv-badge.under { background:#fff4e0; color:#b9770e; }
   .invchk .inv-badge.miss { background:#f1f3f5; color:#777; }
-  .invchk .ib-wrap { margin-top:28px; border-top:2px solid #e6e2f5; padding-top:18px; }
-  .invchk .ib-wrap h3 { margin:0 0 4px; font-size:16px; color:#3b2a66; }
-  .invchk .ib-bar { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; background:#faf9ff; border:1px solid #e6e2f5; border-radius:10px; padding:14px 16px; margin:10px 0; }
-  .invchk .ib-bar select { padding:8px 10px; border:1px solid #cdc4ea; border-radius:6px; font-size:13px; font-family:inherit; }
-  .invchk .ib-sec { padding:9px 14px; background:#fff; color:#5a3e8e; border:1px solid #cdc4ea; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; font-family:inherit; }
-  .invchk .ib-sec:hover { background:#f3effc; }
+  .invchk .ib-wrap { margin-top:28px; border-top:2px solid #d5e4e4; padding-top:18px; }
+  .invchk .ib-wrap h3 { margin:0 0 4px; font-size:16px; color:#101E3E; }
+  .invchk .ib-bar { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; background:#f4f8f9; border:1px solid #d5e4e4; border-radius:10px; padding:14px 16px; margin:10px 0; }
+  .invchk .ib-bar select { padding:8px 10px; border:1px solid #b7cfd0; border-radius:6px; font-size:13px; font-family:inherit; }
+  .invchk .ib-sec { padding:9px 14px; background:#fff; color:#101E3E; border:1px solid #b7cfd0; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; font-family:inherit; }
+  .invchk .ib-sec:hover { background:#e8f5f5; }
   .invchk .ib-sec.danger { color:#c0392b; border-color:#f0b9b3; }
-  .invchk .ib-new { background:#7c3aed; color:#fff; } .invchk .ib-old { background:#eceff3; color:#777; }
+  .invchk .ib-new { background:#008080; color:#fff; } .invchk .ib-old { background:#eceff3; color:#777; }
   .invchk .ib-tag { display:inline-block; font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; letter-spacing:.4px; }
-  .invchk tr.ib-newrow td { background:#faf6ff; }
-  .invchk tr.ib-det td { background:#fbfbfd; padding:6px 8px 12px 28px; }
+  .invchk tr.ib-newrow td { background:#eaf6f6; }
+  .invchk tr.ib-det td { background:#f7fafa; padding:6px 8px 12px 28px; }
   .invchk .ib-revrow td { background:#e5e7eb !important; color:#6b7280; }
   .invchk .ib-revrow .ib-link { color:#6b7280; }
   .invchk .ib-revrow .ib-tag { filter:grayscale(1); }
   .invchk .ib-revbadge { background:#dbeafe !important; color:#1d4ed8 !important; border:1px solid #93c5fd !important; }
   @media (prefers-color-scheme: dark) { .invchk .ib-revrow td { background:#374151 !important; color:#9ca3af; } .invchk .ib-revbadge { background:#1e3a8a !important; color:#bfdbfe !important; border-color:#3b82f6 !important; } }
-  .invchk .ib-link { cursor:pointer; color:#6d28d9; font-weight:600; }
+  .invchk .ib-link { cursor:pointer; color:#006666; font-weight:600; }
+  .invchk #ib-list, .invchk #inv-out { overflow-x:auto; }
+  .invchk #ib-list > table > thead > tr > td { padding:12px 16px; white-space:nowrap; }
+  .invchk #ib-list > table > tbody > tr > td { padding:13px 16px; white-space:nowrap; vertical-align:middle; }
+  .invchk #ib-list tr.ib-det > td { white-space:normal; padding:12px 16px 18px 40px; }
+  .invchk tr.ib-det table td { padding:9px 14px; }
+  .invchk tr.ib-det table td:nth-child(2) { white-space:normal; min-width:280px; }
+  .invchk .ib-bar { padding:18px 22px; gap:16px; }
+  .invchk .ib-bar select { padding:9px 14px; }
+  .invchk .ib-wrap h3 { font-size:20px; margin-bottom:8px; }
+  .invchk .ib-wrap .sub { margin-bottom:12px; line-height:1.55; }
+  .invchk .inv-go, .invchk .ib-sec { padding:10px 18px; }
+  .invchk .inv-form { padding:20px 24px; }
   .invchk .inv-hint { font-size:11px; color:#888; margin-top:10px; line-height:1.5; }
   .pnl-wrap { overflow-x:auto; padding:20px 22px; }
   .pnl-wrap h2, .pnl-wrap h3 { color:#2c3e50; }
@@ -5257,7 +5269,7 @@ function ibVmOpen(i){
   IBVM.html=ibVmBuild(r); IBVM.email=ibVmVendorEmail(r.vendor); IBVM.vendor=r.vendor||'';
   var d=document.createElement('div'); d.id='ibVmModal';
   d.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(16,30,62,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;';
-  d.innerHTML='<div style="background:#fff;border-radius:10px;max-width:820px;width:100%;max-height:92vh;overflow:auto;padding:18px 20px;box-shadow:0 10px 40px rgba(0,0,0,.35);">'+
+  d.innerHTML='<div style="background:#fff;border-radius:10px;max-width:1040px;width:100%;max-height:92vh;overflow:auto;padding:26px 30px;box-shadow:0 10px 40px rgba(0,0,0,.35);">'+
    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><b style="font-size:16px;color:#101E3E;">&#9993; Email vendor &mdash; invoice rate correction</b><a href="#" onclick="ibVmClose();return false;" style="font-size:20px;text-decoration:none;color:#555;">&times;</a></div>'+
    '<div style="font-size:13px;margin-bottom:6px;"><b>To:</b> '+(IBVM.email?escapeHtml(IBVM.email):'<span style="color:#7f8c8d">(no vendor email on file - add it manually)</span>')+' &middot; '+escapeHtml(r.vendor||'')+'</div>'+
    '<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0;"><div style="flex-basis:100%;display:flex;gap:8px;align-items:center;"><b style="font-size:13px;">Subject:</b><input id="ibVmSubj" type="text" readonly value="'+escapeHtml(IBVM.subject)+'" style="flex:1;padding:5px 8px;border:1px solid #cfd8e3;border-radius:6px;"><button class="mode-btn" style="margin:0;" onclick="ibVmCopySubj()">Copy subject</button></div>'+
@@ -5265,7 +5277,7 @@ function ibVmOpen(i){
    '<button class="mode-btn" style="margin:0;" onclick="ibVmCopy(false)">Copy HTML source</button>'+
    '<button class="mode-btn" style="margin:0;" onclick="ibVmDl()">&#11015; Download .html</button>'+
    '<span id="ibVmMsg" style="font-size:12px;color:#137333;"></span></div>'+
-   '<iframe id="ibVmFrame" style="width:100%;height:460px;border:1px solid #e3e7ee;border-radius:6px;"></iframe></div>';
+   '<iframe id="ibVmFrame" style="width:100%;height:540px;border:1px solid #e3e7ee;border-radius:6px;"></iframe></div>';
   document.body.appendChild(d);
   document.getElementById('ibVmFrame').srcdoc=IBVM.html;
 }
