@@ -5031,6 +5031,7 @@ function renderInvPanel(){
        '<div class="sub">Scans customersupport@jit4you.com for vendor invoices (Zoho Books: subject contains &ldquo;Invoice&rdquo; with an INV* attachment; QuickBooks: Invoice* attachment), matches each PO# in Vtiger (PO949 or 949) and compares unit prices. Results accumulate &mdash; new ones are flagged.</div>'+
        '<div class="ib-bar"><div class="inv-fld"><label for="ib-win">Search window</label><select id="ib-win"><option value="month">Current month</option><option value="week">Last week (7 days)</option><option value="2weeks">Last 2 weeks (14 days)</option></select></div>'+
        '<button class="inv-go" id="ib-go" onclick="ibSearch()">Search</button>'+
+       '<button class="inv-go" style="background:#101E3E;" onclick="ibVmOpenSel()">&#9993; Email vendor</button>'+
        '<button class="ib-sec" onclick="ibSeenAll()">Mark all as seen</button>'+
        '<button class="ib-sec" onclick="ibRevAll(true)">Mark all reviewed</button>'+
        '<label style="font-size:12px;margin-left:8px;">Paid <select onchange="ibPaid(this.value)" style="font-size:12px;"><option value=""'+(IB.pdf?'':' selected')+'>All</option><option value="paid"'+(IB.pdf==='paid'?' selected':'')+'>Paid</option><option value="unpaid"'+(IB.pdf==='unpaid'?' selected':'')+'>Not paid (incl. not in QB)</option></select></label>'+
@@ -5270,6 +5271,13 @@ function ibVmBuild(r){
   return h;
 }
 function ibVmMsg(t){ var e=document.getElementById('ibVmMsg'); if(e) e.textContent=t; }
+function ibSelRow(i,on){ var r=IB.view&&IB.view[i]; if(!r) return; IB.sel=on?r.key:''; ibRender(); }
+function ibVmOpenSel(){
+  var v=IB.view||[], idx=-1; for(var k=0;k<v.length;k++){ if(v[k].key===IB.sel){ idx=k; break; } }
+  if(idx<0){ ibNote('warn','Tick the checkbox of an invoice with discrepancies first, then press Email vendor.'); return; }
+  if(!ibDiscLines(v[idx]).length){ ibNote('warn','The selected invoice has no rate discrepancies (over/under billed lines), so there is nothing to ask the vendor to correct.'); return; }
+  ibNote('',''); ibVmOpen(idx);
+}
 function ibVmOpen(i){
   var r=IB.view&&IB.view[i]; if(!r) return;
   var m=document.getElementById('ibVmModal'); if(m) m.parentNode.removeChild(m);
@@ -5347,6 +5355,7 @@ function ibRender(){
     if(isDisc) nDisc++;
     if(isDisc) chip='<span class="inv-badge over" style="font-size:11px;padding:3px 9px;">&#9888; '+(r.summary&&r.summary.bad||0)+' discrepanc'+((r.summary&&r.summary.bad)===1?'y':'ies')+' &mdash; action needed</span>';
     body+='<tr class="'+(isNew?'ib-newrow':'')+(rv?' ib-revrow':'')+(isDisc?' ib-discrow':'')+'">'+
+      '<td><input type="checkbox" title="Select to email vendor" '+(IB.sel===r.key?'checked ':'')+'onchange="ibSelRow('+i+',this.checked)"></td>'+
       '<td><input type="checkbox" title="Mark as reviewed" '+(rv?'checked ':'')+'onchange="ibRevToggle('+i+')"></td>'+
       '<td><span class="ib-tag '+(isNew?'ib-new':'ib-old')+'">'+(isNew?'&#9733; NEW':'Old')+'</span></td>'+
       '<td>'+escapeHtml(String(r.received||'').slice(0,16).replace('T',' '))+'</td>'+
@@ -5356,14 +5365,13 @@ function ibRender(){
       '<td>'+escapeHtml(r.po_raw||'')+(r.po_key&&r.po_key!==String(r.po_raw||'').toUpperCase()?' &rarr; '+escapeHtml(r.po_key):'')+'</td>'+
       '<td class="num" style="text-align:right;white-space:nowrap;">'+totTxt+'</td>'+
       '<td>'+qbc+'</td>'+
-      '<td>'+chip+((r.verdict==='discrepancy'&&ibDiscLines(r).length)?'<br><button class="mode-btn" style="margin:6px 0 0;padding:5px 12px;font-size:12px;background:#008080;color:#fff;border-color:#008080;font-weight:700;" onclick="ibVmOpen('+i+')">&#9993; Email vendor</button>':'')+'</td>'+
-      '<td><span class="ib-link" onclick="ibTog('+i+')">details</span>'+'</td></tr>'+
-      '<tr class="ib-det" id="ib-det-'+i+'" style="display:'+(IB.open[i]?'':'none')+'"><td colspan="11"><div class="sub" style="margin-bottom:6px;">'+escapeHtml(r.subject||'')+(r.po_status?' &middot; PO status: '+escapeHtml(r.po_status):'')+'</div>'+det+'</td></tr>';
+      '<td>'+chip+'</td></tr>';
+
   });
   var ls=(IB.data&&IB.data.last_scan)||null;
   var meta=ls?('Last scan: '+escapeHtml(String(ls.at||'').slice(0,16).replace('T',' '))+' UTC &middot; window: '+escapeHtml(ls.window||'')+' &middot; '+(ls.scanned||0)+' emails checked'):'No scan has been run yet.';
   host.innerHTML='<div class="sub" style="margin:4px 0 8px;">'+meta+' &middot; '+res.length+' result'+(res.length===1?'':'s')+' in list, '+nNew+' new, '+nRev+' reviewed'+(nDisc?', <b style="color:#c62828;">'+nDisc+' with discrepancies to act on</b>':'')+(IB.hideRev&&nHid?' <b style="color:#b45309;">&mdash; '+nHid+' matching reviewed row'+(nHid===1?' is':'s are')+' hidden: tick &ldquo;Show reviewed&rdquo; to see '+(nHid===1?'it':'them')+'</b>':'')+'</div>'+
-    ((res.length&&body)?'<table><thead><tr><td>Reviewed</td><td>New?</td><td>Received (UTC)</td><td>Source</td><td>Vendor</td><td>Invoice file</td><td>PO</td><td style="text-align:right">Total</td><td>QuickBooks</td><td>Result</td><td></td></tr></thead><tbody>'+body+'</tbody></table>':'<div class="inv-hint">'+(res.length?'All '+res.length+' matching invoice'+(res.length===1?' is':'s are')+' marked reviewed and hidden &mdash; tick &ldquo;Show reviewed&rdquo; above to see them.':((IB.data&&IB.data.results&&IB.data.results.length)?'No invoices match the current filters.':'Nothing here yet. Choose a window and press Search.'))+'</div>');
+    ((res.length&&body)?'<table><thead><tr><td>Select</td><td>Reviewed</td><td>New?</td><td>Received (UTC)</td><td>Source</td><td>Vendor</td><td>Invoice file</td><td>PO</td><td style="text-align:right">Total</td><td>QuickBooks</td><td>Result</td></tr></thead><tbody>'+body+'</tbody></table>':'<div class="inv-hint">'+(res.length?'All '+res.length+' matching invoice'+(res.length===1?' is':'s are')+' marked reviewed and hidden &mdash; tick &ldquo;Show reviewed&rdquo; above to see them.':((IB.data&&IB.data.results&&IB.data.results.length)?'No invoices match the current filters.':'Nothing here yet. Choose a window and press Search.'))+'</div>');
 }
 
 soEtaLoad();
