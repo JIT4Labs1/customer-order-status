@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-21 07:07 PM UTC",
+  "generated_at": "2026-10-22 04:58 PM UTC",
   "year": 2026,
   "customers": [
     {
@@ -3922,7 +3922,7 @@
     }
   ],
   "payables": {
-    "generated_at": "2026-10-21 07:07 PM UTC",
+    "generated_at": "2026-10-22 04:58 PM UTC",
     "grand_total": 33415.14,
     "past_due": 20528.88,
     "count": 41,
@@ -4252,16 +4252,16 @@
     "name": "Chase CHK (9219)",
     "balance": 60619.43,
     "source": "Bank balance",
-    "book_balance": 38688.67,
+    "book_balance": 40601.29,
     "bank_asof": "2026-07-23",
-    "as_of": "2026-10-21 07:07 PM UTC"
+    "as_of": "2026-10-22 04:58 PM UTC"
   },
   "ar": {
-    "generated_at": "2026-10-21 07:07 PM UTC",
-    "as_of": "2026-10-21",
+    "generated_at": "2026-10-22 04:58 PM UTC",
+    "as_of": "2026-10-22",
     "total": 104640.1,
-    "qb_total": 127265.08,
-    "count": 80,
+    "qb_total": 127839.55,
+    "count": 81,
     "customers": [
       {
         "name": "Mercedes Scientific",
@@ -5635,6 +5635,22 @@
             "shopify_order": "#1236",
             "shopify_fulfillments": [
               {
+                "id": "6559512035572",
+                "shipment": "#1236-F4",
+                "tracking": "384287039075",
+                "trackings": [
+                  "384287039075"
+                ]
+              },
+              {
+                "id": "6559495946484",
+                "shipment": "#1236-F3",
+                "tracking": "879010621994",
+                "trackings": [
+                  "879010621994"
+                ]
+              },
+              {
                 "id": "6549736816884",
                 "shipment": "#1236-F2",
                 "tracking": "384197691887",
@@ -5653,9 +5669,9 @@
             ],
             "pay_link": "https://connect.intuit.com/t/scs-v1-b295163d2775436bb2774c8e53c08d8a35678f945ded460687e36d58deff500a9c739aafd4644bb88bf85245deeff972-0?locale=en_US&cta=v3invoicelink",
             "shopify_status": "PARTIALLY_PAID",
-            "shopify_total": 1633.89,
+            "shopify_total": 1662.5,
             "shopify_received": 1583.1,
-            "shopify_outstanding": 50.79,
+            "shopify_outstanding": 79.4,
             "shopify_match": "note",
             "reconcile": false
           },
@@ -5676,9 +5692,9 @@
             ],
             "pay_link": "https://connect.intuit.com/t/scs-v1-d268cbe7979440b5b1e62d9f5ffd6296dc0a1d45f95440708cdd1cd0615461b1de35096894d24b8b8f7cab1cd33cc5a7-0?locale=en_US&cta=v3invoicelink",
             "shopify_status": "PARTIALLY_PAID",
-            "shopify_total": 1633.89,
+            "shopify_total": 1662.5,
             "shopify_received": 1583.1,
-            "shopify_outstanding": 50.79,
+            "shopify_outstanding": 79.4,
             "shopify_match": "note",
             "reconcile": true
           }
@@ -6116,9 +6132,9 @@
             ],
             "pay_link": "https://connect.intuit.com/t/scs-v1-8f8cbbca9d6a4ee08811e942cffdabf7e6e52aa246c343f3b360b5071116c10ea2f81f57ed5445e4826545a5051c5f31-1?locale=en_US&cta=v3invoicelink",
             "shopify_status": "PARTIALLY_PAID",
-            "shopify_total": 4611.55,
+            "shopify_total": 4651.2,
             "shopify_received": 4577.1,
-            "shopify_outstanding": 34.45,
+            "shopify_outstanding": 74.1,
             "shopify_match": "note",
             "reconcile": true
           },
@@ -6139,9 +6155,9 @@
             ],
             "pay_link": "https://connect.intuit.com/t/scs-v1-dfc3e7d98ed34701a58a377b5ac6a7e21ea962632ad54aadacee1a25ad76318082f661c3faa64735a75c5ddeb378eae5-1?locale=en_US&cta=v3invoicelink",
             "shopify_status": "PARTIALLY_PAID",
-            "shopify_total": 4611.55,
+            "shopify_total": 4651.2,
             "shopify_received": 4577.1,
-            "shopify_outstanding": 34.45,
+            "shopify_outstanding": 74.1,
             "shopify_match": "note",
             "reconcile": true
           }
@@ -6404,11 +6420,35 @@
             "reconcile": true
           }
         ]
+      },
+      {
+        "name": "Karen Barbalace Aesthetics, PLLC",
+        "balance": 0.0,
+        "qb_balance": 574.47,
+        "invoices": [
+          {
+            "number": "SO793",
+            "date": "2026-10-21",
+            "due": "2026-10-21",
+            "amount": 574.47,
+            "balance": 574.47,
+            "so_num": "",
+            "shopify_order": "#1245",
+            "shopify_fulfillments": [],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-1e7af2fbdb90407ca34006014657e2ce08ffb22fa73748c3a20357c5d5e4e6d66f044adeb08d4b22834551ff63f96cfe-0?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PAID",
+            "shopify_total": 574.47,
+            "shopify_received": 574.47,
+            "shopify_outstanding": 0.0,
+            "shopify_match": "note",
+            "reconcile": true
+          }
+        ]
       }
     ]
   },
   "ap": {
-    "generated_at": "2026-10-21 07:07 PM UTC",
+    "generated_at": "2026-10-22 04:58 PM UTC",
     "total": 33415.14,
     "past_due": 20528.88,
     "count": 41,
@@ -6424,7 +6464,7 @@
             "due": "2026-10-01",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": 20,
+            "days_past_due": 21,
             "pos": [
               {
                 "po": "PO834",
@@ -6442,7 +6482,7 @@
             "due": "2026-10-01",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": 20,
+            "days_past_due": 21,
             "pos": [
               {
                 "po": "PO834",
@@ -6460,7 +6500,7 @@
             "due": "2026-10-01",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": 20,
+            "days_past_due": 21,
             "pos": [
               {
                 "po": "PO835",
@@ -6478,7 +6518,7 @@
             "due": "2026-10-03",
             "amount": 623.46,
             "balance": 623.46,
-            "days_past_due": 18,
+            "days_past_due": 19,
             "pos": [
               {
                 "po": "PO842",
@@ -6496,7 +6536,7 @@
             "due": "2026-10-08",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": 13,
+            "days_past_due": 14,
             "pos": [
               {
                 "po": "PO851",
@@ -6514,7 +6554,7 @@
             "due": "2026-10-08",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": 13,
+            "days_past_due": 14,
             "pos": [
               {
                 "po": "PO851",
@@ -6532,7 +6572,7 @@
             "due": "2026-10-15",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": 6,
+            "days_past_due": 7,
             "pos": [
               {
                 "po": "PO860",
@@ -6550,7 +6590,7 @@
             "due": "2026-10-15",
             "amount": 311.73,
             "balance": 311.73,
-            "days_past_due": 6,
+            "days_past_due": 7,
             "pos": [
               {
                 "po": "PO861",
@@ -6568,7 +6608,7 @@
             "due": "2026-10-15",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": 6,
+            "days_past_due": 7,
             "pos": [
               {
                 "po": "PO860",
@@ -6586,7 +6626,7 @@
             "due": "2026-10-18",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": 3,
+            "days_past_due": 4,
             "pos": [
               {
                 "po": "PO873",
@@ -6604,7 +6644,7 @@
             "due": "2026-10-18",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": 3,
+            "days_past_due": 4,
             "pos": [
               {
                 "po": "PO873",
@@ -6622,7 +6662,7 @@
             "due": "2026-10-22",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": -1,
+            "days_past_due": 0,
             "pos": [
               {
                 "po": "PO880",
@@ -6640,7 +6680,7 @@
             "due": "2026-10-22",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": -1,
+            "days_past_due": 0,
             "pos": [
               {
                 "po": "PO880",
@@ -6658,7 +6698,7 @@
             "due": "2026-10-23",
             "amount": 158.5,
             "balance": 158.5,
-            "days_past_due": -2,
+            "days_past_due": -1,
             "pos": [
               {
                 "po": "PO882",
@@ -6676,7 +6716,7 @@
             "due": "2026-10-25",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": -4,
+            "days_past_due": -3,
             "pos": [
               {
                 "po": "PO896",
@@ -6694,7 +6734,7 @@
             "due": "2026-10-25",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": -4,
+            "days_past_due": -3,
             "pos": [
               {
                 "po": "PO896",
@@ -6712,7 +6752,7 @@
             "due": "2026-10-26",
             "amount": 158.5,
             "balance": 158.5,
-            "days_past_due": -5,
+            "days_past_due": -4,
             "pos": [
               {
                 "po": "PO889",
@@ -6730,7 +6770,7 @@
             "due": "2026-10-26",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": -5,
+            "days_past_due": -4,
             "pos": [
               {
                 "po": "PO889",
@@ -6748,7 +6788,7 @@
             "due": "2026-10-29",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": -8,
+            "days_past_due": -7,
             "pos": [
               {
                 "po": "PO899",
@@ -6766,7 +6806,7 @@
             "due": "2026-10-31",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": -10,
+            "days_past_due": -9,
             "pos": [
               {
                 "po": "PO906",
@@ -6784,7 +6824,7 @@
             "due": "2026-10-31",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": -10,
+            "days_past_due": -9,
             "pos": [
               {
                 "po": "PO908",
@@ -6802,7 +6842,7 @@
             "due": "2026-11-11",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": -21,
+            "days_past_due": -20,
             "pos": [
               {
                 "po": "PO940",
@@ -6820,7 +6860,7 @@
             "due": "2026-11-13",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": -23,
+            "days_past_due": -22,
             "pos": [
               {
                 "po": "PO945",
@@ -6845,7 +6885,7 @@
             "due": "2026-10-12",
             "amount": 3540.0,
             "balance": 3540.0,
-            "days_past_due": 9,
+            "days_past_due": 10,
             "pos": [
               {
                 "po": "PO942",
@@ -6863,7 +6903,7 @@
             "due": "2026-10-13",
             "amount": 8715.5,
             "balance": 8715.5,
-            "days_past_due": 8,
+            "days_past_due": 9,
             "pos": [
               {
                 "po": "PO941",
@@ -6888,7 +6928,7 @@
             "due": "2026-10-15",
             "amount": 266.5,
             "balance": 266.5,
-            "days_past_due": 6,
+            "days_past_due": 7,
             "pos": [
               {
                 "po": "PO804",
@@ -6906,7 +6946,7 @@
             "due": "2026-10-25",
             "amount": 272.8,
             "balance": 272.8,
-            "days_past_due": -4,
+            "days_past_due": -3,
             "pos": [
               {
                 "po": "PO947",
@@ -6924,7 +6964,7 @@
             "due": "2026-10-25",
             "amount": 243.0,
             "balance": 243.0,
-            "days_past_due": -4,
+            "days_past_due": -3,
             "pos": [
               {
                 "po": "PO950",
@@ -6942,7 +6982,7 @@
             "due": "2026-10-25",
             "amount": 375.0,
             "balance": 375.0,
-            "days_past_due": -4,
+            "days_past_due": -3,
             "pos": [
               {
                 "po": "PO824",
@@ -6960,7 +7000,7 @@
             "due": "2026-10-25",
             "amount": 455.5,
             "balance": 455.5,
-            "days_past_due": -4,
+            "days_past_due": -3,
             "pos": [
               {
                 "po": "PO921",
@@ -6978,7 +7018,7 @@
             "due": "2026-10-25",
             "amount": 240.5,
             "balance": 240.5,
-            "days_past_due": -4,
+            "days_past_due": -3,
             "pos": [
               {
                 "po": "PO935",
@@ -6996,7 +7036,7 @@
             "due": "2026-10-25",
             "amount": 1728.6,
             "balance": 1728.6,
-            "days_past_due": -4,
+            "days_past_due": -3,
             "pos": [
               {
                 "po": "PO887",
@@ -7014,7 +7054,7 @@
             "due": "2026-10-25",
             "amount": 42.5,
             "balance": 42.5,
-            "days_past_due": -4,
+            "days_past_due": -3,
             "pos": [
               {
                 "po": "PO953",
@@ -7039,7 +7079,7 @@
             "due": "2026-06-11",
             "amount": 135.2,
             "balance": 135.2,
-            "days_past_due": 132,
+            "days_past_due": 133,
             "pos": [
               {
                 "po": "PO682",
@@ -7057,7 +7097,7 @@
             "due": "2026-07-29",
             "amount": 82.0,
             "balance": 82.0,
-            "days_past_due": 84,
+            "days_past_due": 85,
             "pos": [
               {
                 "po": "PO708",
@@ -7075,7 +7115,7 @@
             "due": "2026-08-06",
             "amount": 695.0,
             "balance": 695.0,
-            "days_past_due": 76,
+            "days_past_due": 77,
             "pos": [
               {
                 "po": "PO646",
@@ -7093,7 +7133,7 @@
             "due": "2026-09-26",
             "amount": 92.4,
             "balance": 92.4,
-            "days_past_due": 25,
+            "days_past_due": 26,
             "pos": [
               {
                 "po": "PO827",
@@ -7111,7 +7151,7 @@
             "due": "2026-10-01",
             "amount": 61.6,
             "balance": 61.6,
-            "days_past_due": 20,
+            "days_past_due": 21,
             "pos": [],
             "customers": [
               "MEDICAL HEALTH LAB"
@@ -7123,7 +7163,7 @@
             "due": "2026-10-01",
             "amount": 76.6,
             "balance": 76.6,
-            "days_past_due": 20,
+            "days_past_due": 21,
             "pos": [
               {
                 "po": "PO838",
@@ -7141,7 +7181,7 @@
             "due": "2026-10-02",
             "amount": 34.79,
             "balance": 34.79,
-            "days_past_due": 19,
+            "days_past_due": 20,
             "pos": [
               {
                 "po": "PO841",
@@ -7159,7 +7199,7 @@
             "due": "2026-10-10",
             "amount": 137.0,
             "balance": 137.0,
-            "days_past_due": 11,
+            "days_past_due": 12,
             "pos": [
               {
                 "po": "PO859",
@@ -7175,5 +7215,5 @@
       }
     ]
   },
-  "pulled_at": "2026-10-21 12:07 PM PT"
+  "pulled_at": "2026-10-22 09:59 AM PT"
 }
