@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-22 04:58 PM UTC",
+  "generated_at": "2026-10-23 04:59 PM UTC",
   "year": 2026,
   "customers": [
     {
@@ -2178,12 +2178,12 @@
         },
         {
           "number": "SO705",
-          "status": "Not Paid",
+          "status": "Paid",
           "amount": 327.6,
-          "balance": 327.6,
+          "balance": 0.0,
           "date": "2026-10-01",
           "link": "",
-          "invoice_link": "https://connect.intuit.com/t/scs-v1-ca6e68522d814d138abe4c8b84ee6aa8a2ef1eac3c5a428f9807f84a9fac1238fbe81425c0c241dcad9645126895080c-0?locale=en_US&cta=v3invoicelink",
+          "invoice_link": "",
           "so_num": "",
           "shopify_order": "",
           "fulfillment": "",
@@ -3013,8 +3013,8 @@
       "totals": {
         "count": 68,
         "amount": 197574.17,
-        "paid": 153202.74,
-        "unpaid": 44371.43
+        "paid": 153530.34,
+        "unpaid": 44043.83
       }
     },
     {
@@ -3922,17 +3922,74 @@
     }
   ],
   "payables": {
-    "generated_at": "2026-10-22 04:58 PM UTC",
-    "grand_total": 33415.14,
-    "past_due": 20528.88,
-    "count": 41,
+    "generated_at": "2026-10-23 04:59 PM UTC",
+    "grand_total": 49648.39,
+    "past_due": 30744.56,
+    "count": 61,
     "vendors": [
       {
-        "vendor": "Conmed",
-        "balance": 16220.65,
-        "count": 23,
-        "pastdue": 6692.29,
+        "vendor": "Allora Biotech LLC",
+        "balance": 21150.76,
+        "count": 6,
+        "pastdue": 21150.76,
         "bills": [
+          {
+            "num": "1766",
+            "date": "2026-10-20",
+            "due": "2026-10-20",
+            "amount": 2115.06,
+            "balance": 2115.06
+          },
+          {
+            "num": "1765",
+            "date": "2026-10-20",
+            "due": "2026-10-20",
+            "amount": 5401.2,
+            "balance": 5401.2
+          },
+          {
+            "num": "1762",
+            "date": "2026-10-19",
+            "due": "2026-10-19",
+            "amount": 307.0,
+            "balance": 307.0
+          },
+          {
+            "num": "1761",
+            "date": "2026-10-19",
+            "due": "2026-10-19",
+            "amount": 1072.0,
+            "balance": 1072.0
+          },
+          {
+            "num": "1743",
+            "date": "2026-10-13",
+            "due": "2026-10-13",
+            "amount": 8715.5,
+            "balance": 8715.5
+          },
+          {
+            "num": "1742",
+            "date": "2026-10-12",
+            "due": "2026-10-12",
+            "amount": 3540.0,
+            "balance": 3540.0
+          }
+        ]
+      },
+      {
+        "vendor": "Conmed",
+        "balance": 17372.07,
+        "count": 24,
+        "pastdue": 7843.71,
+        "bills": [
+          {
+            "num": "11478011",
+            "date": "2026-10-21",
+            "due": "2026-11-20",
+            "amount": 1151.42,
+            "balance": 1151.42
+          },
           {
             "num": "11470722",
             "date": "2026-10-14",
@@ -4097,33 +4154,109 @@
         ]
       },
       {
-        "vendor": "Allora Biotech LLC",
-        "balance": 12255.5,
-        "count": 2,
-        "pastdue": 12255.5,
+        "vendor": "PMA Services",
+        "balance": 9810.97,
+        "count": 23,
+        "pastdue": 435.5,
         "bills": [
           {
-            "num": "1743",
-            "date": "2026-10-13",
-            "due": "2026-10-13",
-            "amount": 8715.5,
-            "balance": 8715.5
+            "num": "INV-002087",
+            "date": "2026-10-21",
+            "due": "2026-10-31",
+            "amount": 243.0,
+            "balance": 243.0
           },
           {
-            "num": "1742",
-            "date": "2026-10-12",
-            "due": "2026-10-12",
-            "amount": 3540.0,
-            "balance": 3540.0
-          }
-        ]
-      },
-      {
-        "vendor": "PMA Services",
-        "balance": 3624.4,
-        "count": 8,
-        "pastdue": 266.5,
-        "bills": [
+            "num": "INV-002088",
+            "date": "2026-10-21",
+            "due": "2026-10-31",
+            "amount": 64.2,
+            "balance": 64.2
+          },
+          {
+            "num": "INV-002089",
+            "date": "2026-10-21",
+            "due": "2026-10-31",
+            "amount": 513.0,
+            "balance": 513.0
+          },
+          {
+            "num": "INV-002083",
+            "date": "2026-10-21",
+            "due": "2026-10-31",
+            "amount": 1147.12,
+            "balance": 1147.12
+          },
+          {
+            "num": "INV-002073",
+            "date": "2026-10-20",
+            "due": "2026-10-30",
+            "amount": 92.0,
+            "balance": 92.0
+          },
+          {
+            "num": "INV-002072",
+            "date": "2026-10-20",
+            "due": "2026-10-30",
+            "amount": 228.0,
+            "balance": 228.0
+          },
+          {
+            "num": "INV-002071",
+            "date": "2026-10-20",
+            "due": "2026-10-30",
+            "amount": 92.0,
+            "balance": 92.0
+          },
+          {
+            "num": "INV-002070",
+            "date": "2026-10-20",
+            "due": "2026-10-30",
+            "amount": 169.0,
+            "balance": 169.0
+          },
+          {
+            "num": "INV-002074",
+            "date": "2026-10-20",
+            "due": "2026-10-30",
+            "amount": 80.0,
+            "balance": 80.0
+          },
+          {
+            "num": "INV-002075",
+            "date": "2026-10-20",
+            "due": "2026-10-30",
+            "amount": 290.0,
+            "balance": 290.0
+          },
+          {
+            "num": "INV-002076",
+            "date": "2026-10-20",
+            "due": "2026-10-30",
+            "amount": 3048.0,
+            "balance": 3048.0
+          },
+          {
+            "num": "INV-002080",
+            "date": "2026-10-20",
+            "due": "2026-10-30",
+            "amount": 46.9,
+            "balance": 46.9
+          },
+          {
+            "num": "INV-002078",
+            "date": "2026-10-20",
+            "due": "2026-10-30",
+            "amount": 298.0,
+            "balance": 298.0
+          },
+          {
+            "num": "INV-002079",
+            "date": "2026-10-20",
+            "due": "2026-10-30",
+            "amount": 296.85,
+            "balance": 296.85
+          },
           {
             "num": "INV-002031",
             "date": "2026-10-15",
@@ -4170,8 +4303,8 @@
             "num": "INV-002026",
             "date": "2026-10-15",
             "due": "2026-10-25",
-            "amount": 1728.6,
-            "balance": 1728.6
+            "amount": 1138.1,
+            "balance": 1138.1
           },
           {
             "num": "INV-002036",
@@ -4179,6 +4312,13 @@
             "due": "2026-10-25",
             "amount": 42.5,
             "balance": 42.5
+          },
+          {
+            "num": "INV-001688",
+            "date": "2026-07-08",
+            "due": "2026-07-08",
+            "amount": 169.0,
+            "balance": 169.0
           }
         ]
       },
@@ -4252,21 +4392,21 @@
     "name": "Chase CHK (9219)",
     "balance": 60619.43,
     "source": "Bank balance",
-    "book_balance": 40601.29,
+    "book_balance": 36579.87,
     "bank_asof": "2026-07-23",
-    "as_of": "2026-10-22 04:58 PM UTC"
+    "as_of": "2026-10-23 04:59 PM UTC"
   },
   "ar": {
-    "generated_at": "2026-10-22 04:58 PM UTC",
-    "as_of": "2026-10-22",
-    "total": 104640.1,
-    "qb_total": 127839.55,
-    "count": 81,
+    "generated_at": "2026-10-23 04:59 PM UTC",
+    "as_of": "2026-10-23",
+    "total": 104312.5,
+    "qb_total": 127511.95,
+    "count": 80,
     "customers": [
       {
         "name": "Mercedes Scientific",
-        "balance": 44371.43,
-        "qb_balance": 44371.43,
+        "balance": 44043.83,
+        "qb_balance": 44043.83,
         "invoices": [
           {
             "number": "SO546",
@@ -4339,29 +4479,6 @@
             "shopify_total": 195.7,
             "shopify_received": null,
             "shopify_outstanding": 195.7,
-            "shopify_match": "qb_field",
-            "reconcile": false
-          },
-          {
-            "number": "SO705",
-            "date": "2026-10-01",
-            "due": "2026-10-11",
-            "amount": 327.6,
-            "balance": 327.6,
-            "so_num": "",
-            "shopify_order": "#1209",
-            "shopify_fulfillments": [
-              {
-                "id": "",
-                "shipment": "#1209-F1",
-                "tracking": ""
-              }
-            ],
-            "pay_link": "https://connect.intuit.com/t/scs-v1-37a755110afc4f879aa02359004e36142d4e545f81fe49608d78c0b767ad0fc787c229b7a6334e7ca2eb65bb9bbb368a-0?locale=en_US&cta=v3invoicelink",
-            "shopify_status": "PENDING",
-            "shopify_total": 327.6,
-            "shopify_received": null,
-            "shopify_outstanding": 327.6,
             "shopify_match": "qb_field",
             "reconcile": false
           },
@@ -6448,436 +6565,15 @@
     ]
   },
   "ap": {
-    "generated_at": "2026-10-22 04:58 PM UTC",
-    "total": 33415.14,
-    "past_due": 20528.88,
-    "count": 41,
+    "generated_at": "2026-10-23 04:59 PM UTC",
+    "total": 49648.39,
+    "past_due": 30744.56,
+    "count": 61,
     "vendors": [
       {
-        "vendor": "Conmed",
-        "balance": 16220.65,
-        "pastdue": 6692.29,
-        "bills": [
-          {
-            "number": "11427804",
-            "date": "2026-09-01",
-            "due": "2026-10-01",
-            "amount": 1009.48,
-            "balance": 1009.48,
-            "days_past_due": 21,
-            "pos": [
-              {
-                "po": "PO834",
-                "so": "SO533",
-                "vtiger_customer": "Setzer Personal Physicians"
-              }
-            ],
-            "customers": [
-              "Setzer Personal Physicians"
-            ]
-          },
-          {
-            "number": "11427889",
-            "date": "2026-09-01",
-            "due": "2026-10-01",
-            "amount": 141.94,
-            "balance": 141.94,
-            "days_past_due": 21,
-            "pos": [
-              {
-                "po": "PO834",
-                "so": "SO533",
-                "vtiger_customer": "Setzer Personal Physicians"
-              }
-            ],
-            "customers": [
-              "Setzer Personal Physicians"
-            ]
-          },
-          {
-            "number": "11428189",
-            "date": "2026-09-01",
-            "due": "2026-10-01",
-            "amount": 1151.42,
-            "balance": 1151.42,
-            "days_past_due": 21,
-            "pos": [
-              {
-                "po": "PO835",
-                "so": "SO534",
-                "vtiger_customer": "La Clinique Privee"
-              }
-            ],
-            "customers": [
-              "La Clinique Privee"
-            ]
-          },
-          {
-            "number": "11431177",
-            "date": "2026-09-03",
-            "due": "2026-10-03",
-            "amount": 623.46,
-            "balance": 623.46,
-            "days_past_due": 19,
-            "pos": [
-              {
-                "po": "PO842",
-                "so": "SO537",
-                "vtiger_customer": "Luxus Aesthetics"
-              }
-            ],
-            "customers": [
-              "Luxus Aesthetics"
-            ]
-          },
-          {
-            "number": "11433838",
-            "date": "2026-09-08",
-            "due": "2026-10-08",
-            "amount": 1009.48,
-            "balance": 1009.48,
-            "days_past_due": 14,
-            "pos": [
-              {
-                "po": "PO851",
-                "so": "SO543",
-                "vtiger_customer": "931 Skin + Company Aesthetics & Wellness"
-              }
-            ],
-            "customers": [
-              "931 Skin + Company Aesthetics & Wellness"
-            ]
-          },
-          {
-            "number": "11434120",
-            "date": "2026-09-08",
-            "due": "2026-10-08",
-            "amount": 141.94,
-            "balance": 141.94,
-            "days_past_due": 14,
-            "pos": [
-              {
-                "po": "PO851",
-                "so": "SO543",
-                "vtiger_customer": "931 Skin + Company Aesthetics & Wellness"
-              }
-            ],
-            "customers": [
-              "931 Skin + Company Aesthetics & Wellness"
-            ]
-          },
-          {
-            "number": "11440466",
-            "date": "2026-09-15",
-            "due": "2026-10-15",
-            "amount": 141.94,
-            "balance": 141.94,
-            "days_past_due": 7,
-            "pos": [
-              {
-                "po": "PO860",
-                "so": "SO548",
-                "vtiger_customer": "Ivy En Rose Medical Clinic"
-              }
-            ],
-            "customers": [
-              "Ivy En Rose Medical Clinic"
-            ]
-          },
-          {
-            "number": "11440468",
-            "date": "2026-09-15",
-            "due": "2026-10-15",
-            "amount": 311.73,
-            "balance": 311.73,
-            "days_past_due": 7,
-            "pos": [
-              {
-                "po": "PO861",
-                "so": "SO549",
-                "vtiger_customer": "MedRevive MedSpa"
-              }
-            ],
-            "customers": [
-              "MedRevive MedSpa"
-            ]
-          },
-          {
-            "number": "11440875",
-            "date": "2026-09-15",
-            "due": "2026-10-15",
-            "amount": 1009.48,
-            "balance": 1009.48,
-            "days_past_due": 7,
-            "pos": [
-              {
-                "po": "PO860",
-                "so": "SO548",
-                "vtiger_customer": "Ivy En Rose Medical Clinic"
-              }
-            ],
-            "customers": [
-              "Ivy En Rose Medical Clinic"
-            ]
-          },
-          {
-            "number": "11445088",
-            "date": "2026-09-18",
-            "due": "2026-10-18",
-            "amount": 1009.48,
-            "balance": 1009.48,
-            "days_past_due": 4,
-            "pos": [
-              {
-                "po": "PO873",
-                "so": "SO555",
-                "vtiger_customer": "Brand Surgical Institute"
-              }
-            ],
-            "customers": [
-              "Brand Surgical Institute"
-            ]
-          },
-          {
-            "number": "11445211",
-            "date": "2026-09-18",
-            "due": "2026-10-18",
-            "amount": 141.94,
-            "balance": 141.94,
-            "days_past_due": 4,
-            "pos": [
-              {
-                "po": "PO873",
-                "so": "SO555",
-                "vtiger_customer": "Brand Surgical Institute"
-              }
-            ],
-            "customers": [
-              "Brand Surgical Institute"
-            ]
-          },
-          {
-            "number": "11448337",
-            "date": "2026-09-22",
-            "due": "2026-10-22",
-            "amount": 141.94,
-            "balance": 141.94,
-            "days_past_due": 0,
-            "pos": [
-              {
-                "po": "PO880",
-                "so": "SO560",
-                "vtiger_customer": "Parkway Medical Care PLLC"
-              }
-            ],
-            "customers": [
-              "Parkway Medical Care PLLC"
-            ]
-          },
-          {
-            "number": "11448974",
-            "date": "2026-09-22",
-            "due": "2026-10-22",
-            "amount": 1009.48,
-            "balance": 1009.48,
-            "days_past_due": 0,
-            "pos": [
-              {
-                "po": "PO880",
-                "so": "SO560",
-                "vtiger_customer": "Parkway Medical Care PLLC"
-              }
-            ],
-            "customers": [
-              "Parkway Medical Care PLLC"
-            ]
-          },
-          {
-            "number": "11450569",
-            "date": "2026-09-23",
-            "due": "2026-10-23",
-            "amount": 158.5,
-            "balance": 158.5,
-            "days_past_due": -1,
-            "pos": [
-              {
-                "po": "PO882",
-                "so": "SO562",
-                "vtiger_customer": "Parkway Medical Care PLLC"
-              }
-            ],
-            "customers": [
-              "Parkway Medical Care PLLC"
-            ]
-          },
-          {
-            "number": "11453087",
-            "date": "2026-09-25",
-            "due": "2026-10-25",
-            "amount": 141.94,
-            "balance": 141.94,
-            "days_past_due": -3,
-            "pos": [
-              {
-                "po": "PO896",
-                "so": "SO570",
-                "vtiger_customer": "Euphoria Skin & Hair"
-              }
-            ],
-            "customers": [
-              "Euphoria Skin & Hair"
-            ]
-          },
-          {
-            "number": "11452938",
-            "date": "2026-09-25",
-            "due": "2026-10-25",
-            "amount": 1009.48,
-            "balance": 1009.48,
-            "days_past_due": -3,
-            "pos": [
-              {
-                "po": "PO896",
-                "so": "SO570",
-                "vtiger_customer": "Euphoria Skin & Hair"
-              }
-            ],
-            "customers": [
-              "Euphoria Skin & Hair"
-            ]
-          },
-          {
-            "number": "11453703",
-            "date": "2026-09-26",
-            "due": "2026-10-26",
-            "amount": 158.5,
-            "balance": 158.5,
-            "days_past_due": -4,
-            "pos": [
-              {
-                "po": "PO889",
-                "so": "SO565",
-                "vtiger_customer": "Georgia Plastic & Recon Surgery"
-              }
-            ],
-            "customers": [
-              "Georgia Plastic & Recon Surgery"
-            ]
-          },
-          {
-            "number": "11453521",
-            "date": "2026-09-26",
-            "due": "2026-10-26",
-            "amount": 1151.42,
-            "balance": 1151.42,
-            "days_past_due": -4,
-            "pos": [
-              {
-                "po": "PO889",
-                "so": "SO565",
-                "vtiger_customer": "Georgia Plastic & Recon Surgery"
-              }
-            ],
-            "customers": [
-              "Georgia Plastic & Recon Surgery"
-            ]
-          },
-          {
-            "number": "11455727",
-            "date": "2026-09-29",
-            "due": "2026-10-29",
-            "amount": 1151.42,
-            "balance": 1151.42,
-            "days_past_due": -7,
-            "pos": [
-              {
-                "po": "PO899",
-                "so": "SO573",
-                "vtiger_customer": "Clinica Medica Dr. Vizcarra"
-              }
-            ],
-            "customers": [
-              "Clinica Medica Dr. Vizcarra"
-            ]
-          },
-          {
-            "number": "11458649",
-            "date": "2026-10-01",
-            "due": "2026-10-31",
-            "amount": 1151.42,
-            "balance": 1151.42,
-            "days_past_due": -9,
-            "pos": [
-              {
-                "po": "PO906",
-                "so": "SO577",
-                "vtiger_customer": "Flourish Wellness"
-              }
-            ],
-            "customers": [
-              "Flourish Wellness"
-            ]
-          },
-          {
-            "number": "11459168",
-            "date": "2026-10-01",
-            "due": "2026-10-31",
-            "amount": 1151.42,
-            "balance": 1151.42,
-            "days_past_due": -9,
-            "pos": [
-              {
-                "po": "PO908",
-                "so": "SO579",
-                "vtiger_customer": "What\u2019s age got to do with it?"
-              }
-            ],
-            "customers": [
-              "What\u2019s age got to do with it?"
-            ]
-          },
-          {
-            "number": "11468050",
-            "date": "2026-10-12",
-            "due": "2026-11-11",
-            "amount": 1151.42,
-            "balance": 1151.42,
-            "days_past_due": -20,
-            "pos": [
-              {
-                "po": "PO940",
-                "so": "SO594",
-                "vtiger_customer": "North Fork Medical PLLC"
-              }
-            ],
-            "customers": [
-              "North Fork Medical PLLC"
-            ]
-          },
-          {
-            "number": "11470722",
-            "date": "2026-10-14",
-            "due": "2026-11-13",
-            "amount": 1151.42,
-            "balance": 1151.42,
-            "days_past_due": -22,
-            "pos": [
-              {
-                "po": "PO945",
-                "so": "SO598",
-                "vtiger_customer": "Resilient Skin Lab"
-              }
-            ],
-            "customers": [
-              "Resilient Skin Lab"
-            ]
-          }
-        ]
-      },
-      {
         "vendor": "Allora Biotech LLC",
-        "balance": 12255.5,
-        "pastdue": 12255.5,
+        "balance": 21150.76,
+        "pastdue": 21150.76,
         "bills": [
           {
             "number": "1742",
@@ -6885,7 +6581,7 @@
             "due": "2026-10-12",
             "amount": 3540.0,
             "balance": 3540.0,
-            "days_past_due": 10,
+            "days_past_due": 11,
             "pos": [
               {
                 "po": "PO942",
@@ -6903,7 +6599,7 @@
             "due": "2026-10-13",
             "amount": 8715.5,
             "balance": 8715.5,
-            "days_past_due": 9,
+            "days_past_due": 10,
             "pos": [
               {
                 "po": "PO941",
@@ -6914,21 +6610,550 @@
             "customers": [
               "Primex Lab"
             ]
+          },
+          {
+            "number": "1762",
+            "date": "2026-10-19",
+            "due": "2026-10-19",
+            "amount": 307.0,
+            "balance": 307.0,
+            "days_past_due": 4,
+            "pos": [
+              {
+                "po": "PO958",
+                "so": "SO605",
+                "vtiger_customer": "OM Diagnostic Laboratories"
+              }
+            ],
+            "customers": [
+              "OM Diagnostic Laboratories"
+            ]
+          },
+          {
+            "number": "1761",
+            "date": "2026-10-19",
+            "due": "2026-10-19",
+            "amount": 1072.0,
+            "balance": 1072.0,
+            "days_past_due": 4,
+            "pos": [
+              {
+                "po": "PO955",
+                "so": "SO604",
+                "vtiger_customer": "Personal"
+              }
+            ],
+            "customers": [
+              "Personal"
+            ]
+          },
+          {
+            "number": "1766",
+            "date": "2026-10-20",
+            "due": "2026-10-20",
+            "amount": 2115.06,
+            "balance": 2115.06,
+            "days_past_due": 3,
+            "pos": [
+              {
+                "po": "PO963",
+                "so": "SO608",
+                "vtiger_customer": "Radiance Diagnostics"
+              }
+            ],
+            "customers": [
+              "Radiance Diagnostics"
+            ]
+          },
+          {
+            "number": "1765",
+            "date": "2026-10-20",
+            "due": "2026-10-20",
+            "amount": 5401.2,
+            "balance": 5401.2,
+            "days_past_due": 3,
+            "pos": [
+              {
+                "po": "PO962",
+                "so": "SO607",
+                "vtiger_customer": "Mercedes Scientific"
+              }
+            ],
+            "customers": [
+              "Mercedes Scientific"
+            ]
+          }
+        ]
+      },
+      {
+        "vendor": "Conmed",
+        "balance": 17372.07,
+        "pastdue": 7843.71,
+        "bills": [
+          {
+            "number": "11427804",
+            "date": "2026-09-01",
+            "due": "2026-10-01",
+            "amount": 1009.48,
+            "balance": 1009.48,
+            "days_past_due": 22,
+            "pos": [
+              {
+                "po": "PO834",
+                "so": "SO533",
+                "vtiger_customer": "Setzer Personal Physicians"
+              }
+            ],
+            "customers": [
+              "Setzer Personal Physicians"
+            ]
+          },
+          {
+            "number": "11427889",
+            "date": "2026-09-01",
+            "due": "2026-10-01",
+            "amount": 141.94,
+            "balance": 141.94,
+            "days_past_due": 22,
+            "pos": [
+              {
+                "po": "PO834",
+                "so": "SO533",
+                "vtiger_customer": "Setzer Personal Physicians"
+              }
+            ],
+            "customers": [
+              "Setzer Personal Physicians"
+            ]
+          },
+          {
+            "number": "11428189",
+            "date": "2026-09-01",
+            "due": "2026-10-01",
+            "amount": 1151.42,
+            "balance": 1151.42,
+            "days_past_due": 22,
+            "pos": [
+              {
+                "po": "PO835",
+                "so": "SO534",
+                "vtiger_customer": "La Clinique Privee"
+              }
+            ],
+            "customers": [
+              "La Clinique Privee"
+            ]
+          },
+          {
+            "number": "11431177",
+            "date": "2026-09-03",
+            "due": "2026-10-03",
+            "amount": 623.46,
+            "balance": 623.46,
+            "days_past_due": 20,
+            "pos": [
+              {
+                "po": "PO842",
+                "so": "SO537",
+                "vtiger_customer": "Luxus Aesthetics"
+              }
+            ],
+            "customers": [
+              "Luxus Aesthetics"
+            ]
+          },
+          {
+            "number": "11433838",
+            "date": "2026-09-08",
+            "due": "2026-10-08",
+            "amount": 1009.48,
+            "balance": 1009.48,
+            "days_past_due": 15,
+            "pos": [
+              {
+                "po": "PO851",
+                "so": "SO543",
+                "vtiger_customer": "931 Skin + Company Aesthetics & Wellness"
+              }
+            ],
+            "customers": [
+              "931 Skin + Company Aesthetics & Wellness"
+            ]
+          },
+          {
+            "number": "11434120",
+            "date": "2026-09-08",
+            "due": "2026-10-08",
+            "amount": 141.94,
+            "balance": 141.94,
+            "days_past_due": 15,
+            "pos": [
+              {
+                "po": "PO851",
+                "so": "SO543",
+                "vtiger_customer": "931 Skin + Company Aesthetics & Wellness"
+              }
+            ],
+            "customers": [
+              "931 Skin + Company Aesthetics & Wellness"
+            ]
+          },
+          {
+            "number": "11440466",
+            "date": "2026-09-15",
+            "due": "2026-10-15",
+            "amount": 141.94,
+            "balance": 141.94,
+            "days_past_due": 8,
+            "pos": [
+              {
+                "po": "PO860",
+                "so": "SO548",
+                "vtiger_customer": "Ivy En Rose Medical Clinic"
+              }
+            ],
+            "customers": [
+              "Ivy En Rose Medical Clinic"
+            ]
+          },
+          {
+            "number": "11440468",
+            "date": "2026-09-15",
+            "due": "2026-10-15",
+            "amount": 311.73,
+            "balance": 311.73,
+            "days_past_due": 8,
+            "pos": [
+              {
+                "po": "PO861",
+                "so": "SO549",
+                "vtiger_customer": "MedRevive MedSpa"
+              }
+            ],
+            "customers": [
+              "MedRevive MedSpa"
+            ]
+          },
+          {
+            "number": "11440875",
+            "date": "2026-09-15",
+            "due": "2026-10-15",
+            "amount": 1009.48,
+            "balance": 1009.48,
+            "days_past_due": 8,
+            "pos": [
+              {
+                "po": "PO860",
+                "so": "SO548",
+                "vtiger_customer": "Ivy En Rose Medical Clinic"
+              }
+            ],
+            "customers": [
+              "Ivy En Rose Medical Clinic"
+            ]
+          },
+          {
+            "number": "11445088",
+            "date": "2026-09-18",
+            "due": "2026-10-18",
+            "amount": 1009.48,
+            "balance": 1009.48,
+            "days_past_due": 5,
+            "pos": [
+              {
+                "po": "PO873",
+                "so": "SO555",
+                "vtiger_customer": "Brand Surgical Institute"
+              }
+            ],
+            "customers": [
+              "Brand Surgical Institute"
+            ]
+          },
+          {
+            "number": "11445211",
+            "date": "2026-09-18",
+            "due": "2026-10-18",
+            "amount": 141.94,
+            "balance": 141.94,
+            "days_past_due": 5,
+            "pos": [
+              {
+                "po": "PO873",
+                "so": "SO555",
+                "vtiger_customer": "Brand Surgical Institute"
+              }
+            ],
+            "customers": [
+              "Brand Surgical Institute"
+            ]
+          },
+          {
+            "number": "11448337",
+            "date": "2026-09-22",
+            "due": "2026-10-22",
+            "amount": 141.94,
+            "balance": 141.94,
+            "days_past_due": 1,
+            "pos": [
+              {
+                "po": "PO880",
+                "so": "SO560",
+                "vtiger_customer": "Parkway Medical Care PLLC"
+              }
+            ],
+            "customers": [
+              "Parkway Medical Care PLLC"
+            ]
+          },
+          {
+            "number": "11448974",
+            "date": "2026-09-22",
+            "due": "2026-10-22",
+            "amount": 1009.48,
+            "balance": 1009.48,
+            "days_past_due": 1,
+            "pos": [
+              {
+                "po": "PO880",
+                "so": "SO560",
+                "vtiger_customer": "Parkway Medical Care PLLC"
+              }
+            ],
+            "customers": [
+              "Parkway Medical Care PLLC"
+            ]
+          },
+          {
+            "number": "11450569",
+            "date": "2026-09-23",
+            "due": "2026-10-23",
+            "amount": 158.5,
+            "balance": 158.5,
+            "days_past_due": 0,
+            "pos": [
+              {
+                "po": "PO882",
+                "so": "SO562",
+                "vtiger_customer": "Parkway Medical Care PLLC"
+              }
+            ],
+            "customers": [
+              "Parkway Medical Care PLLC"
+            ]
+          },
+          {
+            "number": "11453087",
+            "date": "2026-09-25",
+            "due": "2026-10-25",
+            "amount": 141.94,
+            "balance": 141.94,
+            "days_past_due": -2,
+            "pos": [
+              {
+                "po": "PO896",
+                "so": "SO570",
+                "vtiger_customer": "Euphoria Skin & Hair"
+              }
+            ],
+            "customers": [
+              "Euphoria Skin & Hair"
+            ]
+          },
+          {
+            "number": "11452938",
+            "date": "2026-09-25",
+            "due": "2026-10-25",
+            "amount": 1009.48,
+            "balance": 1009.48,
+            "days_past_due": -2,
+            "pos": [
+              {
+                "po": "PO896",
+                "so": "SO570",
+                "vtiger_customer": "Euphoria Skin & Hair"
+              }
+            ],
+            "customers": [
+              "Euphoria Skin & Hair"
+            ]
+          },
+          {
+            "number": "11453703",
+            "date": "2026-09-26",
+            "due": "2026-10-26",
+            "amount": 158.5,
+            "balance": 158.5,
+            "days_past_due": -3,
+            "pos": [
+              {
+                "po": "PO889",
+                "so": "SO565",
+                "vtiger_customer": "Georgia Plastic & Recon Surgery"
+              }
+            ],
+            "customers": [
+              "Georgia Plastic & Recon Surgery"
+            ]
+          },
+          {
+            "number": "11453521",
+            "date": "2026-09-26",
+            "due": "2026-10-26",
+            "amount": 1151.42,
+            "balance": 1151.42,
+            "days_past_due": -3,
+            "pos": [
+              {
+                "po": "PO889",
+                "so": "SO565",
+                "vtiger_customer": "Georgia Plastic & Recon Surgery"
+              }
+            ],
+            "customers": [
+              "Georgia Plastic & Recon Surgery"
+            ]
+          },
+          {
+            "number": "11455727",
+            "date": "2026-09-29",
+            "due": "2026-10-29",
+            "amount": 1151.42,
+            "balance": 1151.42,
+            "days_past_due": -6,
+            "pos": [
+              {
+                "po": "PO899",
+                "so": "SO573",
+                "vtiger_customer": "Clinica Medica Dr. Vizcarra"
+              }
+            ],
+            "customers": [
+              "Clinica Medica Dr. Vizcarra"
+            ]
+          },
+          {
+            "number": "11458649",
+            "date": "2026-10-01",
+            "due": "2026-10-31",
+            "amount": 1151.42,
+            "balance": 1151.42,
+            "days_past_due": -8,
+            "pos": [
+              {
+                "po": "PO906",
+                "so": "SO577",
+                "vtiger_customer": "Flourish Wellness"
+              }
+            ],
+            "customers": [
+              "Flourish Wellness"
+            ]
+          },
+          {
+            "number": "11459168",
+            "date": "2026-10-01",
+            "due": "2026-10-31",
+            "amount": 1151.42,
+            "balance": 1151.42,
+            "days_past_due": -8,
+            "pos": [
+              {
+                "po": "PO908",
+                "so": "SO579",
+                "vtiger_customer": "What\u2019s age got to do with it?"
+              }
+            ],
+            "customers": [
+              "What\u2019s age got to do with it?"
+            ]
+          },
+          {
+            "number": "11468050",
+            "date": "2026-10-12",
+            "due": "2026-11-11",
+            "amount": 1151.42,
+            "balance": 1151.42,
+            "days_past_due": -19,
+            "pos": [
+              {
+                "po": "PO940",
+                "so": "SO594",
+                "vtiger_customer": "North Fork Medical PLLC"
+              }
+            ],
+            "customers": [
+              "North Fork Medical PLLC"
+            ]
+          },
+          {
+            "number": "11470722",
+            "date": "2026-10-14",
+            "due": "2026-11-13",
+            "amount": 1151.42,
+            "balance": 1151.42,
+            "days_past_due": -21,
+            "pos": [
+              {
+                "po": "PO945",
+                "so": "SO598",
+                "vtiger_customer": "Resilient Skin Lab"
+              }
+            ],
+            "customers": [
+              "Resilient Skin Lab"
+            ]
+          },
+          {
+            "number": "11478011",
+            "date": "2026-10-21",
+            "due": "2026-11-20",
+            "amount": 1151.42,
+            "balance": 1151.42,
+            "days_past_due": -28,
+            "pos": [
+              {
+                "po": "PO967",
+                "so": "SO610",
+                "vtiger_customer": "Integrative Health and Aesthetics"
+              }
+            ],
+            "customers": [
+              "Integrative Health and Aesthetics"
+            ]
           }
         ]
       },
       {
         "vendor": "PMA Services",
-        "balance": 3624.4,
-        "pastdue": 266.5,
+        "balance": 9810.97,
+        "pastdue": 435.5,
         "bills": [
+          {
+            "number": "INV-001688",
+            "date": "2026-07-08",
+            "due": "2026-07-08",
+            "amount": 169.0,
+            "balance": 169.0,
+            "days_past_due": 107,
+            "pos": [
+              {
+                "po": "PO793",
+                "so": "SO508",
+                "vtiger_customer": "Doctors General Laboratory"
+              }
+            ],
+            "customers": [
+              "Doctors General Laboratory"
+            ]
+          },
           {
             "number": "INV-002042",
             "date": "2026-10-15",
             "due": "2026-10-15",
             "amount": 266.5,
             "balance": 266.5,
-            "days_past_due": 7,
+            "days_past_due": 8,
             "pos": [
               {
                 "po": "PO804",
@@ -6946,7 +7171,7 @@
             "due": "2026-10-25",
             "amount": 272.8,
             "balance": 272.8,
-            "days_past_due": -3,
+            "days_past_due": -2,
             "pos": [
               {
                 "po": "PO947",
@@ -6964,7 +7189,7 @@
             "due": "2026-10-25",
             "amount": 243.0,
             "balance": 243.0,
-            "days_past_due": -3,
+            "days_past_due": -2,
             "pos": [
               {
                 "po": "PO950",
@@ -6982,7 +7207,7 @@
             "due": "2026-10-25",
             "amount": 375.0,
             "balance": 375.0,
-            "days_past_due": -3,
+            "days_past_due": -2,
             "pos": [
               {
                 "po": "PO824",
@@ -7000,7 +7225,7 @@
             "due": "2026-10-25",
             "amount": 455.5,
             "balance": 455.5,
-            "days_past_due": -3,
+            "days_past_due": -2,
             "pos": [
               {
                 "po": "PO921",
@@ -7018,7 +7243,7 @@
             "due": "2026-10-25",
             "amount": 240.5,
             "balance": 240.5,
-            "days_past_due": -3,
+            "days_past_due": -2,
             "pos": [
               {
                 "po": "PO935",
@@ -7034,9 +7259,9 @@
             "number": "INV-002026",
             "date": "2026-10-15",
             "due": "2026-10-25",
-            "amount": 1728.6,
-            "balance": 1728.6,
-            "days_past_due": -3,
+            "amount": 1138.1,
+            "balance": 1138.1,
+            "days_past_due": -2,
             "pos": [
               {
                 "po": "PO887",
@@ -7054,7 +7279,7 @@
             "due": "2026-10-25",
             "amount": 42.5,
             "balance": 42.5,
-            "days_past_due": -3,
+            "days_past_due": -2,
             "pos": [
               {
                 "po": "PO953",
@@ -7064,6 +7289,258 @@
             ],
             "customers": [
               "MEDICAL HEALTH LAB"
+            ]
+          },
+          {
+            "number": "INV-002073",
+            "date": "2026-10-20",
+            "due": "2026-10-30",
+            "amount": 92.0,
+            "balance": 92.0,
+            "days_past_due": -7,
+            "pos": [
+              {
+                "po": "PO903",
+                "so": "SO575",
+                "vtiger_customer": "Prime Diagnostics"
+              }
+            ],
+            "customers": [
+              "Prime Diagnostics"
+            ]
+          },
+          {
+            "number": "INV-002072",
+            "date": "2026-10-20",
+            "due": "2026-10-30",
+            "amount": 228.0,
+            "balance": 228.0,
+            "days_past_due": -7,
+            "pos": [
+              {
+                "po": "PO887",
+                "so": "SO564",
+                "vtiger_customer": "Prominis Medical Services"
+              }
+            ],
+            "customers": [
+              "Prominis Medical Services"
+            ]
+          },
+          {
+            "number": "INV-002071",
+            "date": "2026-10-20",
+            "due": "2026-10-30",
+            "amount": 92.0,
+            "balance": 92.0,
+            "days_past_due": -7,
+            "pos": [
+              {
+                "po": "PO870",
+                "so": "SO553",
+                "vtiger_customer": "LabX Diagnostic Systems"
+              }
+            ],
+            "customers": [
+              "LabX Diagnostic Systems"
+            ]
+          },
+          {
+            "number": "INV-002070",
+            "date": "2026-10-20",
+            "due": "2026-10-30",
+            "amount": 169.0,
+            "balance": 169.0,
+            "days_past_due": -7,
+            "pos": [
+              {
+                "po": "PO822",
+                "so": "SO525",
+                "vtiger_customer": "Mercedes Scientific"
+              }
+            ],
+            "customers": [
+              "Mercedes Scientific"
+            ]
+          },
+          {
+            "number": "INV-002074",
+            "date": "2026-10-20",
+            "due": "2026-10-30",
+            "amount": 80.0,
+            "balance": 80.0,
+            "days_past_due": -7,
+            "pos": [
+              {
+                "po": "PO921",
+                "so": "SO586",
+                "vtiger_customer": "LabX Diagnostic Systems"
+              }
+            ],
+            "customers": [
+              "LabX Diagnostic Systems"
+            ]
+          },
+          {
+            "number": "INV-002075",
+            "date": "2026-10-20",
+            "due": "2026-10-30",
+            "amount": 290.0,
+            "balance": 290.0,
+            "days_past_due": -7,
+            "pos": [
+              {
+                "po": "PO935",
+                "so": "SO591",
+                "vtiger_customer": "CliniCore Labs"
+              }
+            ],
+            "customers": [
+              "CliniCore Labs"
+            ]
+          },
+          {
+            "number": "INV-002076",
+            "date": "2026-10-20",
+            "due": "2026-10-30",
+            "amount": 3048.0,
+            "balance": 3048.0,
+            "days_past_due": -7,
+            "pos": [
+              {
+                "po": "PO948",
+                "so": "SO600",
+                "vtiger_customer": "Mercedes Scientific"
+              }
+            ],
+            "customers": [
+              "Mercedes Scientific"
+            ]
+          },
+          {
+            "number": "INV-002080",
+            "date": "2026-10-20",
+            "due": "2026-10-30",
+            "amount": 46.9,
+            "balance": 46.9,
+            "days_past_due": -7,
+            "pos": [
+              {
+                "po": "PO964",
+                "so": "SO608",
+                "vtiger_customer": "Radiance Diagnostics"
+              }
+            ],
+            "customers": [
+              "Radiance Diagnostics"
+            ]
+          },
+          {
+            "number": "INV-002078",
+            "date": "2026-10-20",
+            "due": "2026-10-30",
+            "amount": 298.0,
+            "balance": 298.0,
+            "days_past_due": -7,
+            "pos": [
+              {
+                "po": "PO957",
+                "so": "SO605",
+                "vtiger_customer": "OM Diagnostic Laboratories"
+              }
+            ],
+            "customers": [
+              "OM Diagnostic Laboratories"
+            ]
+          },
+          {
+            "number": "INV-002079",
+            "date": "2026-10-20",
+            "due": "2026-10-30",
+            "amount": 296.85,
+            "balance": 296.85,
+            "days_past_due": -7,
+            "pos": [
+              {
+                "po": "PO960",
+                "so": "SO606",
+                "vtiger_customer": "Envol Biomedical"
+              }
+            ],
+            "customers": [
+              "Envol Biomedical"
+            ]
+          },
+          {
+            "number": "INV-002087",
+            "date": "2026-10-21",
+            "due": "2026-10-31",
+            "amount": 243.0,
+            "balance": 243.0,
+            "days_past_due": -8,
+            "pos": [
+              {
+                "po": "PO953",
+                "so": "SO603",
+                "vtiger_customer": "MEDICAL HEALTH LAB"
+              }
+            ],
+            "customers": [
+              "MEDICAL HEALTH LAB"
+            ]
+          },
+          {
+            "number": "INV-002088",
+            "date": "2026-10-21",
+            "due": "2026-10-31",
+            "amount": 64.2,
+            "balance": 64.2,
+            "days_past_due": -8,
+            "pos": [
+              {
+                "po": "PO965",
+                "so": "SO609",
+                "vtiger_customer": "Helix Diagnostix"
+              }
+            ],
+            "customers": [
+              "Helix Diagnostix"
+            ]
+          },
+          {
+            "number": "INV-002089",
+            "date": "2026-10-21",
+            "due": "2026-10-31",
+            "amount": 513.0,
+            "balance": 513.0,
+            "days_past_due": -8,
+            "pos": [
+              {
+                "po": "PO968",
+                "so": "SO611",
+                "vtiger_customer": "Prime Diagnostics"
+              }
+            ],
+            "customers": [
+              "Prime Diagnostics"
+            ]
+          },
+          {
+            "number": "INV-002083",
+            "date": "2026-10-21",
+            "due": "2026-10-31",
+            "amount": 1147.12,
+            "balance": 1147.12,
+            "days_past_due": -8,
+            "pos": [
+              {
+                "po": "PO964",
+                "so": "SO608",
+                "vtiger_customer": "Radiance Diagnostics"
+              }
+            ],
+            "customers": [
+              "Radiance Diagnostics"
             ]
           }
         ]
@@ -7079,7 +7556,7 @@
             "due": "2026-06-11",
             "amount": 135.2,
             "balance": 135.2,
-            "days_past_due": 133,
+            "days_past_due": 134,
             "pos": [
               {
                 "po": "PO682",
@@ -7097,7 +7574,7 @@
             "due": "2026-07-29",
             "amount": 82.0,
             "balance": 82.0,
-            "days_past_due": 85,
+            "days_past_due": 86,
             "pos": [
               {
                 "po": "PO708",
@@ -7115,7 +7592,7 @@
             "due": "2026-08-06",
             "amount": 695.0,
             "balance": 695.0,
-            "days_past_due": 77,
+            "days_past_due": 78,
             "pos": [
               {
                 "po": "PO646",
@@ -7133,7 +7610,7 @@
             "due": "2026-09-26",
             "amount": 92.4,
             "balance": 92.4,
-            "days_past_due": 26,
+            "days_past_due": 27,
             "pos": [
               {
                 "po": "PO827",
@@ -7151,7 +7628,7 @@
             "due": "2026-10-01",
             "amount": 61.6,
             "balance": 61.6,
-            "days_past_due": 21,
+            "days_past_due": 22,
             "pos": [],
             "customers": [
               "MEDICAL HEALTH LAB"
@@ -7163,7 +7640,7 @@
             "due": "2026-10-01",
             "amount": 76.6,
             "balance": 76.6,
-            "days_past_due": 21,
+            "days_past_due": 22,
             "pos": [
               {
                 "po": "PO838",
@@ -7181,7 +7658,7 @@
             "due": "2026-10-02",
             "amount": 34.79,
             "balance": 34.79,
-            "days_past_due": 20,
+            "days_past_due": 21,
             "pos": [
               {
                 "po": "PO841",
@@ -7199,7 +7676,7 @@
             "due": "2026-10-10",
             "amount": 137.0,
             "balance": 137.0,
-            "days_past_due": 12,
+            "days_past_due": 13,
             "pos": [
               {
                 "po": "PO859",
@@ -7215,5 +7692,5 @@
       }
     ]
   },
-  "pulled_at": "2026-10-22 09:59 AM PT"
+  "pulled_at": "2026-10-23 10:01 AM PT"
 }
