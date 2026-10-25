@@ -60,7 +60,7 @@ jobs:
           fi
 
       - name: Install poppler (pdftotext for QB invoice PDFs)
-                run: sudo apt-get update && sudo apt-get install -y poppler-utils || true
+      run: sudo apt-get update && sudo apt-get install -y poppler-utils || true
 
       - name: Refresh A/R and A/P data (build_payment_status.py)
         run: |
