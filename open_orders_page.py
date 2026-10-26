@@ -3531,7 +3531,7 @@ function custOutlookDraft(){
 }
 // ── Send via Outlook (Microsoft Graph, always FROM customersupport@jit4you.com) ──
 // Commits outbox/<id>.json then dispatches send-email.yml; PIN is never stored, only sha256(PIN:id) is sent.
-var mailCtx=null, mailPinMem='';
+var mailCtx=null, mailPinMem='', mailOnWorker=/workers[.]dev$/.test(location.hostname);
 function mailSha(t){ var b=new TextEncoder().encode(t); return crypto.subtle.digest('SHA-256',b).then(function(h){ var a=new Uint8Array(h),o=''; for(var i=0;i<a.length;i++){ o+=('0'+a[i].toString(16)).slice(-2); } return o; }); }
 function mailClose(){ var m=document.getElementById('mailSendModal'); if(m) m.parentNode.removeChild(m); }
 function mailOpen(subject,html,label){
@@ -3545,7 +3545,7 @@ function mailOpen(subject,html,label){
     '<div style="display:flex;gap:8px;align-items:center;margin:6px 0;"><b style="font-size:13px;width:60px;">To:</b><input id="mailTo" type="text" placeholder="name@customer.com, other@customer.com" style="'+inp+'"></div>'+
     '<div style="display:flex;gap:8px;align-items:center;margin:6px 0;"><b style="font-size:13px;width:60px;">Cc:</b><input id="mailCc" type="text" placeholder="optional" style="'+inp+'"></div>'+
     '<div style="display:flex;gap:8px;align-items:center;margin:6px 0;"><b style="font-size:13px;width:60px;">Subject:</b><input id="mailSubj" type="text" value="'+escapeHtml(subject||'')+'" style="'+inp+'"></div>'+
-    '<div style="display:flex;gap:8px;align-items:center;margin:6px 0;"><b style="font-size:13px;width:60px;">PIN:</b><input id="mailPin" type="password" value="'+escapeHtml(mailPinMem)+'" placeholder="send passphrase" style="'+inp+'max-width:260px;flex:none;"></div>'+
+    (mailOnWorker?'':'<div style="display:flex;gap:8px;align-items:center;margin:6px 0;"><b style="font-size:13px;width:60px;">PIN:</b><input id="mailPin" type="password" value="'+escapeHtml(mailPinMem)+'" placeholder="send passphrase" style="'+inp+'max-width:260px;flex:none;"></div>')+
     '<iframe id="mailFrame" style="width:100%;height:340px;border:1px solid #e3e7ee;border-radius:6px;margin:8px 0;"></iframe>'+
     '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><button id="mailBtnSend" class="mode-btn" style="margin:0;background:#008080;color:#fff;" onclick="mailGo(&quot;send&quot;)">&#9993; Send now</button>'+
     '<button id="mailBtnDraft" class="mode-btn" style="margin:0;" onclick="mailGo(&quot;draft&quot;)">Save as draft</button>'+
@@ -3556,15 +3556,19 @@ function mailOpen(subject,html,label){
 function mailStatus(t,err){ var e=document.getElementById('mailStatus'); if(e){ e.textContent=t; e.style.color=err?'#c0392b':'#137333'; } }
 function mailGo(mode){
   if(!mailCtx) return;
-  var to=document.getElementById('mailTo').value.trim(), cc=document.getElementById('mailCc').value.trim(), subj=document.getElementById('mailSubj').value.trim(), pin=document.getElementById('mailPin').value;
+  var to=document.getElementById('mailTo').value.trim(), cc=document.getElementById('mailCc').value.trim(), subj=document.getElementById('mailSubj').value.trim(), pin=(document.getElementById('mailPin')||{value:''}).value;
   var re=/^[^ @,;]+@[^ @,;]+[.][^ @,;]+$/, list=(to+','+cc).split(/[,;]+/);
   for(var i=0;i<list.length;i++){ var a=list[i].trim(); if(a&&!re.test(a)){ mailStatus('Not a valid email address: '+a,true); return; } }
   if(mode==='send'&&!to){ mailStatus('Enter at least one To address.',true); return; }
   if(!subj){ mailStatus('Subject is empty.',true); return; }
-  if(!pin){ mailStatus('Enter the send PIN.',true); return; }
-  if(!BTN||!BTN.token){ mailStatus('Not configured on this copy of the page.',true); return; }
+  if(!pin&&!mailOnWorker){ mailStatus('Enter the send PIN.',true); return; }
+  if(!mailOnWorker&&(!BTN||!BTN.token)){ mailStatus('Not configured on this copy of the page.',true); return; }
   if(mode==='send'&&!confirm('Send this email NOW from customersupport@jit4you.com to:'+String.fromCharCode(10)+to+(cc?String.fromCharCode(10)+'Cc: '+cc:'')+String.fromCharCode(10)+String.fromCharCode(10)+'Subject: '+subj)) return;
   mailPinMem=pin;
+  if(mailOnWorker){ var w1=document.getElementById('mailBtnSend'), w2=document.getElementById('mailBtnDraft'); w1.disabled=true; w2.disabled=true; mailStatus(mode==='send'?'Sending...':'Saving draft...');
+    fetch('/api/mail/send',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({mode:mode,to:to,cc:cc,subject:subj,html:mailCtx.html,label:mailCtx.label||''})})
+    .then(function(r){ return r.json().catch(function(){return {};}).then(function(j){ if(!r.ok||j.error) throw new Error(j.error||('HTTP '+r.status)); mailStatus(mode==='send'?'Sent from customersupport@jit4you.com.':'Draft saved in the customersupport Drafts folder.'); }); })
+    .catch(function(e){ mailStatus('Failed: '+e.message,true); }).finally(function(){ w1.disabled=false; w2.disabled=false; }); return; }
   var id=Date.now().toString(36)+Math.random().toString(36).slice(2,8);
   var b1=document.getElementById('mailBtnSend'), b2=document.getElementById('mailBtnDraft'); b1.disabled=true; b2.disabled=true; mailStatus('Submitting...');
   var hdr={'Authorization':'Bearer '+BTN.token,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','Content-Type':'application/json'};
