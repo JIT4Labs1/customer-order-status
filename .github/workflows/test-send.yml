@@ -1,0 +1,23 @@
+name: test-send-draft
+on: workflow_dispatch
+jobs:
+  t:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Draft to CS mailbox only
+        env:
+          OUTBOX_ID: testdraft01
+          MS_TENANT_ID: ${{ secrets.MS_TENANT_ID }}
+          MS_CLIENT_ID: ${{ secrets.MS_CLIENT_ID }}
+          MS_CLIENT_SECRET: ${{ secrets.MS_CLIENT_SECRET }}
+          MS_SEND_PIN: ${{ secrets.MS_SEND_PIN }}
+        run: |
+          mkdir -p outbox
+          python3 - <<'PY'
+          import os,json,hashlib
+          pin=os.environ['MS_SEND_PIN']; assert pin, 'PIN secret empty'
+          i='testdraft01'
+          json.dump({'mode':'draft','to':'','cc':'','subject':'TEST - dashboard email button (draft only, safe to delete)','html':'<p>Test draft created by the dashboard Send-via-Outlook workflow.</p>','label':'test','auth':hashlib.sha256((pin+':'+i).encode()).hexdigest()},open('outbox/%s.json'%i,'w'))
+          PY
+          python send_outlook_mail.py || python3 send_outlook_mail.py
