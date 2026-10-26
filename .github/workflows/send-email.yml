@@ -1,0 +1,45 @@
+name: Send email from CS (Microsoft Graph)
+
+# Triggered by the "Send via Outlook" / "Save as draft" buttons on the dashboard.
+# Always sends FROM customersupport@jit4you.com. Payload = outbox/<id>.json (deleted after the run).
+on:
+  workflow_dispatch:
+    inputs:
+      id:
+        description: 'Outbox id'
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: send-email
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Send
+        env:
+          OUTBOX_ID: ${{ inputs.id }}
+          MS_TENANT_ID: ${{ secrets.MS_TENANT_ID }}
+          MS_CLIENT_ID: ${{ secrets.MS_CLIENT_ID }}
+          MS_CLIENT_SECRET: ${{ secrets.MS_CLIENT_SECRET }}
+          MS_SEND_PIN: ${{ secrets.MS_SEND_PIN }}
+        run: python send_outlook_mail.py
+      - name: Remove outbox file
+        if: always()
+        env:
+          OUTBOX_ID: ${{ inputs.id }}
+        run: |
+          if [ -f "outbox/${OUTBOX_ID}.json" ] && echo "$OUTBOX_ID" | grep -Eq '^[a-z0-9]{6,40}$'; then
+            git config user.name "github-actions"; git config user.email "actions@users.noreply.github.com"
+            git rm -q "outbox/${OUTBOX_ID}.json"
+            git commit -qm "outbox: processed ${OUTBOX_ID}"
+            for i in 1 2 3; do git pull -q --rebase && git push -q && break; sleep 3; done
+          fi
