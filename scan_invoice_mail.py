@@ -12,7 +12,7 @@ MAILBOX = "customersupport@jit4you.com"
 PT = ZoneInfo("America/Los_Angeles")
 G = "https://graph.microsoft.com/v1.0"
 
-def http(url, data=None, headers=None, form=False, tries=4):
+def http(url, data=None, headers=None, form=False, tries=6):
     import time
     for i in range(tries):
         body = None
@@ -23,9 +23,12 @@ def http(url, data=None, headers=None, form=False, tries=4):
             with urllib.request.urlopen(req, timeout=90) as f:
                 return json.loads(f.read().decode() or "{}")
         except urllib.error.HTTPError as e:
-            if e.code in (429, 503, 504) and i < tries - 1:
+            if e.code in (429, 500, 502, 503, 504) and i < tries - 1:
                 time.sleep(int(e.headers.get("Retry-After", 5 * (i + 1)))); continue
             raise SystemExit("Graph HTTP %s %s" % (e.code, e.read()[:200]))
+        except (urllib.error.URLError, TimeoutError, ConnectionError) as e:
+            if i < tries - 1: time.sleep(5 * (i + 1)); continue
+            raise SystemExit("Graph network error: %s" % e)
 
 def token():
     r = http("https://login.microsoftonline.com/%s/oauth2/v2.0/token" % os.environ["MS_TENANT_ID"],
