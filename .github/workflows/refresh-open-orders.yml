@@ -12,6 +12,10 @@ on:
         description: 'Full rebuild (ignore the saved Vtiger record store). Default: incremental.'
         required: false
         default: 'false'
+      label:
+        description: 'Scheduled time label shown on the page, e.g. 11:00 AM'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -48,6 +52,8 @@ jobs:
           # The button token is embedded into the rebuilt page so the button keeps
           # working after each refresh. Stored as an encrypted secret.
           GH_BUTTON_TOKEN: ${{ secrets.GH_BUTTON_TOKEN }}
+          RUN_MODE: ${{ inputs.full == 'true' && 'Full' || 'Incremental' }}
+          RUN_LABEL: ${{ inputs.label }}
         run: |
           set +e
           # Guarantee a COMPLETELY FRESH pull every refresh: remove any cache so
