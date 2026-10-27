@@ -4306,15 +4306,419 @@
         "entered": false,
         "checked": "2026-10-23T18:16:05Z"
       }
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr2E7UVAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002125 from PMA Services -Next Day Reagents",
+      "received": "2026-10-27T17:44:23Z",
+      "filename": "INV-002125.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "PO976",
+      "lines": [
+        {
+          "sku": "OSR6132-BK",
+          "desc": "Total Protein Reagent, 4 x 25mL, 4 x 25mL",
+          "qty": 1,
+          "rate": 77,
+          "po_unit": 75.0,
+          "delta": 2.0,
+          "status": "over"
+        },
+        {
+          "sku": "OSR6178-BK",
+          "desc": "Creatinine Reagent Test 4x990",
+          "qty": 1,
+          "rate": 85,
+          "po_unit": 78.14,
+          "delta": 6.86,
+          "status": "over"
+        },
+        {
+          "sku": "OSR6137-BK",
+          "desc": "Bicarbonate Reagent, 4 x 25 mL",
+          "qty": 1,
+          "rate": 215,
+          "po_unit": 180.0,
+          "delta": 35.0,
+          "status": "over"
+        },
+        {
+          "sku": "OSR6134-BK",
+          "desc": "BUN: Blood Urea Nitrogen Reagent Test",
+          "qty": 1,
+          "rate": 85,
+          "po_unit": 85.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO976",
+      "po_status": "Partially received",
+      "po_missing": [
+        "S66039"
+      ],
+      "summary": {
+        "ok": 1,
+        "bad": 3,
+        "miss": 0
+      },
+      "verdict": "discrepancy",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr2E7UVAAA=|INV-002125.pdf",
+      "found_at": "2026-10-27T18:47:49Z",
+      "scan_id": "req-20261027185000",
+      "file": "invoices/INV-002125_7UVAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr2E7UXAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002119 from PMA Services -Next Day Reagents  SO1399 PO 973 LAB X",
+      "received": "2026-10-27T17:51:47Z",
+      "filename": "INV-002119.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "SO1399--PO973",
+      "lines": [
+        {
+          "sku": "B24838-BK",
+          "desc": "Total Vitamin D 2x50 Tests Ea",
+          "qty": 1,
+          "rate": 228,
+          "po_unit": 228.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "33560-BK",
+          "desc": "Testosterone Reagent 100 Count Tests Ea",
+          "qty": 3,
+          "rate": 62.25,
+          "po_unit": 62.25,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "A98032-BK",
+          "desc": "Folate Reagent For Serum/Plasma (Heparin) 2x50 Count 2x50/Ea",
+          "qty": 2,
+          "rate": 70,
+          "po_unit": 70.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "33565-BK",
+          "desc": "Testosterone Calibrator Set 6x2.5mL",
+          "qty": 1,
+          "rate": 33,
+          "po_unit": 33.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "ODC0027-BK",
+          "desc": "CRP High-Sensitivity Calibrator Set",
+          "qty": 1,
+          "rate": 165,
+          "po_unit": 165.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "B63285-BK",
+          "desc": "TSH (3rd IS) Calibrator Set S0-S5",
+          "qty": 1,
+          "rate": 52,
+          "po_unit": 52.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "A18227-BK",
+          "desc": "Anti Thyroid Peroxidase (Anti TPO) Calibrator Set",
+          "qty": 1,
+          "rate": 111.6,
+          "po_unit": 111.6,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR60117-BK",
+          "desc": "Calcium (Arsenazo III) Reagent Test 4x15mLx2",
+          "qty": 1,
+          "rate": 130,
+          "po_unit": 130.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "B38859-BK",
+          "desc": "Urine/CSF Albumin Calibrator 2mL",
+          "qty": 1,
+          "rate": 113,
+          "po_unit": 113.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO973",
+      "po_status": "Partially received",
+      "po_missing": [
+        "33885",
+        "A48619",
+        "A98033"
+      ],
+      "summary": {
+        "ok": 9,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr2E7UXAAA=|INV-002119.pdf",
+      "found_at": "2026-10-27T18:47:49Z",
+      "scan_id": "req-20261027185000",
+      "file": "invoices/INV-002119_7UXAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr2E7SnAAA=",
+      "source": "quickbooks",
+      "sender": "quickbooks@notification.intuit.com",
+      "subject": "New payment request from Allora Biotech LLC - invoice 1774",
+      "received": "2026-10-26T16:32:23Z",
+      "filename": "Invoice_1774_from_Allora_Biotech_LLC.pdf",
+      "vendor": "Allora Biotech LLC",
+      "po_raw": "972",
+      "lines": [
+        {
+          "sku": "33000",
+          "desc": "Vitamin B12 reagent, 2 x 50 DET -",
+          "qty": 2,
+          "rate": 75,
+          "po_unit": 75.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "33510",
+          "desc": "hLH reagent, 2 x 50 DET - Beckman",
+          "qty": 2,
+          "rate": 55,
+          "po_unit": 55.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "33600",
+          "desc": "Cortisol reagent, 2 x 50 DET - Beckman",
+          "qty": 2,
+          "rate": 75,
+          "po_unit": 75.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "81906",
+          "desc": "Substrate, 4 x 130 mL - Beckman",
+          "qty": 2,
+          "rate": 55,
+          "po_unit": 55.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "A16792",
+          "desc": "Wash buffer II, 4 x 1950 mL - Beckman",
+          "qty": 4,
+          "rate": 27,
+          "po_unit": 27.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "C76421",
+          "desc": "Free T4 reagent, 2 x 50 DET - Beckman",
+          "qty": 3,
+          "rate": 45,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        },
+        {
+          "sku": "OSR6107",
+          "desc": "ALT - ALT with P5P reagent, R1 4 x 50",
+          "qty": 1,
+          "rate": 102,
+          "po_unit": 102.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6116",
+          "desc": "Cholesterol reagent, R1 4 x 22.5 mL -",
+          "qty": 1,
+          "rate": 130,
+          "po_unit": 130.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6121",
+          "desc": "Glucose reagent, R1 4 x 25 mL, R2 4 x",
+          "qty": 1,
+          "rate": 85,
+          "po_unit": 85.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6122",
+          "desc": "Inorganic Phosphorus reagent, R1 4 x",
+          "qty": 1,
+          "rate": 70,
+          "po_unit": 70.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6134",
+          "desc": "Urea / BUN reagent, R1 4 x 25 mL, R2",
+          "qty": 1,
+          "rate": 85,
+          "po_unit": 85.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6189",
+          "desc": "Magnesium reagent, R1 4 x 40 mL -",
+          "qty": 2,
+          "rate": 75,
+          "po_unit": 75.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO972",
+      "po_status": "Partially received",
+      "po_missing": [
+        "OSR6143",
+        "33880"
+      ],
+      "summary": {
+        "ok": 11,
+        "bad": 0,
+        "miss": 1
+      },
+      "verdict": "partial",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr2E7SnAAA=|Invoice_1774_from_Allora_Biotech_LLC.pdf",
+      "found_at": "2026-10-27T18:47:49Z",
+      "scan_id": "req-20261027185000",
+      "file": "invoices/Invoice_1774_from_Allora_Biotech_LLC_7SnAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr2E7SpAAA=",
+      "source": "quickbooks",
+      "sender": "quickbooks@notification.intuit.com",
+      "subject": "New payment request from Allora Biotech LLC - invoice 1775",
+      "received": "2026-10-26T16:33:52Z",
+      "filename": "Invoice_1775_from_Allora_Biotech_LLC.pdf",
+      "vendor": "Allora Biotech LLC",
+      "po_raw": "974",
+      "lines": [
+        {
+          "sku": "33830",
+          "desc": "Total T3 reagent, 2 x 50 DET - Beckman",
+          "qty": 10,
+          "rate": 55,
+          "po_unit": 55.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO974",
+      "po_status": "Received Shipment",
+      "po_missing": [],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr2E7SpAAA=|Invoice_1775_from_Allora_Biotech_LLC.pdf",
+      "found_at": "2026-10-27T18:47:49Z",
+      "scan_id": "req-20261027185000",
+      "file": "invoices/Invoice_1775_from_Allora_Biotech_LLC_7SpAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr2E7SsAAA=",
+      "source": "quickbooks",
+      "sender": "quickbooks@notification.intuit.com",
+      "subject": "New payment request from Allora Biotech LLC - invoice 1776",
+      "received": "2026-10-26T16:42:05Z",
+      "filename": "Invoice_1776_from_Allora_Biotech_LLC.pdf",
+      "vendor": "Allora Biotech LLC",
+      "po_raw": "975",
+      "lines": [
+        {
+          "sku": "33020",
+          "desc": "Ferritin reagent, 2 x 50 DET - Beckman",
+          "qty": 4,
+          "rate": 65,
+          "po_unit": 65.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "33830",
+          "desc": "Total T3 reagent, 2 x 50 DET - Beckman",
+          "qty": 4,
+          "rate": 60,
+          "po_unit": 60.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "81906",
+          "desc": "Substrate, 4 x 130 mL - Beckman",
+          "qty": 2,
+          "rate": 55,
+          "po_unit": 55.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "A16972",
+          "desc": "Parathormon (intact PTH) reagent, 2 x",
+          "qty": 4,
+          "rate": 99,
+          "po_unit": 99.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO975",
+      "po_status": "Received Shipment",
+      "po_missing": [],
+      "summary": {
+        "ok": 4,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr2E7SsAAA=|Invoice_1776_from_Allora_Biotech_LLC.pdf",
+      "found_at": "2026-10-27T18:47:49Z",
+      "scan_id": "req-20261027185000",
+      "file": "invoices/Invoice_1776_from_Allora_Biotech_LLC_7SsAAA.pdf"
     }
   ],
   "last_scan": {
-    "id": "req-20261023180729",
-    "at": "2026-10-23T18:15:33Z",
+    "id": "req-20261027185000",
+    "at": "2026-10-27T18:47:49Z",
     "window": "week",
-    "since": "2026-10-16T11:11:00-07:00",
-    "scanned": 21,
-    "added": 3
+    "since": "2026-10-20T11:47:41.013613-07:00",
+    "scanned": 28,
+    "added": 5
   },
   "pulled_at": "2026-10-23 11:16 AM PT"
 }
