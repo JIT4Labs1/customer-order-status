@@ -70,7 +70,7 @@ def main():
     if os.environ.get("PROBE"): os.makedirs("_probe", exist_ok=True)
     for src, sender in senders:
         flt = "from/emailAddress/address eq '%s' and receivedDateTime ge %s and hasAttachments eq true" % (sender, since.astimezone(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
-        url = "%s/users/%s/messages?$filter=%s&$select=id,subject,receivedDateTime,from&$top=50&$orderby=receivedDateTime desc" % (G, MAILBOX, urllib.parse.quote(flt))
+        url = "%s/users/%s/messages?" % (G, MAILBOX) + urllib.parse.urlencode({"$filter": flt, "$select": "id,subject,receivedDateTime,from", "$top": "50"}, quote_via=urllib.parse.quote)
         while url:
             d = http(url, headers=H)
             for m in d.get("value", []):
