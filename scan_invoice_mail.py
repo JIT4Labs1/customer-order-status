@@ -58,7 +58,7 @@ def num(x):
     v = money(x)
     return int(v) if v is not None and v == int(v) else v
 
-ZROW = re.compile(r"^\s*(\d+)\s+(.+?)\s{2,}([\d,]+\.\d+)\s+([\d,]+\.\d+)(?:\s+[\d,]+\.\d+)?\s+([\d,]+\.\d+)\s*$")
+ZROW = re.compile(r"^\s*(\d+)\s+(.+?)\s{2,}([\d,]+\.\d+)\s+([\d,]+\.\d+)(?:\s+([\d,]+\.\d+%?))?\s+([\d,]+\.\d+)\s*$")
 def parse_zoho(text):
     m = re.search(r"P\.O\.#\s*:\s*(\S[^\n]*?)\s*(?:\n|$)", text)
     po = m.group(1).strip() if m else ""
@@ -66,7 +66,10 @@ def parse_zoho(text):
     for ln in text.splitlines():
         r = ZROW.match(ln)
         if r:
-            cur = {"sku": "", "desc": r.group(2).strip(), "qty": num(r.group(3)), "rate": num(r.group(4))}
+            qty, rate, disc, amt = money(r.group(3)), money(r.group(4)), r.group(5), money(r.group(6))
+            if disc and money(disc.rstrip("%")) and qty:   # discounted line: the unit price actually billed is amount / qty
+                rate = round(amt / qty, 2)
+            cur = {"sku": "", "desc": r.group(2).strip(), "qty": num(r.group(3)), "rate": num(rate)}
             lines.append(cur); continue
         s = re.match(r"^\s*SKU\s*:\s*(\S+)", ln)
         if s and cur is not None and not cur["sku"]:
