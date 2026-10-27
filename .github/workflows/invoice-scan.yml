@@ -1,0 +1,85 @@
+name: Invoice Check Scan
+
+# Triggered by the Search button on the Invoice Check tab (workflow_dispatch).
+# Reads the customersupport mailbox through Microsoft Graph, extracts vendor invoice PDFs, compares against Vtiger POs
+# and QuickBooks bills (invoice_bulk.py) and commits invoice-bulk-data.json + generated PDF copies.
+
+on:
+  workflow_dispatch:
+    inputs:
+      window:
+        description: 'week | 2weeks | month | <N>d'
+        required: false
+        default: 'week'
+      request_id:
+        description: 'Request id from the page (shown as scan id)'
+        required: false
+        default: ''
+      probe:
+        description: 'Development only: dump raw PDF text as a private artifact, change nothing'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: invoice-scan
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install tools
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+          pip install -q requests reportlab
+      - name: Scan mailbox
+        env:
+          MS_TENANT_ID: ${{ secrets.MS_TENANT_ID }}
+          MS_CLIENT_ID: ${{ secrets.MS_CLIENT_ID }}
+          MS_CLIENT_SECRET: ${{ secrets.MS_CLIENT_SECRET }}
+          REQ_ID: ${{ inputs.request_id }}
+          REQ_WINDOW: ${{ inputs.window }}
+          PROBE: ${{ inputs.probe == 'true' && '1' || '' }}
+        run: python scan_invoice_mail.py
+      - name: Upload probe text (private artifact, 1 day)
+        if: ${{ inputs.probe == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: probe
+          path: _probe
+          retention-days: 1
+      - name: Compare with Vtiger POs + QuickBooks, build PDF copies
+        if: ${{ inputs.probe != 'true' }}
+        env:
+          VTIGER_USER: ${{ secrets.VTIGER_USER }}
+          VTIGER_ACCESS_KEY: ${{ secrets.VTIGER_ACCESS_KEY }}
+          REQ_ID: ${{ inputs.request_id }}
+          REQ_WINDOW: ${{ inputs.window }}
+        run: |
+          python invoice_bulk.py _invbulk_incoming.json
+          python - <<'PY'
+          import json, os, datetime
+          rid = os.environ.get("REQ_ID") or ""
+          if rid:
+              json.dump({"id": rid, "window": os.environ.get("REQ_WINDOW", "week"), "status": "done",
+                         "done_at": datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z"},
+                        open("invoice-bulk-request.json", "w"))
+          PY
+      - name: Commit results
+        if: ${{ inputs.probe != 'true' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add invoice-bulk-data.json invoice-bulk-request.json invoices
+          if git diff --cached --quiet; then echo "No changes"; else
+            git commit -m "Invoice check scan ${{ inputs.request_id }}"
+            for a in 1 2 3 4; do git pull --rebase origin main && git push && break; sleep 5; done
+          fi
