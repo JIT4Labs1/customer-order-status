@@ -140,6 +140,7 @@ class VtigerAPI:
         self.retrieve_cache = {}
         self.query_cache = {}
         self.query_cache_at = 0.0   # epoch when the bulk-query cache was written
+        self.full_at = time.time()  # epoch of the last FULL rebuild of the persistent store (incremental mode)
         self._uncached_fetches = 0
         self.fetch_failures = 0  # count of retrieves that failed this run (e.g. 429)
         if cache_path and os.path.exists(cache_path):
@@ -148,6 +149,8 @@ class VtigerAPI:
                     blob = json.load(f)
                 self.retrieve_cache = blob.get("retrieve", {})
                 self.query_cache = blob.get("query", {})
+                if os.environ.get("RETRIEVE_STORE"):
+                    self.full_at = float(blob.get("full_at", 0) or 0)
                 self.query_cache_at = float(blob.get("query_at", 0) or 0)
                 log(f"  Loaded cache: {len(self.retrieve_cache)} records, "
                     f"{len(self.query_cache)} queries")
@@ -181,10 +184,45 @@ class VtigerAPI:
             with open(tmp, "w") as f:
                 json.dump({"retrieve": self.retrieve_cache,
                            "query": self.query_cache,
-                           "query_at": self.query_cache_at}, f)
+                           "query_at": self.query_cache_at,
+                           "full_at": self.full_at}, f)
             os.replace(tmp, self.cache_path)
         except Exception as e:
             log(f"  Warning: could not save cache ({e})")
+
+    def validate_store(self):
+        """INCREMENTAL MODE (only when RETRIEVE_STORE is set, i.e. the GitHub refresh).
+        The cache file persists between runs. Before anything is fetched, keep a cached SO / PO / Delivery Note
+        record ONLY if its Vtiger modifiedtime still equals the live one (Vtiger bumps an SO's modifiedtime when a
+        delivery note is added or edited; POs/DNs carry their own). Changed, new or deleted records are dropped so
+        the normal fetch loop re-reads just those. A store older than RETRIEVE_STORE_MAX_AGE_H (default 30h) is
+        discarded entirely, which forces a full rebuild - the daily midnight run keeps it fresh."""
+        if not os.environ.get("RETRIEVE_STORE"):
+            return
+        max_age = float(os.environ.get("RETRIEVE_STORE_MAX_AGE_H", "30")) * 3600
+        if self.retrieve_cache and time.time() - self.full_at > max_age:
+            log(f"  Incremental store is {(time.time()-self.full_at)/3600:.0f}h old (> {max_age/3600:.0f}h) - discarding, full rebuild")
+            self.retrieve_cache = {}
+            self.full_at = time.time()
+        if not self.retrieve_cache:
+            log("  Incremental store empty - this is a FULL rebuild")
+            return
+        idx = {}
+        for mod in ("SalesOrder", "PurchaseOrder", "DeliveryNotes"):
+            for r in self.query_all(f"SELECT id, modifiedtime FROM {mod}"):
+                idx[r["id"]] = r.get("modifiedtime", "")
+        keep, changed, gone = {}, 0, 0
+        for rid, rec in self.retrieve_cache.items():
+            cur = idx.get(rid)
+            if cur is None:
+                gone += 1
+            elif isinstance(rec, dict) and rec.get("modifiedtime") == cur:
+                keep[rid] = rec
+            else:
+                changed += 1
+        log(f"  Incremental store: {len(keep)} unchanged records reused, {changed} changed (re-fetch), {gone} deleted/unknown (dropped)")
+        self.retrieve_cache = keep
+        self.save_cache()
 
     def login(self):
         """Verify REST API connectivity (no challenge/login needed for Basic Auth)."""
@@ -681,6 +719,7 @@ def extract_open_orders(vt, dry_run=False):
         if not isinstance(line_items, list):
             continue
 
+        _so_start, _so_total = len(open_items), 0   # total product lines on the original SO
         for li in line_items:
             pid = li.get("productid", "")
             if not pid:
@@ -712,6 +751,7 @@ def extract_open_orders(vt, dry_run=False):
             ordered_qty = float(li.get("quantity", li.get("qty", 0)))
             delivered_qty = delivered_map.get(so_num, {}).get(pid, 0)
             open_qty = ordered_qty - delivered_qty
+            _so_total += 1
 
             if open_qty <= 0:
                 continue
@@ -743,6 +783,8 @@ def extract_open_orders(vt, dry_run=False):
                 "pending_pos": pending_pos,
                 "eta": eta,
             })
+        for _it in open_items[_so_start:]:
+            _it["so_total_lines"] = _so_total
 
     # Sort by date ascending
     open_items.sort(key=lambda r: r["order_date"])
