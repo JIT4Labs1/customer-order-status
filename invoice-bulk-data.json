@@ -4710,15 +4710,800 @@
       "found_at": "2026-10-27T18:47:49Z",
       "scan_id": "req-20261027185000",
       "file": "invoices/Invoice_1776_from_Allora_Biotech_LLC_7SsAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGraFAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002087 from PMA Services -Next Day Reagents",
+      "received": "2026-10-22T15:24:07Z",
+      "filename": "INV-002087.pdf",
+      "vendor": "PMA Services - Next Day Reagents",
+      "po_raw": "SO1356--PO953",
+      "lines": [
+        {
+          "sku": "B24838-BK",
+          "desc": "Total Vitamin D 2x50 Tests",
+          "qty": 1,
+          "rate": 228.0,
+          "po_unit": 228.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "SHIP",
+          "desc": "Shipping & Handling Fee",
+          "qty": 1,
+          "rate": 15.0,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO953",
+      "po_status": "Received Shipment",
+      "po_missing": [
+        "81901"
+      ],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 1
+      },
+      "verdict": "partial",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGraFAAA=|INV-002087.pdf",
+      "found_at": "2026-10-27T22:15:31Z",
+      "scan_id": "req-20261027215803",
+      "file": "invoices/INV-002087_raFAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGraEAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002088 from PMA Services -Next Day Reagents    SO1380--PO965",
+      "received": "2026-10-22T15:23:01Z",
+      "filename": "INV-002088.pdf",
+      "vendor": "PMA Services - Next Day Reagents",
+      "po_raw": "SO1380--PO965",
+      "lines": [
+        {
+          "sku": "A13430-BK",
+          "desc": "fT3 Calibrator 2.5mL 6/Kt",
+          "qty": 1,
+          "rate": 49.2,
+          "po_unit": 49.2,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "SHIP",
+          "desc": "Shipping & Handling Fee",
+          "qty": 1,
+          "rate": 15.0,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO965",
+      "po_status": "Partially received",
+      "po_missing": [
+        "33805",
+        "33885"
+      ],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 1
+      },
+      "verdict": "partial",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGraEAAA=|INV-002088.pdf",
+      "found_at": "2026-10-27T22:15:31Z",
+      "scan_id": "req-20261027215803",
+      "file": "invoices/INV-002088_raEAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGraDAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002089 from PMA Services -Next Day Reagents  SO1381--PO968",
+      "received": "2026-10-22T15:22:20Z",
+      "filename": "INV-002089.pdf",
+      "vendor": "PMA Services - Next Day Reagents",
+      "po_raw": "SO1381--PO968",
+      "lines": [
+        {
+          "sku": "OSR6132-BK",
+          "desc": "Total Protein Reagent 4x25mL",
+          "qty": 1,
+          "rate": 77.0,
+          "po_unit": 77.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "66039-BK",
+          "desc": "ISE Cleaning Solution 6x450mL",
+          "qty": 1,
+          "rate": 36.0,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        },
+        {
+          "sku": "OSR6178-BK",
+          "desc": "Creatinine Reagent Test 4x990",
+          "qty": 1,
+          "rate": 85.0,
+          "po_unit": 85.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6137-BK",
+          "desc": "Bicarbonate Reagent 4x25mL",
+          "qty": 1,
+          "rate": 215.0,
+          "po_unit": 215.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6134-BK",
+          "desc": "BUN Reagent Test",
+          "qty": 1,
+          "rate": 85.0,
+          "po_unit": 85.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "SHIP",
+          "desc": "Shipping & Handling Fee",
+          "qty": 1,
+          "rate": 15.0,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO968",
+      "po_status": "Received Shipment",
+      "po_missing": [
+        "S66039"
+      ],
+      "summary": {
+        "ok": 4,
+        "bad": 0,
+        "miss": 2
+      },
+      "verdict": "partial",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGraDAAA=|INV-002089.pdf",
+      "found_at": "2026-10-27T22:15:31Z",
+      "scan_id": "req-20261027215803",
+      "file": "invoices/INV-002089_raDAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGrY3AAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002074 from PMA Services -Next Day Reagents",
+      "received": "2026-10-21T15:57:00Z",
+      "filename": "INV-002074.pdf",
+      "vendor": "PMA Services - Next Day Reagents",
+      "po_raw": "SO1300--PO921",
+      "lines": [
+        {
+          "sku": "OSR6102-BK",
+          "desc": "ALB Albumin Reagent Test 4x29mL",
+          "qty": 1,
+          "rate": 65.0,
+          "po_unit": 65.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "SHIP",
+          "desc": "Shipping & Handling Fee",
+          "qty": 1,
+          "rate": 15.0,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO921",
+      "po_status": "Received Shipment",
+      "po_missing": [
+        "B84493",
+        "A13422",
+        "33020",
+        "ODC0023",
+        "33550",
+        "ODC0026",
+        "OSR6137",
+        "B24838",
+        "81901",
+        "33560",
+        "B63284",
+        "A48617"
+      ],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 1
+      },
+      "verdict": "partial",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGrY3AAA=|INV-002074.pdf",
+      "found_at": "2026-10-27T22:15:31Z",
+      "scan_id": "req-20261027215803",
+      "file": "invoices/INV-002074_rY3AAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGrY1AAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002070 from PMA Services -Next Day Reagents",
+      "received": "2026-10-21T15:48:45Z",
+      "filename": "INV-002070.pdf",
+      "vendor": "PMA Services - Next Day Reagents",
+      "po_raw": "SO1047--PO822",
+      "lines": [
+        {
+          "sku": "OSR6132-BK",
+          "desc": "Total Protein Reagent 4x25mL",
+          "qty": 2,
+          "rate": 77.0,
+          "po_unit": 77.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "SHIP",
+          "desc": "Shipping & Handling Fee",
+          "qty": 1,
+          "rate": 15.0,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO822",
+      "po_status": "Received Shipment",
+      "po_missing": [
+        "33560",
+        "81906",
+        "B00389",
+        "37215"
+      ],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 1
+      },
+      "verdict": "partial",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGrY1AAA=|INV-002070.pdf",
+      "found_at": "2026-10-27T22:15:31Z",
+      "scan_id": "req-20261027215803",
+      "file": "invoices/INV-002070_rY1AAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGrY0AAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002071 from PMA Services -Next Day Reagents",
+      "received": "2026-10-21T15:47:57Z",
+      "filename": "INV-002071.pdf",
+      "vendor": "PMA Services - Next Day Reagents",
+      "po_raw": "SO1099--PO870",
+      "lines": [
+        {
+          "sku": "OSR6132-BK",
+          "desc": "Total Protein Reagent 4x25mL",
+          "qty": 1,
+          "rate": 77.0,
+          "po_unit": 77.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "SHIP",
+          "desc": "Shipping & Handling Fee",
+          "qty": 1,
+          "rate": 15.0,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO870",
+      "po_status": "Partially received",
+      "po_missing": [
+        "33510",
+        "A10826",
+        "81906",
+        "B24838",
+        "OSR6004",
+        "OSR6178"
+      ],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 1
+      },
+      "verdict": "partial",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGrY0AAA=|INV-002071.pdf",
+      "found_at": "2026-10-27T22:15:31Z",
+      "scan_id": "req-20261027215803",
+      "file": "invoices/INV-002071_rY0AAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGrYzAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002072 from PMA Services -Next Day Reagents",
+      "received": "2026-10-21T15:46:56Z",
+      "filename": "INV-002072.pdf",
+      "vendor": "PMA Services - Next Day Reagents",
+      "po_raw": "SO1260--PO887",
+      "lines": [
+        {
+          "sku": "OSR6132-BK",
+          "desc": "Total Protein Reagent 4x25mL",
+          "qty": 1,
+          "rate": 77.0,
+          "po_unit": 77.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6006-BK",
+          "desc": "AMY Amylase Reagent",
+          "qty": 2,
+          "rate": 68.0,
+          "po_unit": 68.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "SHIP",
+          "desc": "Shipping & Handling Fee",
+          "qty": 1,
+          "rate": 15.0,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO887",
+      "po_status": "Partially received",
+      "po_missing": [
+        "A16364",
+        "OSR6121",
+        "33565",
+        "OSR0001",
+        "81901",
+        "OSR60118",
+        "33025",
+        "B00389",
+        "OSR6295",
+        "OSR6189",
+        "OSR6122",
+        "OSR6137",
+        "OSR6178",
+        "B24838",
+        "A16792"
+      ],
+      "summary": {
+        "ok": 2,
+        "bad": 0,
+        "miss": 1
+      },
+      "verdict": "partial",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGrYzAAA=|INV-002072.pdf",
+      "found_at": "2026-10-27T22:15:31Z",
+      "scan_id": "req-20261027215803",
+      "file": "invoices/INV-002072_rYzAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGrYyAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002073 from PMA Services -Next Day Reagents",
+      "received": "2026-10-21T15:46:04Z",
+      "filename": "INV-002073.pdf",
+      "vendor": "PMA Services - Next Day Reagents",
+      "po_raw": "SO1281--PO903",
+      "lines": [
+        {
+          "sku": "OSR6132-BK",
+          "desc": "Total Protein Reagent 4x25mL",
+          "qty": 1,
+          "rate": 77.0,
+          "po_unit": 77.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "SHIP",
+          "desc": "Shipping & Handling Fee",
+          "qty": 1,
+          "rate": 15.0,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO903",
+      "po_status": "Received Shipment",
+      "po_missing": [
+        "OSR6102"
+      ],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 1
+      },
+      "verdict": "partial",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGrYyAAA=|INV-002073.pdf",
+      "found_at": "2026-10-27T22:15:31Z",
+      "scan_id": "req-20261027215803",
+      "file": "invoices/INV-002073_rYyAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGrYxAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002075 from PMA Services -Next Day Reagents",
+      "received": "2026-10-21T15:39:48Z",
+      "filename": "INV-002075.pdf",
+      "vendor": "PMA Services - Next Day Reagents",
+      "po_raw": "SO1319--PO935",
+      "lines": [
+        {
+          "sku": "33800-BK",
+          "desc": "Total T4 Reagent 2x50 Tests",
+          "qty": 5,
+          "rate": 55.0,
+          "po_unit": 55.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "SHIP",
+          "desc": "Shipping & Handling Fee",
+          "qty": 1,
+          "rate": 15.0,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO935",
+      "po_status": "Received Shipment",
+      "po_missing": [
+        "A48617",
+        "33530",
+        "33410",
+        "33880",
+        "ODC0026"
+      ],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 1
+      },
+      "verdict": "partial",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGrYxAAA=|INV-002075.pdf",
+      "found_at": "2026-10-27T22:15:31Z",
+      "scan_id": "req-20261027215803",
+      "file": "invoices/INV-002075_rYxAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGrYwAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002076 from PMA Services -Next Day Reagents",
+      "received": "2026-10-21T15:38:48Z",
+      "filename": "INV-002076.pdf",
+      "vendor": "PMA Services - Next Day Reagents",
+      "po_raw": "SO1349--PO948",
+      "lines": [
+        {
+          "sku": "OSR6112-BK",
+          "desc": "Total Bilirubin Reagent",
+          "qty": 4,
+          "rate": 88.0,
+          "po_unit": 85.0,
+          "delta": 3.0,
+          "status": "over"
+        },
+        {
+          "sku": "33560-BK",
+          "desc": "Testosterone Reagent 100 Count Tests",
+          "qty": 40,
+          "rate": 62.25,
+          "po_unit": 62.0,
+          "delta": 0.25,
+          "status": "over"
+        },
+        {
+          "sku": "OSR6179-BK",
+          "desc": "Creatine-Kinase NAC Reagent",
+          "qty": 1,
+          "rate": 191.0,
+          "po_unit": 183.42,
+          "delta": 7.58,
+          "status": "over"
+        },
+        {
+          "sku": "SHIP",
+          "desc": "Shipping & Handling Fee",
+          "qty": 1,
+          "rate": 15.0,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO948",
+      "po_status": "Received Shipment",
+      "po_missing": [
+        "B24838",
+        "OSR6122",
+        "OSR6221",
+        "33880",
+        "A85264"
+      ],
+      "summary": {
+        "ok": 0,
+        "bad": 3,
+        "miss": 1
+      },
+      "verdict": "discrepancy",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGrYwAAA=|INV-002076.pdf",
+      "found_at": "2026-10-27T22:15:31Z",
+      "scan_id": "req-20261027215803",
+      "file": "invoices/INV-002076_rYwAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEKAABxZ4eWnyvhQrKWUlMQh-jmArxG7axAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002083 from PMA Services -Next Day Reagents",
+      "received": "2026-10-21T13:44:04Z",
+      "filename": "INV-002083.pdf",
+      "vendor": "PMA Services - Next Day Reagents",
+      "po_raw": "PO964",
+      "lines": [
+        {
+          "sku": "A98032-BK",
+          "desc": "Folate Reagent 2x50",
+          "qty": 10,
+          "rate": 70.0,
+          "po_unit": 70.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "33025-BK",
+          "desc": "Ferritin Calibrator Set 6x4mL",
+          "qty": 1,
+          "rate": 34.58,
+          "po_unit": 34.58,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "33605-BK",
+          "desc": "Cortisol Calibrator Set 6x4mL",
+          "qty": 1,
+          "rate": 178.8,
+          "po_unit": 30.6,
+          "delta": 148.2,
+          "status": "over"
+        },
+        {
+          "sku": "33805-BK",
+          "desc": "Total T4 Calibrator 6x4mL (net of 40% disc; list 54.57)",
+          "qty": 1,
+          "rate": 32.74,
+          "po_unit": 54.57,
+          "delta": -21.83,
+          "status": "under"
+        },
+        {
+          "sku": "33525-BK",
+          "desc": "hFSH Calibrator 6x4mL",
+          "qty": 1,
+          "rate": 186.0,
+          "po_unit": 21.8,
+          "delta": 164.2,
+          "status": "over"
+        },
+        {
+          "sku": "SHIP",
+          "desc": "Shipping & Handling Fee",
+          "qty": 1,
+          "rate": 15.0,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO964",
+      "po_status": "Partially received",
+      "po_missing": [
+        "B24839",
+        "81910"
+      ],
+      "summary": {
+        "ok": 2,
+        "bad": 3,
+        "miss": 1
+      },
+      "verdict": "discrepancy",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEKAABxZ4eWnyvhQrKWUlMQh-jmArxG7axAAA=|INV-002083.pdf",
+      "found_at": "2026-10-27T22:15:31Z",
+      "scan_id": "req-20261027215803",
+      "file": "invoices/INV-002083_7axAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGrYgAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002080 from PMA Services -Next Day Reagents",
+      "received": "2026-10-21T13:43:10Z",
+      "filename": "INV-002080.pdf",
+      "vendor": "PMA Services - Next Day Reagents",
+      "po_raw": "SO1376--PO964",
+      "lines": [
+        {
+          "sku": "81910-BK",
+          "desc": "Access System Check Solution 6x4mL",
+          "qty": 2,
+          "rate": 15.95,
+          "po_unit": 15.95,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "SHIP",
+          "desc": "Shipping & Handling Fee",
+          "qty": 1,
+          "rate": 15.0,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO964",
+      "po_status": "Partially received",
+      "po_missing": [
+        "A98032",
+        "B24839",
+        "33025",
+        "33605",
+        "33805",
+        "33525"
+      ],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 1
+      },
+      "verdict": "partial",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGrYgAAA=|INV-002080.pdf",
+      "found_at": "2026-10-27T22:15:31Z",
+      "scan_id": "req-20261027215803",
+      "file": "invoices/INV-002080_rYgAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGrYfAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002078 from PMA Services -Next Day Reagents",
+      "received": "2026-10-21T13:38:52Z",
+      "filename": "INV-002078.pdf",
+      "vendor": "PMA Services - Next Day Reagents",
+      "po_raw": "SO1370--PO957",
+      "lines": [
+        {
+          "sku": "B24838-BK",
+          "desc": "Total Vitamin D 2x50 Tests",
+          "qty": 1,
+          "rate": 228.0,
+          "po_unit": 228.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "81901-BK",
+          "desc": "Reaction Vessels (Access)",
+          "qty": 2,
+          "rate": 27.5,
+          "po_unit": 27.5,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "SHIP",
+          "desc": "Shipping & Handling Fee",
+          "qty": 1,
+          "rate": 15.0,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO957",
+      "po_status": "Received Shipment",
+      "po_missing": [],
+      "summary": {
+        "ok": 2,
+        "bad": 0,
+        "miss": 1
+      },
+      "verdict": "partial",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGrYfAAA=|INV-002078.pdf",
+      "found_at": "2026-10-27T22:15:31Z",
+      "scan_id": "req-20261027215803",
+      "file": "invoices/INV-002078_rYfAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGrYeAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002079 from PMA Services -Next Day Reagents",
+      "received": "2026-10-21T13:36:51Z",
+      "filename": "INV-002079.pdf",
+      "vendor": "PMA Services - Next Day Reagents",
+      "po_raw": "SO1372--PO960",
+      "lines": [
+        {
+          "sku": "OSR60118-BK",
+          "desc": "TRIG Triglyceride Reagent 4x20/4x5mL",
+          "qty": 3,
+          "rate": 93.95,
+          "po_unit": 90.0,
+          "delta": 3.95,
+          "status": "over"
+        },
+        {
+          "sku": "SHIP",
+          "desc": "Shipping & Handling Fee",
+          "qty": 1,
+          "rate": 15.0,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO960",
+      "po_status": "Received Shipment",
+      "po_missing": [
+        "DR0070-1",
+        "DR0070-2"
+      ],
+      "summary": {
+        "ok": 0,
+        "bad": 1,
+        "miss": 1
+      },
+      "verdict": "discrepancy",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmArxGrYeAAA=|INV-002079.pdf",
+      "found_at": "2026-10-27T22:15:31Z",
+      "scan_id": "req-20261027215803",
+      "file": "invoices/INV-002079_rYeAAA.pdf"
     }
   ],
   "last_scan": {
     "id": "req-20261027215803",
-    "at": "2026-10-27T21:58:41Z",
+    "at": "2026-10-27T22:15:31Z",
     "window": "week",
-    "since": "2026-10-20T14:58:28.497413-07:00",
-    "scanned": 28,
-    "added": 0
+    "since": "2026-10-20T15:10:49-07:00",
+    "scanned": 52,
+    "added": 14
   },
-  "pulled_at": "2026-10-23 11:16 AM PT"
+  "pulled_at": "2026-10-27 03:16 PM PT"
 }
