@@ -108,7 +108,7 @@ def main():
                     ok = nm.upper().startswith("INV") if src == "zoho" else nm.lower().startswith("invoice")
                     if not ok or not nm.lower().endswith(".pdf"): continue
                     key = "%s|%s" % (m["id"], nm)
-                    if key in known and os.environ.get("PROBE") != "compare": continue
+                    if key in known and not os.environ.get("PROBE"): continue
                     full = http("%s/users/%s/messages/%s/attachments/%s" % (G, MAILBOX, urllib.parse.quote(m["id"], safe=""), urllib.parse.quote(at["id"], safe="")), headers=H)
                     text = pdf_text(base64.b64decode(full.get("contentBytes", "")))
                     if os.environ.get("PROBE") == "true":
