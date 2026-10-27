@@ -7,6 +7,11 @@ name: Refresh Open Orders Page
 
 on:
   workflow_dispatch:
+    inputs:
+      full:
+        description: 'Full rebuild (ignore the saved Vtiger record store). Default: incremental.'
+        required: false
+        default: 'false'
 
 permissions:
   contents: write
@@ -21,6 +26,14 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      - name: Restore saved Vtiger record store (incremental mode)
+        uses: actions/cache@v4
+        with:
+          path: retrieve_store.json
+          key: retrieve-store-${{ github.run_id }}
+          restore-keys: |
+            retrieve-store-
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -41,6 +54,11 @@ jobs:
           # no prior snapshot or cached record is reused. (CI checkouts don't carry
           # the cache anyway, but this makes it explicit and bulletproof.)
           rm -f retrieve_cache_*.json
+          # INCREMENTAL by default: retrieve_store.json (restored from the Actions cache) keeps every SO/PO/delivery-note record;
+          # open_orders_report.validate_store() re-fetches only those whose Vtiger modifiedtime changed, plus new ones.
+          # A FULL rebuild (inputs.full=true, sent by the midnight PST run) deletes the store first. A store older than 30h is also discarded.
+          export RETRIEVE_STORE=retrieve_store.json
+          if [ "${{ inputs.full }}" = "true" ]; then echo 'FULL rebuild requested'; rm -f retrieve_store.json; fi
           code=1
           for i in $(seq 1 12); do
             echo "::group::Pass $i"
