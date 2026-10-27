@@ -58,7 +58,7 @@ def num(x):
     v = money(x)
     return int(v) if v is not None and v == int(v) else v
 
-ZROW = re.compile(r"^\s*(\d+)\s+(.+?)\s{2,}([\d,]+\.\d+)\s+([\d,]+\.\d+)\s+([\d,]+\.\d+)\s*$")
+ZROW = re.compile(r"^\s*(\d+)\s+(.+?)\s{2,}([\d,]+\.\d+)\s+([\d,]+\.\d+)(?:\s+[\d,]+\.\d+)?\s+([\d,]+\.\d+)\s*$")
 def parse_zoho(text):
     m = re.search(r"P\.O\.#\s*:\s*(\S[^\n]*?)\s*(?:\n|$)", text)
     po = m.group(1).strip() if m else ""
