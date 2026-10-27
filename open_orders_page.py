@@ -355,6 +355,7 @@ def build_page_data(open_items):
             _r["cust_po"] = _po_map.get(_r.get("so_num") or "", "")
     return {
         "generated_at": _pacific_now_str(),
+        "run_info": {"mode": os.environ.get("RUN_MODE") or "Full", "label": os.environ.get("RUN_LABEL", ""), "completed_at": _pacific_now_str()},
         "totals": totals,
         "customers": customers,
         "vendors": vendors,
@@ -4699,7 +4700,10 @@ function renderYtdPanel(){
 }
 
 function renderAsOf(){
-  document.getElementById('asof').textContent = 'Last refreshed: '+(DATA.generated_at||'—');
+  var ri=DATA.run_info||{}, txt='Last refreshed: '+(DATA.generated_at||'—');
+  if(ri.mode) txt+=' · '+(ri.label?ri.label+' ':'')+ri.mode+' run completed';
+  if(window.CF_SERVED_AT){ try{ txt+=' · Served by Cloudflare: '+new Date(window.CF_SERVED_AT).toLocaleString('en-US',{timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit',day:'2-digit',hour:'numeric',minute:'2-digit',second:'2-digit',timeZoneName:'short'}); }catch(e){} }
+  document.getElementById('asof').textContent = txt;
 }
 function selectTab(i){ if(mode==='vendor') vactive=i; else if(mode==='ca') caactive=i; else active=i; renderTabs(); renderPanel(); }
 
