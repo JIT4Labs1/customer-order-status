@@ -51,12 +51,36 @@ def money(s):
     except Exception: return None
 
 # ---------------- parsers (tuned on real invoices) ----------------
+def num(x):
+    v = money(x)
+    return int(v) if v is not None and v == int(v) else v
+
+ZROW = re.compile(r"^\s*(\d+)\s+(.+?)\s{2,}([\d,]+\.\d+)\s+([\d,]+\.\d+)\s+([\d,]+\.\d+)\s*$")
 def parse_zoho(text):
-    return parse_generic(text, "zoho")
+    m = re.search(r"P\.O\.#\s*:\s*(\S[^\n]*?)\s*(?:\n|$)", text)
+    po = m.group(1).strip() if m else ""
+    lines, cur = [], None
+    for ln in text.splitlines():
+        r = ZROW.match(ln)
+        if r:
+            cur = {"sku": "", "desc": r.group(2).strip(), "qty": num(r.group(3)), "rate": num(r.group(4))}
+            lines.append(cur); continue
+        s = re.match(r"^\s*SKU\s*:\s*(\S+)", ln)
+        if s and cur is not None and not cur["sku"]:
+            cur["sku"] = s.group(1).strip()
+    lines = [l for l in lines if l["sku"] and l["sku"].lower() != "ship"]
+    return po, lines
+
+QROW = re.compile(r"^\s*(\d+)\.\s+(?:\d{1,2}/\d{1,2}/\d{2,4}\s+)?(\S+)\s{2,}(.*?)\s+(\d+(?:\.\d+)?)\s+\$([\d,]+\.\d{2})\s+\$([\d,]+\.\d{2})\s*$")
 def parse_qb(text):
-    return parse_generic(text, "quickbooks")
-def parse_generic(text, src):
-    raise NotImplementedError
+    m = re.search(r"P\.O\.\s*#\s*:\s*([^\s][^\n]*?)\s*(?:\n|$)", text)
+    po = m.group(1).strip() if m else ""
+    lines = []
+    for ln in text.splitlines():
+        r = QROW.match(ln)
+        if r:
+            lines.append({"sku": r.group(2).strip(), "desc": r.group(3).strip(), "qty": num(r.group(4)), "rate": num(r.group(5))})
+    return po, lines
 
 def main():
     w = os.environ.get("REQ_WINDOW", "week"); rid = os.environ.get("REQ_ID") or "manual-" + datetime.datetime.utcnow().strftime("%Y%m%d%H%M%S")
@@ -84,10 +108,10 @@ def main():
                     ok = nm.upper().startswith("INV") if src == "zoho" else nm.lower().startswith("invoice")
                     if not ok or not nm.lower().endswith(".pdf"): continue
                     key = "%s|%s" % (m["id"], nm)
-                    if key in known: continue
+                    if key in known and os.environ.get("PROBE") != "compare": continue
                     full = http("%s/users/%s/messages/%s/attachments/%s" % (G, MAILBOX, urllib.parse.quote(m["id"], safe=""), urllib.parse.quote(at["id"], safe="")), headers=H)
                     text = pdf_text(base64.b64decode(full.get("contentBytes", "")))
-                    if os.environ.get("PROBE"):
+                    if os.environ.get("PROBE") == "true":
                         open("_probe/%s_%s.txt" % (src, re.sub(r"[^A-Za-z0-9]", "", m["id"])[-8:]), "w").write("SUBJECT: %s\nFILE: %s\n%s" % (subj, nm, text))
                         continue
                     po, lines = (parse_zoho if src == "zoho" else parse_qb)(text)
@@ -95,7 +119,9 @@ def main():
                     items.append({"msg_id": m["id"], "source": src, "sender": sender, "subject": subj, "received": m["receivedDateTime"],
                                   "filename": nm, "vendor": "", "po_raw": po, "lines": lines})
             url = d.get("@odata.nextLink")
-    if os.environ.get("PROBE"): print("probe done", scanned); return
+    if os.environ.get("PROBE") == "true": print("probe done", scanned); return
+    if os.environ.get("PROBE") == "compare":
+        json.dump(items, open("_probe/incoming.json", "w")); print("compare: %d items" % len(items)); return
     json.dump({"scan": {"request_id": rid, "window": w, "since": since.isoformat(), "scanned": scanned}, "items": items}, open("_invbulk_incoming.json", "w"), indent=1)
     print("scan: %d candidate emails, %d new invoices" % (scanned, len(items)))
 

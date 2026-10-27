@@ -47,17 +47,17 @@ jobs:
           MS_CLIENT_SECRET: ${{ secrets.MS_CLIENT_SECRET }}
           REQ_ID: ${{ inputs.request_id }}
           REQ_WINDOW: ${{ inputs.window }}
-          PROBE: ${{ inputs.probe == 'true' && '1' || '' }}
+          PROBE: ${{ inputs.probe == 'false' && '' || inputs.probe }}
         run: python scan_invoice_mail.py
       - name: Upload probe text (private artifact, 1 day)
-        if: ${{ inputs.probe == 'true' }}
+        if: ${{ inputs.probe != 'false' }}
         uses: actions/upload-artifact@v4
         with:
           name: probe
           path: _probe
           retention-days: 1
       - name: Compare with Vtiger POs + QuickBooks, build PDF copies
-        if: ${{ inputs.probe != 'true' }}
+        if: ${{ inputs.probe == 'false' }}
         env:
           VTIGER_USER: ${{ secrets.VTIGER_USER }}
           VTIGER_ACCESS_KEY: ${{ secrets.VTIGER_ACCESS_KEY }}
@@ -74,7 +74,7 @@ jobs:
                         open("invoice-bulk-request.json", "w"))
           PY
       - name: Commit results
-        if: ${{ inputs.probe != 'true' }}
+        if: ${{ inputs.probe == 'false' }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
