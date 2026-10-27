@@ -5779,7 +5779,7 @@ function ibCheckPending(){
   var id=ibLs(IB_PEND); if(!id) return;
   var ls=(IB.data&&IB.data.last_scan)||{};
   if(ls.id===id){ ibLsSet(IB_PEND,''); ibNote('ok','Scan complete: '+(ls.added||0)+' new result'+((ls.added||0)===1?'':'s')+' ('+(ls.scanned||0)+' emails checked).'); return; }
-  ibNote('warn','Search queued ('+escapeHtml(id)+'). Waiting for Claude to run the scan &mdash; results appear here automatically.');
+  ibNote('warn','Search queued ('+escapeHtml(id)+'). Scanning the mailbox &mdash; usually 1&ndash;3 minutes. Results appear here automatically.');
   if(!IB.polling){ IB.polling=true; var n=0; var t=setInterval(function(){ n++;
     fetch('invoice-bulk-data.json?cb='+Date.now(),{cache:'no-store'}).then(function(r){ return r.json(); }).then(function(d){
       IB.data=d; if(((d.last_scan||{}).id)===id || n>90){ clearInterval(t); IB.polling=false; ibRender(); ibCheckPending(); }
@@ -5792,6 +5792,8 @@ function ibSearch(){
   var b=document.getElementById('ib-go'); if(b) b.disabled=true;
   ibNote('warn','Queuing search&hellip;');
   ibPut('invoice-bulk-request.json',{id:id,window:w,requested_at:new Date().toISOString(),status:'pending'},'Invoice bulk check request '+id)
+   .then(function(){ return fetch('https://api.github.com/repos/'+BTN.repo+'/actions/workflows/invoice-scan.yml/dispatches',{method:'POST',headers:ibHdr(),body:JSON.stringify({ref:BTN.branch,inputs:{window:w,request_id:id,probe:'false'}})}); })
+   .then(function(r){ if(r.status!==204) throw new Error('could not start the scan (GitHub '+r.status+')'); })
    .then(function(){ ibLsSet(IB_PEND,id); ibRender(); ibCheckPending(); })
    .catch(function(e){ ibNote('err','Could not queue the search: '+escapeHtml(e.message||String(e))); })
    .finally(function(){ var g=document.getElementById('ib-go'); if(g) g.disabled=false; });
