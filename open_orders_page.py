@@ -910,6 +910,20 @@ def build_html(page_data, embeds=None):
     .panel{ overflow-x:auto; overflow-y:visible; -webkit-overflow-scrolling:touch; }
     .panel-head{ padding:12px 3%; }
     .pnl-wrap{ padding:14px 3%; }
+    /* P&L Section 4: each industry group (IDL + Beckman/Siemens sub-rows) is one card */
+    .pnl-wrap table:has(tbody.pnl-ind-grp) thead{ display:none; }
+    .pnl-wrap table:has(tbody.pnl-ind-grp), .pnl-wrap table:has(tbody.pnl-ind-grp) tbody{ display:block; width:100%; }
+    .pnl-wrap tbody.pnl-ind-grp{ border:1px solid #dee5ec; border-radius:10px; margin:0 0 10px; background:#fff; overflow:hidden; }
+    .pnl-wrap tbody.pnl-ind-grp tr{ display:grid; grid-template-columns:repeat(5,1fr); }
+    .pnl-wrap tbody.pnl-ind-grp tr td:first-child{ grid-column:1 / -1; font-weight:700; }
+    .pnl-wrap tbody.pnl-ind-grp tr td:nth-child(2)::before{ content:'Orders '; color:#7a8a99; font-weight:400; }
+    .pnl-wrap tbody.pnl-ind-grp tr td:nth-child(3)::before{ content:'SO '; color:#7a8a99; font-weight:400; }
+    .pnl-wrap tbody.pnl-ind-grp tr td:nth-child(4)::before{ content:'PO '; color:#7a8a99; font-weight:400; }
+    .pnl-wrap tbody.pnl-ind-grp tr td:nth-child(5)::before{ content:'P&L '; color:#7a8a99; font-weight:400; }
+    .pnl-wrap tbody.pnl-ind-grp tr td:nth-child(6)::before{ content:'Mgn '; color:#7a8a99; font-weight:400; }
+    .pnl-wrap tbody.pnl-ind-grp tr.pnl-ind-sub{ background:#f4f8fb; border-top:1px solid #e6ebf1; }
+    /* P&L Section 6: labs with no order in 3+ months get a gray background */
+    .pnl-wrap tr.pnl-idl-dormant td{ background:#e3e6ea !important; color:#555; }
     .ca-visuals{ gap:18px; padding:0 1.5%; }
     .footer{ padding:16px 1.5%; }
     /* Google Ads / Website-Traffic per-campaign small-multiples: 3 → 2 columns */
