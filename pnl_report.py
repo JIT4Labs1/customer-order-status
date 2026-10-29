@@ -197,12 +197,31 @@ def build_pnl(vt):
 
     # Tax map: SO id -> tax $ (sum qty*listprice of line items whose product name is "tax").
     # Sales tax is a pass-through, not revenue, so it is excluded from SO revenue / P&L.
-    tax_pids = [p.get("id", "") for p in vt.query_all("SELECT id, productname FROM Products")
+    _all_products = vt.query_all("SELECT id, productname FROM Products")
+    tax_pids = [p.get("id", "") for p in _all_products
                 if (p.get("productname", "") or "").strip().lower() == "tax" and p.get("id")]
+    # Brand per product (by name) for the Industry split of Independent Diagnostic Labs.
+    brand_by_pid = {}
+    for p in _all_products:
+        nm = (p.get("productname", "") or "").lower()
+        if "beckman" in nm:
+            brand_by_pid[p.get("id", "")] = "Beckman Coulter"
+        elif "siemens" in nm:
+            brand_by_pid[p.get("id", "")] = "Siemens"
     tax_map = defaultdict(float)
     for pid in tax_pids:
         for li in vt.query_all("SELECT parent_id, quantity, listprice FROM LineItem WHERE productid = '%s'" % pid):
             tax_map[li.get("parent_id", "")] += _f(li.get("quantity")) * _f(li.get("listprice"))
+
+    # SO id -> {brand: line $} so each SO can be tagged Beckman Coulter / Siemens / Other.
+    so_brand_amt = defaultdict(lambda: defaultdict(float))
+    try:
+        for li in vt.query_all("SELECT parent_id, productid, quantity, listprice FROM LineItem"):
+            b = brand_by_pid.get(li.get("productid", ""))
+            if b:
+                so_brand_amt[li.get("parent_id", "")][b] += _f(li.get("quantity")) * _f(li.get("listprice"))
+    except Exception as e:  # keep the report alive if the brand lookup fails
+        print("  [pnl] brand line-item lookup failed: %s" % e)
 
     # All-time earliest SO per account (for new-customer detection)
     earliest = {}
@@ -245,6 +264,7 @@ def build_pnl(vt):
             "gross": gross, "ship": ship, "tax": tax, "net": net, "id": sid, "acct_id": aid,
             "customer": acct.get(aid, {}).get("name", "Unknown"),
             "industry": acct.get(aid, {}).get("industry", ""),
+            "brand": (max(so_brand_amt[sid].items(), key=lambda kv: kv[1])[0] if so_brand_amt.get(sid) else "Other"),
             "lead": ((so.get("cf_salesorder_leadsourcedealoriginated", "") or "").strip()
                      or opp_lead.get(so.get("potential_id", ""), "")),
             "po_total": po_total_by_so.get(sid, 0.0),
@@ -402,18 +422,37 @@ def build_pnl(vt):
             ind[k]["orders"] += 1; ind[k]["rev"] += s["net"]; ind[k]["cost"] += s["po_total"]
         P = ['<table style="%s"><thead><tr><th style="%s">Industry</th><th style="%s">Orders</th>'
              '<th style="%s">SO Amount</th><th style="%s">PO Total</th><th style="%s">P&amp;L</th>'
-             '<th style="%s">Margin</th></tr></thead><tbody>' % (tbl, thl, th, th, th, th, th)]
+             '<th style="%s">Margin</th></tr></thead>' % (tbl, thl, th, th, th, th, th)]
         io = ir = ic = 0
         if not ind:
-            P.append('<tr><td colspan="6" style="%spadding:14px;color:#7a8a99;">No sales orders this month.</td></tr>' % tdl)
+            P.append('<tbody><tr><td colspan="6" style="%spadding:14px;color:#7a8a99;">No sales orders this month.</td></tr></tbody>' % tdl)
+        # Independent Diagnostic Lab is split by the brand each SO mainly contains.
+        idl_sub = defaultdict(lambda: {"orders": 0, "rev": 0.0, "cost": 0.0})
+        for s in sos:
+            if (s["industry"] or "").strip().lower() == "independent diagnostic lab":
+                b = s.get("brand", "Other")
+                idl_sub[b]["orders"] += 1; idl_sub[b]["rev"] += s["net"]; idl_sub[b]["cost"] += s["po_total"]
+
+        def _irow(label, v, sub=False):
+            pnl = v["rev"] - v["cost"]
+            lab = ('&nbsp;&nbsp;&nbsp;&#8627; ' if sub else '') + _esc(label)
+            return ('<tr class="%s"><td style="%s">%s</td><td style="%s">%d</td><td style="%s">%s</td><td style="%s">%s</td>'
+                    '<td style="%s">%s</td><td style="%s">%s</td></tr>'
+                    % ("pnl-ind-sub" if sub else "pnl-ind-main", tdl, lab, td, v["orders"], td, _money(v["rev"]),
+                       td, _money(v["cost"]), td, _money(pnl), td, _pct(pnl, v["rev"])))
         for k in sorted(ind.keys(), key=lambda x: -ind[x]["rev"]):
-            v = ind[k]; pnl = v["rev"] - v["cost"]
+            v = ind[k]
             io += v["orders"]; ir += v["rev"]; ic += v["cost"]
-            P.append('<tr><td style="%s">%s</td><td style="%s">%d</td><td style="%s">%s</td><td style="%s">%s</td>'
-                     '<td style="%s">%s</td><td style="%s">%s</td></tr>'
-                     % (tdl, _esc(k), td, v["orders"], td, _money(v["rev"]), td, _money(v["cost"]),
-                        td, _money(pnl), td, _pct(pnl, v["rev"])))
-        P.append('<tr><td style="%s">Total</td><td style="%s">%d</td><td style="%s">%s</td><td style="%s">%s</td>'
+            if (k or "").strip().lower() == "independent diagnostic lab" and idl_sub:
+                # one <tbody> per industry group => a single card on mobile
+                P.append('<tbody class="pnl-ind-grp">' + _irow(k, v))
+                for b in ("Beckman Coulter", "Siemens", "Other"):
+                    if b in idl_sub:
+                        P.append(_irow(b if b != "Other" else "Other / neither brand", idl_sub[b], True))
+                P.append('</tbody>')
+            else:
+                P.append('<tbody class="pnl-ind-grp">' + _irow(k, v) + '</tbody>')
+        P.append('<tbody><tr><td style="%s">Total</td><td style="%s">%d</td><td style="%s">%s</td><td style="%s">%s</td>'
                  '<td style="%s">%s</td><td style="%s">%s</td></tr></tbody></table>'
                  % (btl, bt, io, bt, _money(ir), bt, _money(ic), bt, _money(ir - ic), bt, _pct(ir - ic, ir)))
         return "".join(P)
@@ -479,33 +518,40 @@ def build_pnl(vt):
         if 1 <= s["month"] <= cur_month:
             idl[s["acct_id"]]["months"][s["month"] - 1] += s["net"]
             idl[s["acct_id"]]["name"] = s["customer"]
+            if s["created"][:10] > idl[s["acct_id"]].get("last", ""):
+                idl[s["acct_id"]]["last"] = s["created"][:10]
     rows6 = []
     for aid, d in idl.items():
         ytd = sum(d["months"])
         first_m = next((i + 1 for i, v in enumerate(d["months"]) if v > 0), cur_month)
         avg = ytd / (cur_month - first_m + 1) if (cur_month - first_m + 1) > 0 else 0
         cm = d["months"][cur_month - 1]
-        rows6.append((d["name"], ytd, avg, d["months"], cm))
-    rows6.sort(key=lambda x: -x[1])
+        rows6.append((d["name"], ytd, avg, d["months"], cm, d.get("last", "")))
+    # Labs with no purchase in the last 3 months (90 days) are pushed to the bottom.
+    from datetime import timedelta as _td
+    _cut = (now.date() - _td(days=90)).isoformat() if hasattr(now, "date") else ""
+    rows6.sort(key=lambda x: ((1 if (x[5] and x[5] < _cut) else 0), -x[1]))
     H.append('<table style="%s"><thead><tr><th style="%s">Customer</th><th style="%s">SO Amount YTD</th>'
              '<th style="%s">Monthly Avg</th><th style="%s">Monthly Trend (Jan–%s)</th>'
              '<th style="%s">Current Month</th><th style="%s">%% of Avg</th></tr></thead><tbody>'
              % (tbl, thl, th, th, thl, MONTHS[cur_month - 1], th, th))
-    for name, ytd, avg, months, cm in rows6:
+    for name, ytd, avg, months, cm, last in rows6:
+        dormant = bool(last and last < _cut)
         row_max = max(months) if months else 0
         spark = _spark_table(months, cm, avg, row_max)
         pa = (cm / avg * 100.0) if avg else 0
         pcolor = "#2e7d32" if pa >= 100 else ("#c62828" if (cm == 0 or pa < 50) else "#2c3e50")
-        H.append('<tr><td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td>'
+        H.append('<tr class="%s"><td style="%s">%s%s</td><td style="%s">%s</td><td style="%s">%s</td>'
                  '<td style="%spadding:6px 10px;">%s</td><td style="%s">%s</td>'
                  '<td style="%scolor:%s;font-weight:bold;">%s</td></tr>'
-                 % (tdl, _esc(name), td, _money(ytd), td, _money(avg), tdl, spark, td, _money(cm),
+                 % ("pnl-idl-dormant" if dormant else "pnl-idl-active", tdl, _esc(name),
+                    ('<div style="font-size:10px;color:#888;font-weight:normal;">No order since %s</div>' % last) if dormant else "", td, _money(ytd), td, _money(avg), tdl, spark, td, _money(cm),
                     td, pcolor, ("%.0f%%" % pa) if avg else "—"))
     H.append('</tbody></table>')
     H.append('<div style="font-size:11px;color:#888;margin-bottom:16px;">Monthly Average = YTD SO Amount / (months '
              'since customer\'s first %d order). Monthly Trend = bar chart of SO amounts (Jan–%s %d), scaled per row; '
              'last bar green if current-month ≥ avg, red if &lt; avg. %% of Avg = Current Month / Monthly Avg. '
-             'Only %d data used. SO Amount is net of shipping &amp; tax.</div>' % (Y, MONTHS[cur_month - 1], Y, Y))
+             'Only %d data used. Labs with no purchase in the last 3 months are listed at the bottom. SO Amount is net of shipping &amp; tax.</div>' % (Y, MONTHS[cur_month - 1], Y, Y))
 
     # ── SECTION 7: Detailed Report (current month, NET) ──────────────────────
     H.append('<h3 style="color:#2c3e50;">7. Detailed Report</h3>')
