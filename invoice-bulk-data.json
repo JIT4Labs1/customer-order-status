@@ -5495,15 +5495,128 @@
       "found_at": "2026-10-27T22:15:31Z",
       "scan_id": "req-20261027215803",
       "file": "invoices/INV-002079_rYeAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr2E7VGAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002131 from PMA Services -Next Day Reagents  PO960  ENVOL",
+      "received": "2026-10-28T13:20:48Z",
+      "filename": "INV-002131.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "PO960",
+      "lines": [
+        {
+          "sku": "DR0070-1",
+          "desc": "Lyophilized Chemistry Calibrator, L1 12 x 5 mL",
+          "qty": 1,
+          "rate": 69,
+          "po_unit": 52.9,
+          "delta": 16.1,
+          "status": "over"
+        },
+        {
+          "sku": "DR0070-2",
+          "desc": "Lyophilized Chemistry Calibrator, L2 12 x 5 mL",
+          "qty": 1,
+          "rate": 69,
+          "po_unit": 52.9,
+          "delta": 16.1,
+          "status": "over"
+        }
+      ],
+      "po_key": "PO960",
+      "po_status": "Received Shipment",
+      "po_missing": [
+        "OSR60118"
+      ],
+      "summary": {
+        "ok": 0,
+        "bad": 2,
+        "miss": 0
+      },
+      "verdict": "discrepancy",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr2E7VGAAA=|INV-002131.pdf",
+      "found_at": "2026-10-29T16:37:23Z",
+      "scan_id": "req-20261029163655",
+      "file": "invoices/INV-002131_7VGAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr2E7WNAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002145 from PMA Services -Next Day Reagents   PO 978",
+      "received": "2026-10-29T14:24:55Z",
+      "filename": "INV-002145.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "SO1418--PO978",
+      "lines": [
+        {
+          "sku": "B24838-BK",
+          "desc": "Total Vitamin D 2x50 Tests Ea",
+          "qty": 3,
+          "rate": 228,
+          "po_unit": 228.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO978",
+      "po_status": "Received Shipment",
+      "po_missing": [],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr2E7WNAAA=|INV-002145.pdf",
+      "found_at": "2026-10-29T16:37:23Z",
+      "scan_id": "req-20261029163655",
+      "file": "invoices/INV-002145_7WNAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr2E7UzAAA=",
+      "source": "quickbooks",
+      "sender": "quickbooks@notification.intuit.com",
+      "subject": "New payment request from Allora Biotech LLC - invoice 1782",
+      "received": "2026-10-27T22:22:11Z",
+      "filename": "Invoice_1782_from_Allora_Biotech_LLC.pdf",
+      "vendor": "Allora Biotech LLC",
+      "po_raw": "977",
+      "lines": [
+        {
+          "sku": "A16793",
+          "desc": "Wash buffer II, 10 L - Beckman Coulter",
+          "qty": 8,
+          "rate": 27,
+          "po_unit": 27.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO977",
+      "po_status": "Received Shipment",
+      "po_missing": [],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr2E7UzAAA=|Invoice_1782_from_Allora_Biotech_LLC.pdf",
+      "found_at": "2026-10-29T16:37:23Z",
+      "scan_id": "req-20261029163655",
+      "file": "invoices/Invoice_1782_from_Allora_Biotech_LLC_7UzAAA.pdf"
     }
   ],
   "last_scan": {
-    "id": "req-20261027215803",
-    "at": "2026-10-27T22:15:31Z",
+    "id": "req-20261029163655",
+    "at": "2026-10-29T16:37:23Z",
     "window": "week",
-    "since": "2026-10-20T15:10:49-07:00",
-    "scanned": 52,
-    "added": 14
+    "since": "2026-10-22T09:37:16.303392-07:00",
+    "scanned": 17,
+    "added": 3
   },
   "pulled_at": "2026-10-27 03:16 PM PT"
 }
