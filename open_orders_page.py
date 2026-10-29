@@ -705,6 +705,7 @@ def build_html(page_data, embeds=None):
   .invchk tr.ib-discrow > td:first-child { box-shadow:inset 5px 0 0 #c62828; }
   .invchk tr.ib-discrow + tr.ib-det > td { background:#fff5f4; }
   .invchk .inv-hint { font-size:11px; color:#888; margin-top:10px; line-height:1.5; }
+  .ship-mview{ display:none; }
   .pnl-wrap { overflow-x:auto; padding:20px 22px; }
   .pnl-wrap h2, .pnl-wrap h3 { color:#2c3e50; }
 
@@ -910,6 +911,19 @@ def build_html(page_data, embeds=None):
     .panel{ overflow-x:auto; overflow-y:visible; -webkit-overflow-scrolling:touch; }
     .panel-head{ padding:12px 3%; }
     .pnl-wrap{ padding:14px 3%; }
+    /* Shipments: customer picker + one card with all of the customer's shipments */
+    .ship-mview{ display:block; margin:0 2px 12px; }
+    .ship-msel{ width:100%; padding:11px 10px; font-size:15px; border:1px solid #cdd9e6; border-radius:10px; background:#fff; }
+    .ship-mhint{ margin:10px 2px; color:#7a8a99; font-size:13px; }
+    .ship-mcard{ margin-top:10px; border:1px solid #dee5ec; border-left:5px solid #008080; border-radius:10px; background:#fff; overflow:hidden; }
+    .ship-mcard-head{ background:#eef3f6; padding:11px 13px; display:flex; flex-direction:column; gap:2px; }
+    .ship-mcard-head span{ font-size:12px; color:#5a6b82; }
+    .ship-mrow{ padding:10px 13px; border-top:1px solid #eef2f7; }
+    .ship-mrow-top{ display:flex; justify-content:space-between; align-items:center; gap:8px; }
+    .ship-mrow-top a{ color:#1F4E79; text-decoration:none; font-weight:600; word-break:break-all; }
+    .ship-mrow-sub{ font-size:13px; margin-top:3px; }
+    .ship-mrow-meta{ display:flex; flex-wrap:wrap; gap:3px 12px; font-size:11.5px; color:#5a6b82; margin-top:4px; }
+    .ship-dtbl.ship-has-cust{ display:none; }
     /* P&L Section 4: each industry group (IDL + Beckman/Siemens sub-rows) is one card */
     .pnl-wrap table:has(tbody.pnl-ind-grp) thead{ display:none; }
     .pnl-wrap table:has(tbody.pnl-ind-grp), .pnl-wrap table:has(tbody.pnl-ind-grp) tbody{ display:block; width:100%; }
@@ -2231,7 +2245,7 @@ function renderShipPanel(){
     if(!d && !ex && !s.status){ return '<span class="status" style="background:#eef1f4;color:#7a8a99" title="Live status needs the FedEx API">Label created</span>'; }
     var c=d?['#d4edda','#155724']:(ex?['#f8d7da','#721c24']:['#fff3cd','#856404']);
     return '<span class="status" style="background:'+c[0]+';color:'+c[1]+'">'+escapeHtml(d?'Delivered':(ex?'Exception':'In Transit'))+'</span>'; }
-  var body='';
+  var body='', mcards='';
   for(var r=0;r<rows.length;r++){ var s=rows[r];
     var url=s.url||('https://www.ups.com/track?loc=en_US&tracknum='+encodeURIComponent(s.tracking));
     var upd=shipLoc(s.location||''); if(s.date){ upd+=(upd?' · ':'')+fmtDate(s.date)+(s.time?' '+s.time:''); }
@@ -2240,6 +2254,10 @@ function renderShipPanel(){
     var _slabel=_sc[2]+((s.source==='Shopify'&&s.order)?' '+s.order:'');
     var srcBadge='<span class="status" style="background:'+_sc[0]+';color:'+_sc[1]+';white-space:nowrap;">'+escapeHtml(_slabel)+'</span>';
     if(s.shopify_fulfilled){ srcBadge+=' <span class="status" title="UPS tracking written to Shopify order '+escapeHtml(s.shopify_order||'')+'" style="background:#d8f0e0;color:#1b7a3d;white-space:nowrap;">🛍️ Shopify'+(s.shopify_order?' '+escapeHtml(s.shopify_order):'')+'</span>'; }
+    mcards+='<div class="ship-mrow"><div class="ship-mrow-top"><a href="'+url+'" target="_blank" rel="noopener">'+escapeHtml(s.tracking)+' <span style="color:#008080;">&#8599;</span></a>'+pill(s)+'</div>'+
+      '<div class="ship-mrow-sub">'+escapeHtml(shipTC(s.activity||''))+'</div>'+
+      '<div class="ship-mrow-meta">'+(s.ship_to?'<span>To: '+escapeHtml(s.ship_to)+'</span>':'')+'<span>Label: '+(s.ship_date?fmtDate(s.ship_date):'&mdash;')+'</span>'+(upd?'<span>Update: '+escapeHtml(upd)+'</span>':'')+(s.shipper?'<span>'+escapeHtml(s.shipper)+'</span>':'')+
+      (s.items&&s.items.length?'<a onclick="shipItems('+s._idx+')" style="cursor:pointer;color:#1F4E79;">&#128203; '+s.items.length+' items</a>':'')+'</div></div>';
     body+='<tr>'+
       '<td class="so"><a href="'+url+'" target="_blank" rel="noopener" style="color:#1F4E79;text-decoration:none;">'+escapeHtml(s.tracking)+' <span style="color:#008080;">↗</span></a></td>'+
       '<td>'+srcBadge+'</td>'+
@@ -2254,6 +2272,10 @@ function renderShipPanel(){
       '<td>'+escapeHtml(upd)+'</td></tr>';
   }
   if(!rows.length) body='<tr><td colspan="11" class="empty" style="padding:18px;">No shipments in this filter.</td></tr>';
+  var mopts='<option value="-1">All customers</option>';
+  for(var mi=0;mi<shipCustList.length;mi++){ mopts+='<option value="'+mi+'"'+(shipCustList[mi]===shipCust?' selected':'')+'>'+escapeHtml(shipCustList[mi])+'</option>'; }
+  var mview='<div class="ship-mview"><select class="ship-msel" onchange="shipSelectCust(parseInt(this.value,10))">'+mopts+'</select>'+
+    (shipCust?'<div class="ship-mcard"><div class="ship-mcard-head"><b>'+escapeHtml(shipCust)+'</b><span>'+rows.length+' shipment'+(rows.length===1?'':'s')+' &middot; '+rows.filter(function(x){return !(x.delivered||x.status==='Delivered');}).length+' in transit</span></div>'+(mcards||'<div class="empty" style="padding:14px;">No shipments in this filter.</div>')+'</div>':'<div class="ship-mhint">Pick a customer to see all of their shipments in one card.</div>')+'</div>';
   function fbtn(v,l,fn){ return '<button onclick="'+fn+'()" class="mode-btn'+(shipFilter===v?' active':'')+'" style="padding:6px 14px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;">'+l+'</button>'; }
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">'+
@@ -2261,8 +2283,8 @@ function renderShipPanel(){
     '<button class="refresh-btn" onclick="shipRefresh()" title="Reload the latest shipments snapshot"><span class="lbl">↻ Reload</span></button></div></div>'+
     '<div class="kpis" style="padding:6px 0 2px;">'+kpi(all.length,'Shipments')+kpi(nTransit,'In transit')+kpi(nDel,'Delivered')+(nExc?kpi(nExc,'Exceptions'):'')+'</div>'+
     '<div style="display:flex;gap:8px;margin:6px 2px 8px;">'+fbtn('all','All','shipFAll')+fbtn('transit','In transit','shipFTransit')+fbtn('delivered','Delivered','shipFDelivered')+'</div>'+
-    shipControls()+
-    '<div class="matrix-wrap"><table class="matrix"><thead><tr>'+
+    shipControls()+mview+
+    '<div class="matrix-wrap ship-dtbl'+(shipCust?' ship-has-cust':'')+'"><table class="matrix"><thead><tr>'+
     '<th>Tracking #</th><th>Source</th><th>Status</th><th>Activity</th><th>Shipper</th><th>Receiver</th><th>Items</th><th>Ship-To</th><th>Service</th><th>Label date</th><th>Last update</th>'+
     '</tr></thead><tbody>'+body+'</tbody></table></div>'+
     '<div style="margin:14px 16px;padding:12px 16px;background:#fff8e1;border-left:4px solid #ffc107;font-size:12px;border-radius:6px;line-height:1.55;color:#2c3e50;">'+
@@ -4079,10 +4101,11 @@ function arMailOpen(){
   d.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(16,30,62,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;';
   d.innerHTML='<div style="background:#fff;border-radius:10px;max-width:760px;width:100%;max-height:92vh;overflow:auto;padding:18px 20px;box-shadow:0 10px 40px rgba(0,0,0,.35);">'+
     '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><b style="font-size:16px;color:#101E3E;">&#9993; Email customer &mdash; open invoice status request</b><a href="#" onclick="arMailClose();return false;" style="font-size:20px;text-decoration:none;color:#555;">&times;</a></div>'+
-    '<div style="margin-bottom:10px;"><label style="font-size:13px;">Customer: <select id="arMailCust" onchange="arMailPick(this.value)" style="padding:5px 8px;min-width:320px;">'+opts+'</select></label></div>'+
+    '<div style="margin-bottom:10px;"><label style="font-size:13px;">Customer: <select id="arMailCust" onchange="arMailPick(this.value)" style="padding:5px 8px;min-width:min(320px,100%);max-width:100%;">'+opts+'</select></label></div>'+
     '<div id="arMailBody" style="font-size:13px;color:#7f8c8d;">Choose a customer to pick the invoices to include.</div></div>';
   document.body.appendChild(d);
 }
+function arMailOpenFor(i){ arMailOpen(); var sel=document.getElementById('arMailCust'); if(sel){ sel.value=String(i); if(sel.value===String(i)) arMailPick(String(i)); } }
 function arMailClose(){ var m=document.getElementById('arMailModal'); if(m) m.parentNode.removeChild(m); }
 function arMailPick(v){ arMail.ci=Number(v); arMail.sel={}; arMail.html=''; var rows=arMailRows();
   for(var i=0;i<rows.length;i++){ var r=rows[i]; arMail.sel[r.number]=!(r.reconcile||arIsExcl(r)); }
@@ -4197,7 +4220,7 @@ function arRenderAR(){
   var cum=0;
   for(var ii=0;ii<items.length;ii++){ var i=items[ii].i, c=items[ii].c, keep=items[ii].keep, sub=items[ii].sub;
     var open=!!arOpen[i]; cum+=sub;
-    rows+='<tr class="so-group" style="cursor:pointer;" onclick="arToggle('+i+')"><td style="font-weight:700;'+(items[ii].exn?'color:#c0392b;':'')+'">'+(open?'&#9660;':'&#9654;')+' '+escapeHtml(c.name)+(items[ii].exn?' <span style="font-size:11px;font-weight:400;" title="Rows you excluded from the totals">('+items[ii].exn+' excluded)</span>':'')+(function(){var n=0;for(var z=0;z<keep.length;z++) if(keep[z].reconcile) n++; return n?' <span title="'+n+' invoice(s) paid in Shopify but still open in QuickBooks" style="background:#e6f4ea;color:#137333;border-radius:10px;padding:0 7px;font-size:11px;">&#128179; '+n+' to reconcile</span>':'';})()+'</td>'+
+    rows+='<tr class="so-group" style="cursor:pointer;" onclick="arToggle('+i+')"><td style="font-weight:700;'+(items[ii].exn?'color:#c0392b;':'')+'">'+(open?'&#9660;':'&#9654;')+' '+escapeHtml(c.name)+' <a href="#" class="ar-rowmail" title="Email this customer about their open invoices" onclick="event.stopPropagation();arMailOpenFor('+i+');return false;" style="font-size:12px;font-weight:600;text-decoration:none;background:#e8f5f5;color:#008080;border:1px solid #bfe0e0;border-radius:12px;padding:1px 9px;margin-left:6px;white-space:nowrap;">&#9993; Email</a>'+(items[ii].exn?' <span style="font-size:11px;font-weight:400;" title="Rows you excluded from the totals">('+items[ii].exn+' excluded)</span>':'')+(function(){var n=0;for(var z=0;z<keep.length;z++) if(keep[z].reconcile) n++; return n?' <span title="'+n+' invoice(s) paid in Shopify but still open in QuickBooks" style="background:#e6f4ea;color:#137333;border-radius:10px;padding:0 7px;font-size:11px;">&#128179; '+n+' to reconcile</span>':'';})()+'</td>'+
       '<td class="c">'+keep.length+'</td><td style="text-align:right;font-weight:700;">'+payMoney(sub)+'</td><td style="text-align:right;color:#4a5b70;">'+payMoney(cum)+'</td><td style="text-align:right;">'+(shownAmt>0.005?(sub/shownAmt*100).toFixed(1)+'%':'&mdash;')+'</td></tr>';
     if(open){
       var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr><th class="c" title="Tick to exclude a row from all totals (saved in this browser)">Excl.</th>'+srtTh('arI','no','s','Invoice #')+srtTh('arI','ord','s','Shopify order')+srtTh('arI','paid','s','Paid in Shopify','c')+srtTh('arI','ship','s','Shipment')+srtTh('arI','date','s','Date')+srtTh('arI','due','s','Due')+srtTh('arI','days','n','Days','c')+srtTh('arI','amt','n','Amount','r')+srtTh('arI','bal','n','Balance','r')+'</tr></thead><tbody>';
