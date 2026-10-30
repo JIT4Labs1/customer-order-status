@@ -5608,15 +5608,91 @@
       "found_at": "2026-10-29T16:37:23Z",
       "scan_id": "req-20261029163655",
       "file": "invoices/Invoice_1782_from_Allora_Biotech_LLC_7UzAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr5g6OHAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002159 from PMA Services -Next Day Reagents",
+      "received": "2026-10-30T14:37:32Z",
+      "filename": "INV-002159.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "SO1349--PO948",
+      "lines": [
+        {
+          "sku": "33560-BK",
+          "desc": "Testosterone Reagent 100 Count Tests Ea",
+          "qty": 1,
+          "rate": 0,
+          "po_unit": 62.0,
+          "delta": -62.0,
+          "status": "under"
+        }
+      ],
+      "po_key": "PO948",
+      "po_status": "Received Shipment",
+      "po_missing": [
+        "OSR6112",
+        "B24838",
+        "OSR6179",
+        "OSR6122",
+        "OSR6221",
+        "33880",
+        "A85264"
+      ],
+      "summary": {
+        "ok": 0,
+        "bad": 1,
+        "miss": 0
+      },
+      "verdict": "discrepancy",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr5g6OHAAA=|INV-002159.pdf",
+      "found_at": "2026-10-30T17:50:04Z",
+      "scan_id": "req-20261030174934",
+      "file": "invoices/INV-002159_6OHAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr5g6ONAAA=",
+      "source": "quickbooks",
+      "sender": "quickbooks@notification.intuit.com",
+      "subject": "New payment request from Allora Biotech LLC - invoice 1786",
+      "received": "2026-10-30T17:40:05Z",
+      "filename": "Invoice_1786_from_Allora_Biotech_LLC.pdf",
+      "vendor": "Allora Biotech LLC",
+      "po_raw": "980",
+      "lines": [
+        {
+          "sku": "OSR6199",
+          "desc": "C-Reactive Protein - Latex (Normal",
+          "qty": 3,
+          "rate": 275,
+          "po_unit": 275.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO980",
+      "po_status": "Partially received",
+      "po_missing": [],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr5g6ONAAA=|Invoice_1786_from_Allora_Biotech_LLC.pdf",
+      "found_at": "2026-10-30T17:50:04Z",
+      "scan_id": "req-20261030174934",
+      "file": "invoices/Invoice_1786_from_Allora_Biotech_LLC_6ONAAA.pdf"
     }
   ],
   "last_scan": {
-    "id": "req-20261029163655",
-    "at": "2026-10-29T16:37:23Z",
+    "id": "req-20261030174934",
+    "at": "2026-10-30T17:50:04Z",
     "window": "week",
-    "since": "2026-10-22T09:37:16.303392-07:00",
-    "scanned": 17,
-    "added": 3
+    "since": "2026-10-23T10:49:58.063039-07:00",
+    "scanned": 16,
+    "added": 2
   },
   "pulled_at": "2026-10-27 03:16 PM PT"
 }
