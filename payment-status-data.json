@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-26 04:57 PM UTC",
+  "generated_at": "2026-10-30 05:33 PM UTC",
   "year": 2026,
   "customers": [
     {
@@ -229,6 +229,20 @@
       "qb_id": "628",
       "invoices": [
         {
+          "number": "SO807",
+          "status": "Not Paid",
+          "amount": 558.9,
+          "balance": 558.9,
+          "date": "2026-10-29",
+          "link": "",
+          "invoice_link": "https://connect.intuit.com/t/scs-v1-3ba7e60b88c449e1af6bb6fa3e835c979b3f165c08e34485bcbed9e1877b1e5b0e412db2f2da41029984231087f78261-0?locale=en_US&cta=v3invoicelink",
+          "so_num": "",
+          "shopify_order": "",
+          "fulfillment": "",
+          "so_date": "",
+          "open_items": []
+        },
+        {
           "number": "SO581",
           "status": "Paid",
           "amount": 2051.0,
@@ -258,10 +272,10 @@
         }
       ],
       "totals": {
-        "count": 2,
-        "amount": 4993.4,
+        "count": 3,
+        "amount": 5552.3,
         "paid": 4993.4,
-        "unpaid": 0.0
+        "unpaid": 558.9
       }
     },
     {
@@ -322,6 +336,20 @@
       "name": "Chicago Lab",
       "qb_id": "1408",
       "invoices": [
+        {
+          "number": "SO799",
+          "status": "Not Paid",
+          "amount": 1786.2,
+          "balance": 1786.2,
+          "date": "2026-10-26",
+          "link": "",
+          "invoice_link": "https://connect.intuit.com/t/scs-v1-92a5909dba384c048498087c30f9b0abffec87f99df044b899e6e83cbb8aa356a5117724a43a4c0cba1755a080fc6fdf-1?locale=en_US&cta=v3invoicelink",
+          "so_num": "",
+          "shopify_order": "",
+          "fulfillment": "",
+          "so_date": "",
+          "open_items": []
+        },
         {
           "number": "SO660",
           "status": "Paid",
@@ -534,10 +562,10 @@
         }
       ],
       "totals": {
-        "count": 15,
-        "amount": 18963.44,
+        "count": 16,
+        "amount": 20749.64,
         "paid": 18963.44,
-        "unpaid": 0.0
+        "unpaid": 1786.2
       }
     },
     {
@@ -1815,6 +1843,34 @@
       "qb_id": "1486",
       "invoices": [
         {
+          "number": "SO805",
+          "status": "Not Paid",
+          "amount": 28.7,
+          "balance": 28.7,
+          "date": "2026-10-28",
+          "link": "",
+          "invoice_link": "https://connect.intuit.com/t/scs-v1-c31741c8deb342ab861e80a9ada4309d19407c19ba1e40feaa2239e4a4d06d06c4db0e35d60b4d848c306e3e69c01289-1?locale=en_US&cta=v3invoicelink",
+          "so_num": "",
+          "shopify_order": "",
+          "fulfillment": "",
+          "so_date": "",
+          "open_items": []
+        },
+        {
+          "number": "SO804",
+          "status": "Not Paid",
+          "amount": 1243.8,
+          "balance": 1243.8,
+          "date": "2026-10-28",
+          "link": "",
+          "invoice_link": "https://connect.intuit.com/t/scs-v1-83d22daf6e8049959db05848badf52d00904aa4f00ac4c9585eb92505cfc1ec826401b2d9d5d4189b702b6e6b0cd1f19-0?locale=en_US&cta=v3invoicelink",
+          "so_num": "",
+          "shopify_order": "",
+          "fulfillment": "",
+          "so_date": "",
+          "open_items": []
+        },
+        {
           "number": "SO790",
           "status": "Paid",
           "amount": 28.61,
@@ -2096,16 +2152,37 @@
         }
       ],
       "totals": {
-        "count": 20,
-        "amount": 16177.67,
+        "count": 22,
+        "amount": 17450.17,
         "paid": 14099.61,
-        "unpaid": 2078.06
+        "unpaid": 3350.56
       }
     },
     {
       "name": "Mercedes Scientific",
       "qb_id": "1288",
       "invoices": [
+        {
+          "number": "SO610",
+          "status": "Not Paid",
+          "amount": 981.0,
+          "balance": 981.0,
+          "date": "2026-10-29",
+          "link": "",
+          "invoice_link": "https://connect.intuit.com/t/scs-v1-55ab737be03e42baac7b5f6cf22d3fea84da7d84665a40d8ba57a909377f7050f57747d103e344a48dcbd7e7f77a2c3c?locale=en_US&cta=v3invoicelink",
+          "so_num": "SO512",
+          "shopify_order": "#1139",
+          "fulfillment": "Partially",
+          "so_date": "2026-08-11",
+          "open_items": [
+            {
+              "product": "Beckman Coulter OSR6199 C-reactive Protein High sensitive CRP",
+              "open_qty": 4.0,
+              "po": "PO980",
+              "vendor": "Allora Biotech LLC"
+            }
+          ]
+        },
         {
           "number": "SO798",
           "status": "Not Paid",
@@ -2262,12 +2339,12 @@
         },
         {
           "number": "SO686",
-          "status": "Not Paid",
-          "amount": 157.1,
-          "balance": 157.1,
+          "status": "Voided",
+          "amount": 0.0,
+          "balance": 0.0,
           "date": "2026-09-23",
           "link": "",
-          "invoice_link": "https://connect.intuit.com/t/scs-v1-cb728e419e0d495f90b2d9d4cb6742c86f0e8cdead2542f9bcdde64650042fcc8f29651e35e34a8cbf3c266285a4143e-0?locale=en_US&cta=v3invoicelink",
+          "invoice_link": "",
           "so_num": "",
           "shopify_order": "",
           "fulfillment": "",
@@ -2443,27 +2520,6 @@
           "open_items": []
         },
         {
-          "number": "SO610",
-          "status": "Not Paid",
-          "amount": 2289.0,
-          "balance": 2289.0,
-          "date": "2026-08-11",
-          "link": "",
-          "invoice_link": "https://connect.intuit.com/t/scs-v1-73b1a6cd0c4845198efb5505865f9e076d0d06beb0144ea0a2c42f4e07e8664a86d0f773af2e49e9b67d4eac5fb64255-1?locale=en_US&cta=v3invoicelink",
-          "so_num": "SO512",
-          "shopify_order": "#1139",
-          "fulfillment": "Partially",
-          "so_date": "2026-08-11",
-          "open_items": [
-            {
-              "product": "Beckman Coulter OSR6199 C-reactive Protein High sensitive CRP",
-              "open_qty": 7.0,
-              "po": "PO800",
-              "vendor": "PMA Services"
-            }
-          ]
-        },
-        {
           "number": "SO606",
           "status": "Paid",
           "amount": 5591.4,
@@ -2549,12 +2605,12 @@
         },
         {
           "number": "SO546",
-          "status": "Not Paid",
-          "amount": 195.7,
-          "balance": 195.7,
+          "status": "Voided",
+          "amount": 0.0,
+          "balance": 0.0,
           "date": "2026-07-08",
           "link": "",
-          "invoice_link": "https://connect.intuit.com/t/scs-v1-73b1a6cd0c4845198efb5505865f9e076d0d06beb0144ea0a2c42f4e07e8664a86d0f773af2e49e9b67d4eac5fb64255-1?locale=en_US&cta=v3invoicelink",
+          "invoice_link": "",
           "so_num": "SO470",
           "shopify_order": "#1094",
           "fulfillment": "Fulfilled",
@@ -3082,9 +3138,9 @@
       ],
       "totals": {
         "count": 69,
-        "amount": 198244.17,
+        "amount": 196583.37,
         "paid": 153530.34,
-        "unpaid": 44713.83
+        "unpaid": 43053.03
       }
     },
     {
@@ -3429,6 +3485,20 @@
       "qb_id": "1430",
       "invoices": [
         {
+          "number": "SO803",
+          "status": "Not Paid",
+          "amount": 6854.43,
+          "balance": 6854.43,
+          "date": "2026-10-27",
+          "link": "",
+          "invoice_link": "https://connect.intuit.com/t/scs-v1-339d048f3bb6402c9f50ab8e6ac4991fd2cfd3f915a947fb86a8e924429cf8b1b51c1a705cca4eb68a7918b307eb39c6-0?locale=en_US&cta=v3invoicelink",
+          "so_num": "",
+          "shopify_order": "",
+          "fulfillment": "",
+          "so_date": "",
+          "open_items": []
+        },
+        {
           "number": "SO780",
           "status": "Not Paid",
           "amount": 1524.92,
@@ -3696,10 +3766,10 @@
         }
       ],
       "totals": {
-        "count": 19,
-        "amount": 24104.03,
+        "count": 20,
+        "amount": 30958.46,
         "paid": 17489.13,
-        "unpaid": 6614.9
+        "unpaid": 13469.33
       }
     },
     {
@@ -3992,66 +4062,16 @@
     }
   ],
   "payables": {
-    "generated_at": "2026-10-26 04:57 PM UTC",
-    "grand_total": 49648.39,
-    "past_due": 34821.88,
-    "count": 61,
+    "generated_at": "2026-10-30 05:32 PM UTC",
+    "grand_total": 18686.66,
+    "past_due": 12929.56,
+    "count": 32,
     "vendors": [
-      {
-        "vendor": "Allora Biotech LLC",
-        "balance": 21150.76,
-        "count": 6,
-        "pastdue": 21150.76,
-        "bills": [
-          {
-            "num": "1766",
-            "date": "2026-10-20",
-            "due": "2026-10-20",
-            "amount": 2115.06,
-            "balance": 2115.06
-          },
-          {
-            "num": "1765",
-            "date": "2026-10-20",
-            "due": "2026-10-20",
-            "amount": 5401.2,
-            "balance": 5401.2
-          },
-          {
-            "num": "1762",
-            "date": "2026-10-19",
-            "due": "2026-10-19",
-            "amount": 307.0,
-            "balance": 307.0
-          },
-          {
-            "num": "1761",
-            "date": "2026-10-19",
-            "due": "2026-10-19",
-            "amount": 1072.0,
-            "balance": 1072.0
-          },
-          {
-            "num": "1743",
-            "date": "2026-10-13",
-            "due": "2026-10-13",
-            "amount": 8715.5,
-            "balance": 8715.5
-          },
-          {
-            "num": "1742",
-            "date": "2026-10-12",
-            "due": "2026-10-12",
-            "amount": 3540.0,
-            "balance": 3540.0
-          }
-        ]
-      },
       {
         "vendor": "Conmed",
         "balance": 17372.07,
         "count": 24,
-        "pastdue": 9153.63,
+        "pastdue": 11614.97,
         "bills": [
           {
             "num": "11478011",
@@ -4224,175 +4244,6 @@
         ]
       },
       {
-        "vendor": "PMA Services",
-        "balance": 9810.97,
-        "count": 23,
-        "pastdue": 3202.9,
-        "bills": [
-          {
-            "num": "INV-002087",
-            "date": "2026-10-21",
-            "due": "2026-10-31",
-            "amount": 243.0,
-            "balance": 243.0
-          },
-          {
-            "num": "INV-002088",
-            "date": "2026-10-21",
-            "due": "2026-10-31",
-            "amount": 64.2,
-            "balance": 64.2
-          },
-          {
-            "num": "INV-002089",
-            "date": "2026-10-21",
-            "due": "2026-10-31",
-            "amount": 513.0,
-            "balance": 513.0
-          },
-          {
-            "num": "INV-002083",
-            "date": "2026-10-21",
-            "due": "2026-10-31",
-            "amount": 1147.12,
-            "balance": 1147.12
-          },
-          {
-            "num": "INV-002073",
-            "date": "2026-10-20",
-            "due": "2026-10-30",
-            "amount": 92.0,
-            "balance": 92.0
-          },
-          {
-            "num": "INV-002072",
-            "date": "2026-10-20",
-            "due": "2026-10-30",
-            "amount": 228.0,
-            "balance": 228.0
-          },
-          {
-            "num": "INV-002071",
-            "date": "2026-10-20",
-            "due": "2026-10-30",
-            "amount": 92.0,
-            "balance": 92.0
-          },
-          {
-            "num": "INV-002070",
-            "date": "2026-10-20",
-            "due": "2026-10-30",
-            "amount": 169.0,
-            "balance": 169.0
-          },
-          {
-            "num": "INV-002074",
-            "date": "2026-10-20",
-            "due": "2026-10-30",
-            "amount": 80.0,
-            "balance": 80.0
-          },
-          {
-            "num": "INV-002075",
-            "date": "2026-10-20",
-            "due": "2026-10-30",
-            "amount": 290.0,
-            "balance": 290.0
-          },
-          {
-            "num": "INV-002076",
-            "date": "2026-10-20",
-            "due": "2026-10-30",
-            "amount": 3048.0,
-            "balance": 3048.0
-          },
-          {
-            "num": "INV-002080",
-            "date": "2026-10-20",
-            "due": "2026-10-30",
-            "amount": 46.9,
-            "balance": 46.9
-          },
-          {
-            "num": "INV-002078",
-            "date": "2026-10-20",
-            "due": "2026-10-30",
-            "amount": 298.0,
-            "balance": 298.0
-          },
-          {
-            "num": "INV-002079",
-            "date": "2026-10-20",
-            "due": "2026-10-30",
-            "amount": 296.85,
-            "balance": 296.85
-          },
-          {
-            "num": "INV-002031",
-            "date": "2026-10-15",
-            "due": "2026-10-25",
-            "amount": 272.8,
-            "balance": 272.8
-          },
-          {
-            "num": "INV-002030",
-            "date": "2026-10-15",
-            "due": "2026-10-25",
-            "amount": 243.0,
-            "balance": 243.0
-          },
-          {
-            "num": "INV-002041",
-            "date": "2026-10-15",
-            "due": "2026-10-25",
-            "amount": 375.0,
-            "balance": 375.0
-          },
-          {
-            "num": "INV-002042",
-            "date": "2026-10-15",
-            "due": "2026-10-15",
-            "amount": 266.5,
-            "balance": 266.5
-          },
-          {
-            "num": "INV-002040",
-            "date": "2026-10-15",
-            "due": "2026-10-25",
-            "amount": 455.5,
-            "balance": 455.5
-          },
-          {
-            "num": "INV-002039",
-            "date": "2026-10-15",
-            "due": "2026-10-25",
-            "amount": 240.5,
-            "balance": 240.5
-          },
-          {
-            "num": "INV-002026",
-            "date": "2026-10-15",
-            "due": "2026-10-25",
-            "amount": 1138.1,
-            "balance": 1138.1
-          },
-          {
-            "num": "INV-002036",
-            "date": "2026-10-15",
-            "due": "2026-10-25",
-            "amount": 42.5,
-            "balance": 42.5
-          },
-          {
-            "num": "INV-001688",
-            "date": "2026-07-08",
-            "due": "2026-07-08",
-            "amount": 169.0,
-            "balance": 169.0
-          }
-        ]
-      },
-      {
         "vendor": "ClearChem Diagnostics, Inc",
         "balance": 1314.59,
         "count": 8,
@@ -4462,96 +4313,22 @@
     "name": "Chase CHK (9219)",
     "balance": 60619.43,
     "source": "Bank balance",
-    "book_balance": 36607.62,
+    "book_balance": 6366.05,
     "bank_asof": "2026-07-23",
-    "as_of": "2026-10-26 04:57 PM UTC"
+    "as_of": "2026-10-30 05:32 PM UTC"
   },
   "ar": {
-    "generated_at": "2026-10-26 04:57 PM UTC",
-    "as_of": "2026-10-26",
-    "total": 108767.6,
-    "qb_total": 131938.44,
-    "count": 83,
+    "generated_at": "2026-10-30 05:33 PM UTC",
+    "as_of": "2026-10-30",
+    "total": 115059.41,
+    "qb_total": 141085.85,
+    "count": 87,
     "customers": [
       {
         "name": "Mercedes Scientific",
-        "balance": 44713.83,
-        "qb_balance": 44713.83,
+        "balance": 43053.03,
+        "qb_balance": 43053.03,
         "invoices": [
-          {
-            "number": "SO546",
-            "date": "2026-07-08",
-            "due": "2026-07-18",
-            "amount": 195.7,
-            "balance": 195.7,
-            "so_num": "SO470",
-            "shopify_order": "#1094",
-            "shopify_fulfillments": [
-              {
-                "id": "6509811400948",
-                "shipment": "#1094-F2",
-                "tracking": "877641876028",
-                "trackings": [
-                  "877641876028"
-                ]
-              },
-              {
-                "id": "6271165628660",
-                "shipment": "#1094-F1",
-                "tracking": "874131947502",
-                "trackings": [
-                  "874131947502"
-                ]
-              }
-            ],
-            "pay_link": "",
-            "shopify_status": "PENDING",
-            "shopify_total": 195.7,
-            "shopify_received": null,
-            "shopify_outstanding": 195.7,
-            "shopify_match": "vtiger",
-            "reconcile": false
-          },
-          {
-            "number": "SO610",
-            "date": "2026-08-11",
-            "due": "2026-08-21",
-            "amount": 2289.0,
-            "balance": 2289.0,
-            "so_num": "SO512",
-            "shopify_order": "#1139",
-            "shopify_fulfillments": [],
-            "pay_link": "",
-            "shopify_status": "PENDING",
-            "shopify_total": 2289.0,
-            "shopify_received": null,
-            "shopify_outstanding": 2289.0,
-            "shopify_match": "vtiger",
-            "reconcile": false
-          },
-          {
-            "number": "SO686",
-            "date": "2026-09-23",
-            "due": "2026-10-03",
-            "amount": 157.1,
-            "balance": 157.1,
-            "so_num": "",
-            "shopify_order": "#1094",
-            "shopify_fulfillments": [
-              {
-                "id": "",
-                "shipment": "#1094-F2",
-                "tracking": ""
-              }
-            ],
-            "pay_link": "https://connect.intuit.com/t/scs-v1-92ae5464f810449291ba9fb5480a0aa31ad853d478e744f0aa52dcea5a71f1ee122ccb1a5b1240bd84ff69bfa3f4e486-0?locale=en_US&cta=v3invoicelink",
-            "shopify_status": "PENDING",
-            "shopify_total": 195.7,
-            "shopify_received": null,
-            "shopify_outstanding": 195.7,
-            "shopify_match": "qb_field",
-            "reconcile": false
-          },
           {
             "number": "SO731",
             "date": "2026-10-06",
@@ -4780,6 +4557,29 @@
             "shopify_received": null,
             "shopify_outstanding": 29627.42,
             "shopify_match": "note",
+            "reconcile": false
+          },
+          {
+            "number": "SO610",
+            "date": "2026-10-29",
+            "due": "2026-11-09",
+            "amount": 981.0,
+            "balance": 981.0,
+            "so_num": "SO512",
+            "shopify_order": "#1139",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1139-F1",
+                "tracking": ""
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-55ab737be03e42baac7b5f6cf22d3fea84da7d84665a40d8ba57a909377f7050f57747d103e344a48dcbd7e7f77a2c3c?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PENDING",
+            "shopify_total": 2289.0,
+            "shopify_received": null,
+            "shopify_outstanding": 2289.0,
+            "shopify_match": "qb_field",
             "reconcile": false
           }
         ]
@@ -5266,8 +5066,8 @@
       },
       {
         "name": "Radiance Diagnostics",
-        "balance": 6614.9,
-        "qb_balance": 6614.9,
+        "balance": 13469.33,
+        "qb_balance": 13469.33,
         "invoices": [
           {
             "number": "SO730",
@@ -5359,6 +5159,29 @@
             "shopify_received": null,
             "shopify_outstanding": 12474.65,
             "shopify_match": "note",
+            "reconcile": false
+          },
+          {
+            "number": "SO803",
+            "date": "2026-10-27",
+            "due": "2026-10-27",
+            "amount": 6854.43,
+            "balance": 6854.43,
+            "so_num": "",
+            "shopify_order": "#1241",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1241-F4",
+                "tracking": ""
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-339d048f3bb6402c9f50ab8e6ac4991fd2cfd3f915a947fb86a8e924429cf8b1b51c1a705cca4eb68a7918b307eb39c6-0?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PENDING",
+            "shopify_total": 19325.05,
+            "shopify_received": null,
+            "shopify_outstanding": 12474.65,
+            "shopify_match": "qb_field",
             "reconcile": false
           }
         ]
@@ -5605,7 +5428,7 @@
             "shopify_status": "PAID",
             "shopify_total": 1135.4,
             "shopify_received": 1135.4,
-            "shopify_outstanding": 0,
+            "shopify_outstanding": 0.0,
             "shopify_match": "note",
             "reconcile": true
           },
@@ -5633,7 +5456,7 @@
             "shopify_status": "PAID",
             "shopify_total": 1135.4,
             "shopify_received": 1135.4,
-            "shopify_outstanding": 0,
+            "shopify_outstanding": 0.0,
             "shopify_match": "tracking",
             "reconcile": true
           }
@@ -5780,169 +5603,30 @@
         ]
       },
       {
-        "name": "MEDICAL HEALTH LAB",
-        "balance": 1900.81,
-        "qb_balance": 2078.06,
+        "name": "Chicago Lab",
+        "balance": 1786.2,
+        "qb_balance": 1786.2,
         "invoices": [
           {
-            "number": "SO627",
-            "date": "2026-08-19",
-            "due": "2026-08-19",
-            "amount": 137.11,
-            "balance": 137.11,
+            "number": "SO799",
+            "date": "2026-10-26",
+            "due": "2026-11-25",
+            "amount": 1786.2,
+            "balance": 1786.2,
             "so_num": "",
-            "shopify_order": "#1148",
+            "shopify_order": "#1247",
             "shopify_fulfillments": [
               {
-                "id": "6344969945332",
-                "shipment": "#1148-F3",
-                "tracking": "1Z23C2X71311436947"
-              },
-              {
-                "id": "6344989999348",
-                "shipment": "#1148-F4",
-                "tracking": "1Z23C2X7YW23079297"
-              },
-              {
-                "id": "6351920496884",
-                "shipment": "#1147-F2",
-                "tracking": "1Z23C2X71337418516"
+                "id": "6567349682420",
+                "shipment": "#1247-F1",
+                "tracking": "384347680940"
               }
             ],
-            "pay_link": "https://connect.intuit.com/t/scs-v1-c52c0fb0aabd4a928508f69daef1616c7182f1e50b34410d90052a0542ac211b5bfc868adc5f466b8b6f78592c832c6d-1?locale=en_US&cta=v3invoicelink",
-            "shopify_status": "PARTIALLY_PAID",
-            "shopify_total": 432.44,
-            "shopify_received": 337.08,
-            "shopify_outstanding": 95.36,
-            "shopify_match": "tracking",
-            "reconcile": false
-          },
-          {
-            "number": "SO649",
-            "date": "2026-09-01",
-            "due": "2026-09-01",
-            "amount": 153.82,
-            "balance": 153.82,
-            "so_num": "",
-            "shopify_order": "#1163",
-            "shopify_fulfillments": [
-              {
-                "id": "6368138199284",
-                "shipment": "#1163-F1",
-                "tracking": "876596097455"
-              },
-              {
-                "id": "6368285130996",
-                "shipment": "#1163-F2",
-                "tracking": "1Z23C2X71311646998"
-              },
-              {
-                "id": "6368338477300",
-                "shipment": "#1163-F3",
-                "tracking": "383494725528"
-              }
-            ],
-            "pay_link": "https://connect.intuit.com/t/scs-v1-05861f8857fb405cad0edb7e2d824778e0bc4b1cc06744be9abeacf40ff76edb9280df5dcf0a4ad484bbf43edfb6f2ad?locale=en_US&cta=v3invoicelink",
-            "shopify_status": "PAID",
-            "shopify_total": 3904.0,
-            "shopify_received": 3904.0,
-            "shopify_outstanding": 0.0,
-            "shopify_match": "tracking",
-            "reconcile": true
-          },
-          {
-            "number": "SO653",
-            "date": "2026-09-02",
-            "due": "2026-09-02",
-            "amount": 23.43,
-            "balance": 23.43,
-            "so_num": "",
-            "shopify_order": "#1147",
-            "shopify_fulfillments": [
-              {
-                "id": "6370322350324",
-                "shipment": "#1147-F4",
-                "tracking": "876659442734"
-              }
-            ],
-            "pay_link": "https://connect.intuit.com/t/scs-v1-bf865a945fe747038cd02da412187aea7d5f82a69a0045289c68c028091be0102592cce4a6724e66829e45ff59e54e32-1?locale=en_US&cta=v3invoicelink",
-            "shopify_status": "PAID",
-            "shopify_total": 2239.8,
-            "shopify_received": 2239.8,
-            "shopify_outstanding": 0.0,
-            "shopify_match": "tracking",
-            "reconcile": true
-          },
-          {
-            "number": "SO657",
-            "date": "2026-09-08",
-            "due": "2026-09-08",
-            "amount": 180.6,
-            "balance": 180.6,
-            "so_num": "",
-            "shopify_order": "#1169",
-            "shopify_fulfillments": [
-              {
-                "id": "6380665602292",
-                "shipment": "#1169-F3",
-                "tracking": "383597608465"
-              }
-            ],
-            "pay_link": "https://connect.intuit.com/t/scs-v1-2ef748bfc73d4505881d560c86d06f00b582a2f029e54e4bba20d570fd0e1599475162d591a448019a1606641faa2232-1?locale=en_US&cta=v3invoicelink",
+            "pay_link": "https://connect.intuit.com/t/scs-v1-92a5909dba384c048498087c30f9b0abffec87f99df044b899e6e83cbb8aa356a5117724a43a4c0cba1755a080fc6fdf-1?locale=en_US&cta=v3invoicelink",
             "shopify_status": "PENDING",
-            "shopify_total": 218.3,
+            "shopify_total": 1786.2,
             "shopify_received": null,
-            "shopify_outstanding": 218.3,
-            "shopify_match": "tracking",
-            "reconcile": false
-          },
-          {
-            "number": "SO765",
-            "date": "2026-10-15",
-            "due": "2026-10-15",
-            "amount": 1583.1,
-            "balance": 1583.1,
-            "so_num": "",
-            "shopify_order": "#1236",
-            "shopify_fulfillments": [
-              {
-                "id": "6559512035572",
-                "shipment": "#1236-F4",
-                "tracking": "384287039075",
-                "trackings": [
-                  "384287039075"
-                ]
-              },
-              {
-                "id": "6559495946484",
-                "shipment": "#1236-F3",
-                "tracking": "879010621994",
-                "trackings": [
-                  "879010621994"
-                ]
-              },
-              {
-                "id": "6549736816884",
-                "shipment": "#1236-F2",
-                "tracking": "384197691887",
-                "trackings": [
-                  "384197691887"
-                ]
-              },
-              {
-                "id": "6549634679028",
-                "shipment": "#1236-F1",
-                "tracking": "384195934371",
-                "trackings": [
-                  "384195934371"
-                ]
-              }
-            ],
-            "pay_link": "https://connect.intuit.com/t/scs-v1-b295163d2775436bb2774c8e53c08d8a35678f945ded460687e36d58deff500a9c739aafd4644bb88bf85245deeff972-0?locale=en_US&cta=v3invoicelink",
-            "shopify_status": "PARTIALLY_PAID",
-            "shopify_total": 1662.5,
-            "shopify_received": 1583.1,
-            "shopify_outstanding": 79.4,
+            "shopify_outstanding": 1786.2,
             "shopify_match": "note",
             "reconcile": false
           }
@@ -5997,6 +5681,89 @@
             "shopify_received": null,
             "shopify_outstanding": 975.2,
             "shopify_match": "qb_field",
+            "reconcile": false
+          }
+        ]
+      },
+      {
+        "name": "Healthquest Esoterics",
+        "balance": 706.25,
+        "qb_balance": 706.25,
+        "invoices": [
+          {
+            "number": "SO767",
+            "date": "2026-10-15",
+            "due": "2026-10-15",
+            "amount": 370.07,
+            "balance": 370.07,
+            "so_num": "",
+            "shopify_order": "#1229",
+            "shopify_fulfillments": [
+              {
+                "id": "6549726658804",
+                "shipment": "#1229-F6",
+                "tracking": "878730940889"
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-52cfb5946bbe468192cc2df331a073f08b9dd2bac4ae4a559721cb92b42ecfc45f01ae8fb8b14df4b935e0d8e9736c5e-1?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PENDING",
+            "shopify_total": 6599.7,
+            "shopify_received": null,
+            "shopify_outstanding": 6514.73,
+            "shopify_match": "note",
+            "reconcile": false
+          },
+          {
+            "number": "SO801",
+            "date": "2026-10-27",
+            "due": "2026-10-27",
+            "amount": 336.18,
+            "balance": 336.18,
+            "so_num": "",
+            "shopify_order": "#1249",
+            "shopify_fulfillments": [
+              {
+                "id": "6569708191988",
+                "shipment": "#1249-F1",
+                "tracking": "879311589889"
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-25a35f1ecc5e4073b939f83ec3d46e585b6e31926e384086b12fa0daaecab2542e7e1042342841d6b1aaac910eb2cd9c-1?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PENDING",
+            "shopify_total": 336.18,
+            "shopify_received": null,
+            "shopify_outstanding": 336.18,
+            "shopify_match": "note",
+            "reconcile": false
+          }
+        ]
+      },
+      {
+        "name": "ALDX Holding",
+        "balance": 558.9,
+        "qb_balance": 558.9,
+        "invoices": [
+          {
+            "number": "SO807",
+            "date": "2026-10-29",
+            "due": "2026-10-29",
+            "amount": 558.9,
+            "balance": 558.9,
+            "so_num": "",
+            "shopify_order": "#1252",
+            "shopify_fulfillments": [
+              {
+                "id": "6573003636980",
+                "shipment": "#1252-F1",
+                "tracking": "879427109378"
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-3ba7e60b88c449e1af6bb6fa3e835c979b3f165c08e34485bcbed9e1877b1e5b0e412db2f2da41029984231087f78261-0?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PENDING",
+            "shopify_total": 558.9,
+            "shopify_received": null,
+            "shopify_outstanding": 558.9,
+            "shopify_match": "note",
             "reconcile": false
           }
         ]
@@ -6090,36 +5857,6 @@
         ]
       },
       {
-        "name": "Healthquest Esoterics",
-        "balance": 370.07,
-        "qb_balance": 370.07,
-        "invoices": [
-          {
-            "number": "SO767",
-            "date": "2026-10-15",
-            "due": "2026-10-15",
-            "amount": 370.07,
-            "balance": 370.07,
-            "so_num": "",
-            "shopify_order": "#1229",
-            "shopify_fulfillments": [
-              {
-                "id": "6549726658804",
-                "shipment": "#1229-F6",
-                "tracking": "878730940889"
-              }
-            ],
-            "pay_link": "https://connect.intuit.com/t/scs-v1-52cfb5946bbe468192cc2df331a073f08b9dd2bac4ae4a559721cb92b42ecfc45f01ae8fb8b14df4b935e0d8e9736c5e-1?locale=en_US&cta=v3invoicelink",
-            "shopify_status": "PENDING",
-            "shopify_total": 6599.7,
-            "shopify_received": null,
-            "shopify_outstanding": 6514.73,
-            "shopify_match": "note",
-            "reconcile": false
-          }
-        ]
-      },
-      {
         "name": "Seemas Botox and aesthetics",
         "balance": 321.18,
         "qb_balance": 321.18,
@@ -6136,6 +5873,214 @@
             "pay_link": "https://connect.intuit.com/t/scs-v1-1c427e0cdb8b45e2a74ac7a8250aff87e5b4d322ec3a4d32bf50d6bb52fd7ad12b9e30b3ab4c48c1bf2fea84c60dfed8?locale=en_US&cta=v3invoicelink",
             "shopify_status": "",
             "reconcile": false
+          }
+        ]
+      },
+      {
+        "name": "MEDICAL HEALTH LAB",
+        "balance": 317.71,
+        "qb_balance": 3350.56,
+        "invoices": [
+          {
+            "number": "SO627",
+            "date": "2026-08-19",
+            "due": "2026-08-19",
+            "amount": 137.11,
+            "balance": 137.11,
+            "so_num": "",
+            "shopify_order": "#1148",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1148-F5",
+                "tracking": ""
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-c52c0fb0aabd4a928508f69daef1616c7182f1e50b34410d90052a0542ac211b5bfc868adc5f466b8b6f78592c832c6d-1?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PARTIALLY_PAID",
+            "shopify_total": 432.44,
+            "shopify_received": 337.08,
+            "shopify_outstanding": 95.36,
+            "shopify_match": "qb_field",
+            "reconcile": false
+          },
+          {
+            "number": "SO649",
+            "date": "2026-09-01",
+            "due": "2026-09-01",
+            "amount": 153.82,
+            "balance": 153.82,
+            "so_num": "",
+            "shopify_order": "#1163",
+            "shopify_fulfillments": [
+              {
+                "id": "6368138199284",
+                "shipment": "#1163-F1",
+                "tracking": "876596097455"
+              },
+              {
+                "id": "6368285130996",
+                "shipment": "#1163-F2",
+                "tracking": "1Z23C2X71311646998"
+              },
+              {
+                "id": "6368338477300",
+                "shipment": "#1163-F3",
+                "tracking": "383494725528"
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-05861f8857fb405cad0edb7e2d824778e0bc4b1cc06744be9abeacf40ff76edb9280df5dcf0a4ad484bbf43edfb6f2ad?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PAID",
+            "shopify_total": 3904.0,
+            "shopify_received": 3904.0,
+            "shopify_outstanding": 0.0,
+            "shopify_match": "tracking",
+            "reconcile": true
+          },
+          {
+            "number": "SO653",
+            "date": "2026-09-02",
+            "due": "2026-09-02",
+            "amount": 23.43,
+            "balance": 23.43,
+            "so_num": "",
+            "shopify_order": "#1147",
+            "shopify_fulfillments": [
+              {
+                "id": "6370322350324",
+                "shipment": "#1147-F4",
+                "tracking": "876659442734"
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-bf865a945fe747038cd02da412187aea7d5f82a69a0045289c68c028091be0102592cce4a6724e66829e45ff59e54e32-1?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PAID",
+            "shopify_total": 2239.8,
+            "shopify_received": 2239.8,
+            "shopify_outstanding": 0.0,
+            "shopify_match": "tracking",
+            "reconcile": true
+          },
+          {
+            "number": "SO657",
+            "date": "2026-09-08",
+            "due": "2026-09-08",
+            "amount": 180.6,
+            "balance": 180.6,
+            "so_num": "",
+            "shopify_order": "#1169",
+            "shopify_fulfillments": [
+              {
+                "id": "",
+                "shipment": "#1169-F3",
+                "tracking": ""
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-2ef748bfc73d4505881d560c86d06f00b582a2f029e54e4bba20d570fd0e1599475162d591a448019a1606641faa2232-1?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PENDING",
+            "shopify_total": 218.3,
+            "shopify_received": null,
+            "shopify_outstanding": 218.3,
+            "shopify_match": "qb_field",
+            "reconcile": false
+          },
+          {
+            "number": "SO765",
+            "date": "2026-10-15",
+            "due": "2026-10-15",
+            "amount": 1583.1,
+            "balance": 1583.1,
+            "so_num": "",
+            "shopify_order": "#1236",
+            "shopify_fulfillments": [
+              {
+                "id": "6559512035572",
+                "shipment": "#1236-F4",
+                "tracking": "384287039075",
+                "trackings": [
+                  "384287039075"
+                ]
+              },
+              {
+                "id": "6559495946484",
+                "shipment": "#1236-F3",
+                "tracking": "879010621994",
+                "trackings": [
+                  "879010621994"
+                ]
+              },
+              {
+                "id": "6549736816884",
+                "shipment": "#1236-F2",
+                "tracking": "384197691887",
+                "trackings": [
+                  "384197691887"
+                ]
+              },
+              {
+                "id": "6549634679028",
+                "shipment": "#1236-F1",
+                "tracking": "384195934371",
+                "trackings": [
+                  "384195934371"
+                ]
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-b295163d2775436bb2774c8e53c08d8a35678f945ded460687e36d58deff500a9c739aafd4644bb88bf85245deeff972-0?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PAID",
+            "shopify_total": 1662.5,
+            "shopify_received": 1662.5,
+            "shopify_outstanding": 0.0,
+            "shopify_match": "note",
+            "reconcile": true
+          },
+          {
+            "number": "SO804",
+            "date": "2026-10-28",
+            "due": "2026-10-28",
+            "amount": 1243.8,
+            "balance": 1243.8,
+            "so_num": "",
+            "shopify_order": "#1250",
+            "shopify_fulfillments": [
+              {
+                "id": "6571455250676",
+                "shipment": "#1250-F1",
+                "tracking": "384382320146",
+                "trackings": [
+                  "384382320146"
+                ]
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-83d22daf6e8049959db05848badf52d00904aa4f00ac4c9585eb92505cfc1ec826401b2d9d5d4189b702b6e6b0cd1f19-0?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PAID",
+            "shopify_total": 1272.5,
+            "shopify_received": 1243.8,
+            "shopify_outstanding": 28.7,
+            "shopify_match": "note",
+            "reconcile": true
+          },
+          {
+            "number": "SO805",
+            "date": "2026-10-28",
+            "due": "2026-10-28",
+            "amount": 28.7,
+            "balance": 28.7,
+            "so_num": "",
+            "shopify_order": "#1250",
+            "shopify_fulfillments": [
+              {
+                "id": "6571455250676",
+                "shipment": "#1250-F1",
+                "tracking": "384382320146"
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-c31741c8deb342ab861e80a9ada4309d19407c19ba1e40feaa2239e4a4d06d06c4db0e35d60b4d848c306e3e69c01289-1?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PAID",
+            "shopify_total": 1272.5,
+            "shopify_received": 1243.8,
+            "shopify_outstanding": 28.7,
+            "shopify_match": "note",
+            "reconcile": true
           }
         ]
       },
@@ -6359,7 +6304,7 @@
             "shopify_status": "PAID",
             "shopify_total": 7221.64,
             "shopify_received": 7221.64,
-            "shopify_outstanding": 0,
+            "shopify_outstanding": 0.0,
             "shopify_match": "manual",
             "reconcile": true
           },
@@ -6435,7 +6380,7 @@
             "shopify_status": "PAID",
             "shopify_total": 61.33,
             "shopify_received": 61.33,
-            "shopify_outstanding": 0,
+            "shopify_outstanding": 0.0,
             "shopify_match": "note",
             "reconcile": true
           }
@@ -6465,7 +6410,7 @@
             "shopify_status": "PAID",
             "shopify_total": 494.0,
             "shopify_received": 494.0,
-            "shopify_outstanding": 0,
+            "shopify_outstanding": 0.0,
             "shopify_match": "note",
             "reconcile": true
           },
@@ -6491,7 +6436,7 @@
             "shopify_status": "PAID",
             "shopify_total": 431.65,
             "shopify_received": 431.65,
-            "shopify_outstanding": 0,
+            "shopify_outstanding": 0.0,
             "shopify_match": "note",
             "reconcile": true
           },
@@ -6514,7 +6459,7 @@
             "shopify_status": "PAID",
             "shopify_total": 431.65,
             "shopify_received": 431.65,
-            "shopify_outstanding": 0,
+            "shopify_outstanding": 0.0,
             "shopify_match": "note",
             "reconcile": true
           }
@@ -6544,7 +6489,7 @@
             "shopify_status": "PAID",
             "shopify_total": 1727.04,
             "shopify_received": 1727.04,
-            "shopify_outstanding": 0,
+            "shopify_outstanding": 0.0,
             "shopify_match": "note",
             "reconcile": true
           }
@@ -6574,7 +6519,7 @@
             "shopify_status": "PAID",
             "shopify_total": 1737.16,
             "shopify_received": 1737.16,
-            "shopify_outstanding": 0,
+            "shopify_outstanding": 0.0,
             "shopify_match": "note",
             "reconcile": true
           }
@@ -6604,7 +6549,7 @@
             "shopify_status": "PAID",
             "shopify_total": 588.95,
             "shopify_received": 588.95,
-            "shopify_outstanding": 0,
+            "shopify_outstanding": 0.0,
             "shopify_match": "qb_field",
             "reconcile": true
           }
@@ -6639,7 +6584,7 @@
             "shopify_status": "PAID",
             "shopify_total": 919.5,
             "shopify_received": 919.5,
-            "shopify_outstanding": 0,
+            "shopify_outstanding": 0.0,
             "shopify_match": "note",
             "reconcile": true
           }
@@ -6663,7 +6608,7 @@
             "shopify_status": "PAID",
             "shopify_total": 1726.16,
             "shopify_received": 1726.16,
-            "shopify_outstanding": 0,
+            "shopify_outstanding": 0.0,
             "shopify_match": "note",
             "reconcile": true
           }
@@ -6687,7 +6632,7 @@
             "shopify_status": "PAID",
             "shopify_total": 574.47,
             "shopify_received": 574.47,
-            "shopify_outstanding": 0,
+            "shopify_outstanding": 0.0,
             "shopify_match": "note",
             "reconcile": true
           }
@@ -6696,130 +6641,15 @@
     ]
   },
   "ap": {
-    "generated_at": "2026-10-26 04:57 PM UTC",
-    "total": 49648.39,
-    "past_due": 34821.88,
-    "count": 61,
+    "generated_at": "2026-10-30 05:33 PM UTC",
+    "total": 18686.66,
+    "past_due": 12929.56,
+    "count": 32,
     "vendors": [
-      {
-        "vendor": "Allora Biotech LLC",
-        "balance": 21150.76,
-        "pastdue": 21150.76,
-        "bills": [
-          {
-            "number": "1742",
-            "date": "2026-10-12",
-            "due": "2026-10-12",
-            "amount": 3540.0,
-            "balance": 3540.0,
-            "days_past_due": 14,
-            "pos": [
-              {
-                "po": "PO942",
-                "so": "SO596",
-                "vtiger_customer": "Healthquest Esoterics"
-              }
-            ],
-            "customers": [
-              "Healthquest Esoterics"
-            ]
-          },
-          {
-            "number": "1743",
-            "date": "2026-10-13",
-            "due": "2026-10-13",
-            "amount": 8715.5,
-            "balance": 8715.5,
-            "days_past_due": 13,
-            "pos": [
-              {
-                "po": "PO941",
-                "so": "SO595",
-                "vtiger_customer": "Primex Lab"
-              }
-            ],
-            "customers": [
-              "Primex Lab"
-            ]
-          },
-          {
-            "number": "1762",
-            "date": "2026-10-19",
-            "due": "2026-10-19",
-            "amount": 307.0,
-            "balance": 307.0,
-            "days_past_due": 7,
-            "pos": [
-              {
-                "po": "PO958",
-                "so": "SO605",
-                "vtiger_customer": "OM Diagnostic Laboratories"
-              }
-            ],
-            "customers": [
-              "OM Diagnostic Laboratories"
-            ]
-          },
-          {
-            "number": "1761",
-            "date": "2026-10-19",
-            "due": "2026-10-19",
-            "amount": 1072.0,
-            "balance": 1072.0,
-            "days_past_due": 7,
-            "pos": [
-              {
-                "po": "PO955",
-                "so": "SO604",
-                "vtiger_customer": "Personal"
-              }
-            ],
-            "customers": [
-              "Personal"
-            ]
-          },
-          {
-            "number": "1766",
-            "date": "2026-10-20",
-            "due": "2026-10-20",
-            "amount": 2115.06,
-            "balance": 2115.06,
-            "days_past_due": 6,
-            "pos": [
-              {
-                "po": "PO963",
-                "so": "SO608",
-                "vtiger_customer": "Radiance Diagnostics"
-              }
-            ],
-            "customers": [
-              "Radiance Diagnostics"
-            ]
-          },
-          {
-            "number": "1765",
-            "date": "2026-10-20",
-            "due": "2026-10-20",
-            "amount": 5401.2,
-            "balance": 5401.2,
-            "days_past_due": 6,
-            "pos": [
-              {
-                "po": "PO962",
-                "so": "SO607",
-                "vtiger_customer": "Mercedes Scientific"
-              }
-            ],
-            "customers": [
-              "Mercedes Scientific"
-            ]
-          }
-        ]
-      },
       {
         "vendor": "Conmed",
         "balance": 17372.07,
-        "pastdue": 9153.63,
+        "pastdue": 11614.97,
         "bills": [
           {
             "number": "11427804",
@@ -6827,7 +6657,7 @@
             "due": "2026-10-01",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": 25,
+            "days_past_due": 29,
             "pos": [
               {
                 "po": "PO834",
@@ -6845,7 +6675,7 @@
             "due": "2026-10-01",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": 25,
+            "days_past_due": 29,
             "pos": [
               {
                 "po": "PO834",
@@ -6863,7 +6693,7 @@
             "due": "2026-10-01",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": 25,
+            "days_past_due": 29,
             "pos": [
               {
                 "po": "PO835",
@@ -6881,7 +6711,7 @@
             "due": "2026-10-03",
             "amount": 623.46,
             "balance": 623.46,
-            "days_past_due": 23,
+            "days_past_due": 27,
             "pos": [
               {
                 "po": "PO842",
@@ -6899,7 +6729,7 @@
             "due": "2026-10-08",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": 18,
+            "days_past_due": 22,
             "pos": [
               {
                 "po": "PO851",
@@ -6917,7 +6747,7 @@
             "due": "2026-10-08",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": 18,
+            "days_past_due": 22,
             "pos": [
               {
                 "po": "PO851",
@@ -6935,7 +6765,7 @@
             "due": "2026-10-15",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": 11,
+            "days_past_due": 15,
             "pos": [
               {
                 "po": "PO860",
@@ -6953,7 +6783,7 @@
             "due": "2026-10-15",
             "amount": 311.73,
             "balance": 311.73,
-            "days_past_due": 11,
+            "days_past_due": 15,
             "pos": [
               {
                 "po": "PO861",
@@ -6971,7 +6801,7 @@
             "due": "2026-10-15",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": 11,
+            "days_past_due": 15,
             "pos": [
               {
                 "po": "PO860",
@@ -6989,7 +6819,7 @@
             "due": "2026-10-18",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": 8,
+            "days_past_due": 12,
             "pos": [
               {
                 "po": "PO873",
@@ -7007,7 +6837,7 @@
             "due": "2026-10-18",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": 8,
+            "days_past_due": 12,
             "pos": [
               {
                 "po": "PO873",
@@ -7025,7 +6855,7 @@
             "due": "2026-10-22",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": 4,
+            "days_past_due": 8,
             "pos": [
               {
                 "po": "PO880",
@@ -7043,7 +6873,7 @@
             "due": "2026-10-22",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": 4,
+            "days_past_due": 8,
             "pos": [
               {
                 "po": "PO880",
@@ -7061,7 +6891,7 @@
             "due": "2026-10-23",
             "amount": 158.5,
             "balance": 158.5,
-            "days_past_due": 3,
+            "days_past_due": 7,
             "pos": [
               {
                 "po": "PO882",
@@ -7079,7 +6909,7 @@
             "due": "2026-10-25",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": 1,
+            "days_past_due": 5,
             "pos": [
               {
                 "po": "PO896",
@@ -7097,7 +6927,7 @@
             "due": "2026-10-25",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": 1,
+            "days_past_due": 5,
             "pos": [
               {
                 "po": "PO896",
@@ -7115,7 +6945,7 @@
             "due": "2026-10-26",
             "amount": 158.5,
             "balance": 158.5,
-            "days_past_due": 0,
+            "days_past_due": 4,
             "pos": [
               {
                 "po": "PO889",
@@ -7133,7 +6963,7 @@
             "due": "2026-10-26",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": 0,
+            "days_past_due": 4,
             "pos": [
               {
                 "po": "PO889",
@@ -7151,7 +6981,7 @@
             "due": "2026-10-29",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": -3,
+            "days_past_due": 1,
             "pos": [
               {
                 "po": "PO899",
@@ -7169,7 +6999,7 @@
             "due": "2026-10-31",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": -5,
+            "days_past_due": -1,
             "pos": [
               {
                 "po": "PO906",
@@ -7187,7 +7017,7 @@
             "due": "2026-10-31",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": -5,
+            "days_past_due": -1,
             "pos": [
               {
                 "po": "PO908",
@@ -7205,7 +7035,7 @@
             "due": "2026-11-11",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": -16,
+            "days_past_due": -12,
             "pos": [
               {
                 "po": "PO940",
@@ -7223,7 +7053,7 @@
             "due": "2026-11-13",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": -18,
+            "days_past_due": -14,
             "pos": [
               {
                 "po": "PO945",
@@ -7241,7 +7071,7 @@
             "due": "2026-11-20",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": -25,
+            "days_past_due": -21,
             "pos": [
               {
                 "po": "PO967",
@@ -7251,427 +7081,6 @@
             ],
             "customers": [
               "Integrative Health and Aesthetics"
-            ]
-          }
-        ]
-      },
-      {
-        "vendor": "PMA Services",
-        "balance": 9810.97,
-        "pastdue": 3202.9,
-        "bills": [
-          {
-            "number": "INV-001688",
-            "date": "2026-07-08",
-            "due": "2026-07-08",
-            "amount": 169.0,
-            "balance": 169.0,
-            "days_past_due": 110,
-            "pos": [
-              {
-                "po": "PO793",
-                "so": "SO508",
-                "vtiger_customer": "Doctors General Laboratory"
-              }
-            ],
-            "customers": [
-              "Doctors General Laboratory"
-            ]
-          },
-          {
-            "number": "INV-002042",
-            "date": "2026-10-15",
-            "due": "2026-10-15",
-            "amount": 266.5,
-            "balance": 266.5,
-            "days_past_due": 11,
-            "pos": [
-              {
-                "po": "PO804",
-                "so": "SO516",
-                "vtiger_customer": "GENOLAB DIAGNOSTICS"
-              }
-            ],
-            "customers": [
-              "GENOLAB DIAGNOSTICS"
-            ]
-          },
-          {
-            "number": "INV-002031",
-            "date": "2026-10-15",
-            "due": "2026-10-25",
-            "amount": 272.8,
-            "balance": 272.8,
-            "days_past_due": 1,
-            "pos": [
-              {
-                "po": "PO947",
-                "so": "SO599",
-                "vtiger_customer": "CliniCore Labs"
-              }
-            ],
-            "customers": [
-              "CliniCore Labs"
-            ]
-          },
-          {
-            "number": "INV-002030",
-            "date": "2026-10-15",
-            "due": "2026-10-25",
-            "amount": 243.0,
-            "balance": 243.0,
-            "days_past_due": 1,
-            "pos": [
-              {
-                "po": "PO950",
-                "so": "SO601",
-                "vtiger_customer": "Well Health Labs"
-              }
-            ],
-            "customers": [
-              "Well Health Labs"
-            ]
-          },
-          {
-            "number": "INV-002041",
-            "date": "2026-10-15",
-            "due": "2026-10-25",
-            "amount": 375.0,
-            "balance": 375.0,
-            "days_past_due": 1,
-            "pos": [
-              {
-                "po": "PO824",
-                "so": "SO526",
-                "vtiger_customer": "Radiance Diagnostics"
-              }
-            ],
-            "customers": [
-              "Radiance Diagnostics"
-            ]
-          },
-          {
-            "number": "INV-002040",
-            "date": "2026-10-15",
-            "due": "2026-10-25",
-            "amount": 455.5,
-            "balance": 455.5,
-            "days_past_due": 1,
-            "pos": [
-              {
-                "po": "PO921",
-                "so": "SO586",
-                "vtiger_customer": "LabX Diagnostic Systems"
-              }
-            ],
-            "customers": [
-              "LabX Diagnostic Systems"
-            ]
-          },
-          {
-            "number": "INV-002039",
-            "date": "2026-10-15",
-            "due": "2026-10-25",
-            "amount": 240.5,
-            "balance": 240.5,
-            "days_past_due": 1,
-            "pos": [
-              {
-                "po": "PO935",
-                "so": "SO591",
-                "vtiger_customer": "CliniCore Labs"
-              }
-            ],
-            "customers": [
-              "CliniCore Labs"
-            ]
-          },
-          {
-            "number": "INV-002026",
-            "date": "2026-10-15",
-            "due": "2026-10-25",
-            "amount": 1138.1,
-            "balance": 1138.1,
-            "days_past_due": 1,
-            "pos": [
-              {
-                "po": "PO887",
-                "so": "SO564",
-                "vtiger_customer": "Prominis Medical Services"
-              }
-            ],
-            "customers": [
-              "Prominis Medical Services"
-            ]
-          },
-          {
-            "number": "INV-002036",
-            "date": "2026-10-15",
-            "due": "2026-10-25",
-            "amount": 42.5,
-            "balance": 42.5,
-            "days_past_due": 1,
-            "pos": [
-              {
-                "po": "PO953",
-                "so": "SO603",
-                "vtiger_customer": "MEDICAL HEALTH LAB"
-              }
-            ],
-            "customers": [
-              "MEDICAL HEALTH LAB"
-            ]
-          },
-          {
-            "number": "INV-002073",
-            "date": "2026-10-20",
-            "due": "2026-10-30",
-            "amount": 92.0,
-            "balance": 92.0,
-            "days_past_due": -4,
-            "pos": [
-              {
-                "po": "PO903",
-                "so": "SO575",
-                "vtiger_customer": "Prime Diagnostics"
-              }
-            ],
-            "customers": [
-              "Prime Diagnostics"
-            ]
-          },
-          {
-            "number": "INV-002072",
-            "date": "2026-10-20",
-            "due": "2026-10-30",
-            "amount": 228.0,
-            "balance": 228.0,
-            "days_past_due": -4,
-            "pos": [
-              {
-                "po": "PO887",
-                "so": "SO564",
-                "vtiger_customer": "Prominis Medical Services"
-              }
-            ],
-            "customers": [
-              "Prominis Medical Services"
-            ]
-          },
-          {
-            "number": "INV-002071",
-            "date": "2026-10-20",
-            "due": "2026-10-30",
-            "amount": 92.0,
-            "balance": 92.0,
-            "days_past_due": -4,
-            "pos": [
-              {
-                "po": "PO870",
-                "so": "SO553",
-                "vtiger_customer": "LabX Diagnostic Systems"
-              }
-            ],
-            "customers": [
-              "LabX Diagnostic Systems"
-            ]
-          },
-          {
-            "number": "INV-002070",
-            "date": "2026-10-20",
-            "due": "2026-10-30",
-            "amount": 169.0,
-            "balance": 169.0,
-            "days_past_due": -4,
-            "pos": [
-              {
-                "po": "PO822",
-                "so": "SO525",
-                "vtiger_customer": "Mercedes Scientific"
-              }
-            ],
-            "customers": [
-              "Mercedes Scientific"
-            ]
-          },
-          {
-            "number": "INV-002074",
-            "date": "2026-10-20",
-            "due": "2026-10-30",
-            "amount": 80.0,
-            "balance": 80.0,
-            "days_past_due": -4,
-            "pos": [
-              {
-                "po": "PO921",
-                "so": "SO586",
-                "vtiger_customer": "LabX Diagnostic Systems"
-              }
-            ],
-            "customers": [
-              "LabX Diagnostic Systems"
-            ]
-          },
-          {
-            "number": "INV-002075",
-            "date": "2026-10-20",
-            "due": "2026-10-30",
-            "amount": 290.0,
-            "balance": 290.0,
-            "days_past_due": -4,
-            "pos": [
-              {
-                "po": "PO935",
-                "so": "SO591",
-                "vtiger_customer": "CliniCore Labs"
-              }
-            ],
-            "customers": [
-              "CliniCore Labs"
-            ]
-          },
-          {
-            "number": "INV-002076",
-            "date": "2026-10-20",
-            "due": "2026-10-30",
-            "amount": 3048.0,
-            "balance": 3048.0,
-            "days_past_due": -4,
-            "pos": [
-              {
-                "po": "PO948",
-                "so": "SO600",
-                "vtiger_customer": "Mercedes Scientific"
-              }
-            ],
-            "customers": [
-              "Mercedes Scientific"
-            ]
-          },
-          {
-            "number": "INV-002080",
-            "date": "2026-10-20",
-            "due": "2026-10-30",
-            "amount": 46.9,
-            "balance": 46.9,
-            "days_past_due": -4,
-            "pos": [
-              {
-                "po": "PO964",
-                "so": "SO608",
-                "vtiger_customer": "Radiance Diagnostics"
-              }
-            ],
-            "customers": [
-              "Radiance Diagnostics"
-            ]
-          },
-          {
-            "number": "INV-002078",
-            "date": "2026-10-20",
-            "due": "2026-10-30",
-            "amount": 298.0,
-            "balance": 298.0,
-            "days_past_due": -4,
-            "pos": [
-              {
-                "po": "PO957",
-                "so": "SO605",
-                "vtiger_customer": "OM Diagnostic Laboratories"
-              }
-            ],
-            "customers": [
-              "OM Diagnostic Laboratories"
-            ]
-          },
-          {
-            "number": "INV-002079",
-            "date": "2026-10-20",
-            "due": "2026-10-30",
-            "amount": 296.85,
-            "balance": 296.85,
-            "days_past_due": -4,
-            "pos": [
-              {
-                "po": "PO960",
-                "so": "SO606",
-                "vtiger_customer": "Envol Biomedical"
-              }
-            ],
-            "customers": [
-              "Envol Biomedical"
-            ]
-          },
-          {
-            "number": "INV-002087",
-            "date": "2026-10-21",
-            "due": "2026-10-31",
-            "amount": 243.0,
-            "balance": 243.0,
-            "days_past_due": -5,
-            "pos": [
-              {
-                "po": "PO953",
-                "so": "SO603",
-                "vtiger_customer": "MEDICAL HEALTH LAB"
-              }
-            ],
-            "customers": [
-              "MEDICAL HEALTH LAB"
-            ]
-          },
-          {
-            "number": "INV-002088",
-            "date": "2026-10-21",
-            "due": "2026-10-31",
-            "amount": 64.2,
-            "balance": 64.2,
-            "days_past_due": -5,
-            "pos": [
-              {
-                "po": "PO965",
-                "so": "SO609",
-                "vtiger_customer": "Helix Diagnostix"
-              }
-            ],
-            "customers": [
-              "Helix Diagnostix"
-            ]
-          },
-          {
-            "number": "INV-002089",
-            "date": "2026-10-21",
-            "due": "2026-10-31",
-            "amount": 513.0,
-            "balance": 513.0,
-            "days_past_due": -5,
-            "pos": [
-              {
-                "po": "PO968",
-                "so": "SO611",
-                "vtiger_customer": "Prime Diagnostics"
-              }
-            ],
-            "customers": [
-              "Prime Diagnostics"
-            ]
-          },
-          {
-            "number": "INV-002083",
-            "date": "2026-10-21",
-            "due": "2026-10-31",
-            "amount": 1147.12,
-            "balance": 1147.12,
-            "days_past_due": -5,
-            "pos": [
-              {
-                "po": "PO964",
-                "so": "SO608",
-                "vtiger_customer": "Radiance Diagnostics"
-              }
-            ],
-            "customers": [
-              "Radiance Diagnostics"
             ]
           }
         ]
@@ -7687,7 +7096,7 @@
             "due": "2026-06-11",
             "amount": 135.2,
             "balance": 135.2,
-            "days_past_due": 137,
+            "days_past_due": 141,
             "pos": [
               {
                 "po": "PO682",
@@ -7705,7 +7114,7 @@
             "due": "2026-07-29",
             "amount": 82.0,
             "balance": 82.0,
-            "days_past_due": 89,
+            "days_past_due": 93,
             "pos": [
               {
                 "po": "PO708",
@@ -7723,7 +7132,7 @@
             "due": "2026-08-06",
             "amount": 695.0,
             "balance": 695.0,
-            "days_past_due": 81,
+            "days_past_due": 85,
             "pos": [
               {
                 "po": "PO646",
@@ -7741,7 +7150,7 @@
             "due": "2026-09-26",
             "amount": 92.4,
             "balance": 92.4,
-            "days_past_due": 30,
+            "days_past_due": 34,
             "pos": [
               {
                 "po": "PO827",
@@ -7759,7 +7168,7 @@
             "due": "2026-10-01",
             "amount": 61.6,
             "balance": 61.6,
-            "days_past_due": 25,
+            "days_past_due": 29,
             "pos": [],
             "customers": [
               "MEDICAL HEALTH LAB"
@@ -7771,7 +7180,7 @@
             "due": "2026-10-01",
             "amount": 76.6,
             "balance": 76.6,
-            "days_past_due": 25,
+            "days_past_due": 29,
             "pos": [
               {
                 "po": "PO838",
@@ -7789,7 +7198,7 @@
             "due": "2026-10-02",
             "amount": 34.79,
             "balance": 34.79,
-            "days_past_due": 24,
+            "days_past_due": 28,
             "pos": [
               {
                 "po": "PO841",
@@ -7807,7 +7216,7 @@
             "due": "2026-10-10",
             "amount": 137.0,
             "balance": 137.0,
-            "days_past_due": 16,
+            "days_past_due": 20,
             "pos": [
               {
                 "po": "PO859",
@@ -7823,5 +7232,5 @@
       }
     ]
   },
-  "pulled_at": "2026-10-26 09:59 AM PT"
+  "pulled_at": "2026-10-30 10:33 AM PT"
 }
