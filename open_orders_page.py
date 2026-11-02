@@ -3583,13 +3583,15 @@ function mailOpen(subject,html,label){
     '<div style="display:flex;gap:8px;align-items:center;margin:6px 0;"><b style="font-size:13px;width:60px;">Cc:</b><input id="mailCc" type="text" placeholder="optional" style="'+inp+'"></div>'+
     '<div style="display:flex;gap:8px;align-items:center;margin:6px 0;"><b style="font-size:13px;width:60px;">Subject:</b><input id="mailSubj" type="text" value="'+escapeHtml(subject||'')+'" style="'+inp+'"></div>'+
     (mailOnWorker?'':'<div style="display:flex;gap:8px;align-items:center;margin:6px 0;"><b style="font-size:13px;width:60px;">PIN:</b><input id="mailPin" type="password" value="'+escapeHtml(mailPinMem)+'" placeholder="send passphrase" style="'+inp+'max-width:260px;flex:none;"></div>')+
-    '<iframe id="mailFrame" style="width:100%;height:340px;border:1px solid #e3e7ee;border-radius:6px;margin:8px 0;"></iframe>'+
+    '<div style="font-size:12px;color:#008080;font-weight:600;margin-top:6px;">&#9998; Click inside the message to edit it before sending.</div><iframe id="mailFrame" style="width:100%;height:340px;border:1px solid #e3e7ee;border-radius:6px;margin:8px 0;"></iframe>'+
     '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><button id="mailBtnSend" class="mode-btn" style="margin:0;background:#008080;color:#fff;" onclick="mailGo(&quot;send&quot;)">&#9993; Send now</button>'+
     '<button id="mailBtnDraft" class="mode-btn" style="margin:0;" onclick="mailGo(&quot;draft&quot;)">Save as draft</button>'+
     '<button class="mode-btn" style="margin:0;" onclick="mailClose()">Cancel</button><span id="mailStatus" style="font-size:12px;color:#137333;"></span></div></div>';
   document.body.appendChild(d);
-  document.getElementById('mailFrame').srcdoc=html;
+  edOn('mailFrame',html);
 }
+function edHtml(id,fb){ var f=document.getElementById(id); try{ var d=f&&f.contentDocument; if(d&&d.documentElement) return '<!DOCTYPE html>'+d.documentElement.outerHTML; }catch(e){} return fb; }
+function edOn(id,html){ var f=document.getElementById(id); if(!f) return; f.onload=function(){ try{ f.contentDocument.designMode='on'; }catch(e){} }; f.srcdoc=html; }
 function mailStatus(t,err){ var e=document.getElementById('mailStatus'); if(e){ e.textContent=t; e.style.color=err?'#c0392b':'#137333'; } }
 function mailGo(mode){
   if(!mailCtx) return;
@@ -3603,14 +3605,14 @@ function mailGo(mode){
   if(mode==='send'&&!confirm('Send this email NOW from customersupport@jit4you.com to:'+String.fromCharCode(10)+to+(cc?String.fromCharCode(10)+'Cc: '+cc:'')+String.fromCharCode(10)+String.fromCharCode(10)+'Subject: '+subj)) return;
   mailPinMem=pin;
   if(mailOnWorker){ var w1=document.getElementById('mailBtnSend'), w2=document.getElementById('mailBtnDraft'); w1.disabled=true; w2.disabled=true; mailStatus(mode==='send'?'Sending...':'Saving draft...');
-    fetch('/api/mail/send',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({mode:mode,to:to,cc:cc,subject:subj,html:mailCtx.html,label:mailCtx.label||''})})
+    fetch('/api/mail/send',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({mode:mode,to:to,cc:cc,subject:subj,html:edHtml('mailFrame',mailCtx.html),label:mailCtx.label||''})})
     .then(function(r){ return r.json().catch(function(){return {};}).then(function(j){ if(!r.ok||j.error) throw new Error(j.error||('HTTP '+r.status)); mailStatus(mode==='send'?'Sent from customersupport@jit4you.com.':'Draft saved in the customersupport Drafts folder.'); }); })
     .catch(function(e){ mailStatus('Failed: '+e.message,true); }).finally(function(){ w1.disabled=false; w2.disabled=false; }); return; }
   var id=Date.now().toString(36)+Math.random().toString(36).slice(2,8);
   var b1=document.getElementById('mailBtnSend'), b2=document.getElementById('mailBtnDraft'); b1.disabled=true; b2.disabled=true; mailStatus('Submitting...');
   var hdr={'Authorization':'Bearer '+BTN.token,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','Content-Type':'application/json'};
   mailSha(pin+':'+id).then(function(auth){
-    var payload={mode:mode,to:to,cc:cc,subject:subj,html:mailCtx.html,label:mailCtx.label||'',auth:auth};
+    var payload={mode:mode,to:to,cc:cc,subject:subj,html:edHtml('mailFrame',mailCtx.html),label:mailCtx.label||'',auth:auth};
     var b64=btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
     return fetch('https://api.github.com/repos/'+BTN.repo+'/contents/outbox/'+id+'.json',{method:'PUT',headers:hdr,body:JSON.stringify({message:'outbox: '+id,content:b64,branch:BTN.branch})})
     .then(function(r){ if(r.status!==201&&r.status!==200) return r.text().then(function(t){ throw new Error('queue ('+r.status+') '+t.slice(0,140)); });
@@ -3627,7 +3629,7 @@ function custMailSend(){
 }
 function arMailSend(){
   var c=(PAY.ar.customers||[])[arMail.ci]; if(!c||!arMail.html) return;
-  mailOpen(arMail.subject,arMail.html,c.name);
+  mailOpen(arMail.subject,edHtml('arMailFrame',arMail.html),c.name);
 }
 function custPdf(){
   if(active<0){ alert('Pick a single customer in the sidebar to create their PDF.'); return; }
@@ -4158,13 +4160,13 @@ function arMailGen(){
     '<button class="mode-btn" style="margin:0;" onclick="arMailDl()">&#11015; Download .html</button>'+
     '<button class="mode-btn" style="margin:0;background:#008080;color:#fff;" onclick="arMailSend()">&#9993; Send via Outlook</button>'+
     '<span id="arMailMsg" style="font-size:12px;color:#137333;"></span></div>'+
-    '<iframe id="arMailFrame" style="width:100%;height:440px;border:1px solid #e3e7ee;border-radius:6px;"></iframe>';
-  document.getElementById('arMailFrame').srcdoc=arMail.html; }
+    '<div style="font-size:12px;color:#008080;font-weight:600;margin:4px 0;">&#9998; Click inside the message to edit it before copying, downloading or sending.</div><iframe id="arMailFrame" style="width:100%;height:440px;border:1px solid #e3e7ee;border-radius:6px;"></iframe>';
+  edOn('arMailFrame',arMail.html); }
 function arMailCopySubj(){ var t=arMail.subject||''; function fb(){ var e=document.getElementById('arMailSubj'); if(e){ e.select(); try{ document.execCommand('copy'); arMailMsg('Subject copied.'); }catch(x){ arMailMsg('Select the subject and copy manually.'); } } }
   try{ if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(function(){arMailMsg('Subject copied.');},function(){fb();}); else fb(); }catch(e){ fb(); } }
 function arMailMsg(t){ var e=document.getElementById('arMailMsg'); if(e) e.textContent=t; }
 function arMailCopy(rich){
-  var h=arMail.html; if(!h) return;
+  var h=edHtml('arMailFrame',arMail.html); if(!arMail.html) return;
   function fb(){ var ta=document.createElement('textarea'); ta.value=h; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); arMailMsg('Copied HTML source.'); }catch(e){ arMailMsg('Copy failed - use Download.'); } document.body.removeChild(ta); }
   try{
     if(rich&&window.ClipboardItem&&navigator.clipboard&&navigator.clipboard.write){
@@ -4176,7 +4178,7 @@ function arMailCopy(rich){
 function arMailDl(){
   var c=(PAY.ar.customers||[])[arMail.ci]; if(!c||!arMail.html) return;
   var nm='', s=c.name||'customer'; for(var i=0;i<s.length;i++){ nm+=/[a-z0-9]/i.test(s.charAt(i))?s.charAt(i):'_'; }
-  var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([arMail.html],{type:'text/html'})); a.download='JIT4Labs_Open_Invoices_'+nm+'.html';
+  var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([edHtml('arMailFrame',arMail.html)],{type:'text/html'})); a.download='JIT4Labs_Open_Invoices_'+nm+'.html';
   document.body.appendChild(a); a.click(); document.body.removeChild(a); }
 function arRenderAR(){
   var cs=PAY.ar.customers||[], tot={all:0,current:0,b1:0,b2:0,b3:0}, nAll=0;
