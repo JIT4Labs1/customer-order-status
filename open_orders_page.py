@@ -4099,7 +4099,8 @@ function arMailOpen(){
   var m=document.getElementById('arMailModal'); if(m) m.parentNode.removeChild(m);
   arMail={ci:-1,sel:{},html:''};
   var cs=PAY.ar.customers||[], opts='<option value="-1">Select a customer...</option>';
-  for(var i=0;i<cs.length;i++){ var n=0,t=0; for(var j=0;j<(cs[i].invoices||[]).length;j++){ var b=Number(cs[i].invoices[j].balance)||0; if(b>0.005){n++;t+=b;} }
+  var ord=[]; for(var k0=0;k0<cs.length;k0++) ord.push(k0); ord.sort(function(x,y){ return String(cs[x].name||'').toLowerCase().localeCompare(String(cs[y].name||'').toLowerCase()); });
+  for(var oi=0;oi<ord.length;oi++){ var i=ord[oi], n=0,t=0; for(var j=0;j<(cs[i].invoices||[]).length;j++){ var b=Number(cs[i].invoices[j].balance)||0; if(b>0.005){n++;t+=b;} }
     if(n) opts+='<option value="'+i+'">'+escapeHtml(cs[i].name)+' ('+n+' invoice'+(n===1?'':'s')+', '+payMoney(t)+')</option>'; }
   var d=document.createElement('div'); d.id='arMailModal';
   d.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(16,30,62,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;';
