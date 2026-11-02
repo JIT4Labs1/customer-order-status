@@ -3588,10 +3588,12 @@ function mailOpen(subject,html,label){
     '<button id="mailBtnDraft" class="mode-btn" style="margin:0;" onclick="mailGo(&quot;draft&quot;)">Save as draft</button>'+
     '<button class="mode-btn" style="margin:0;" onclick="mailClose()">Cancel</button><span id="mailStatus" style="font-size:12px;color:#137333;"></span></div></div>';
   document.body.appendChild(d);
-  edOn('mailFrame',html);
+  edOn('mailFrame',html); mailPrefill(label);
 }
 function edHtml(id,fb){ var f=document.getElementById(id); try{ var d=f&&f.contentDocument; if(d&&d.documentElement) return '<!DOCTYPE html>'+d.documentElement.outerHTML; }catch(e){} return fb; }
 function edOn(id,html){ var f=document.getElementById(id); if(!f) return; f.onload=function(){ try{ f.contentDocument.designMode='on'; }catch(e){} }; f.srcdoc=html; }
+function ceKey(x){ var st={inc:1,llc:1,ltd:1,corp:1,co:1,company:1,laboratories:1,laboratory:1,labs:1,lab:1}; return String(x||'').toLowerCase().replace(/&/g,' and ').split(/[^a-z0-9]+/).filter(function(w){return w&&!st[w];}).join(''); }
+function mailPrefill(label){ if(!window._ce){ window._ce=fetch('_customer_emails.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():{};}).catch(function(){return {};}); } window._ce.then(function(m){ var e=m[ceKey(label)], inp=document.getElementById('mailTo'); if(e&&e.emails&&e.emails.length&&inp){ inp.value=e.emails.join(', '); mailStatus('To filled from Shopify: '+e.emails.join(', ')); } }); }
 function mailStatus(t,err){ var e=document.getElementById('mailStatus'); if(e){ e.textContent=t; e.style.color=err?'#c0392b':'#137333'; } }
 function mailGo(mode){
   if(!mailCtx) return;
@@ -3606,7 +3608,7 @@ function mailGo(mode){
   mailPinMem=pin;
   if(mailOnWorker){ var w1=document.getElementById('mailBtnSend'), w2=document.getElementById('mailBtnDraft'); w1.disabled=true; w2.disabled=true; mailStatus(mode==='send'?'Sending...':'Saving draft...');
     fetch('/api/mail/send',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({mode:mode,to:to,cc:cc,subject:subj,html:edHtml('mailFrame',mailCtx.html),label:mailCtx.label||''})})
-    .then(function(r){ return r.json().catch(function(){return {};}).then(function(j){ if(!r.ok||j.error) throw new Error(j.error||('HTTP '+r.status)); mailStatus(mode==='send'?'Sent from customersupport@jit4you.com.':'Draft saved in the customersupport Drafts folder.'); }); })
+    .then(function(r){ return r.json().catch(function(){return {};}).then(function(j){ if(!r.ok||j.error) throw new Error(j.error||('HTTP '+r.status)); mailStatus(mode==='send'?'Sent from customersupport@jit4you.com. Closing...':'Draft saved in the customersupport Drafts folder.'); if(mode==='send') setTimeout(mailClose,4000); }); })
     .catch(function(e){ mailStatus('Failed: '+e.message,true); }).finally(function(){ w1.disabled=false; w2.disabled=false; }); return; }
   var id=Date.now().toString(36)+Math.random().toString(36).slice(2,8);
   var b1=document.getElementById('mailBtnSend'), b2=document.getElementById('mailBtnDraft'); b1.disabled=true; b2.disabled=true; mailStatus('Submitting...');
@@ -3618,7 +3620,7 @@ function mailGo(mode){
     .then(function(r){ if(r.status!==201&&r.status!==200) return r.text().then(function(t){ throw new Error('queue ('+r.status+') '+t.slice(0,140)); });
       return fetch('https://api.github.com/repos/'+BTN.repo+'/actions/workflows/send-email.yml/dispatches',{method:'POST',headers:hdr,body:JSON.stringify({ref:BTN.branch,inputs:{id:id}})}); })
     .then(function(r){ if(r.status!==204) return r.text().then(function(t){ throw new Error('dispatch ('+r.status+') '+t.slice(0,140)); });
-      mailStatus((mode==='send'?'Queued - the email goes out in about a minute; check Sent Items.':'Queued - the draft appears in Drafts in about a minute.')+' (If the PIN is wrong nothing is sent; see the Action log.)'); });
+      if(mode==='send') setTimeout(mailClose,4000); mailStatus((mode==='send'?'Queued - the email goes out in about a minute; check Sent Items.':'Queued - the draft appears in Drafts in about a minute.')+' (If the PIN is wrong nothing is sent; see the Action log.)'); });
   }).catch(function(e){ mailStatus('Failed: '+e.message,true); b1.disabled=false; b2.disabled=false; });
 }
 function custMailSend(){
