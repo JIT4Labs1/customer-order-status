@@ -5684,15 +5684,409 @@
       "found_at": "2026-10-30T17:50:04Z",
       "scan_id": "req-20261030174934",
       "file": "invoices/Invoice_1786_from_Allora_Biotech_LLC_6ONAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr7EnmnAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002175 from PMA Services -Next Day Reagents  LAB X PO982",
+      "received": "2026-11-03T17:06:13Z",
+      "filename": "INV-002175.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "PO982",
+      "lines": [
+        {
+          "sku": "37205-BK",
+          "desc": "PSA Calibrator Set 6x2.5mL",
+          "qty": 1,
+          "rate": 38,
+          "po_unit": 38.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "37215-BK",
+          "desc": "Hybritech fPSA Calibrator S0:5mL/S1-S5:5x2.5mL 6/Kt",
+          "qty": 1,
+          "rate": 34,
+          "po_unit": 34.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "DR0070-1",
+          "desc": "Lyophilized Chemistry Calibrator, L1 12 x 5 mL",
+          "qty": 1,
+          "rate": 69,
+          "po_unit": 69.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "33605-BK",
+          "desc": "Cortisol Calibrator Set 6x4mL",
+          "qty": 1,
+          "rate": 30.6,
+          "po_unit": 30.6,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "A48618-BK",
+          "desc": "SHBG: Sex Hormone Binding Globulin Calibrator 6x1mL",
+          "qty": 1,
+          "rate": 169.8,
+          "po_unit": 169.8,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "B24838-BK",
+          "desc": "Total Vitamin D 2x50 Tests Ea",
+          "qty": 2,
+          "rate": 228,
+          "po_unit": 228.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "81910-BK",
+          "desc": "Access System Check Solution 6x4mL",
+          "qty": 1,
+          "rate": 15.95,
+          "po_unit": 15.95,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "33025-BK",
+          "desc": "Ferritin Calibrator Set 6x4mL",
+          "qty": 1,
+          "rate": 34.58,
+          "po_unit": 34.58,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO982",
+      "po_status": "Partially received",
+      "po_missing": [
+        "33805",
+        "ODC0019",
+        "81901"
+      ],
+      "summary": {
+        "ok": 8,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr7EnmnAAA=|INV-002175.pdf",
+      "found_at": "2026-11-04T16:12:40Z",
+      "scan_id": "req-20261104161159",
+      "file": "invoices/INV-002175_nmnAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr7EnncAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002192 from PMA Services -Next Day Reagents   SO1435--PO982 REACTION VESSELS (3)",
+      "received": "2026-11-04T13:50:23Z",
+      "filename": "INV-002192.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "SO1435--PO982",
+      "lines": [
+        {
+          "sku": "81901-BK",
+          "desc": "Reaction Vessels (Access)",
+          "qty": 3,
+          "rate": 27.5,
+          "po_unit": 27.5,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO982",
+      "po_status": "Partially received",
+      "po_missing": [
+        "37205",
+        "37215",
+        "33805",
+        "DR0070-1",
+        "33605",
+        "A48618",
+        "B24838",
+        "ODC0019",
+        "81910",
+        "33025"
+      ],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr7EnncAAA=|INV-002192.pdf",
+      "found_at": "2026-11-04T16:12:40Z",
+      "scan_id": "req-20261104161159",
+      "file": "invoices/INV-002192_nncAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr7EnnjAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002192 from PMA Services -Next Day Reagents  REVISED / S/H REMOVED FROM SECOND INVOICE / SO1435",
+      "received": "2026-11-04T14:13:56Z",
+      "filename": "INV-002192.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "SO1435--PO982",
+      "lines": [
+        {
+          "sku": "81901-BK",
+          "desc": "Reaction Vessels (Access)",
+          "qty": 3,
+          "rate": 27.5,
+          "po_unit": 27.5,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO982",
+      "po_status": "Partially received",
+      "po_missing": [
+        "37205",
+        "37215",
+        "33805",
+        "DR0070-1",
+        "33605",
+        "A48618",
+        "B24838",
+        "ODC0019",
+        "81910",
+        "33025"
+      ],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr7EnnjAAA=|INV-002192.pdf",
+      "found_at": "2026-11-04T16:12:40Z",
+      "scan_id": "req-20261104161159",
+      "file": "invoices/INV-002192_nnjAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr5g6OPAAA=",
+      "source": "quickbooks",
+      "sender": "quickbooks@notification.intuit.com",
+      "subject": "New payment request from Allora Biotech LLC - invoice 1784",
+      "received": "2026-10-30T18:48:14Z",
+      "filename": "Invoice_1784_from_Allora_Biotech_LLC.pdf",
+      "vendor": "Allora Biotech LLC",
+      "po_raw": "979",
+      "lines": [
+        {
+          "sku": "A10826",
+          "desc": "DHEA-SO4 reagent, 2 x 50 DET -",
+          "qty": 6,
+          "rate": 77,
+          "po_unit": 77.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO979",
+      "po_status": "Received Shipment",
+      "po_missing": [],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr5g6OPAAA=|Invoice_1784_from_Allora_Biotech_LLC.pdf",
+      "found_at": "2026-11-04T16:12:40Z",
+      "scan_id": "req-20261104161159",
+      "file": "invoices/Invoice_1784_from_Allora_Biotech_LLC_6OPAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr7EnnFAAA=",
+      "source": "quickbooks",
+      "sender": "quickbooks@notification.intuit.com",
+      "subject": "New payment request from Allora Biotech LLC - invoice 1792",
+      "received": "2026-11-03T22:56:30Z",
+      "filename": "Invoice_1792_from_Allora_Biotech_LLC.pdf",
+      "vendor": "Allora Biotech LLC",
+      "po_raw": "985",
+      "lines": [
+        {
+          "sku": "B93009",
+          "desc": "HbA1c Advanced reagent kit -",
+          "qty": 1,
+          "rate": 950,
+          "po_unit": 950.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO985",
+      "po_status": "Received Shipment",
+      "po_missing": [],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr7EnnFAAA=|Invoice_1792_from_Allora_Biotech_LLC.pdf",
+      "found_at": "2026-11-04T16:12:40Z",
+      "scan_id": "req-20261104161159",
+      "file": "invoices/Invoice_1792_from_Allora_Biotech_LLC_nnFAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr7EnnGAAA=",
+      "source": "quickbooks",
+      "sender": "quickbooks@notification.intuit.com",
+      "subject": "New payment request from Allora Biotech LLC - invoice 1790",
+      "received": "2026-11-03T22:59:04Z",
+      "filename": "Invoice_1790_from_Allora_Biotech_LLC.pdf",
+      "vendor": "Allora Biotech LLC",
+      "po_raw": "981",
+      "lines": [
+        {
+          "sku": "33830",
+          "desc": "Total T3 reagent, 2 x 50 DET - Beckman",
+          "qty": 1,
+          "rate": 60,
+          "po_unit": 60.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "37210",
+          "desc": "Hybritech free PSA reagent - Beckman",
+          "qty": 1,
+          "rate": 93,
+          "po_unit": 93.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "A13422",
+          "desc": "Free T3 reagent, 2 x 50 DET - Beckman",
+          "qty": 2,
+          "rate": 52.1,
+          "po_unit": 52.1,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "A16792",
+          "desc": "Wash buffer II, 4 x 1950 mL - Beckman",
+          "qty": 4,
+          "rate": 27,
+          "po_unit": 27.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "A48617",
+          "desc": "SHBG reagent - Beckman Coulter",
+          "qty": 2,
+          "rate": 255,
+          "po_unit": 255.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "B24839",
+          "desc": "Vitamin D calibrators - Beckman",
+          "qty": 1,
+          "rate": 135,
+          "po_unit": 135.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "B63284",
+          "desc": "Access TSH (3rd IS) reagent, 2 x 100",
+          "qty": 3,
+          "rate": 79,
+          "po_unit": 79.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "B84493",
+          "desc": "Sensitive Estradiol (SE2) reagent, 2 x",
+          "qty": 2,
+          "rate": 55,
+          "po_unit": 55.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "B93009",
+          "desc": "HbA1c Advanced reagent kit -",
+          "qty": 1,
+          "rate": 950,
+          "po_unit": 950.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "C76421",
+          "desc": "Free T4 reagent, 2 x 50 DET - Beckman",
+          "qty": 1,
+          "rate": 45,
+          "po_unit": 45.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "C76421",
+          "desc": "Free T4 reagent, 2 x 50 DET - Beckman",
+          "qty": 1,
+          "rate": 0,
+          "po_unit": 45.0,
+          "delta": -45.0,
+          "status": "under"
+        },
+        {
+          "sku": "OSR6004",
+          "desc": "ALP (IFCC) reagent, R1 4 x 12 mL, R2 4",
+          "qty": 1,
+          "rate": 50,
+          "po_unit": 50.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO981",
+      "po_status": "Partially received",
+      "po_missing": [
+        "33020"
+      ],
+      "summary": {
+        "ok": 11,
+        "bad": 1,
+        "miss": 0
+      },
+      "verdict": "discrepancy",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAr7EnnGAAA=|Invoice_1790_from_Allora_Biotech_LLC.pdf",
+      "found_at": "2026-11-04T16:12:40Z",
+      "scan_id": "req-20261104161159",
+      "file": "invoices/Invoice_1790_from_Allora_Biotech_LLC_nnGAAA.pdf"
     }
   ],
   "last_scan": {
-    "id": "req-20261030174934",
-    "at": "2026-10-30T17:50:04Z",
+    "id": "req-20261104161159",
+    "at": "2026-11-04T16:12:40Z",
     "window": "week",
-    "since": "2026-10-23T10:49:58.063039-07:00",
-    "scanned": 16,
-    "added": 2
+    "since": "2026-10-28T08:12:36.651235-07:00",
+    "scanned": 9,
+    "added": 6
   },
   "pulled_at": "2026-10-27 03:16 PM PT"
 }
