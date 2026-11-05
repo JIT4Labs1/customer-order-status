@@ -1,5 +1,5 @@
 {
-  "pulled_at": "2026-11-04 10:03 AM PT",
+  "pulled_at": "2026-11-05 10:12 AM PT",
   "property": "433514600 (jit4you.com)",
   "buckets": [
     "Direct",
@@ -16,10 +16,10 @@
       "granularity": "day",
       "points": [
         {
-          "t": "2026-11-04",
+          "t": "2026-11-05",
           "Direct": 5,
-          "Google Ads": 3,
-          "Organic Search": 6,
+          "Google Ads": 0,
+          "Organic Search": 7,
           "Email": 0,
           "LinkedIn": 0,
           "Other": 2
@@ -35,14 +35,14 @@
         },
         {
           "source": "Google Ads",
-          "sessions": 3,
+          "sessions": 0,
           "conversions": 0,
           "revenue": 0.0,
           "transactions": 0
         },
         {
           "source": "Organic Search",
-          "sessions": 6,
+          "sessions": 7,
           "conversions": 0,
           "revenue": 0.0,
           "transactions": 0
@@ -70,22 +70,13 @@
         }
       ],
       "totals": {
-        "sessions": 16,
+        "sessions": 14,
         "conversions": 0,
         "revenue": 0.0,
         "transactions": 0
       },
       "email_detail": [],
-      "gads_detail": [
-        {
-          "name": "BeckmanCoulter_Shopping_Test",
-          "campaign": "BeckmanCoulter_Shopping_Test",
-          "sessions": 3,
-          "conversions": 0,
-          "revenue": 0,
-          "transactions": 0
-        }
-      ],
+      "gads_detail": [],
       "gads_campaigns": [],
       "gads_series": {},
       "gads_cost": {},
@@ -132,36 +123,40 @@
       "granularity": "day",
       "points": [
         {
-          "t": "2026-11-03",
-          "Direct": 52,
-          "Google Ads": 11,
-          "Organic Search": 69,
+          "t": "2026-11-04",
+          "Direct": 45,
+          "Google Ads": 21,
+          "Organic Search": 33,
           "Email": 0,
           "LinkedIn": 0,
-          "Other": 25
+          "Other": 14,
+          "camp::Sales-Shopping_ViroVac_Take2": 3,
+          "camp::BeckmanCoulter_Shopping_Test": 16,
+          "camp::Siemens_Search": 2,
+          "camp::BeckmanCoulter_Sales_Search": 0
         }
       ],
       "sales": [
         {
           "source": "Direct",
-          "sessions": 52,
+          "sessions": 45,
+          "conversions": 3,
+          "revenue": 1556.2,
+          "transactions": 1
+        },
+        {
+          "source": "Google Ads",
+          "sessions": 21,
           "conversions": 2,
           "revenue": 0.0,
           "transactions": 0
         },
         {
-          "source": "Google Ads",
-          "sessions": 11,
+          "source": "Organic Search",
+          "sessions": 33,
           "conversions": 0,
           "revenue": 0.0,
           "transactions": 0
-        },
-        {
-          "source": "Organic Search",
-          "sessions": 69,
-          "conversions": 3,
-          "revenue": 1350.0,
-          "transactions": 1
         },
         {
           "source": "Email",
@@ -179,25 +174,25 @@
         },
         {
           "source": "Other",
-          "sessions": 25,
-          "conversions": 0,
-          "revenue": 0.0,
-          "transactions": 0
+          "sessions": 14,
+          "conversions": 2,
+          "revenue": 4910.7,
+          "transactions": 2
         }
       ],
       "totals": {
-        "sessions": 157,
-        "conversions": 5,
-        "revenue": 1350.0,
-        "transactions": 1
+        "sessions": 113,
+        "conversions": 7,
+        "revenue": 6466.9,
+        "transactions": 3
       },
       "email_detail": [],
       "gads_detail": [
         {
-          "name": "Siemens_Search",
-          "campaign": "Siemens_Search",
-          "sessions": 6,
-          "conversions": 0,
+          "name": "BeckmanCoulter_Shopping_Test",
+          "campaign": "BeckmanCoulter_Shopping_Test",
+          "sessions": 16,
+          "conversions": 2,
           "revenue": 0,
           "transactions": 0
         },
@@ -210,22 +205,89 @@
           "transactions": 0
         },
         {
-          "name": "BeckmanCoulter_Shopping_Test",
-          "campaign": "BeckmanCoulter_Shopping_Test",
-          "sessions": 1,
+          "name": "Siemens_Search",
+          "campaign": "Siemens_Search",
+          "sessions": 2,
           "conversions": 0,
           "revenue": 0,
           "transactions": 0
         }
       ],
-      "gads_campaigns": [],
-      "gads_series": {},
-      "gads_cost": {},
-      "gads_start": {},
-      "gads_events": {},
-      "gads_types": {},
-      "gads_status": {},
-      "gads_active": [],
+      "gads_campaigns": [
+        "Sales-Shopping_ViroVac_Take2",
+        "BeckmanCoulter_Shopping_Test",
+        "Siemens_Search",
+        "BeckmanCoulter_Sales_Search"
+      ],
+      "gads_series": {
+        "Sales-Shopping_ViroVac_Take2": [
+          {
+            "t": "2026-11-04",
+            "impr": 1003,
+            "clicks": 3,
+            "atc": 0
+          }
+        ],
+        "BeckmanCoulter_Shopping_Test": [
+          {
+            "t": "2026-11-04",
+            "impr": 380,
+            "clicks": 8,
+            "atc": 2
+          }
+        ],
+        "Siemens_Search": [
+          {
+            "t": "2026-11-04",
+            "impr": 41,
+            "clicks": 1,
+            "atc": 0
+          }
+        ],
+        "BeckmanCoulter_Sales_Search": [
+          {
+            "t": "2026-11-04",
+            "impr": 16,
+            "clicks": 0,
+            "atc": 0
+          }
+        ]
+      },
+      "gads_cost": {
+        "Sales-Shopping_ViroVac_Take2": 22.59,
+        "BeckmanCoulter_Shopping_Test": 8.84,
+        "Siemens_Search": 5.72,
+        "BeckmanCoulter_Sales_Search": 0
+      },
+      "gads_start": {
+        "Sales-Shopping_ViroVac_Take2": "",
+        "BeckmanCoulter_Shopping_Test": "2026-06-10",
+        "Siemens_Search": "2026-06-19",
+        "BeckmanCoulter_Sales_Search": "2026-06-17"
+      },
+      "gads_events": {
+        "BeckmanCoulter_Shopping_Test": {
+          "add_to_cart": 2,
+          "purchase": 0
+        }
+      },
+      "gads_types": {
+        "Sales-Shopping_ViroVac_Take2": "Shopping",
+        "BeckmanCoulter_Shopping_Test": "Shopping",
+        "Siemens_Search": "Search",
+        "BeckmanCoulter_Sales_Search": "Search"
+      },
+      "gads_status": {
+        "Sales-Shopping_ViroVac_Take2": "",
+        "BeckmanCoulter_Shopping_Test": "enabled",
+        "Siemens_Search": "enabled",
+        "BeckmanCoulter_Sales_Search": "enabled"
+      },
+      "gads_active": [
+        "BeckmanCoulter_Shopping_Test",
+        "Siemens_Search",
+        "BeckmanCoulter_Sales_Search"
+      ],
       "klaviyo_flows": [
         {
           "flow": "ViroVac Reorder Reminder",
@@ -263,19 +325,6 @@
       "label": "Last 7 days",
       "granularity": "day",
       "points": [
-        {
-          "t": "2026-10-29",
-          "Direct": 48,
-          "Google Ads": 28,
-          "Organic Search": 29,
-          "Email": 0,
-          "LinkedIn": 0,
-          "Other": 13,
-          "camp::Sales-Shopping_ViroVac_Take2": 3,
-          "camp::BeckmanCoulter_Shopping_Test": 10,
-          "camp::Siemens_Search": 7,
-          "camp::BeckmanCoulter_Sales_Search": 0
-        },
         {
           "t": "2026-10-30",
           "Direct": 49,
@@ -330,12 +379,12 @@
         },
         {
           "t": "2026-11-03",
-          "Direct": 52,
+          "Direct": 53,
           "Google Ads": 11,
-          "Organic Search": 69,
+          "Organic Search": 68,
           "Email": 0,
           "LinkedIn": 0,
-          "Other": 25,
+          "Other": 24,
           "camp::Sales-Shopping_ViroVac_Take2": 3,
           "camp::BeckmanCoulter_Shopping_Test": 1,
           "camp::Siemens_Search": 6,
@@ -343,14 +392,27 @@
         },
         {
           "t": "2026-11-04",
+          "Direct": 45,
+          "Google Ads": 21,
+          "Organic Search": 33,
+          "Email": 0,
+          "LinkedIn": 0,
+          "Other": 14,
+          "camp::Sales-Shopping_ViroVac_Take2": 3,
+          "camp::BeckmanCoulter_Shopping_Test": 16,
+          "camp::Siemens_Search": 2,
+          "camp::BeckmanCoulter_Sales_Search": 0
+        },
+        {
+          "t": "2026-11-05",
           "Direct": 5,
-          "Google Ads": 3,
-          "Organic Search": 6,
+          "Google Ads": 0,
+          "Organic Search": 7,
           "Email": 0,
           "LinkedIn": 0,
           "Other": 2,
           "camp::Sales-Shopping_ViroVac_Take2": 0,
-          "camp::BeckmanCoulter_Shopping_Test": 3,
+          "camp::BeckmanCoulter_Shopping_Test": 0,
           "camp::Siemens_Search": 0,
           "camp::BeckmanCoulter_Sales_Search": 0
         }
@@ -358,21 +420,21 @@
       "sales": [
         {
           "source": "Direct",
-          "sessions": 352,
-          "conversions": 6,
-          "revenue": 0.0,
-          "transactions": 0
+          "sessions": 350,
+          "conversions": 9,
+          "revenue": 1556.2,
+          "transactions": 1
         },
         {
           "source": "Google Ads",
-          "sessions": 103,
-          "conversions": 13,
+          "sessions": 93,
+          "conversions": 7,
           "revenue": 0.0,
           "transactions": 0
         },
         {
           "source": "Organic Search",
-          "sessions": 213,
+          "sessions": 217,
           "conversions": 5,
           "revenue": 1350.0,
           "transactions": 1
@@ -394,15 +456,15 @@
         {
           "source": "Other",
           "sessions": 66,
-          "conversions": 63,
-          "revenue": 8409.4,
-          "transactions": 4
+          "conversions": 60,
+          "revenue": 13235.1,
+          "transactions": 3
         }
       ],
       "totals": {
-        "sessions": 734,
-        "conversions": 87,
-        "revenue": 9759.4,
+        "sessions": 726,
+        "conversions": 81,
+        "revenue": 16141.3,
         "transactions": 5
       },
       "email_detail": [],
@@ -410,8 +472,8 @@
         {
           "name": "BeckmanCoulter_Shopping_Test",
           "campaign": "BeckmanCoulter_Shopping_Test",
-          "sessions": 38,
-          "conversions": 4,
+          "sessions": 41,
+          "conversions": 2,
           "revenue": 0,
           "transactions": 0
         },
@@ -419,14 +481,14 @@
           "name": "Sales-Shopping_ViroVac_Take2",
           "campaign": "Sales-Shopping_ViroVac_Take2",
           "sessions": 25,
-          "conversions": 2,
+          "conversions": 0,
           "revenue": 0,
           "transactions": 0
         },
         {
           "name": "Siemens_Search",
           "campaign": "Siemens_Search",
-          "sessions": 18,
+          "sessions": 13,
           "conversions": 0,
           "revenue": 0,
           "transactions": 0
@@ -434,8 +496,8 @@
         {
           "name": "ViroVac Shopping_Shopify",
           "campaign": "ViroVac Shopping_Shopify",
-          "sessions": 11,
-          "conversions": 7,
+          "sessions": 9,
+          "conversions": 5,
           "revenue": 0,
           "transactions": 0
         },
@@ -456,12 +518,6 @@
       ],
       "gads_series": {
         "Sales-Shopping_ViroVac_Take2": [
-          {
-            "t": "2026-10-29",
-            "impr": 471,
-            "clicks": 2,
-            "atc": 2
-          },
           {
             "t": "2026-10-30",
             "impr": 425,
@@ -494,18 +550,18 @@
           },
           {
             "t": "2026-11-04",
-            "impr": 421,
-            "clicks": 0,
+            "impr": 1003,
+            "clicks": 3,
+            "atc": 0
+          },
+          {
+            "t": "2026-11-05",
+            "impr": 192,
+            "clicks": 1,
             "atc": 0
           }
         ],
         "BeckmanCoulter_Shopping_Test": [
-          {
-            "t": "2026-10-29",
-            "impr": 426,
-            "clicks": 8,
-            "atc": 4
-          },
           {
             "t": "2026-10-30",
             "impr": 305,
@@ -538,18 +594,18 @@
           },
           {
             "t": "2026-11-04",
-            "impr": 91,
-            "clicks": 2,
+            "impr": 380,
+            "clicks": 8,
+            "atc": 2
+          },
+          {
+            "t": "2026-11-05",
+            "impr": 101,
+            "clicks": 1,
             "atc": 0
           }
         ],
         "Siemens_Search": [
-          {
-            "t": "2026-10-29",
-            "impr": 39,
-            "clicks": 7,
-            "atc": 0
-          },
           {
             "t": "2026-10-30",
             "impr": 24,
@@ -582,18 +638,18 @@
           },
           {
             "t": "2026-11-04",
-            "impr": 10,
+            "impr": 41,
+            "clicks": 1,
+            "atc": 0
+          },
+          {
+            "t": "2026-11-05",
+            "impr": 12,
             "clicks": 1,
             "atc": 0
           }
         ],
         "BeckmanCoulter_Sales_Search": [
-          {
-            "t": "2026-10-29",
-            "impr": 7,
-            "clicks": 0,
-            "atc": 0
-          },
           {
             "t": "2026-10-30",
             "impr": 2,
@@ -626,16 +682,22 @@
           },
           {
             "t": "2026-11-04",
-            "impr": 6,
+            "impr": 16,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-11-05",
+            "impr": 0,
             "clicks": 0,
             "atc": 0
           }
         ]
       },
       "gads_cost": {
-        "Sales-Shopping_ViroVac_Take2": 112.18,
-        "BeckmanCoulter_Shopping_Test": 33.47,
-        "Siemens_Search": 80.95,
+        "Sales-Shopping_ViroVac_Take2": 120.85,
+        "BeckmanCoulter_Shopping_Test": 31.33,
+        "Siemens_Search": 46.62,
         "BeckmanCoulter_Sales_Search": 4.55
       },
       "gads_start": {
@@ -646,14 +708,10 @@
       },
       "gads_events": {
         "ViroVac Shopping_Shopify": {
-          "add_to_cart": 7,
+          "add_to_cart": 5,
           "purchase": 0
         },
         "BeckmanCoulter_Shopping_Test": {
-          "add_to_cart": 4,
-          "purchase": 0
-        },
-        "Sales-Shopping_ViroVac_Take2": {
           "add_to_cart": 2,
           "purchase": 0
         }
@@ -713,21 +771,6 @@
       "granularity": "day",
       "points": [
         {
-          "t": "2026-10-06",
-          "Direct": 135,
-          "Google Ads": 20,
-          "Organic Search": 31,
-          "Email": 0,
-          "LinkedIn": 0,
-          "Other": 12,
-          "camp::Sales-Shopping_ViroVac_Take2": 0,
-          "camp::BeckmanCoulter_Shopping_Test": 5,
-          "camp::ViroVac Shopping_Shopify": 10,
-          "camp::Siemens_Search": 0,
-          "camp::Siemens_Sales_Shopping": 4,
-          "camp::BeckmanCoulter_Sales_Search": 1
-        },
-        {
           "t": "2026-10-07",
           "Direct": 47,
           "Google Ads": 6,
@@ -737,10 +780,10 @@
           "Other": 20,
           "camp::Sales-Shopping_ViroVac_Take2": 0,
           "camp::BeckmanCoulter_Shopping_Test": 5,
-          "camp::ViroVac Shopping_Shopify": 0,
           "camp::Siemens_Search": 1,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 0,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-08",
@@ -752,10 +795,10 @@
           "Other": 21,
           "camp::Sales-Shopping_ViroVac_Take2": 0,
           "camp::BeckmanCoulter_Shopping_Test": 2,
-          "camp::ViroVac Shopping_Shopify": 0,
           "camp::Siemens_Search": 0,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 0,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-09",
@@ -767,10 +810,10 @@
           "Other": 18,
           "camp::Sales-Shopping_ViroVac_Take2": 0,
           "camp::BeckmanCoulter_Shopping_Test": 2,
-          "camp::ViroVac Shopping_Shopify": 1,
           "camp::Siemens_Search": 2,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 2
+          "camp::ViroVac Shopping_Shopify": 1,
+          "camp::BeckmanCoulter_Sales_Search": 2,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-10",
@@ -782,10 +825,10 @@
           "Other": 3,
           "camp::Sales-Shopping_ViroVac_Take2": 0,
           "camp::BeckmanCoulter_Shopping_Test": 0,
-          "camp::ViroVac Shopping_Shopify": 2,
           "camp::Siemens_Search": 2,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 1
+          "camp::ViroVac Shopping_Shopify": 2,
+          "camp::BeckmanCoulter_Sales_Search": 1,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-11",
@@ -797,10 +840,10 @@
           "Other": 4,
           "camp::Sales-Shopping_ViroVac_Take2": 0,
           "camp::BeckmanCoulter_Shopping_Test": 1,
-          "camp::ViroVac Shopping_Shopify": 3,
           "camp::Siemens_Search": 4,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 3,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-12",
@@ -812,10 +855,10 @@
           "Other": 11,
           "camp::Sales-Shopping_ViroVac_Take2": 0,
           "camp::BeckmanCoulter_Shopping_Test": 3,
-          "camp::ViroVac Shopping_Shopify": 3,
           "camp::Siemens_Search": 2,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 3,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-13",
@@ -827,10 +870,10 @@
           "Other": 10,
           "camp::Sales-Shopping_ViroVac_Take2": 5,
           "camp::BeckmanCoulter_Shopping_Test": 8,
-          "camp::ViroVac Shopping_Shopify": 5,
           "camp::Siemens_Search": 3,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 3
+          "camp::ViroVac Shopping_Shopify": 5,
+          "camp::BeckmanCoulter_Sales_Search": 3,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-14",
@@ -842,10 +885,10 @@
           "Other": 20,
           "camp::Sales-Shopping_ViroVac_Take2": 9,
           "camp::BeckmanCoulter_Shopping_Test": 5,
-          "camp::ViroVac Shopping_Shopify": 2,
           "camp::Siemens_Search": 4,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 2
+          "camp::ViroVac Shopping_Shopify": 2,
+          "camp::BeckmanCoulter_Sales_Search": 2,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-15",
@@ -857,10 +900,10 @@
           "Other": 17,
           "camp::Sales-Shopping_ViroVac_Take2": 2,
           "camp::BeckmanCoulter_Shopping_Test": 3,
-          "camp::ViroVac Shopping_Shopify": 0,
           "camp::Siemens_Search": 4,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 0,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-16",
@@ -872,10 +915,10 @@
           "Other": 4,
           "camp::Sales-Shopping_ViroVac_Take2": 4,
           "camp::BeckmanCoulter_Shopping_Test": 8,
-          "camp::ViroVac Shopping_Shopify": 3,
           "camp::Siemens_Search": 6,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 3,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-17",
@@ -887,10 +930,10 @@
           "Other": 4,
           "camp::Sales-Shopping_ViroVac_Take2": 7,
           "camp::BeckmanCoulter_Shopping_Test": 1,
-          "camp::ViroVac Shopping_Shopify": 2,
           "camp::Siemens_Search": 1,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 2,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-18",
@@ -902,10 +945,10 @@
           "Other": 7,
           "camp::Sales-Shopping_ViroVac_Take2": 6,
           "camp::BeckmanCoulter_Shopping_Test": 3,
-          "camp::ViroVac Shopping_Shopify": 1,
           "camp::Siemens_Search": 1,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 1,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-19",
@@ -917,10 +960,10 @@
           "Other": 14,
           "camp::Sales-Shopping_ViroVac_Take2": 2,
           "camp::BeckmanCoulter_Shopping_Test": 9,
-          "camp::ViroVac Shopping_Shopify": 1,
           "camp::Siemens_Search": 2,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 1,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-20",
@@ -932,10 +975,10 @@
           "Other": 13,
           "camp::Sales-Shopping_ViroVac_Take2": 3,
           "camp::BeckmanCoulter_Shopping_Test": 2,
-          "camp::ViroVac Shopping_Shopify": 0,
           "camp::Siemens_Search": 2,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 0,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-21",
@@ -947,10 +990,10 @@
           "Other": 10,
           "camp::Sales-Shopping_ViroVac_Take2": 5,
           "camp::BeckmanCoulter_Shopping_Test": 1,
-          "camp::ViroVac Shopping_Shopify": 0,
           "camp::Siemens_Search": 2,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 0,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-22",
@@ -962,10 +1005,10 @@
           "Other": 17,
           "camp::Sales-Shopping_ViroVac_Take2": 2,
           "camp::BeckmanCoulter_Shopping_Test": 3,
-          "camp::ViroVac Shopping_Shopify": 0,
           "camp::Siemens_Search": 0,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 4
+          "camp::ViroVac Shopping_Shopify": 0,
+          "camp::BeckmanCoulter_Sales_Search": 4,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-23",
@@ -977,10 +1020,10 @@
           "Other": 15,
           "camp::Sales-Shopping_ViroVac_Take2": 0,
           "camp::BeckmanCoulter_Shopping_Test": 1,
-          "camp::ViroVac Shopping_Shopify": 1,
           "camp::Siemens_Search": 1,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 1,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-24",
@@ -992,10 +1035,10 @@
           "Other": 2,
           "camp::Sales-Shopping_ViroVac_Take2": 1,
           "camp::BeckmanCoulter_Shopping_Test": 1,
-          "camp::ViroVac Shopping_Shopify": 0,
           "camp::Siemens_Search": 0,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 0,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-25",
@@ -1007,10 +1050,10 @@
           "Other": 7,
           "camp::Sales-Shopping_ViroVac_Take2": 5,
           "camp::BeckmanCoulter_Shopping_Test": 3,
-          "camp::ViroVac Shopping_Shopify": 0,
           "camp::Siemens_Search": 2,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 0,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-26",
@@ -1022,10 +1065,10 @@
           "Other": 35,
           "camp::Sales-Shopping_ViroVac_Take2": 1,
           "camp::BeckmanCoulter_Shopping_Test": 4,
-          "camp::ViroVac Shopping_Shopify": 0,
           "camp::Siemens_Search": 3,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 0,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-27",
@@ -1037,10 +1080,10 @@
           "Other": 16,
           "camp::Sales-Shopping_ViroVac_Take2": 3,
           "camp::BeckmanCoulter_Shopping_Test": 3,
-          "camp::ViroVac Shopping_Shopify": 1,
           "camp::Siemens_Search": 6,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 2
+          "camp::ViroVac Shopping_Shopify": 1,
+          "camp::BeckmanCoulter_Sales_Search": 2,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-28",
@@ -1052,10 +1095,10 @@
           "Other": 18,
           "camp::Sales-Shopping_ViroVac_Take2": 5,
           "camp::BeckmanCoulter_Shopping_Test": 2,
-          "camp::ViroVac Shopping_Shopify": 3,
           "camp::Siemens_Search": 3,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 3,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-29",
@@ -1067,10 +1110,10 @@
           "Other": 13,
           "camp::Sales-Shopping_ViroVac_Take2": 3,
           "camp::BeckmanCoulter_Shopping_Test": 10,
-          "camp::ViroVac Shopping_Shopify": 2,
           "camp::Siemens_Search": 7,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 2,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-30",
@@ -1082,10 +1125,10 @@
           "Other": 3,
           "camp::Sales-Shopping_ViroVac_Take2": 5,
           "camp::BeckmanCoulter_Shopping_Test": 9,
-          "camp::ViroVac Shopping_Shopify": 1,
           "camp::Siemens_Search": 3,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 1,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-10-31",
@@ -1097,10 +1140,10 @@
           "Other": 1,
           "camp::Sales-Shopping_ViroVac_Take2": 4,
           "camp::BeckmanCoulter_Shopping_Test": 7,
-          "camp::ViroVac Shopping_Shopify": 1,
           "camp::Siemens_Search": 1,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 1,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-11-01",
@@ -1112,10 +1155,10 @@
           "Other": 6,
           "camp::Sales-Shopping_ViroVac_Take2": 5,
           "camp::BeckmanCoulter_Shopping_Test": 3,
-          "camp::ViroVac Shopping_Shopify": 4,
           "camp::Siemens_Search": 0,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 2
+          "camp::ViroVac Shopping_Shopify": 4,
+          "camp::BeckmanCoulter_Sales_Search": 2,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-11-02",
@@ -1127,60 +1170,75 @@
           "Other": 16,
           "camp::Sales-Shopping_ViroVac_Take2": 5,
           "camp::BeckmanCoulter_Shopping_Test": 5,
-          "camp::ViroVac Shopping_Shopify": 3,
           "camp::Siemens_Search": 1,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 2
+          "camp::ViroVac Shopping_Shopify": 3,
+          "camp::BeckmanCoulter_Sales_Search": 2,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-11-03",
-          "Direct": 52,
+          "Direct": 53,
           "Google Ads": 11,
-          "Organic Search": 69,
+          "Organic Search": 68,
           "Email": 0,
           "LinkedIn": 0,
-          "Other": 25,
+          "Other": 24,
           "camp::Sales-Shopping_ViroVac_Take2": 3,
           "camp::BeckmanCoulter_Shopping_Test": 1,
-          "camp::ViroVac Shopping_Shopify": 0,
           "camp::Siemens_Search": 6,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 0,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         },
         {
           "t": "2026-11-04",
+          "Direct": 45,
+          "Google Ads": 21,
+          "Organic Search": 33,
+          "Email": 0,
+          "LinkedIn": 0,
+          "Other": 14,
+          "camp::Sales-Shopping_ViroVac_Take2": 3,
+          "camp::BeckmanCoulter_Shopping_Test": 16,
+          "camp::Siemens_Search": 2,
+          "camp::ViroVac Shopping_Shopify": 0,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
+        },
+        {
+          "t": "2026-11-05",
           "Direct": 5,
-          "Google Ads": 3,
-          "Organic Search": 6,
+          "Google Ads": 0,
+          "Organic Search": 7,
           "Email": 0,
           "LinkedIn": 0,
           "Other": 2,
           "camp::Sales-Shopping_ViroVac_Take2": 0,
-          "camp::BeckmanCoulter_Shopping_Test": 3,
-          "camp::ViroVac Shopping_Shopify": 0,
+          "camp::BeckmanCoulter_Shopping_Test": 0,
           "camp::Siemens_Search": 0,
-          "camp::Siemens_Sales_Shopping": 0,
-          "camp::BeckmanCoulter_Sales_Search": 0
+          "camp::ViroVac Shopping_Shopify": 0,
+          "camp::BeckmanCoulter_Sales_Search": 0,
+          "camp::Siemens_Sales_Shopping": 0
         }
       ],
       "sales": [
         {
           "source": "Direct",
-          "sessions": 1982,
-          "conversions": 468,
-          "revenue": 4224.0,
-          "transactions": 4
+          "sessions": 1893,
+          "conversions": 471,
+          "revenue": 5780.2,
+          "transactions": 5
         },
         {
           "source": "Google Ads",
-          "sessions": 355,
-          "conversions": 40,
+          "sessions": 353,
+          "conversions": 42,
           "revenue": 0.0,
           "transactions": 0
         },
         {
           "source": "Organic Search",
-          "sessions": 1013,
+          "sessions": 1015,
           "conversions": 46,
           "revenue": 2850.0,
           "transactions": 2
@@ -1201,32 +1259,32 @@
         },
         {
           "source": "Other",
-          "sessions": 364,
-          "conversions": 234,
-          "revenue": 108695.67,
-          "transactions": 28
+          "sessions": 365,
+          "conversions": 214,
+          "revenue": 113606.37,
+          "transactions": 30
         }
       ],
       "totals": {
-        "sessions": 3718,
-        "conversions": 788,
-        "revenue": 115769.67,
-        "transactions": 34
+        "sessions": 3630,
+        "conversions": 773,
+        "revenue": 122236.57,
+        "transactions": 37
       },
       "email_detail": [],
       "gads_detail": [
         {
           "name": "BeckmanCoulter_Shopping_Test",
           "campaign": "BeckmanCoulter_Shopping_Test",
-          "sessions": 113,
-          "conversions": 6,
+          "sessions": 121,
+          "conversions": 8,
           "revenue": 0,
           "transactions": 0
         },
         {
           "name": "Sales-Shopping_ViroVac_Take2",
           "campaign": "Sales-Shopping_ViroVac_Take2",
-          "sessions": 85,
+          "sessions": 88,
           "conversions": 4,
           "revenue": 0,
           "transactions": 0
@@ -1234,7 +1292,7 @@
         {
           "name": "Siemens_Search",
           "campaign": "Siemens_Search",
-          "sessions": 69,
+          "sessions": 71,
           "conversions": 0,
           "revenue": 0,
           "transactions": 0
@@ -1242,7 +1300,7 @@
         {
           "name": "ViroVac Shopping_Shopify",
           "campaign": "ViroVac Shopping_Shopify",
-          "sessions": 49,
+          "sessions": 39,
           "conversions": 15,
           "revenue": 0,
           "transactions": 0
@@ -1250,16 +1308,8 @@
         {
           "name": "BeckmanCoulter_Sales_Search",
           "campaign": "BeckmanCoulter_Sales_Search",
-          "sessions": 19,
+          "sessions": 18,
           "conversions": 15,
-          "revenue": 0,
-          "transactions": 0
-        },
-        {
-          "name": "Siemens_Sales_Shopping",
-          "campaign": "Siemens_Sales_Shopping",
-          "sessions": 4,
-          "conversions": 0,
           "revenue": 0,
           "transactions": 0
         },
@@ -1275,19 +1325,13 @@
       "gads_campaigns": [
         "Sales-Shopping_ViroVac_Take2",
         "BeckmanCoulter_Shopping_Test",
-        "ViroVac Shopping_Shopify",
         "Siemens_Search",
-        "Siemens_Sales_Shopping",
-        "BeckmanCoulter_Sales_Search"
+        "ViroVac Shopping_Shopify",
+        "BeckmanCoulter_Sales_Search",
+        "Siemens_Sales_Shopping"
       ],
       "gads_series": {
         "Sales-Shopping_ViroVac_Take2": [
-          {
-            "t": "2026-10-06",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
           {
             "t": "2026-10-07",
             "impr": 0,
@@ -1458,18 +1502,18 @@
           },
           {
             "t": "2026-11-04",
-            "impr": 447,
-            "clicks": 0,
+            "impr": 1003,
+            "clicks": 3,
+            "atc": 0
+          },
+          {
+            "t": "2026-11-05",
+            "impr": 192,
+            "clicks": 1,
             "atc": 0
           }
         ],
         "BeckmanCoulter_Shopping_Test": [
-          {
-            "t": "2026-10-06",
-            "impr": 325,
-            "clicks": 5,
-            "atc": 0
-          },
           {
             "t": "2026-10-07",
             "impr": 297,
@@ -1640,18 +1684,200 @@
           },
           {
             "t": "2026-11-04",
-            "impr": 92,
+            "impr": 380,
+            "clicks": 8,
+            "atc": 2
+          },
+          {
+            "t": "2026-11-05",
+            "impr": 101,
+            "clicks": 1,
+            "atc": 0
+          }
+        ],
+        "Siemens_Search": [
+          {
+            "t": "2026-10-07",
+            "impr": 27,
+            "clicks": 1,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-08",
+            "impr": 29,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-09",
+            "impr": 41,
             "clicks": 2,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-10",
+            "impr": 31,
+            "clicks": 2,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-11",
+            "impr": 23,
+            "clicks": 6,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-12",
+            "impr": 39,
+            "clicks": 2,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-13",
+            "impr": 43,
+            "clicks": 3,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-14",
+            "impr": 71,
+            "clicks": 3,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-15",
+            "impr": 61,
+            "clicks": 4,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-16",
+            "impr": 62,
+            "clicks": 6,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-17",
+            "impr": 14,
+            "clicks": 1,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-18",
+            "impr": 8,
+            "clicks": 1,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-19",
+            "impr": 40,
+            "clicks": 2,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-20",
+            "impr": 46,
+            "clicks": 5,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-21",
+            "impr": 45,
+            "clicks": 3,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-22",
+            "impr": 23,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-23",
+            "impr": 33,
+            "clicks": 1,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-24",
+            "impr": 18,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-25",
+            "impr": 16,
+            "clicks": 1,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-26",
+            "impr": 51,
+            "clicks": 3,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-27",
+            "impr": 50,
+            "clicks": 4,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-28",
+            "impr": 53,
+            "clicks": 2,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-29",
+            "impr": 39,
+            "clicks": 7,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-30",
+            "impr": 24,
+            "clicks": 1,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-31",
+            "impr": 30,
+            "clicks": 1,
+            "atc": 0
+          },
+          {
+            "t": "2026-11-01",
+            "impr": 7,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-11-02",
+            "impr": 39,
+            "clicks": 1,
+            "atc": 0
+          },
+          {
+            "t": "2026-11-03",
+            "impr": 42,
+            "clicks": 3,
+            "atc": 0
+          },
+          {
+            "t": "2026-11-04",
+            "impr": 41,
+            "clicks": 1,
+            "atc": 0
+          },
+          {
+            "t": "2026-11-05",
+            "impr": 12,
+            "clicks": 1,
             "atc": 0
           }
         ],
         "ViroVac Shopping_Shopify": [
-          {
-            "t": "2026-10-06",
-            "impr": 1044,
-            "clicks": 13,
-            "atc": 0
-          },
           {
             "t": "2026-10-07",
             "impr": 183,
@@ -1825,379 +2051,15 @@
             "impr": 0,
             "clicks": 0,
             "atc": 0
-          }
-        ],
-        "Siemens_Search": [
-          {
-            "t": "2026-10-06",
-            "impr": 36,
-            "clicks": 1,
-            "atc": 0
           },
           {
-            "t": "2026-10-07",
-            "impr": 27,
-            "clicks": 1,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-08",
-            "impr": 29,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-09",
-            "impr": 41,
-            "clicks": 2,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-10",
-            "impr": 31,
-            "clicks": 2,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-11",
-            "impr": 23,
-            "clicks": 6,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-12",
-            "impr": 39,
-            "clicks": 2,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-13",
-            "impr": 43,
-            "clicks": 3,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-14",
-            "impr": 71,
-            "clicks": 3,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-15",
-            "impr": 61,
-            "clicks": 4,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-16",
-            "impr": 62,
-            "clicks": 6,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-17",
-            "impr": 14,
-            "clicks": 1,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-18",
-            "impr": 8,
-            "clicks": 1,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-19",
-            "impr": 40,
-            "clicks": 2,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-20",
-            "impr": 46,
-            "clicks": 5,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-21",
-            "impr": 45,
-            "clicks": 3,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-22",
-            "impr": 23,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-23",
-            "impr": 33,
-            "clicks": 1,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-24",
-            "impr": 18,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-25",
-            "impr": 16,
-            "clicks": 1,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-26",
-            "impr": 51,
-            "clicks": 3,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-27",
-            "impr": 50,
-            "clicks": 4,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-28",
-            "impr": 53,
-            "clicks": 2,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-29",
-            "impr": 39,
-            "clicks": 7,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-30",
-            "impr": 24,
-            "clicks": 1,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-31",
-            "impr": 30,
-            "clicks": 1,
-            "atc": 0
-          },
-          {
-            "t": "2026-11-01",
-            "impr": 7,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-11-02",
-            "impr": 39,
-            "clicks": 1,
-            "atc": 0
-          },
-          {
-            "t": "2026-11-03",
-            "impr": 42,
-            "clicks": 3,
-            "atc": 0
-          },
-          {
-            "t": "2026-11-04",
-            "impr": 10,
-            "clicks": 1,
-            "atc": 0
-          }
-        ],
-        "Siemens_Sales_Shopping": [
-          {
-            "t": "2026-10-06",
-            "impr": 450,
-            "clicks": 1,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-07",
-            "impr": 43,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-08",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-09",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-10",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-11",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-12",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-13",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-14",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-15",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-16",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-17",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-18",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-19",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-20",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-21",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-22",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-23",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-24",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-25",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-26",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-27",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-28",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-29",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-30",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-10-31",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-11-01",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-11-02",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-11-03",
-            "impr": 0,
-            "clicks": 0,
-            "atc": 0
-          },
-          {
-            "t": "2026-11-04",
+            "t": "2026-11-05",
             "impr": 0,
             "clicks": 0,
             "atc": 0
           }
         ],
         "BeckmanCoulter_Sales_Search": [
-          {
-            "t": "2026-10-06",
-            "impr": 11,
-            "clicks": 1,
-            "atc": 0
-          },
           {
             "t": "2026-10-07",
             "impr": 7,
@@ -2368,27 +2230,215 @@
           },
           {
             "t": "2026-11-04",
-            "impr": 6,
+            "impr": 16,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-11-05",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          }
+        ],
+        "Siemens_Sales_Shopping": [
+          {
+            "t": "2026-10-07",
+            "impr": 43,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-08",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-09",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-10",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-11",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-12",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-13",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-14",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-15",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-16",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-17",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-18",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-19",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-20",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-21",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-22",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-23",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-24",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-25",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-26",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-27",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-28",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-29",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-30",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-10-31",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-11-01",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-11-02",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-11-03",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-11-04",
+            "impr": 0,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-11-05",
+            "impr": 0,
             "clicks": 0,
             "atc": 0
           }
         ]
       },
       "gads_cost": {
-        "Sales-Shopping_ViroVac_Take2": 447.73,
-        "BeckmanCoulter_Shopping_Test": 111.42,
-        "ViroVac Shopping_Shopify": 38.53,
-        "Siemens_Search": 381.82,
-        "Siemens_Sales_Shopping": 6.08,
-        "BeckmanCoulter_Sales_Search": 45.26
+        "Sales-Shopping_ViroVac_Take2": 471.29,
+        "BeckmanCoulter_Shopping_Test": 111.93,
+        "Siemens_Search": 382.56,
+        "ViroVac Shopping_Shopify": 0,
+        "BeckmanCoulter_Sales_Search": 40.32,
+        "Siemens_Sales_Shopping": 0
       },
       "gads_start": {
         "Sales-Shopping_ViroVac_Take2": "",
         "BeckmanCoulter_Shopping_Test": "2026-06-10",
-        "ViroVac Shopping_Shopify": "2026-05-13",
         "Siemens_Search": "2026-06-19",
-        "Siemens_Sales_Shopping": "2026-06-22",
-        "BeckmanCoulter_Sales_Search": "2026-06-17"
+        "ViroVac Shopping_Shopify": "2026-05-13",
+        "BeckmanCoulter_Sales_Search": "2026-06-17",
+        "Siemens_Sales_Shopping": "2026-06-22"
       },
       "gads_events": {
         "BeckmanCoulter_Sales_Search": {
@@ -2400,7 +2450,7 @@
           "purchase": 0
         },
         "BeckmanCoulter_Shopping_Test": {
-          "add_to_cart": 6,
+          "add_to_cart": 8,
           "purchase": 0
         },
         "Sales-Shopping_ViroVac_Take2": {
@@ -2411,25 +2461,25 @@
       "gads_types": {
         "Sales-Shopping_ViroVac_Take2": "Shopping",
         "BeckmanCoulter_Shopping_Test": "Shopping",
-        "ViroVac Shopping_Shopify": "Shopping",
         "Siemens_Search": "Search",
-        "Siemens_Sales_Shopping": "Shopping",
-        "BeckmanCoulter_Sales_Search": "Search"
+        "ViroVac Shopping_Shopify": "Shopping",
+        "BeckmanCoulter_Sales_Search": "Search",
+        "Siemens_Sales_Shopping": "Shopping"
       },
       "gads_status": {
         "Sales-Shopping_ViroVac_Take2": "",
         "BeckmanCoulter_Shopping_Test": "enabled",
-        "ViroVac Shopping_Shopify": "enabled",
         "Siemens_Search": "enabled",
-        "Siemens_Sales_Shopping": "enabled",
-        "BeckmanCoulter_Sales_Search": "enabled"
+        "ViroVac Shopping_Shopify": "enabled",
+        "BeckmanCoulter_Sales_Search": "enabled",
+        "Siemens_Sales_Shopping": "enabled"
       },
       "gads_active": [
         "BeckmanCoulter_Shopping_Test",
-        "ViroVac Shopping_Shopify",
         "Siemens_Search",
-        "Siemens_Sales_Shopping",
-        "BeckmanCoulter_Sales_Search"
+        "ViroVac Shopping_Shopify",
+        "BeckmanCoulter_Sales_Search",
+        "Siemens_Sales_Shopping"
       ],
       "klaviyo_flows": [
         {
@@ -2496,12 +2546,12 @@
         },
         {
           "t": "2026-11-03",
-          "Direct": 52,
+          "Direct": 53,
           "Google Ads": 11,
-          "Organic Search": 69,
+          "Organic Search": 68,
           "Email": 0,
           "LinkedIn": 0,
-          "Other": 25,
+          "Other": 24,
           "camp::Sales-Shopping_ViroVac_Take2": 3,
           "camp::BeckmanCoulter_Shopping_Test": 1,
           "camp::Siemens_Search": 6,
@@ -2509,14 +2559,27 @@
         },
         {
           "t": "2026-11-04",
+          "Direct": 45,
+          "Google Ads": 21,
+          "Organic Search": 33,
+          "Email": 0,
+          "LinkedIn": 0,
+          "Other": 14,
+          "camp::Sales-Shopping_ViroVac_Take2": 3,
+          "camp::BeckmanCoulter_Shopping_Test": 16,
+          "camp::Siemens_Search": 2,
+          "camp::BeckmanCoulter_Sales_Search": 0
+        },
+        {
+          "t": "2026-11-05",
           "Direct": 5,
-          "Google Ads": 3,
-          "Organic Search": 6,
+          "Google Ads": 0,
+          "Organic Search": 7,
           "Email": 0,
           "LinkedIn": 0,
           "Other": 2,
           "camp::Sales-Shopping_ViroVac_Take2": 0,
-          "camp::BeckmanCoulter_Shopping_Test": 3,
+          "camp::BeckmanCoulter_Shopping_Test": 0,
           "camp::Siemens_Search": 0,
           "camp::BeckmanCoulter_Sales_Search": 0
         }
@@ -2524,21 +2587,21 @@
       "sales": [
         {
           "source": "Direct",
-          "sessions": 227,
-          "conversions": 2,
-          "revenue": 0.0,
-          "transactions": 0
+          "sessions": 273,
+          "conversions": 5,
+          "revenue": 1556.2,
+          "transactions": 1
         },
         {
           "source": "Google Ads",
-          "sessions": 44,
-          "conversions": 5,
+          "sessions": 62,
+          "conversions": 7,
           "revenue": 0.0,
           "transactions": 0
         },
         {
           "source": "Organic Search",
-          "sessions": 142,
+          "sessions": 175,
           "conversions": 5,
           "revenue": 1350.0,
           "transactions": 1
@@ -2559,32 +2622,32 @@
         },
         {
           "source": "Other",
-          "sessions": 49,
-          "conversions": 58,
-          "revenue": 8324.4,
-          "transactions": 1
+          "sessions": 62,
+          "conversions": 60,
+          "revenue": 13235.1,
+          "transactions": 3
         }
       ],
       "totals": {
-        "sessions": 462,
-        "conversions": 70,
-        "revenue": 9674.4,
-        "transactions": 2
+        "sessions": 572,
+        "conversions": 77,
+        "revenue": 16141.3,
+        "transactions": 5
       },
       "email_detail": [],
       "gads_detail": [
         {
-          "name": "Sales-Shopping_ViroVac_Take2",
-          "campaign": "Sales-Shopping_ViroVac_Take2",
-          "sessions": 13,
-          "conversions": 0,
+          "name": "BeckmanCoulter_Shopping_Test",
+          "campaign": "BeckmanCoulter_Shopping_Test",
+          "sessions": 25,
+          "conversions": 2,
           "revenue": 0,
           "transactions": 0
         },
         {
-          "name": "BeckmanCoulter_Shopping_Test",
-          "campaign": "BeckmanCoulter_Shopping_Test",
-          "sessions": 12,
+          "name": "Sales-Shopping_ViroVac_Take2",
+          "campaign": "Sales-Shopping_ViroVac_Take2",
+          "sessions": 16,
           "conversions": 0,
           "revenue": 0,
           "transactions": 0
@@ -2592,7 +2655,7 @@
         {
           "name": "Siemens_Search",
           "campaign": "Siemens_Search",
-          "sessions": 7,
+          "sessions": 9,
           "conversions": 0,
           "revenue": 0,
           "transactions": 0
@@ -2642,8 +2705,14 @@
           },
           {
             "t": "2026-11-04",
-            "impr": 447,
-            "clicks": 0,
+            "impr": 1003,
+            "clicks": 3,
+            "atc": 0
+          },
+          {
+            "t": "2026-11-05",
+            "impr": 192,
+            "clicks": 1,
             "atc": 0
           }
         ],
@@ -2668,8 +2737,14 @@
           },
           {
             "t": "2026-11-04",
-            "impr": 92,
-            "clicks": 2,
+            "impr": 380,
+            "clicks": 8,
+            "atc": 2
+          },
+          {
+            "t": "2026-11-05",
+            "impr": 101,
+            "clicks": 1,
             "atc": 0
           }
         ],
@@ -2694,7 +2769,13 @@
           },
           {
             "t": "2026-11-04",
-            "impr": 10,
+            "impr": 41,
+            "clicks": 1,
+            "atc": 0
+          },
+          {
+            "t": "2026-11-05",
+            "impr": 12,
             "clicks": 1,
             "atc": 0
           }
@@ -2720,16 +2801,22 @@
           },
           {
             "t": "2026-11-04",
-            "impr": 6,
+            "impr": 16,
+            "clicks": 0,
+            "atc": 0
+          },
+          {
+            "t": "2026-11-05",
+            "impr": 0,
             "clicks": 0,
             "atc": 0
           }
         ]
       },
       "gads_cost": {
-        "Sales-Shopping_ViroVac_Take2": 66.91,
-        "BeckmanCoulter_Shopping_Test": 13.33,
-        "Siemens_Search": 29.39,
+        "Sales-Shopping_ViroVac_Take2": 90.47,
+        "BeckmanCoulter_Shopping_Test": 21.17,
+        "Siemens_Search": 34.98,
         "BeckmanCoulter_Sales_Search": 4.55
       },
       "gads_start": {
@@ -2741,6 +2828,10 @@
       "gads_events": {
         "ViroVac Shopping_Shopify": {
           "add_to_cart": 5,
+          "purchase": 0
+        },
+        "BeckmanCoulter_Shopping_Test": {
+          "add_to_cart": 2,
           "purchase": 0
         }
       },
@@ -4682,38 +4773,38 @@
         },
         {
           "t": "2026-11-02",
-          "Direct": 193,
-          "Google Ads": 30,
-          "Organic Search": 130,
+          "Direct": 239,
+          "Google Ads": 48,
+          "Organic Search": 163,
           "Email": 0,
           "LinkedIn": 0,
-          "Other": 43,
-          "camp::Sales-Shopping_ViroVac_Take2": 8,
-          "camp::BeckmanCoulter_Shopping_Test": 9,
+          "Other": 56,
+          "camp::Sales-Shopping_ViroVac_Take2": 11,
+          "camp::BeckmanCoulter_Shopping_Test": 22,
           "camp::ViroVac Shopping_Shopify": 3,
           "camp::Siemens_Sales_Shopping": 0,
-          "camp::Siemens_Search": 7,
+          "camp::Siemens_Search": 9,
           "camp::BeckmanCoulter_Sales_Search": 2
         }
       ],
       "sales": [
         {
           "source": "Direct",
-          "sessions": 2785,
-          "conversions": 530,
-          "revenue": 8498.3,
-          "transactions": 6
+          "sessions": 2831,
+          "conversions": 533,
+          "revenue": 10054.5,
+          "transactions": 7
         },
         {
           "source": "Google Ads",
-          "sessions": 429,
-          "conversions": 40,
+          "sessions": 447,
+          "conversions": 42,
           "revenue": 0.0,
           "transactions": 0
         },
         {
           "source": "Organic Search",
-          "sessions": 1127,
+          "sessions": 1160,
           "conversions": 46,
           "revenue": 2850.0,
           "transactions": 2
@@ -4734,33 +4825,41 @@
         },
         {
           "source": "Other",
-          "sessions": 413,
-          "conversions": 248,
-          "revenue": 119592.37,
-          "transactions": 34
+          "sessions": 426,
+          "conversions": 250,
+          "revenue": 124503.07,
+          "transactions": 36
         }
       ],
       "totals": {
-        "sessions": 4758,
-        "conversions": 864,
-        "revenue": 130940.67,
-        "transactions": 42
+        "sessions": 4868,
+        "conversions": 871,
+        "revenue": 137407.57,
+        "transactions": 45
       },
       "email_detail": [],
       "gads_detail": [
         {
           "name": "BeckmanCoulter_Shopping_Test",
           "campaign": "BeckmanCoulter_Shopping_Test",
-          "sessions": 132,
-          "conversions": 6,
+          "sessions": 145,
+          "conversions": 8,
           "revenue": 0,
           "transactions": 0
         },
         {
           "name": "Sales-Shopping_ViroVac_Take2",
           "campaign": "Sales-Shopping_ViroVac_Take2",
-          "sessions": 85,
+          "sessions": 88,
           "conversions": 4,
+          "revenue": 0,
+          "transactions": 0
+        },
+        {
+          "name": "Siemens_Search",
+          "campaign": "Siemens_Search",
+          "sessions": 80,
+          "conversions": 0,
           "revenue": 0,
           "transactions": 0
         },
@@ -4769,14 +4868,6 @@
           "campaign": "ViroVac Shopping_Shopify",
           "sessions": 80,
           "conversions": 15,
-          "revenue": 0,
-          "transactions": 0
-        },
-        {
-          "name": "Siemens_Search",
-          "campaign": "Siemens_Search",
-          "sessions": 78,
-          "conversions": 0,
           "revenue": 0,
           "transactions": 0
         },
@@ -4847,8 +4938,8 @@
           },
           {
             "t": "2026-11-02",
-            "impr": 1646,
-            "clicks": 7,
+            "impr": 2394,
+            "clicks": 11,
             "atc": 0
           }
         ],
@@ -4885,9 +4976,9 @@
           },
           {
             "t": "2026-11-02",
-            "impr": 755,
-            "clicks": 11,
-            "atc": 0
+            "impr": 1144,
+            "clicks": 18,
+            "atc": 2
           }
         ],
         "ViroVac Shopping_Shopify": [
@@ -4999,8 +5090,8 @@
           },
           {
             "t": "2026-11-02",
-            "impr": 91,
-            "clicks": 5,
+            "impr": 134,
+            "clicks": 6,
             "atc": 0
           }
         ],
@@ -5037,18 +5128,18 @@
           },
           {
             "t": "2026-11-02",
-            "impr": 19,
+            "impr": 29,
             "clicks": 0,
             "atc": 0
           }
         ]
       },
       "gads_cost": {
-        "Sales-Shopping_ViroVac_Take2": 447.73,
-        "BeckmanCoulter_Shopping_Test": 129.43,
+        "Sales-Shopping_ViroVac_Take2": 471.29,
+        "BeckmanCoulter_Shopping_Test": 137.27,
         "ViroVac Shopping_Shopify": 132.07,
         "Siemens_Sales_Shopping": 52.8,
-        "Siemens_Search": 425.97,
+        "Siemens_Search": 431.56,
         "BeckmanCoulter_Sales_Search": 50.25
       },
       "gads_start": {
@@ -5069,7 +5160,7 @@
           "purchase": 0
         },
         "BeckmanCoulter_Shopping_Test": {
-          "add_to_cart": 6,
+          "add_to_cart": 8,
           "purchase": 0
         },
         "Sales-Shopping_ViroVac_Take2": {
@@ -7337,20 +7428,20 @@
         },
         {
           "t": "2026-11-02",
-          "Direct": 193,
-          "Google Ads": 30,
-          "Organic Search": 130,
+          "Direct": 239,
+          "Google Ads": 48,
+          "Organic Search": 163,
           "Email": 0,
           "LinkedIn": 0,
-          "Other": 43,
+          "Other": 56,
           "camp::ViroVac Shopping": 0,
           "camp::ViroVac Shopping_Shopify": 3,
-          "camp::BeckmanCoulter_Shopping_Test": 9,
+          "camp::BeckmanCoulter_Shopping_Test": 22,
           "camp::Abbott_Sales_Shopping": 0,
           "camp::Siemens_Sales_Shopping": 0,
-          "camp::Sales-Shopping_ViroVac_Take2": 8,
+          "camp::Sales-Shopping_ViroVac_Take2": 11,
           "camp::ViroVac_Search": 0,
-          "camp::Siemens_Search": 7,
+          "camp::Siemens_Search": 9,
           "camp::GeneralLabReagent_Search": 0,
           "camp::BeckmanCoulter_Sales_Search": 2,
           "camp::Abbott_Search": 0
@@ -7359,21 +7450,21 @@
       "sales": [
         {
           "source": "Direct",
-          "sessions": 23909,
-          "conversions": 1242,
-          "revenue": 155222.7,
-          "transactions": 103
+          "sessions": 23955,
+          "conversions": 1245,
+          "revenue": 156778.9,
+          "transactions": 104
         },
         {
           "source": "Google Ads",
-          "sessions": 6678,
-          "conversions": 205,
+          "sessions": 6696,
+          "conversions": 207,
           "revenue": 18881.6,
           "transactions": 13
         },
         {
           "source": "Organic Search",
-          "sessions": 6504,
+          "sessions": 6537,
           "conversions": 465,
           "revenue": 40694.2,
           "transactions": 22
@@ -7394,17 +7485,17 @@
         },
         {
           "source": "Other",
-          "sessions": 2142,
-          "conversions": 648,
-          "revenue": 194852.01,
-          "transactions": 75
+          "sessions": 2155,
+          "conversions": 650,
+          "revenue": 199762.71,
+          "transactions": 77
         }
       ],
       "totals": {
-        "sessions": 39313,
-        "conversions": 2561,
-        "revenue": 411150.51,
-        "transactions": 213
+        "sessions": 39423,
+        "conversions": 2568,
+        "revenue": 417617.41,
+        "transactions": 216
       },
       "email_detail": [
         {
@@ -7468,8 +7559,8 @@
         {
           "name": "BeckmanCoulter_Shopping_Test",
           "campaign": "BeckmanCoulter_Shopping_Test",
-          "sessions": 696,
-          "conversions": 32,
+          "sessions": 709,
+          "conversions": 34,
           "revenue": 0,
           "transactions": 0
         },
@@ -7492,7 +7583,7 @@
         {
           "name": "Siemens_Search",
           "campaign": "Siemens_Search",
-          "sessions": 187,
+          "sessions": 189,
           "conversions": 33,
           "revenue": 5574.6,
           "transactions": 1
@@ -7508,7 +7599,7 @@
         {
           "name": "Sales-Shopping_ViroVac_Take2",
           "campaign": "Sales-Shopping_ViroVac_Take2",
-          "sessions": 85,
+          "sessions": 88,
           "conversions": 4,
           "revenue": 0,
           "transactions": 0
@@ -8371,9 +8462,9 @@
           },
           {
             "t": "2026-11-02",
-            "impr": 755,
-            "clicks": 11,
-            "atc": 0
+            "impr": 1144,
+            "clicks": 18,
+            "atc": 2
           }
         ],
         "Abbott_Sales_Shopping": [
@@ -9187,8 +9278,8 @@
           },
           {
             "t": "2026-11-02",
-            "impr": 1646,
-            "clicks": 7,
+            "impr": 2394,
+            "clicks": 11,
             "atc": 0
           }
         ],
@@ -9731,8 +9822,8 @@
           },
           {
             "t": "2026-11-02",
-            "impr": 91,
-            "clicks": 5,
+            "impr": 134,
+            "clicks": 6,
             "atc": 0
           }
         ],
@@ -10275,7 +10366,7 @@
           },
           {
             "t": "2026-11-02",
-            "impr": 19,
+            "impr": 29,
             "clicks": 0,
             "atc": 0
           }
@@ -10556,12 +10647,12 @@
       "gads_cost": {
         "ViroVac Shopping": 3920.95,
         "ViroVac Shopping_Shopify": 3436.59,
-        "BeckmanCoulter_Shopping_Test": 607.97,
+        "BeckmanCoulter_Shopping_Test": 615.81,
         "Abbott_Sales_Shopping": 619.46,
         "Siemens_Sales_Shopping": 628.21,
-        "Sales-Shopping_ViroVac_Take2": 447.73,
+        "Sales-Shopping_ViroVac_Take2": 471.29,
         "ViroVac_Search": 1175.1,
-        "Siemens_Search": 1732.61,
+        "Siemens_Search": 1738.2,
         "GeneralLabReagent_Search": 923.93,
         "BeckmanCoulter_Sales_Search": 705.16,
         "Abbott_Search": 897.1
@@ -10589,7 +10680,7 @@
           "purchase": 2
         },
         "BeckmanCoulter_Shopping_Test": {
-          "add_to_cart": 32,
+          "add_to_cart": 34,
           "purchase": 0
         },
         "Siemens_Sales_Shopping": {
@@ -10686,11 +10777,11 @@
     "ok": true,
     "account": "JIT4Labs",
     "flows": 6,
-    "pulled_at": "2026-11-04 17:09"
+    "pulled_at": "2026-11-05 17:09"
   },
   "daily": {
     "start": "2026-01-01",
-    "end": "2026-11-04",
+    "end": "2026-11-05",
     "buckets": [
       "Direct",
       "Google Ads",
@@ -17434,12 +17525,12 @@
       },
       {
         "t": "2026-11-03",
-        "Direct": 52,
+        "Direct": 53,
         "Google Ads": 11,
-        "Organic Search": 69,
+        "Organic Search": 68,
         "Email": 0,
         "LinkedIn": 0,
-        "Other": 25,
+        "Other": 24,
         "camp::ViroVac Shopping": 0,
         "camp::ViroVac Shopping_Shopify": 0,
         "camp::BeckmanCoulter_Shopping_Test": 1,
@@ -17456,15 +17547,37 @@
       },
       {
         "t": "2026-11-04",
+        "Direct": 45,
+        "Google Ads": 21,
+        "Organic Search": 33,
+        "Email": 0,
+        "LinkedIn": 0,
+        "Other": 14,
+        "camp::ViroVac Shopping": 0,
+        "camp::ViroVac Shopping_Shopify": 0,
+        "camp::BeckmanCoulter_Shopping_Test": 16,
+        "camp::Abbott_Sales_Shopping": 0,
+        "camp::Siemens_Sales_Shopping": 0,
+        "camp::Sales-Shopping_ViroVac_Take2": 3,
+        "camp::ViroVac_Search": 0,
+        "camp::Siemens_Search": 2,
+        "camp::GeneralLabReagent_Search": 0,
+        "camp::BeckmanCoulter_Sales_Search": 0,
+        "camp::Abbott_Search": 0,
+        "camp::(untagged / other paid)": 0,
+        "camp::Search-Shopping-Siemens": 0
+      },
+      {
+        "t": "2026-11-05",
         "Direct": 5,
-        "Google Ads": 3,
+        "Google Ads": 0,
         "Organic Search": 7,
         "Email": 0,
         "LinkedIn": 0,
         "Other": 2,
         "camp::ViroVac Shopping": 0,
         "camp::ViroVac Shopping_Shopify": 0,
-        "camp::BeckmanCoulter_Shopping_Test": 3,
+        "camp::BeckmanCoulter_Shopping_Test": 0,
         "camp::Abbott_Sales_Shopping": 0,
         "camp::Siemens_Sales_Shopping": 0,
         "camp::Sales-Shopping_ViroVac_Take2": 0,
@@ -22760,44 +22873,6 @@
           2
         ]
       },
-      "2026-11-03": {
-        "Direct": [
-          52,
-          2,
-          0.0,
-          0
-        ],
-        "Google Ads": [
-          11,
-          0,
-          0.0,
-          0
-        ],
-        "Organic Search": [
-          69,
-          3,
-          1350.0,
-          1
-        ],
-        "Email": [
-          0,
-          0,
-          0.0,
-          0
-        ],
-        "LinkedIn": [
-          0,
-          0,
-          0.0,
-          0
-        ],
-        "Other": [
-          25,
-          0,
-          0.0,
-          0
-        ]
-      },
       "2026-06-01": {
         "Direct": [
           68,
@@ -22831,6 +22906,44 @@
         ],
         "Other": [
           10,
+          0,
+          0.0,
+          0
+        ]
+      },
+      "2026-11-03": {
+        "Direct": [
+          53,
+          2,
+          0.0,
+          0
+        ],
+        "Google Ads": [
+          11,
+          0,
+          0.0,
+          0
+        ],
+        "Organic Search": [
+          68,
+          3,
+          1350.0,
+          1
+        ],
+        "Email": [
+          0,
+          0,
+          0.0,
+          0
+        ],
+        "LinkedIn": [
+          0,
+          0,
+          0.0,
+          0
+        ],
+        "Other": [
+          24,
           0,
           0.0,
           0
@@ -25304,6 +25417,44 @@
           0,
           0.0,
           0
+        ]
+      },
+      "2026-11-04": {
+        "Direct": [
+          45,
+          3,
+          1556.2,
+          1
+        ],
+        "Google Ads": [
+          21,
+          2,
+          0.0,
+          0
+        ],
+        "Organic Search": [
+          33,
+          0,
+          0.0,
+          0
+        ],
+        "Email": [
+          0,
+          0,
+          0.0,
+          0
+        ],
+        "LinkedIn": [
+          0,
+          0,
+          0.0,
+          0
+        ],
+        "Other": [
+          14,
+          2,
+          4910.7,
+          2
         ]
       },
       "2026-08-04": {
@@ -28878,7 +29029,7 @@
           0
         ]
       },
-      "2026-11-04": {
+      "2026-11-05": {
         "Direct": [
           5,
           0,
@@ -28886,7 +29037,7 @@
           0
         ],
         "Google Ads": [
-          3,
+          0,
           0,
           0.0,
           0
@@ -34255,12 +34406,24 @@
         },
         {
           "t": "2026-11-04",
-          "impr": 92,
-          "clicks": 2,
-          "cost": 2.32,
+          "impr": 380,
+          "clicks": 8,
+          "cost": 8.84,
+          "atc": 2,
+          "purchase": 0,
+          "sessions": 16,
+          "conversions": 2,
+          "revenue": 0.0,
+          "transactions": 0
+        },
+        {
+          "t": "2026-11-05",
+          "impr": 101,
+          "clicks": 1,
+          "cost": 1.32,
           "atc": 0,
           "purchase": 0,
-          "sessions": 3,
+          "sessions": 0,
           "conversions": 0,
           "revenue": 0.0,
           "transactions": 0
@@ -36649,9 +36812,21 @@
         },
         {
           "t": "2026-11-04",
-          "impr": 447,
-          "clicks": 0,
-          "cost": 0.0,
+          "impr": 1003,
+          "clicks": 3,
+          "cost": 22.59,
+          "atc": 0,
+          "purchase": 0,
+          "sessions": 3,
+          "conversions": 0,
+          "revenue": 0.0,
+          "transactions": 0
+        },
+        {
+          "t": "2026-11-05",
+          "impr": 192,
+          "clicks": 1,
+          "cost": 0.97,
           "atc": 0,
           "purchase": 0,
           "sessions": 0,
@@ -38729,9 +38904,21 @@
         },
         {
           "t": "2026-11-04",
-          "impr": 10,
+          "impr": 41,
           "clicks": 1,
           "cost": 5.72,
+          "atc": 0,
+          "purchase": 0,
+          "sessions": 2,
+          "conversions": 0,
+          "revenue": 0.0,
+          "transactions": 0
+        },
+        {
+          "t": "2026-11-05",
+          "impr": 12,
+          "clicks": 1,
+          "cost": 5.59,
           "atc": 0,
           "purchase": 0,
           "sessions": 0,
@@ -40617,7 +40804,7 @@
         },
         {
           "t": "2026-11-04",
-          "impr": 6,
+          "impr": 16,
           "clicks": 0,
           "cost": 0.0,
           "atc": 0,
