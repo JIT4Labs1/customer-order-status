@@ -324,7 +324,8 @@ def build_ap(access, bills=None):
                 seen.add(c); cl.append(c)
         row = {"number": b.get("DocNumber", "") or ("BILL-" + b.get("Id", "")), "date": b.get("TxnDate", ""),
                "due": due, "amount": round(B._fnum(b.get("TotalAmt")), 2), "balance": round(bal, 2),
-               "days_past_due": pd, "pos": po_rows, "customers": cl}
+               "days_past_due": pd, "pos": po_rows, "customers": cl,
+               "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D" + str(b.get("Id", "")) + "&deeplinkcompanyid=" + B.REALM}
         v = vend.setdefault(vname, {"vendor": vname, "balance": 0.0, "pastdue": 0.0, "bills": []})
         v["balance"] += bal
         if pd > 0:
