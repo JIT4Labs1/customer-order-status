@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05 06:12 PM UTC",
+  "generated_at": "2026-11-06 06:40 PM UTC",
   "year": 2026,
   "customers": [
     {
@@ -86,9 +86,16 @@
           "invoice_link": "",
           "so_num": "SO523",
           "shopify_order": "#1151",
-          "fulfillment": "Unknown",
+          "fulfillment": "Partially",
           "so_date": "2026-08-20",
-          "open_items": []
+          "open_items": [
+            {
+              "product": "Tax",
+              "open_qty": 1.0,
+              "po": "PO816",
+              "vendor": "Allora Biotech LLC"
+            }
+          ]
         },
         {
           "number": "SO607",
@@ -367,7 +374,7 @@
           "invoice_link": "",
           "so_num": "SO524",
           "shopify_order": "#1152",
-          "fulfillment": "Unknown",
+          "fulfillment": "Fulfilled",
           "so_date": "2026-08-22",
           "open_items": []
         },
@@ -567,12 +574,12 @@
       "invoices": [
         {
           "number": "SO357",
-          "status": "Not Paid",
+          "status": "Paid",
           "amount": 2163.8,
-          "balance": 2163.8,
+          "balance": 0.0,
           "date": "2026-03-30",
-          "link": "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-3845baa7fe244f30a1652ac7fd1de1088b2793711f8b40138ffd4aa9727b3f037b2084d357394dd7957f5d168e5ecde1?locale=EN_US",
-          "invoice_link": "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-070a4cdb108e4efd84f3996d2e65b1f51cbb39cf83fd4d3f8fad456b2aac68f55e1e4def027345a9a0051e5e6d6a6aab?locale=en_US&cta=v3invoicelink",
+          "link": "",
+          "invoice_link": "",
           "so_num": "SO336",
           "shopify_order": "",
           "fulfillment": "Fulfilled",
@@ -597,8 +604,8 @@
       "totals": {
         "count": 2,
         "amount": 3464.8,
-        "paid": 1301.0,
-        "unpaid": 2163.8
+        "paid": 3464.8,
+        "unpaid": 0.0
       }
     },
     {
@@ -2153,7 +2160,7 @@
           "invoice_link": "",
           "so_num": "SO520",
           "shopify_order": "#1148",
-          "fulfillment": "Unknown",
+          "fulfillment": "Fulfilled",
           "so_date": "2026-08-19",
           "open_items": []
         },
@@ -2167,7 +2174,7 @@
           "invoice_link": "",
           "so_num": "SO519",
           "shopify_order": "#1147",
-          "fulfillment": "Unknown",
+          "fulfillment": "Fulfilled",
           "so_date": "2026-08-18",
           "open_items": []
         },
@@ -2253,6 +2260,20 @@
       "name": "Mercedes Scientific",
       "qb_id": "1288",
       "invoices": [
+        {
+          "number": "SO826",
+          "status": "Not Paid",
+          "amount": 1898.0,
+          "balance": 1898.0,
+          "date": "2026-11-05",
+          "link": "",
+          "invoice_link": "https://connect.intuit.com/t/scs-v1-120cdc8ceff54a0db3945216557bbd95abe0313c898c4e76b2ce9b079fbd4093da0b6f8383b04a44a0f5e35b8047b321-0?locale=en_US&cta=v3invoicelink",
+          "so_num": "",
+          "shopify_order": "",
+          "fulfillment": "",
+          "so_date": "",
+          "open_items": []
+        },
         {
           "number": "SO822",
           "status": "Not Paid",
@@ -2458,12 +2479,12 @@
         },
         {
           "number": "SO731",
-          "status": "Not Paid",
+          "status": "Paid",
           "amount": 1493.11,
-          "balance": 1493.11,
+          "balance": 0.0,
           "date": "2026-10-06",
           "link": "",
-          "invoice_link": "https://connect.intuit.com/t/scs-v1-e7b3c7fd324346578cb10417f8c7ed4b7b32143e89614578819d60d5bc03403e99c6ffe3395c41829201aa564efa2369-0?locale=en_US&cta=v3invoicelink",
+          "invoice_link": "",
           "so_num": "",
           "shopify_order": "",
           "fulfillment": "",
@@ -3284,10 +3305,10 @@
         }
       ],
       "totals": {
-        "count": 73,
-        "amount": 199564.97,
-        "paid": 153530.34,
-        "unpaid": 46034.63
+        "count": 74,
+        "amount": 201462.97,
+        "paid": 155023.45,
+        "unpaid": 46439.52
       }
     },
     {
@@ -3374,6 +3395,20 @@
       "name": "OM Diagnostic Laboratories",
       "qb_id": "1418",
       "invoices": [
+        {
+          "number": "SO827",
+          "status": "Not Paid",
+          "amount": 22.02,
+          "balance": 22.02,
+          "date": "2026-11-05",
+          "link": "",
+          "invoice_link": "https://connect.intuit.com/t/scs-v1-07d68e9183e44a7788aa0dd28908d658a84b453712ef4fcb8b6a78fa7756db0c78e112b528e94c70bfa04613c15400f4-1?locale=en_US&cta=v3invoicelink",
+          "so_num": "",
+          "shopify_order": "",
+          "fulfillment": "",
+          "so_date": "",
+          "open_items": []
+        },
         {
           "number": "SO824",
           "status": "Not Paid",
@@ -3521,7 +3556,7 @@
           "balance": 1392.3,
           "date": "2026-06-29",
           "link": "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-114f3ac17d914f5d8d3ceedaabe19cf092bc36eed5b64e0ca230004e245215fc9bf828b39e0346b3b22fb5b1e3efe0e7?locale=EN_US",
-          "invoice_link": "https://connect.intuit.com/t/scs-v1-47d29671017b49e993a0fd32f219e0e00435be69de394153bb70811169bb500e0fb5123585d94b0998a5add9536f9d4b-1?locale=en_US&cta=v3invoicelink",
+          "invoice_link": "https://connect.intuit.com/t/scs-v1-07d68e9183e44a7788aa0dd28908d658a84b453712ef4fcb8b6a78fa7756db0c78e112b528e94c70bfa04613c15400f4-1?locale=en_US&cta=v3invoicelink",
           "so_num": "SO453",
           "shopify_order": "#1078",
           "fulfillment": "Partially",
@@ -3649,10 +3684,10 @@
         }
       ],
       "totals": {
-        "count": 19,
-        "amount": 21418.95,
+        "count": 20,
+        "amount": 21440.97,
         "paid": 13847.17,
-        "unpaid": 7571.78
+        "unpaid": 7593.8
       }
     },
     {
@@ -3893,7 +3928,7 @@
           "invoice_link": "",
           "so_num": "SO526",
           "shopify_order": "#1154",
-          "fulfillment": "Unknown",
+          "fulfillment": "Fulfilled",
           "so_date": "2026-08-25",
           "open_items": []
         },
@@ -4017,7 +4052,7 @@
           "invoice_link": "",
           "so_num": "SO522",
           "shopify_order": "#1150",
-          "fulfillment": "Unknown",
+          "fulfillment": "Fulfilled",
           "so_date": "2026-08-20",
           "open_items": []
         }
@@ -4279,10 +4314,10 @@
     }
   ],
   "payables": {
-    "generated_at": "2026-11-05 06:12 PM UTC",
-    "grand_total": 30045.68,
-    "past_due": 25580.69,
-    "count": 45,
+    "generated_at": "2026-11-06 06:39 PM UTC",
+    "grand_total": 37459.26,
+    "past_due": 31268.65,
+    "count": 62,
     "vendors": [
       {
         "vendor": "Conmed",
@@ -4468,40 +4503,95 @@
         ]
       },
       {
-        "vendor": "ALDX HOLDING CORPORATION",
-        "balance": 5566.19,
-        "count": 3,
-        "pastdue": 5566.19,
-        "bills": [
-          {
-            "num": "1310",
-            "date": "2026-10-28",
-            "due": "2026-10-28",
-            "amount": 4815.0,
-            "balance": 4815.0
-          },
-          {
-            "num": "1309",
-            "date": "2026-10-27",
-            "due": "2026-10-27",
-            "amount": 571.0,
-            "balance": 571.0
-          },
-          {
-            "num": "1306",
-            "date": "2026-10-23",
-            "due": "2026-10-23",
-            "amount": 180.19,
-            "balance": 180.19
-          }
-        ]
-      },
-      {
         "vendor": "Allora Biotech LLC",
-        "balance": 4782.1,
-        "count": 8,
-        "pastdue": 4782.1,
+        "balance": 15110.3,
+        "count": 21,
+        "pastdue": 15110.3,
         "bills": [
+          {
+            "num": "1807",
+            "date": "2026-11-05",
+            "due": "2026-11-05",
+            "amount": 124.0,
+            "balance": 124.0
+          },
+          {
+            "num": "1806",
+            "date": "2026-11-05",
+            "due": "2026-11-05",
+            "amount": 1697.0,
+            "balance": 1697.0
+          },
+          {
+            "num": "1804",
+            "date": "2026-11-05",
+            "due": "2026-11-05",
+            "amount": 210.0,
+            "balance": 210.0
+          },
+          {
+            "num": "1800",
+            "date": "2026-11-05",
+            "due": "2026-11-05",
+            "amount": 410.0,
+            "balance": 410.0
+          },
+          {
+            "num": "1803",
+            "date": "2026-11-05",
+            "due": "2026-11-05",
+            "amount": 1560.0,
+            "balance": 1560.0
+          },
+          {
+            "num": "1798",
+            "date": "2026-11-04",
+            "due": "2026-11-04",
+            "amount": 1500.0,
+            "balance": 1500.0
+          },
+          {
+            "num": "1799",
+            "date": "2026-11-04",
+            "due": "2026-11-04",
+            "amount": 825.0,
+            "balance": 825.0
+          },
+          {
+            "num": "1795",
+            "date": "2026-11-04",
+            "due": "2026-11-04",
+            "amount": 130.0,
+            "balance": 130.0
+          },
+          {
+            "num": "1794",
+            "date": "2026-11-04",
+            "due": "2026-11-04",
+            "amount": 124.0,
+            "balance": 124.0
+          },
+          {
+            "num": "1793",
+            "date": "2026-11-04",
+            "due": "2026-11-04",
+            "amount": 180.0,
+            "balance": 180.0
+          },
+          {
+            "num": "1790",
+            "date": "2026-11-03",
+            "due": "2026-11-03",
+            "amount": 2402.2,
+            "balance": 2402.2
+          },
+          {
+            "num": "1792",
+            "date": "2026-11-03",
+            "due": "2026-11-03",
+            "amount": 950.0,
+            "balance": 950.0
+          },
           {
             "num": "1786",
             "date": "2026-10-29",
@@ -4515,6 +4605,13 @@
             "due": "2026-10-29",
             "amount": 462.0,
             "balance": 462.0
+          },
+          {
+            "num": "1782",
+            "date": "2026-10-27",
+            "due": "2026-10-27",
+            "amount": 216.0,
+            "balance": 216.0
           },
           {
             "num": "1776",
@@ -4557,6 +4654,70 @@
             "due": "2026-10-21",
             "amount": 254.1,
             "balance": 254.1
+          }
+        ]
+      },
+      {
+        "vendor": "PMA Services",
+        "balance": 3350.57,
+        "count": 8,
+        "pastdue": 925.95,
+        "bills": [
+          {
+            "num": "INV-002131",
+            "date": "2026-10-28",
+            "due": "2026-11-07",
+            "amount": 138.0,
+            "balance": 138.0
+          },
+          {
+            "num": "INV-002145",
+            "date": "2026-10-28",
+            "due": "2026-11-07",
+            "amount": 699.0,
+            "balance": 699.0
+          },
+          {
+            "num": "INV-002125",
+            "date": "2026-10-27",
+            "due": "2026-11-06",
+            "amount": 477.0,
+            "balance": 477.0
+          },
+          {
+            "num": "INV-002119",
+            "date": "2026-10-26",
+            "due": "2026-11-05",
+            "amount": 1174.35,
+            "balance": 861.95
+          },
+          {
+            "num": "INV-001927",
+            "date": "2026-09-25",
+            "due": "2026-10-05",
+            "amount": 64.0,
+            "balance": 64.0
+          },
+          {
+            "num": "INV-002216",
+            "date": "2026-05-11",
+            "due": "2026-11-15",
+            "amount": 165.19,
+            "balance": 165.19
+          },
+          {
+            "num": "INV-002192",
+            "date": "2026-03-11",
+            "due": "2026-11-13",
+            "amount": 82.5,
+            "balance": 82.5
+          },
+          {
+            "num": "INV-002175",
+            "date": "2026-03-11",
+            "due": "2026-11-13",
+            "amount": 862.93,
+            "balance": 862.93
           }
         ]
       },
@@ -4623,21 +4784,6 @@
             "balance": 135.2
           }
         ]
-      },
-      {
-        "vendor": "PMA Services",
-        "balance": 699.0,
-        "count": 1,
-        "pastdue": 0.0,
-        "bills": [
-          {
-            "num": "INV-002145",
-            "date": "2026-10-28",
-            "due": "2026-11-07",
-            "amount": 699.0,
-            "balance": 699.0
-          }
-        ]
       }
     ]
   },
@@ -4645,45 +4791,22 @@
     "name": "Chase CHK (9219)",
     "balance": 60619.43,
     "source": "Bank balance",
-    "book_balance": 7444.22,
+    "book_balance": -11503.89,
     "bank_asof": "2026-07-23",
-    "as_of": "2026-11-05 06:12 PM UTC"
+    "as_of": "2026-11-06 06:39 PM UTC"
   },
   "ar": {
-    "generated_at": "2026-11-05 06:12 PM UTC",
-    "as_of": "2026-11-05",
-    "total": 124983.86,
-    "qb_total": 151134.21,
-    "count": 98,
+    "generated_at": "2026-11-06 06:40 PM UTC",
+    "as_of": "2026-11-06",
+    "total": 122276.12,
+    "qb_total": 150737.42,
+    "count": 101,
     "customers": [
       {
         "name": "Mercedes Scientific",
-        "balance": 46034.63,
-        "qb_balance": 46034.63,
+        "balance": 46439.52,
+        "qb_balance": 46439.52,
         "invoices": [
-          {
-            "number": "SO731",
-            "date": "2026-10-06",
-            "due": "2026-10-16",
-            "amount": 1493.11,
-            "balance": 1493.11,
-            "so_num": "",
-            "shopify_order": "#1153",
-            "shopify_fulfillments": [
-              {
-                "id": "6534275105012",
-                "shipment": "#1153-F5",
-                "tracking": "878271034223"
-              }
-            ],
-            "pay_link": "https://connect.intuit.com/t/scs-v1-313cd1554ea34a989b2ebdd677425c2f8e54d8f70adc445282f813a7c4cb2cd67e3cf169679f44d2a2ec6be7527fde79-0?locale=en_US&cta=v3invoicelink",
-            "shopify_status": "PENDING",
-            "shopify_total": 11298.01,
-            "shopify_received": null,
-            "shopify_outstanding": 9009.01,
-            "shopify_match": "note",
-            "reconcile": false
-          },
           {
             "number": "SO736",
             "date": "2026-10-08",
@@ -5003,6 +5126,29 @@
             "shopify_total": 2289.0,
             "shopify_received": null,
             "shopify_outstanding": 2289.0,
+            "shopify_match": "note",
+            "reconcile": false
+          },
+          {
+            "number": "SO826",
+            "date": "2026-11-05",
+            "due": "2026-11-15",
+            "amount": 1898.0,
+            "balance": 1898.0,
+            "so_num": "",
+            "shopify_order": "#1235",
+            "shopify_fulfillments": [
+              {
+                "id": "6588269232372",
+                "shipment": "#1235-F2",
+                "tracking": "879797683250"
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-120cdc8ceff54a0db3945216557bbd95abe0313c898c4e76b2ce9b079fbd4093da0b6f8383b04a44a0f5e35b8047b321-0?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PENDING",
+            "shopify_total": 4991.7,
+            "shopify_received": null,
+            "shopify_outstanding": 4891.0,
             "shopify_match": "note",
             "reconcile": false
           }
@@ -5665,7 +5811,7 @@
             "shopify_fulfillments": [
               {
                 "id": "6557701538036",
-                "shipment": "#1241-F1",
+                "shipment": "#1241-F3",
                 "tracking": "878945982552"
               }
             ],
@@ -5750,8 +5896,8 @@
       },
       {
         "name": "OM Diagnostic Laboratories",
-        "balance": 5878.55,
-        "qb_balance": 7571.78,
+        "balance": 4344.37,
+        "qb_balance": 7593.8,
         "invoices": [
           {
             "number": "SO471",
@@ -5976,7 +6122,7 @@
             "shopify_status": "PAID",
             "shopify_total": 1135.4,
             "shopify_received": 1135.4,
-            "shopify_outstanding": 0.0,
+            "shopify_outstanding": 0,
             "shopify_match": "note",
             "reconcile": true
           },
@@ -6004,7 +6150,7 @@
             "shopify_status": "PAID",
             "shopify_total": 1135.4,
             "shopify_received": 1135.4,
-            "shopify_outstanding": 0.0,
+            "shopify_outstanding": 0,
             "shopify_match": "tracking",
             "reconcile": true
           },
@@ -6016,14 +6162,31 @@
             "balance": 1556.2,
             "so_num": "",
             "shopify_order": "#1255",
-            "shopify_fulfillments": [],
+            "shopify_fulfillments": [
+              {
+                "id": "6588277063924",
+                "shipment": "#1255-F2",
+                "tracking": "384474854885",
+                "trackings": [
+                  "384474854885"
+                ]
+              },
+              {
+                "id": "6586168443124",
+                "shipment": "#1255-F1",
+                "tracking": "384462587922",
+                "trackings": [
+                  "384462587922"
+                ]
+              }
+            ],
             "pay_link": "https://connect.intuit.com/t/scs-v1-e80aa77024fc42ceb89ec838b55ab93322c6e531ffe446afb6adc4bbcf9eb0631237870b8470426b912bcae12c5d9dee-0?locale=en_US&cta=v3invoicelink",
             "shopify_status": "PARTIALLY_PAID",
-            "shopify_total": 1587.85,
-            "shopify_received": null,
-            "shopify_outstanding": 31.65,
+            "shopify_total": 1609.87,
+            "shopify_received": 1556.2,
+            "shopify_outstanding": 53.67,
             "shopify_match": "note",
-            "reconcile": false
+            "reconcile": true
           },
           {
             "number": "SO824",
@@ -6042,9 +6205,32 @@
             ],
             "pay_link": "https://connect.intuit.com/t/scs-v1-47d29671017b49e993a0fd32f219e0e00435be69de394153bb70811169bb500e0fb5123585d94b0998a5add9536f9d4b-1?locale=en_US&cta=v3invoicelink",
             "shopify_status": "PARTIALLY_PAID",
-            "shopify_total": 1587.85,
-            "shopify_received": null,
-            "shopify_outstanding": 31.65,
+            "shopify_total": 1609.87,
+            "shopify_received": 1556.2,
+            "shopify_outstanding": 53.67,
+            "shopify_match": "note",
+            "reconcile": false
+          },
+          {
+            "number": "SO827",
+            "date": "2026-11-05",
+            "due": "2026-11-05",
+            "amount": 22.02,
+            "balance": 22.02,
+            "so_num": "",
+            "shopify_order": "#1255",
+            "shopify_fulfillments": [
+              {
+                "id": "6588277063924",
+                "shipment": "#1255-F2",
+                "tracking": "384474854885"
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-07d68e9183e44a7788aa0dd28908d658a84b453712ef4fcb8b6a78fa7756db0c78e112b528e94c70bfa04613c15400f4-1?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PARTIALLY_PAID",
+            "shopify_total": 1609.87,
+            "shopify_received": 1556.2,
+            "shopify_outstanding": 53.67,
             "shopify_match": "note",
             "reconcile": false
           }
@@ -6130,26 +6316,6 @@
         ]
       },
       {
-        "name": "Clearchem",
-        "balance": 2163.8,
-        "qb_balance": 2163.8,
-        "invoices": [
-          {
-            "number": "SO357",
-            "date": "2026-03-30",
-            "due": "2026-03-30",
-            "amount": 2163.8,
-            "balance": 2163.8,
-            "so_num": "SO336",
-            "shopify_order": "",
-            "shopify_fulfillments": [],
-            "pay_link": "https://connect.intuit.com/t/scs-v1-857d320d0f20474ea8c6ebbe95a5835af74e5b746e8c45edbb86bd4a25e55b1f83e3f556db924e6ca5049058ad15a424-1?locale=en_US&cta=v3invoicelink",
-            "shopify_status": "",
-            "reconcile": false
-          }
-        ]
-      },
-      {
         "name": "Lucid Labs",
         "balance": 2155.27,
         "qb_balance": 2155.27,
@@ -6204,9 +6370,9 @@
             ],
             "pay_link": "https://connect.intuit.com/t/scs-v1-0352c2030a924b1f9f53b889fa2b011e8ea11f0c009d4df894c6ece2afa96c7c6a3c44df53b64e9f87990849d8be5727-0?locale=en_US&cta=v3invoicelink",
             "shopify_status": "PENDING",
-            "shopify_total": 4595.7,
+            "shopify_total": 4615.22,
             "shopify_received": null,
-            "shopify_outstanding": 4595.7,
+            "shopify_outstanding": 4615.22,
             "shopify_match": "note",
             "reconcile": false
           }
@@ -6460,6 +6626,68 @@
         ]
       },
       {
+        "name": "Clinical Diagnostic Laboratory",
+        "balance": 347.83,
+        "qb_balance": 535.05,
+        "invoices": [
+          {
+            "number": "SO619",
+            "date": "2026-08-17",
+            "due": "2026-08-17",
+            "amount": 187.22,
+            "balance": 187.22,
+            "so_num": "SO518",
+            "shopify_order": "#1146",
+            "shopify_fulfillments": [
+              {
+                "id": "6340696965364",
+                "shipment": "#1146-F2",
+                "tracking": "",
+                "trackings": []
+              },
+              {
+                "id": "6340694769908",
+                "shipment": "#1146-F1",
+                "tracking": "875904852569",
+                "trackings": [
+                  "875904852569"
+                ]
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-488e50de25554aa791479e7eaf85552057ab01dea4cb40dd942f21abc673e5cfe440b96cd9cd4a8bb3b289ffa94c40f6-0?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PAID",
+            "shopify_total": 187.22,
+            "shopify_received": 187.22,
+            "shopify_outstanding": 0.0,
+            "shopify_match": "vtiger",
+            "reconcile": true
+          },
+          {
+            "number": "SO828",
+            "date": "2026-11-05",
+            "due": "2026-11-15",
+            "amount": 347.83,
+            "balance": 347.83,
+            "so_num": "",
+            "shopify_order": "#1257",
+            "shopify_fulfillments": [
+              {
+                "id": "6588286337268",
+                "shipment": "#1257-F1",
+                "tracking": "879798173333"
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-59d44d21ab9a4d178415fd37ae8db0cb5505936fcb2a4f589b034eaad1495d98ce95222a7acb4433b14b48c20293a5bf-0?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PENDING",
+            "shopify_total": 347.83,
+            "shopify_received": null,
+            "shopify_outstanding": 347.83,
+            "shopify_match": "note",
+            "reconcile": false
+          }
+        ]
+      },
+      {
         "name": "Seemas Botox and aesthetics",
         "balance": 321.18,
         "qb_balance": 321.18,
@@ -6632,7 +6860,7 @@
             "shopify_status": "PAID",
             "shopify_total": 1662.5,
             "shopify_received": 1662.5,
-            "shopify_outstanding": 0.0,
+            "shopify_outstanding": 0,
             "shopify_match": "note",
             "reconcile": true
           },
@@ -6688,6 +6916,36 @@
         ]
       },
       {
+        "name": "Personal",
+        "balance": 237.52,
+        "qb_balance": 237.52,
+        "invoices": [
+          {
+            "number": "SO830",
+            "date": "2026-11-05",
+            "due": "2026-11-05",
+            "amount": 237.52,
+            "balance": 237.52,
+            "so_num": "",
+            "shopify_order": "#1237",
+            "shopify_fulfillments": [
+              {
+                "id": "6588349481204",
+                "shipment": "#1237-F3",
+                "tracking": "879800751946"
+              }
+            ],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-6663272ef1a046228e88b48a45e63000b57984f2d24d46daa404e5a87d0bae0c6aafac1f99fa48dc8e5ed8f2946e50c6-1?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PENDING",
+            "shopify_total": 2922.84,
+            "shopify_received": null,
+            "shopify_outstanding": 2922.84,
+            "shopify_match": "note",
+            "reconcile": false
+          }
+        ]
+      },
+      {
         "name": "My clinical lab INC",
         "balance": 175.7,
         "qb_balance": 175.7,
@@ -6704,45 +6962,6 @@
             "pay_link": "https://connect.intuit.com/t/scs-v1-22d4102672a64a90b9417d8e8c251d5bfdbc2a2f481b44d8b951e8e565d28de03587f96364d14b3aaa09b77dc1f9870d-0?locale=en_US&cta=v3invoicelink",
             "shopify_status": "",
             "reconcile": false
-          }
-        ]
-      },
-      {
-        "name": "Clinical Diagnostic Laboratory",
-        "balance": 0.0,
-        "qb_balance": 187.22,
-        "invoices": [
-          {
-            "number": "SO619",
-            "date": "2026-08-17",
-            "due": "2026-08-17",
-            "amount": 187.22,
-            "balance": 187.22,
-            "so_num": "SO518",
-            "shopify_order": "#1146",
-            "shopify_fulfillments": [
-              {
-                "id": "6340696965364",
-                "shipment": "#1146-F2",
-                "tracking": "",
-                "trackings": []
-              },
-              {
-                "id": "6340694769908",
-                "shipment": "#1146-F1",
-                "tracking": "875904852569",
-                "trackings": [
-                  "875904852569"
-                ]
-              }
-            ],
-            "pay_link": "https://connect.intuit.com/t/scs-v1-488e50de25554aa791479e7eaf85552057ab01dea4cb40dd942f21abc673e5cfe440b96cd9cd4a8bb3b289ffa94c40f6-0?locale=en_US&cta=v3invoicelink",
-            "shopify_status": "PAID",
-            "shopify_total": 187.22,
-            "shopify_received": 187.22,
-            "shopify_outstanding": 0.0,
-            "shopify_match": "vtiger",
-            "reconcile": true
           }
         ]
       },
@@ -6770,7 +6989,7 @@
             "shopify_status": "PAID",
             "shopify_total": 61.33,
             "shopify_received": 61.33,
-            "shopify_outstanding": 0.0,
+            "shopify_outstanding": 0,
             "shopify_match": "note",
             "reconcile": true
           }
@@ -6827,7 +7046,7 @@
             "shopify_status": "PAID",
             "shopify_total": 7221.64,
             "shopify_received": 7221.64,
-            "shopify_outstanding": 0.0,
+            "shopify_outstanding": 0,
             "shopify_match": "manual",
             "reconcile": true
           },
@@ -6903,7 +7122,7 @@
             "shopify_status": "PAID",
             "shopify_total": 494.0,
             "shopify_received": 494.0,
-            "shopify_outstanding": 0.0,
+            "shopify_outstanding": 0,
             "shopify_match": "note",
             "reconcile": true
           },
@@ -6929,7 +7148,7 @@
             "shopify_status": "PAID",
             "shopify_total": 431.65,
             "shopify_received": 431.65,
-            "shopify_outstanding": 0.0,
+            "shopify_outstanding": 0,
             "shopify_match": "note",
             "reconcile": true
           },
@@ -6952,7 +7171,7 @@
             "shopify_status": "PAID",
             "shopify_total": 431.65,
             "shopify_received": 431.65,
-            "shopify_outstanding": 0.0,
+            "shopify_outstanding": 0,
             "shopify_match": "note",
             "reconcile": true
           }
@@ -6982,7 +7201,7 @@
             "shopify_status": "PAID",
             "shopify_total": 1727.04,
             "shopify_received": 1727.04,
-            "shopify_outstanding": 0.0,
+            "shopify_outstanding": 0,
             "shopify_match": "note",
             "reconcile": true
           }
@@ -7012,7 +7231,7 @@
             "shopify_status": "PAID",
             "shopify_total": 1737.16,
             "shopify_received": 1737.16,
-            "shopify_outstanding": 0.0,
+            "shopify_outstanding": 0,
             "shopify_match": "note",
             "reconcile": true
           }
@@ -7042,7 +7261,7 @@
             "shopify_status": "PAID",
             "shopify_total": 588.95,
             "shopify_received": 588.95,
-            "shopify_outstanding": 0.0,
+            "shopify_outstanding": 0,
             "shopify_match": "qb_field",
             "reconcile": true
           }
@@ -7083,7 +7302,7 @@
             "shopify_status": "PAID",
             "shopify_total": 812.85,
             "shopify_received": 812.85,
-            "shopify_outstanding": 0.0,
+            "shopify_outstanding": 0,
             "shopify_match": "note",
             "reconcile": true
           }
@@ -7092,7 +7311,7 @@
       {
         "name": "Helix Diagnostix",
         "balance": 0.0,
-        "qb_balance": 2315.9,
+        "qb_balance": 3070.65,
         "invoices": [
           {
             "number": "SO787",
@@ -7118,7 +7337,7 @@
             "shopify_status": "PAID",
             "shopify_total": 919.5,
             "shopify_received": 919.5,
-            "shopify_outstanding": 0.0,
+            "shopify_outstanding": 0,
             "shopify_match": "note",
             "reconcile": true
           },
@@ -7140,8 +7359,25 @@
             "pay_link": "https://connect.intuit.com/t/scs-v1-0f44b2d8207d418fa8f7bc530cfcf8940d0d1a020c8a4bab855cca13d16144571178c47c9d184106867271ab7d672cbd-0?locale=en_US&cta=v3invoicelink",
             "shopify_status": "PAID",
             "shopify_total": 1396.4,
-            "shopify_received": null,
-            "shopify_outstanding": 0.0,
+            "shopify_received": 1396.4,
+            "shopify_outstanding": 0,
+            "shopify_match": "note",
+            "reconcile": true
+          },
+          {
+            "number": "SO829",
+            "date": "2026-11-05",
+            "due": "2026-11-05",
+            "amount": 754.75,
+            "balance": 754.75,
+            "so_num": "",
+            "shopify_order": "#1258",
+            "shopify_fulfillments": [],
+            "pay_link": "https://connect.intuit.com/t/scs-v1-328531a46ceb4136a4c0f60fedcd22c8e816f63dca12481788a4fb1f8c436c93dfbd518ce2264ff497c265a736455817-1?locale=en_US&cta=v3invoicelink",
+            "shopify_status": "PAID",
+            "shopify_total": 754.75,
+            "shopify_received": 754.75,
+            "shopify_outstanding": 0,
             "shopify_match": "note",
             "reconcile": true
           }
@@ -7165,7 +7401,7 @@
             "shopify_status": "PAID",
             "shopify_total": 1726.16,
             "shopify_received": 1726.16,
-            "shopify_outstanding": 0.0,
+            "shopify_outstanding": 0,
             "shopify_match": "note",
             "reconcile": true
           }
@@ -7189,7 +7425,7 @@
             "shopify_status": "PAID",
             "shopify_total": 574.47,
             "shopify_received": 574.47,
-            "shopify_outstanding": 0.0,
+            "shopify_outstanding": 0,
             "shopify_match": "note",
             "reconcile": true
           }
@@ -7198,10 +7434,10 @@
     ]
   },
   "ap": {
-    "generated_at": "2026-11-05 06:12 PM UTC",
-    "total": 30045.68,
-    "past_due": 25580.69,
-    "count": 45,
+    "generated_at": "2026-11-06 06:40 PM UTC",
+    "total": 37459.26,
+    "past_due": 31268.65,
+    "count": 62,
     "vendors": [
       {
         "vendor": "Conmed",
@@ -7214,7 +7450,7 @@
             "due": "2026-10-01",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": 35,
+            "days_past_due": 36,
             "pos": [
               {
                 "po": "PO834",
@@ -7224,7 +7460,8 @@
             ],
             "customers": [
               "Setzer Personal Physicians"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4204&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11427889",
@@ -7232,7 +7469,7 @@
             "due": "2026-10-01",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": 35,
+            "days_past_due": 36,
             "pos": [
               {
                 "po": "PO834",
@@ -7242,7 +7479,8 @@
             ],
             "customers": [
               "Setzer Personal Physicians"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4203&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11428189",
@@ -7250,7 +7488,7 @@
             "due": "2026-10-01",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": 35,
+            "days_past_due": 36,
             "pos": [
               {
                 "po": "PO835",
@@ -7260,7 +7498,8 @@
             ],
             "customers": [
               "La Clinique Privee"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4202&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11431177",
@@ -7268,7 +7507,7 @@
             "due": "2026-10-03",
             "amount": 623.46,
             "balance": 623.46,
-            "days_past_due": 33,
+            "days_past_due": 34,
             "pos": [
               {
                 "po": "PO842",
@@ -7278,7 +7517,8 @@
             ],
             "customers": [
               "Luxus Aesthetics"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4196&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11433838",
@@ -7286,7 +7526,7 @@
             "due": "2026-10-08",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": 28,
+            "days_past_due": 29,
             "pos": [
               {
                 "po": "PO851",
@@ -7296,7 +7536,8 @@
             ],
             "customers": [
               "931 Skin + Company Aesthetics & Wellness"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4308&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11434120",
@@ -7304,7 +7545,7 @@
             "due": "2026-10-08",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": 28,
+            "days_past_due": 29,
             "pos": [
               {
                 "po": "PO851",
@@ -7314,7 +7555,8 @@
             ],
             "customers": [
               "931 Skin + Company Aesthetics & Wellness"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4307&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11440466",
@@ -7322,7 +7564,7 @@
             "due": "2026-10-15",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": 21,
+            "days_past_due": 22,
             "pos": [
               {
                 "po": "PO860",
@@ -7332,7 +7574,8 @@
             ],
             "customers": [
               "Ivy En Rose Medical Clinic"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4330&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11440468",
@@ -7340,7 +7583,7 @@
             "due": "2026-10-15",
             "amount": 311.73,
             "balance": 311.73,
-            "days_past_due": 21,
+            "days_past_due": 22,
             "pos": [
               {
                 "po": "PO861",
@@ -7350,7 +7593,8 @@
             ],
             "customers": [
               "MedRevive MedSpa"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4329&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11440875",
@@ -7358,7 +7602,7 @@
             "due": "2026-10-15",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": 21,
+            "days_past_due": 22,
             "pos": [
               {
                 "po": "PO860",
@@ -7368,7 +7612,8 @@
             ],
             "customers": [
               "Ivy En Rose Medical Clinic"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4328&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11445088",
@@ -7376,7 +7621,7 @@
             "due": "2026-10-18",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": 18,
+            "days_past_due": 19,
             "pos": [
               {
                 "po": "PO873",
@@ -7386,7 +7631,8 @@
             ],
             "customers": [
               "Brand Surgical Institute"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4469&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11445211",
@@ -7394,7 +7640,7 @@
             "due": "2026-10-18",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": 18,
+            "days_past_due": 19,
             "pos": [
               {
                 "po": "PO873",
@@ -7404,7 +7650,8 @@
             ],
             "customers": [
               "Brand Surgical Institute"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4468&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11448337",
@@ -7412,7 +7659,7 @@
             "due": "2026-10-22",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": 14,
+            "days_past_due": 15,
             "pos": [
               {
                 "po": "PO880",
@@ -7422,7 +7669,8 @@
             ],
             "customers": [
               "Parkway Medical Care PLLC"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4474&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11448974",
@@ -7430,7 +7678,7 @@
             "due": "2026-10-22",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": 14,
+            "days_past_due": 15,
             "pos": [
               {
                 "po": "PO880",
@@ -7440,7 +7688,8 @@
             ],
             "customers": [
               "Parkway Medical Care PLLC"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4473&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11450569",
@@ -7448,7 +7697,7 @@
             "due": "2026-10-23",
             "amount": 158.5,
             "balance": 158.5,
-            "days_past_due": 13,
+            "days_past_due": 14,
             "pos": [
               {
                 "po": "PO882",
@@ -7458,7 +7707,8 @@
             ],
             "customers": [
               "Parkway Medical Care PLLC"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4475&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11453087",
@@ -7466,7 +7716,7 @@
             "due": "2026-10-25",
             "amount": 141.94,
             "balance": 141.94,
-            "days_past_due": 11,
+            "days_past_due": 12,
             "pos": [
               {
                 "po": "PO896",
@@ -7476,7 +7726,8 @@
             ],
             "customers": [
               "Euphoria Skin & Hair"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4524&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11452938",
@@ -7484,7 +7735,7 @@
             "due": "2026-10-25",
             "amount": 1009.48,
             "balance": 1009.48,
-            "days_past_due": 11,
+            "days_past_due": 12,
             "pos": [
               {
                 "po": "PO896",
@@ -7494,7 +7745,8 @@
             ],
             "customers": [
               "Euphoria Skin & Hair"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4523&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11453703",
@@ -7502,7 +7754,7 @@
             "due": "2026-10-26",
             "amount": 158.5,
             "balance": 158.5,
-            "days_past_due": 10,
+            "days_past_due": 11,
             "pos": [
               {
                 "po": "PO889",
@@ -7512,7 +7764,8 @@
             ],
             "customers": [
               "Georgia Plastic & Recon Surgery"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4522&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11453521",
@@ -7520,7 +7773,7 @@
             "due": "2026-10-26",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": 10,
+            "days_past_due": 11,
             "pos": [
               {
                 "po": "PO889",
@@ -7530,7 +7783,8 @@
             ],
             "customers": [
               "Georgia Plastic & Recon Surgery"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4521&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11455727",
@@ -7538,7 +7792,7 @@
             "due": "2026-10-29",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": 7,
+            "days_past_due": 8,
             "pos": [
               {
                 "po": "PO899",
@@ -7548,7 +7802,8 @@
             ],
             "customers": [
               "Clinica Medica Dr. Vizcarra"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4520&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11458649",
@@ -7556,7 +7811,7 @@
             "due": "2026-10-31",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": 5,
+            "days_past_due": 6,
             "pos": [
               {
                 "po": "PO906",
@@ -7566,7 +7821,8 @@
             ],
             "customers": [
               "Flourish Wellness"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4562&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11459168",
@@ -7574,7 +7830,7 @@
             "due": "2026-10-31",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": 5,
+            "days_past_due": 6,
             "pos": [
               {
                 "po": "PO908",
@@ -7584,7 +7840,8 @@
             ],
             "customers": [
               "What\u2019s age got to do with it?"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4561&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11468050",
@@ -7592,7 +7849,7 @@
             "due": "2026-11-11",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": -6,
+            "days_past_due": -5,
             "pos": [
               {
                 "po": "PO940",
@@ -7602,7 +7859,8 @@
             ],
             "customers": [
               "North Fork Medical PLLC"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4723&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11470722",
@@ -7610,7 +7868,7 @@
             "due": "2026-11-13",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": -8,
+            "days_past_due": -7,
             "pos": [
               {
                 "po": "PO945",
@@ -7620,7 +7878,8 @@
             ],
             "customers": [
               "Resilient Skin Lab"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4727&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11478011",
@@ -7628,7 +7887,7 @@
             "due": "2026-11-20",
             "amount": 1151.42,
             "balance": 1151.42,
-            "days_past_due": -15,
+            "days_past_due": -14,
             "pos": [
               {
                 "po": "PO967",
@@ -7638,7 +7897,8 @@
             ],
             "customers": [
               "Integrative Health and Aesthetics"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4808&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "11480747",
@@ -7646,7 +7906,7 @@
             "due": "2026-11-22",
             "amount": 311.73,
             "balance": 311.73,
-            "days_past_due": -17,
+            "days_past_due": -16,
             "pos": [
               {
                 "po": "PO971",
@@ -7656,75 +7916,15 @@
             ],
             "customers": [
               "Karen Barbalace Aesthetics, PLLC"
-            ]
-          }
-        ]
-      },
-      {
-        "vendor": "ALDX HOLDING CORPORATION",
-        "balance": 5566.19,
-        "pastdue": 5566.19,
-        "bills": [
-          {
-            "number": "1306",
-            "date": "2026-10-23",
-            "due": "2026-10-23",
-            "amount": 180.19,
-            "balance": 180.19,
-            "days_past_due": 13,
-            "pos": [
-              {
-                "po": "PO970",
-                "so": "SO564",
-                "vtiger_customer": "Prominis Medical Services"
-              }
             ],
-            "customers": [
-              "Prominis Medical Services"
-            ]
-          },
-          {
-            "number": "1309",
-            "date": "2026-10-27",
-            "due": "2026-10-27",
-            "amount": 571.0,
-            "balance": 571.0,
-            "days_past_due": 9,
-            "pos": [
-              {
-                "po": "PO956",
-                "so": "SO604",
-                "vtiger_customer": "Personal"
-              }
-            ],
-            "customers": [
-              "Gegerin Parikh (Personal)"
-            ]
-          },
-          {
-            "number": "1310",
-            "date": "2026-10-28",
-            "due": "2026-10-28",
-            "amount": 4815.0,
-            "balance": 4815.0,
-            "days_past_due": 8,
-            "pos": [
-              {
-                "po": "PO969",
-                "so": "SO608",
-                "vtiger_customer": "Radiance Diagnostics"
-              }
-            ],
-            "customers": [
-              "Radiance Diagnostic"
-            ]
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4837&deeplinkcompanyid=9341452706936433"
           }
         ]
       },
       {
         "vendor": "Allora Biotech LLC",
-        "balance": 4782.1,
-        "pastdue": 4782.1,
+        "balance": 15110.3,
+        "pastdue": 15110.3,
         "bills": [
           {
             "number": "1767",
@@ -7732,7 +7932,7 @@
             "due": "2026-10-21",
             "amount": 240.0,
             "balance": 240.0,
-            "days_past_due": 15,
+            "days_past_due": 16,
             "pos": [
               {
                 "po": "PO946",
@@ -7742,7 +7942,8 @@
             ],
             "customers": [
               "CliniCore Labs"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4835&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "1768",
@@ -7750,7 +7951,7 @@
             "due": "2026-10-21",
             "amount": 60.0,
             "balance": 60.0,
-            "days_past_due": 15,
+            "days_past_due": 16,
             "pos": [
               {
                 "po": "PO954",
@@ -7760,7 +7961,8 @@
             ],
             "customers": [
               "MEDICAL HEALTH LAB"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4834&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "1769",
@@ -7768,7 +7970,7 @@
             "due": "2026-10-21",
             "amount": 254.1,
             "balance": 254.1,
-            "days_past_due": 15,
+            "days_past_due": 16,
             "pos": [
               {
                 "po": "PO966",
@@ -7778,7 +7980,8 @@
             ],
             "customers": [
               "Helix Diagnostix"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4833&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "1776",
@@ -7786,7 +7989,7 @@
             "due": "2026-10-26",
             "amount": 1006.0,
             "balance": 1006.0,
-            "days_past_due": 10,
+            "days_past_due": 11,
             "pos": [
               {
                 "po": "PO975",
@@ -7796,7 +7999,8 @@
             ],
             "customers": [
               "Chicago Lab"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4841&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "1775",
@@ -7804,7 +8008,7 @@
             "due": "2026-10-26",
             "amount": 550.0,
             "balance": 550.0,
-            "days_past_due": 10,
+            "days_past_due": 11,
             "pos": [
               {
                 "po": "PO974",
@@ -7814,7 +8018,8 @@
             ],
             "customers": [
               "Mercedes Scientific"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4840&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "1774",
@@ -7822,7 +8027,7 @@
             "due": "2026-10-26",
             "amount": 1385.0,
             "balance": 1385.0,
-            "days_past_due": 10,
+            "days_past_due": 11,
             "pos": [
               {
                 "po": "PO972",
@@ -7832,7 +8037,27 @@
             ],
             "customers": [
               "LabX Diagnostic Systems"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4839&deeplinkcompanyid=9341452706936433"
+          },
+          {
+            "number": "1782",
+            "date": "2026-10-27",
+            "due": "2026-10-27",
+            "amount": 216.0,
+            "balance": 216.0,
+            "days_past_due": 10,
+            "pos": [
+              {
+                "po": "PO977",
+                "so": "SO615",
+                "vtiger_customer": "Healthquest Esoterics"
+              }
+            ],
+            "customers": [
+              "Healthquest Esoterics"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4883&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "1786",
@@ -7840,7 +8065,7 @@
             "due": "2026-10-29",
             "amount": 825.0,
             "balance": 825.0,
-            "days_past_due": 7,
+            "days_past_due": 8,
             "pos": [
               {
                 "po": "PO980",
@@ -7850,7 +8075,8 @@
             ],
             "customers": [
               "Mercedes Scientific"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4843&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "1784",
@@ -7858,7 +8084,7 @@
             "due": "2026-10-29",
             "amount": 462.0,
             "balance": 462.0,
-            "days_past_due": 7,
+            "days_past_due": 8,
             "pos": [
               {
                 "po": "PO979",
@@ -7868,7 +8094,395 @@
             ],
             "customers": [
               "ALDX Holding"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4842&deeplinkcompanyid=9341452706936433"
+          },
+          {
+            "number": "1790",
+            "date": "2026-11-03",
+            "due": "2026-11-03",
+            "amount": 2402.2,
+            "balance": 2402.2,
+            "days_past_due": 3,
+            "pos": [
+              {
+                "po": "PO981",
+                "so": "SO618",
+                "vtiger_customer": "LabX Diagnostic Systems"
+              }
+            ],
+            "customers": [
+              "LabX Diagnostic Systems"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4899&deeplinkcompanyid=9341452706936433"
+          },
+          {
+            "number": "1792",
+            "date": "2026-11-03",
+            "due": "2026-11-03",
+            "amount": 950.0,
+            "balance": 950.0,
+            "days_past_due": 3,
+            "pos": [
+              {
+                "po": "PO985",
+                "so": "SO619",
+                "vtiger_customer": "Helix Diagnostix"
+              }
+            ],
+            "customers": [
+              "Helix Diagnostix"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4898&deeplinkcompanyid=9341452706936433"
+          },
+          {
+            "number": "1798",
+            "date": "2026-11-04",
+            "due": "2026-11-04",
+            "amount": 1500.0,
+            "balance": 1500.0,
+            "days_past_due": 2,
+            "pos": [
+              {
+                "po": "PO767",
+                "so": "SO493",
+                "vtiger_customer": "Mercedes Scientific"
+              }
+            ],
+            "customers": [
+              "Mercedes Scientific"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4905&deeplinkcompanyid=9341452706936433"
+          },
+          {
+            "number": "1799",
+            "date": "2026-11-04",
+            "due": "2026-11-04",
+            "amount": 825.0,
+            "balance": 825.0,
+            "days_past_due": 2,
+            "pos": [
+              {
+                "po": "PO980",
+                "so": "SO512",
+                "vtiger_customer": "Mercedes Scientific"
+              }
+            ],
+            "customers": [
+              "Mercedes Scientific"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4904&deeplinkcompanyid=9341452706936433"
+          },
+          {
+            "number": "1795",
+            "date": "2026-11-04",
+            "due": "2026-11-04",
+            "amount": 130.0,
+            "balance": 130.0,
+            "days_past_due": 2,
+            "pos": [
+              {
+                "po": "PO981",
+                "so": "SO618",
+                "vtiger_customer": "LabX Diagnostic Systems"
+              }
+            ],
+            "customers": [
+              "LabX Diagnostic Systems"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4903&deeplinkcompanyid=9341452706936433"
+          },
+          {
+            "number": "1794",
+            "date": "2026-11-04",
+            "due": "2026-11-04",
+            "amount": 124.0,
+            "balance": 124.0,
+            "days_past_due": 2,
+            "pos": [
+              {
+                "po": "PO963",
+                "so": "SO608",
+                "vtiger_customer": "Radiance Diagnostics"
+              }
+            ],
+            "customers": [
+              "Radiance Diagnostics"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4902&deeplinkcompanyid=9341452706936433"
+          },
+          {
+            "number": "1793",
+            "date": "2026-11-04",
+            "due": "2026-11-04",
+            "amount": 180.0,
+            "balance": 180.0,
+            "days_past_due": 2,
+            "pos": [
+              {
+                "po": "PO941",
+                "so": "SO595",
+                "vtiger_customer": "Primex Lab"
+              }
+            ],
+            "customers": [
+              "Healthquest Esoterics"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4901&deeplinkcompanyid=9341452706936433"
+          },
+          {
+            "number": "1807",
+            "date": "2026-11-05",
+            "due": "2026-11-05",
+            "amount": 124.0,
+            "balance": 124.0,
+            "days_past_due": 1,
+            "pos": [
+              {
+                "po": "PO955",
+                "so": "SO604",
+                "vtiger_customer": "Personal"
+              }
+            ],
+            "customers": [
+              "Personal"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4910&deeplinkcompanyid=9341452706936433"
+          },
+          {
+            "number": "1806",
+            "date": "2026-11-05",
+            "due": "2026-11-05",
+            "amount": 1697.0,
+            "balance": 1697.0,
+            "days_past_due": 1,
+            "pos": [
+              {
+                "po": "PO988",
+                "so": "SO621",
+                "vtiger_customer": "Doctors General Laboratory"
+              }
+            ],
+            "customers": [
+              "Doctors General Laboratory"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4909&deeplinkcompanyid=9341452706936433"
+          },
+          {
+            "number": "1804",
+            "date": "2026-11-05",
+            "due": "2026-11-05",
+            "amount": 210.0,
+            "balance": 210.0,
+            "days_past_due": 1,
+            "pos": [
+              {
+                "po": "PO991",
+                "so": "SO622",
+                "vtiger_customer": "Clinical Diagnostic Laboratory"
+              }
+            ],
+            "customers": [
+              "Clinical Diagnostic Laboratory"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4908&deeplinkcompanyid=9341452706936433"
+          },
+          {
+            "number": "1800",
+            "date": "2026-11-05",
+            "due": "2026-11-05",
+            "amount": 410.0,
+            "balance": 410.0,
+            "days_past_due": 1,
+            "pos": [
+              {
+                "po": "PO986",
+                "so": "SO620",
+                "vtiger_customer": "OM Diagnostic Laboratories"
+              }
+            ],
+            "customers": [
+              "OM Diagnostic Laboratories"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4907&deeplinkcompanyid=9341452706936433"
+          },
+          {
+            "number": "1803",
+            "date": "2026-11-05",
+            "due": "2026-11-05",
+            "amount": 1560.0,
+            "balance": 1560.0,
+            "days_past_due": 1,
+            "pos": [
+              {
+                "po": "PO951",
+                "so": "SO602",
+                "vtiger_customer": "Mercedes Scientific"
+              }
+            ],
+            "customers": [
+              "Mercedes Scientific"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4906&deeplinkcompanyid=9341452706936433"
+          }
+        ]
+      },
+      {
+        "vendor": "PMA Services",
+        "balance": 3350.57,
+        "pastdue": 925.95,
+        "bills": [
+          {
+            "number": "INV-001927",
+            "date": "2026-09-25",
+            "due": "2026-10-05",
+            "amount": 64.0,
+            "balance": 64.0,
+            "days_past_due": 32,
+            "pos": [
+              {
+                "po": "PO897",
+                "so": "SO571",
+                "vtiger_customer": "Well Health Labs"
+              }
+            ],
+            "customers": [
+              "Well Health Labs"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4897&deeplinkcompanyid=9341452706936433"
+          },
+          {
+            "number": "INV-002119",
+            "date": "2026-10-26",
+            "due": "2026-11-05",
+            "amount": 1174.35,
+            "balance": 861.95,
+            "days_past_due": 1,
+            "pos": [
+              {
+                "po": "PO973",
+                "so": "SO613",
+                "vtiger_customer": "LabX Diagnostic Systems"
+              }
+            ],
+            "customers": [
+              "LabX Diagnostic Systems"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4882&deeplinkcompanyid=9341452706936433"
+          },
+          {
+            "number": "INV-002125",
+            "date": "2026-10-27",
+            "due": "2026-11-06",
+            "amount": 477.0,
+            "balance": 477.0,
+            "days_past_due": 0,
+            "pos": [
+              {
+                "po": "PO976",
+                "so": "SO611",
+                "vtiger_customer": "Prime Diagnostics"
+              }
+            ],
+            "customers": [
+              "Prime Diagnostics"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4881&deeplinkcompanyid=9341452706936433"
+          },
+          {
+            "number": "INV-002131",
+            "date": "2026-10-28",
+            "due": "2026-11-07",
+            "amount": 138.0,
+            "balance": 138.0,
+            "days_past_due": -1,
+            "pos": [
+              {
+                "po": "PO960",
+                "so": "SO606",
+                "vtiger_customer": "Envol Biomedical"
+              }
+            ],
+            "customers": [
+              "Envol Biomedical"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4886&deeplinkcompanyid=9341452706936433"
+          },
+          {
+            "number": "INV-002145",
+            "date": "2026-10-28",
+            "due": "2026-11-07",
+            "amount": 699.0,
+            "balance": 699.0,
+            "days_past_due": -1,
+            "pos": [
+              {
+                "po": "PO978",
+                "so": "SO616",
+                "vtiger_customer": "MEDICAL HEALTH LAB"
+              }
+            ],
+            "customers": [
+              "MEDICAL HEALTH LAB"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4845&deeplinkcompanyid=9341452706936433"
+          },
+          {
+            "number": "INV-002192",
+            "date": "2026-03-11",
+            "due": "2026-11-13",
+            "amount": 82.5,
+            "balance": 82.5,
+            "days_past_due": -7,
+            "pos": [
+              {
+                "po": "PO982",
+                "so": "SO618",
+                "vtiger_customer": "LabX Diagnostic Systems"
+              }
+            ],
+            "customers": [
+              "LabX Diagnostic Systems"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4900&deeplinkcompanyid=9341452706936433"
+          },
+          {
+            "number": "INV-002175",
+            "date": "2026-03-11",
+            "due": "2026-11-13",
+            "amount": 862.93,
+            "balance": 862.93,
+            "days_past_due": -7,
+            "pos": [
+              {
+                "po": "PO982",
+                "so": "SO618",
+                "vtiger_customer": "LabX Diagnostic Systems"
+              }
+            ],
+            "customers": [
+              "LabX Diagnostic Systems"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4896&deeplinkcompanyid=9341452706936433"
+          },
+          {
+            "number": "INV-002216",
+            "date": "2026-05-11",
+            "due": "2026-11-15",
+            "amount": 165.19,
+            "balance": 165.19,
+            "days_past_due": -9,
+            "pos": [
+              {
+                "po": "PO887",
+                "so": "SO564",
+                "vtiger_customer": "Prominis Medical Services"
+              }
+            ],
+            "customers": [
+              "Prominis Medical Services"
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4911&deeplinkcompanyid=9341452706936433"
           }
         ]
       },
@@ -7883,7 +8497,7 @@
             "due": "2026-06-11",
             "amount": 135.2,
             "balance": 135.2,
-            "days_past_due": 147,
+            "days_past_due": 148,
             "pos": [
               {
                 "po": "PO682",
@@ -7893,7 +8507,8 @@
             ],
             "customers": [
               "MEDICAL HEALTH LAB"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D3370&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "25640",
@@ -7901,7 +8516,7 @@
             "due": "2026-07-29",
             "amount": 82.0,
             "balance": 82.0,
-            "days_past_due": 99,
+            "days_past_due": 100,
             "pos": [
               {
                 "po": "PO708",
@@ -7911,7 +8526,8 @@
             ],
             "customers": [
               "OM Diagnostic Laboratories"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D3570&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "25665",
@@ -7919,7 +8535,7 @@
             "due": "2026-08-06",
             "amount": 695.0,
             "balance": 695.0,
-            "days_past_due": 91,
+            "days_past_due": 92,
             "pos": [
               {
                 "po": "PO646",
@@ -7929,7 +8545,8 @@
             ],
             "customers": [
               "Mercedes Scientific"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D3660&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "25765",
@@ -7937,7 +8554,7 @@
             "due": "2026-09-26",
             "amount": 92.4,
             "balance": 92.4,
-            "days_past_due": 40,
+            "days_past_due": 41,
             "pos": [
               {
                 "po": "PO827",
@@ -7947,7 +8564,8 @@
             ],
             "customers": [
               "GENOLAB DIAGNOSTICS"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4180&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "25790",
@@ -7955,11 +8573,12 @@
             "due": "2026-10-01",
             "amount": 61.6,
             "balance": 61.6,
-            "days_past_due": 35,
+            "days_past_due": 36,
             "pos": [],
             "customers": [
               "MEDICAL HEALTH LAB"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4195&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "25792",
@@ -7967,7 +8586,7 @@
             "due": "2026-10-01",
             "amount": 76.6,
             "balance": 76.6,
-            "days_past_due": 35,
+            "days_past_due": 36,
             "pos": [
               {
                 "po": "PO838",
@@ -7977,7 +8596,8 @@
             ],
             "customers": [
               "MEDICAL HEALTH LAB"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4194&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "25793",
@@ -7985,7 +8605,7 @@
             "due": "2026-10-02",
             "amount": 34.79,
             "balance": 34.79,
-            "days_past_due": 34,
+            "days_past_due": 35,
             "pos": [
               {
                 "po": "PO841",
@@ -7995,7 +8615,8 @@
             ],
             "customers": [
               "GENOLAB DIAGNOSTICS"
-            ]
+            ],
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4200&deeplinkcompanyid=9341452706936433"
           },
           {
             "number": "25904",
@@ -8003,7 +8624,7 @@
             "due": "2026-10-10",
             "amount": 137.0,
             "balance": 137.0,
-            "days_past_due": 26,
+            "days_past_due": 27,
             "pos": [
               {
                 "po": "PO859",
@@ -8013,36 +8634,12 @@
             ],
             "customers": [
               "LabX Diagnostic Systems"
-            ]
-          }
-        ]
-      },
-      {
-        "vendor": "PMA Services",
-        "balance": 699.0,
-        "pastdue": 0.0,
-        "bills": [
-          {
-            "number": "INV-002145",
-            "date": "2026-10-28",
-            "due": "2026-11-07",
-            "amount": 699.0,
-            "balance": 699.0,
-            "days_past_due": -2,
-            "pos": [
-              {
-                "po": "PO978",
-                "so": "SO616",
-                "vtiger_customer": "MEDICAL HEALTH LAB"
-              }
             ],
-            "customers": [
-              "MEDICAL HEALTH LAB"
-            ]
+            "view_url": "https://qbo.intuit.com/app/login?pagereq=bill%3FtxnId%3D4311&deeplinkcompanyid=9341452706936433"
           }
         ]
       }
     ]
   },
-  "pulled_at": "2026-11-05 10:12 AM PT"
+  "pulled_at": "2026-11-06 10:42 AM PT"
 }
