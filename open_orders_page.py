@@ -3607,8 +3607,8 @@ function mailGo(mode){
   if(mode==='send'&&!confirm('Send this email NOW from customersupport@jit4you.com to:'+String.fromCharCode(10)+to+(cc?String.fromCharCode(10)+'Cc: '+cc:'')+String.fromCharCode(10)+String.fromCharCode(10)+'Subject: '+subj)) return;
   mailPinMem=pin;
   if(mailOnWorker){ var w1=document.getElementById('mailBtnSend'), w2=document.getElementById('mailBtnDraft'); w1.disabled=true; w2.disabled=true; mailStatus(mode==='send'?'Sending...':'Saving draft...');
-    fetch('/api/mail/send',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({mode:mode,to:to,cc:cc,subject:subj,html:edHtml('mailFrame',mailCtx.html),label:mailCtx.label||''})})
-    .then(function(r){ return r.json().catch(function(){return {};}).then(function(j){ if(!r.ok||j.error) throw new Error(j.error||('HTTP '+r.status)); mailStatus(mode==='send'?'Sent from customersupport@jit4you.com. Closing...':'Draft saved in the customersupport Drafts folder.'); if(mode==='send') setTimeout(mailClose,4000); }); })
+    fetch('/api/mail/send',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({mode:mode,to:to,cc:cc,subject:subj,html:edHtml('mailFrame',mailCtx.html),label:mailCtx.label||'',customer:mailCtx.label||'',source:'desktop'})})
+    .then(function(r){ return r.json().catch(function(){return {};}).then(function(j){ if(!r.ok||j.error) throw new Error(j.error||('HTTP '+r.status)); mailStatus(mode==='send'?'Sent from customersupport@jit4you.com. Closing...':'Draft saved in the customersupport Drafts folder.'); if(mode==='send'){ setTimeout(mailClose,4000); setTimeout(function(){ ESENT=null; esLoad(); },3000); } }); })
     .catch(function(e){ mailStatus('Failed: '+e.message,true); }).finally(function(){ w1.disabled=false; w2.disabled=false; }); return; }
   var id=Date.now().toString(36)+Math.random().toString(36).slice(2,8);
   var b1=document.getElementById('mailBtnSend'), b2=document.getElementById('mailBtnDraft'); b1.disabled=true; b2.disabled=true; mailStatus('Submitting...');
@@ -4082,6 +4082,27 @@ function arShopBadge(r){
 function arSetHideZero(cb){ arHideZero=!!cb.checked; renderPayPanel(); }
 function arSetRec(cb){ arRecOnly=!!cb.checked; renderPayPanel(); }
 function arBtn(label,on,fn){ return '<button class="mode-btn'+(on?' active':'')+'" style="margin:0 4px 4px 0;" onclick="'+fn+'">'+label+'</button>'; }
+// A/R "Emails sent": every email sent from the app plus the customersupport Sent Items, per customer (built by the Worker)
+var ESENT=null, esBusy=false, esOpenAll={};
+function esLoad(){ if(ESENT||esBusy) return; esBusy=true; fetch('_emails_sent.json?cb='+Date.now(),{cache:'no-store',credentials:'same-origin'}).then(function(r){ return r.ok?r.json():{customers:{}}; }).catch(function(){ return {customers:{}}; }).then(function(d){ ESENT=d||{customers:{}}; esBusy=false; if(mode==='pay'&&arSub==='ar') renderPayPanel(); }); }
+function esFor(name){ return (ESENT&&ESENT.customers&&ESENT.customers[ceKey(name)])||[]; }
+function esWhen(t){ var d=new Date(t); if(isNaN(d)) return ''; return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+' '+d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}); }
+function esShort(t){ var d=new Date(t); return isNaN(d)?'':d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
+function esBadge(name){ var L=esFor(name); if(!L.length) return ''; return ' <span title="'+L.length+' email(s) sent to this customer; most recent '+escapeHtml(esWhen(L[0].at))+'" style="font-size:11px;font-weight:500;color:#4a5b70;margin-left:6px;white-space:nowrap;">&#9993; '+L.length+' sent &middot; last '+escapeHtml(esShort(L[0].at))+'</span>'; }
+function esToggleAll(i){ esOpenAll[i]=!esOpenAll[i]; renderPayPanel(); }
+function esBlock(i,name){
+  var L=esFor(name), h='<div style="margin:2px 0 12px;"><div style="font-weight:700;color:#1f3a5f;font-size:13px;margin-bottom:4px;">&#9993; Emails sent'+(L.length?' ('+L.length+')':'')+'</div>';
+  if(!ESENT){ esLoad(); return h+'<div style="font-size:12px;color:#7f8c8d;">Loading&hellip;</div></div>'; }
+  if(!L.length) return h+'<div style="font-size:12px;color:#7f8c8d;">No emails to this customer found yet.'+(ESENT.sync_error?' Sent Items could not be read: '+escapeHtml(ESENT.sync_error):'')+'</div></div>';
+  var show=esOpenAll[i]?L:L.slice(0,5);
+  h+='<table class="tbl" style="width:100%;"><thead><tr><th>Sent</th><th>Subject</th><th>To</th><th>Type</th><th>Source</th></tr></thead><tbody>';
+  for(var k=0;k<show.length;k++){ var e=show[k], to=(e.to||[]).concat(e.cc||[]).join(', ');
+    h+='<tr><td style="white-space:nowrap;">'+escapeHtml(esWhen(e.at))+'</td><td>'+escapeHtml(e.subject||'(no subject)')+'</td><td style="font-size:12px;">'+escapeHtml(to||'')+'</td><td style="white-space:nowrap;">'+escapeHtml(e.kind||'Email')+'</td><td style="white-space:nowrap;font-size:12px;color:'+(e.app?'#137333':'#4a5b70')+';">'+(e.app?'Sent from the app':'Sent Items')+'</td></tr>'; }
+  h+='</tbody></table>';
+  if(L.length>5) h+='<a href="#" style="font-size:12px;" onclick="esToggleAll('+i+');return false;">'+(esOpenAll[i]?'Show fewer':'Show all '+L.length)+'</a>';
+  if(ESENT.sent_items_synced_at) h+='<div style="font-size:11px;color:#7f8c8d;margin-top:3px;">Sent Items of customersupport@jit4you.com checked '+escapeHtml(esWhen(ESENT.sent_items_synced_at))+'</div>';
+  return h+'</div>';
+}
 function renderPayPanel(){
   var P=document.getElementById('panel');
   if(!PAY){ P.innerHTML='<div class="empty">Loading A/R &amp; A/P…</div>'; loadPay(); return; }
@@ -4090,6 +4111,7 @@ function renderPayPanel(){
     '<h2 style="margin:0 12px 0 0;">A/R &amp; A/P</h2>'+
     arBtn('Accounts Receivable',arSub==='ar',"arSetSub('ar')")+arBtn('Accounts Payable',arSub==='ap',"arSetSub('ap')")+
     '<span style="color:#7f8c8d;font-size:12px;margin-left:8px;">QuickBooks open balances &middot; as of '+escapeHtml((arSub==='ar'?PAY.ar.generated_at:PAY.ap.generated_at)||'')+'</span></div>';
+  if(arSub==='ar') esLoad();
   P.innerHTML=head+(arSub==='ar'?arRenderAR():arRenderAP());
 }
 var arMail={ci:-1,sel:{},html:''};
@@ -4225,7 +4247,7 @@ function arRenderAR(){
   var cum=0;
   for(var ii=0;ii<items.length;ii++){ var i=items[ii].i, c=items[ii].c, keep=items[ii].keep, sub=items[ii].sub;
     var open=!!arOpen[i]; cum+=sub;
-    rows+='<tr class="so-group" style="cursor:pointer;" onclick="arToggle('+i+')"><td style="font-weight:700;'+(items[ii].exn?'color:#c0392b;':'')+'">'+(open?'&#9660;':'&#9654;')+' '+escapeHtml(c.name)+' <a href="#" class="ar-rowmail" title="Email this customer about their open invoices" onclick="event.stopPropagation();arMailOpenFor('+i+');return false;" style="font-size:12px;font-weight:600;text-decoration:none;background:#e8f5f5;color:#008080;border:1px solid #bfe0e0;border-radius:12px;padding:1px 9px;margin-left:6px;white-space:nowrap;">&#9993; Email</a>'+(items[ii].exn?' <span style="font-size:11px;font-weight:400;" title="Rows you excluded from the totals">('+items[ii].exn+' excluded)</span>':'')+(function(){var n=0;for(var z=0;z<keep.length;z++) if(keep[z].reconcile) n++; return n?' <span title="'+n+' invoice(s) paid in Shopify but still open in QuickBooks" style="background:#e6f4ea;color:#137333;border-radius:10px;padding:0 7px;font-size:11px;">&#128179; '+n+' to reconcile</span>':'';})()+'</td>'+
+    rows+='<tr class="so-group" style="cursor:pointer;" onclick="arToggle('+i+')"><td style="font-weight:700;'+(items[ii].exn?'color:#c0392b;':'')+'">'+(open?'&#9660;':'&#9654;')+' '+escapeHtml(c.name)+' <a href="#" class="ar-rowmail" title="Email this customer about their open invoices" onclick="event.stopPropagation();arMailOpenFor('+i+');return false;" style="font-size:12px;font-weight:600;text-decoration:none;background:#e8f5f5;color:#008080;border:1px solid #bfe0e0;border-radius:12px;padding:1px 9px;margin-left:6px;white-space:nowrap;">&#9993; Email</a>'+esBadge(c.name)+(items[ii].exn?' <span style="font-size:11px;font-weight:400;" title="Rows you excluded from the totals">('+items[ii].exn+' excluded)</span>':'')+(function(){var n=0;for(var z=0;z<keep.length;z++) if(keep[z].reconcile) n++; return n?' <span title="'+n+' invoice(s) paid in Shopify but still open in QuickBooks" style="background:#e6f4ea;color:#137333;border-radius:10px;padding:0 7px;font-size:11px;">&#128179; '+n+' to reconcile</span>':'';})()+'</td>'+
       '<td class="c">'+keep.length+'</td><td style="text-align:right;font-weight:700;">'+payMoney(sub)+'</td><td style="text-align:right;color:#4a5b70;">'+payMoney(cum)+'</td><td style="text-align:right;">'+(shownAmt>0.005?(sub/shownAmt*100).toFixed(1)+'%':'&mdash;')+'</td></tr>';
     if(open){
       var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr><th class="c" title="Tick to exclude a row from all totals (saved in this browser)">Excl.</th>'+srtTh('arI','no','s','Invoice #')+srtTh('arI','ord','s','Shopify order')+srtTh('arI','paid','s','Paid in Shopify','c')+srtTh('arI','ship','s','Shipment')+srtTh('arI','date','s','Date')+srtTh('arI','due','s','Due')+srtTh('arI','days','n','Days','c')+srtTh('arI','amt','n','Amount','r')+srtTh('arI','bal','n','Balance','r')+'</tr></thead><tbody>';
@@ -4240,6 +4262,7 @@ function arRenderAR(){
           '<td class="c" style="color:'+col+';font-weight:600;">'+(dd>0?dd:'—')+'</td>'+
           '<td style="text-align:right;">'+payMoney(r.amount)+'</td><td style="text-align:right;font-weight:600;">'+payMoney(arEff(r))+(r.reconcile?'<div style="font-size:10px;font-weight:400;color:#b54708;" title="QuickBooks still shows this invoice open">QB open: '+payMoney(r.balance)+'</div>':'')+'</td>'+'</tr>'; }
       t+='</tbody></table>';
+      t+=esBlock(i,c.name);
       rows+='<tr><td colspan="5" style="padding:0 0 0 24px;background:#fafcfe;">'+t+'</td></tr>';
     }
   }
