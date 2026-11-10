@@ -4083,17 +4083,24 @@ function arSetHideZero(cb){ arHideZero=!!cb.checked; renderPayPanel(); }
 function arSetRec(cb){ arRecOnly=!!cb.checked; renderPayPanel(); }
 function arBtn(label,on,fn){ return '<button class="mode-btn'+(on?' active':'')+'" style="margin:0 4px 4px 0;" onclick="'+fn+'">'+label+'</button>'; }
 // A/R "Emails sent": every email sent from the app plus the customersupport Sent Items, per customer (built by the Worker)
-var ESENT=null, esBusy=false, esOpenAll={};
+var ESENT=null, esBusy=false, esOpenAll={}, esFilt='all';
 function esLoad(){ if(ESENT||esBusy) return; esBusy=true; fetch('_emails_sent.json?cb='+Date.now(),{cache:'no-store',credentials:'same-origin'}).then(function(r){ return r.ok?r.json():{customers:{}}; }).catch(function(){ return {customers:{}}; }).then(function(d){ ESENT=d||{customers:{}}; esBusy=false; if(mode==='pay'&&arSub==='ar') renderPayPanel(); }); }
 function esFor(name){ return (ESENT&&ESENT.customers&&ESENT.customers[ceKey(name)])||[]; }
 function esWhen(t){ var d=new Date(t); if(isNaN(d)) return ''; return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+' '+d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}); }
 function esShort(t){ var d=new Date(t); return isNaN(d)?'':d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
-function esBadge(name){ var L=esFor(name); if(!L.length) return ''; return ' <span title="'+L.length+' email(s) sent to this customer; most recent '+escapeHtml(esWhen(L[0].at))+'" style="font-size:11px;font-weight:500;color:#4a5b70;margin-left:6px;white-space:nowrap;">&#9993; '+L.length+' sent &middot; last '+escapeHtml(esShort(L[0].at))+'</span>'; }
+function esBadge(name){ var L=esFor(name); if(!L.length) return ''; var n=((ESENT.counts||{})[ceKey(name)]||{}).total||L.length; return ' <span title="'+n+' email(s) sent to this customer; most recent '+escapeHtml(esWhen(L[0].at))+'" style="font-size:11px;font-weight:500;color:#4a5b70;margin-left:6px;white-space:nowrap;">&#9993; '+n+' sent &middot; last '+escapeHtml(esShort(L[0].at))+'</span>'; }
 function esToggleAll(i){ esOpenAll[i]=!esOpenAll[i]; renderPayPanel(); }
+function esSetFilt(f){ esFilt=f; renderPayPanel(); }
+function esBtn(l,on,f){ return '<a href="#" onclick="esSetFilt(&quot;'+f+'&quot;);return false;" style="font-size:11px;font-weight:600;text-decoration:none;border-radius:12px;padding:1px 9px;margin-right:4px;border:1px solid '+(on?'#101E3E;background:#101E3E;color:#fff':'#cfd8e3;background:#fff;color:#1f3a5f')+';">'+l+'</a>'; }
+function esIsSt(e){ return e.app||e.kind!=='Email'; }
 function esBlock(i,name){
-  var L=esFor(name), h='<div style="margin:2px 0 12px;"><div style="font-weight:700;color:#1f3a5f;font-size:13px;margin-bottom:4px;">&#9993; Emails sent'+(L.length?' ('+L.length+')':'')+'</div>';
+  var L0=esFor(name), nS=0; for(var q=0;q<L0.length;q++) if(esIsSt(L0[q])) nS++;
+  var tot=((ESENT&&ESENT.counts&&ESENT.counts[ceKey(name)])||{}).total||L0.length;
+  var L=esFilt==='status'?L0.filter(esIsSt):L0;
+  var h='<div style="margin:2px 0 12px;"><div style="font-weight:700;color:#1f3a5f;font-size:13px;margin-bottom:4px;">&#9993; Emails sent'+(L0.length?' <span style="font-weight:400;color:#7f8c8d;">('+(tot>L0.length?'latest '+L0.length+' of '+tot:L0.length)+')</span>':'')+
+    (L0.length?' &nbsp; '+esBtn('All ('+L0.length+')',esFilt==='all','all')+esBtn('Invoice &amp; status emails ('+nS+')',esFilt==='status','status'):'')+'</div>';
   if(!ESENT){ esLoad(); return h+'<div style="font-size:12px;color:#7f8c8d;">Loading&hellip;</div></div>'; }
-  if(!L.length) return h+'<div style="font-size:12px;color:#7f8c8d;">No emails to this customer found yet.'+(ESENT.sync_error?' Sent Items could not be read: '+escapeHtml(ESENT.sync_error):'')+'</div></div>';
+  if(!L.length) return h+'<div style="font-size:12px;color:#7f8c8d;">'+(L0.length?'No invoice or status emails to this customer.':'No emails to this customer found yet.')+(ESENT.sync_error?' Sent Items could not be read: '+escapeHtml(ESENT.sync_error):'')+'</div></div>';
   var show=esOpenAll[i]?L:L.slice(0,5);
   h+='<table class="tbl" style="width:100%;"><thead><tr><th>Sent</th><th>Subject</th><th>To</th><th>Type</th><th>Source</th></tr></thead><tbody>';
   for(var k=0;k<show.length;k++){ var e=show[k], to=(e.to||[]).concat(e.cc||[]).join(', ');
