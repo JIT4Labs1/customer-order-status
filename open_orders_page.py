@@ -3642,8 +3642,8 @@ function custOutlookDraft(){
 var mailCtx=null, mailPinMem='', mailOnWorker=/workers[.]dev$/.test(location.hostname);
 function mailSha(t){ var b=new TextEncoder().encode(t); return crypto.subtle.digest('SHA-256',b).then(function(h){ var a=new Uint8Array(h),o=''; for(var i=0;i<a.length;i++){ o+=('0'+a[i].toString(16)).slice(-2); } return o; }); }
 function mailClose(){ var m=document.getElementById('mailSendModal'); if(m) m.parentNode.removeChild(m); }
-function mailOpen(subject,html,label){
-  mailClose(); mailCtx={html:html,label:label};
+function mailOpen(subject,html,label,opt){
+  opt=opt||{}; mailClose(); mailCtx={html:html,label:label,vendor:!!opt.vendor};
   var d=document.createElement('div'); d.id='mailSendModal';
   d.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(16,30,62,.6);z-index:10000;display:flex;align-items:center;justify-content:center;padding:16px;';
   var inp='padding:5px 8px;border:1px solid #cfd8e3;border-radius:6px;flex:1;';
@@ -3659,7 +3659,7 @@ function mailOpen(subject,html,label){
     '<button id="mailBtnDraft" class="mode-btn" style="margin:0;" onclick="mailGo(&quot;draft&quot;)">Save as draft</button>'+
     '<button class="mode-btn" style="margin:0;" onclick="mailClose()">Cancel</button><span id="mailStatus" style="font-size:12px;color:#137333;"></span></div></div>';
   document.body.appendChild(d);
-  edOn('mailFrame',html); mailPrefill(label);
+  edOn('mailFrame',html); if(opt.to){ document.getElementById('mailTo').value=opt.to; } else if(!opt.vendor) mailPrefill(label);
 }
 function edHtml(id,fb){ var f=document.getElementById(id); try{ var d=f&&f.contentDocument; if(d&&d.documentElement) return '<!DOCTYPE html>'+d.documentElement.outerHTML; }catch(e){} return fb; }
 function edOn(id,html){ var f=document.getElementById(id); if(!f) return; f.onload=function(){ try{ f.contentDocument.designMode='on'; }catch(e){} }; f.srcdoc=html; }
@@ -3678,7 +3678,7 @@ function mailGo(mode){
   if(mode==='send'&&!confirm('Send this email NOW from customersupport@jit4you.com to:'+String.fromCharCode(10)+to+(cc?String.fromCharCode(10)+'Cc: '+cc:'')+String.fromCharCode(10)+String.fromCharCode(10)+'Subject: '+subj)) return;
   mailPinMem=pin;
   if(mailOnWorker){ var w1=document.getElementById('mailBtnSend'), w2=document.getElementById('mailBtnDraft'); w1.disabled=true; w2.disabled=true; mailStatus(mode==='send'?'Sending...':'Saving draft...');
-    fetch('/api/mail/send',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({mode:mode,to:to,cc:cc,subject:subj,html:edHtml('mailFrame',mailCtx.html),label:mailCtx.label||'',customer:mailCtx.label||'',source:'desktop'})})
+    fetch('/api/mail/send',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({mode:mode,to:to,cc:cc,subject:subj,html:edHtml('mailFrame',mailCtx.html),label:mailCtx.label||'',customer:mailCtx.vendor?'':(mailCtx.label||''),kind:mailCtx.vendor?'vendor':'customer',source:'desktop'})})
     .then(function(r){ return r.json().catch(function(){return {};}).then(function(j){ if(!r.ok||j.error) throw new Error(j.error||('HTTP '+r.status)); mailStatus(mode==='send'?'Sent from customersupport@jit4you.com. Closing...':'Draft saved in the customersupport Drafts folder.'); if(mode==='send'){ setTimeout(mailClose,4000); setTimeout(function(){ ESENT=null; esLoad(); },3000); } }); })
     .catch(function(e){ mailStatus('Failed: '+e.message,true); }).finally(function(){ w1.disabled=false; w2.disabled=false; }); return; }
   var id=Date.now().toString(36)+Math.random().toString(36).slice(2,8);
@@ -6031,37 +6031,58 @@ function ibVmBuild(r){
   IBVM.subject='JIT4Labs '+String.fromCharCode(8211)+' invoice '+inv+' vs PO '+po+': rate correction needed';
   return h;
 }
+// Blank email in the same branded template: greeting + an empty paragraph to type in + sign-off. Works for ANY invoice.
+function ibVmBuildBlank(r){
+  var inv=ibInvNo(r), po=r.po_key||r.po_raw||'';
+  var h='<!DOCTYPE html><html><head><meta charset="utf-8"><title>JIT4Labs</title></head><body style="margin:0;padding:0;background:#f4f6f9"><table cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#f4f6f9"><tr><td align="center" style="padding:18px 10px"><table cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:760px;width:100%;background:#fff;border:1px solid #e3e7ee">'+
+   '<tr><td style="padding:18px 24px;border-bottom:3px solid #008080"><a href="https://jit4labs.com" target="_blank" style="text-decoration:none;color:#101E3E"><img src="https://jit4labs.com/cdn/shop/files/JIT4LABS-Logo.png" alt="JIT4LABS" width="175" height="30" border="0" style="display:block;width:175px;max-width:175px;height:30px;border:0;outline:none;text-decoration:none;font:bold 22px Arial, Helvetica, sans-serif;color:#101E3E;line-height:30px"></a></td></tr>'+
+   '<tr><td style="padding:24px;font:14px/1.6 Arial, Helvetica, sans-serif;color:#101E3E">'+
+   '<p style="margin:0 0 12px">Dear '+escapeHtml(ibVmName(r.vendor))+' team,</p>'+
+   '<p style="margin:0 0 12px">&nbsp;</p>'+
+   '<p style="margin:18px 0 0">Thank you,<br><b>JIT4Labs team</b></p></td></tr>'+
+   '<tr><td style="padding:14px 24px;border-top:3px solid #008080;font:12px/1.6 Arial, Helvetica, sans-serif;color:#6b7280">JIT4Labs &middot; <a href="mailto:CustomerSupport@jit4you.com" style="color:#008080;text-decoration:none">CustomerSupport@jit4you.com</a> &middot; <a href="tel:+18882422301" style="color:#008080;text-decoration:none">(888) 242-2301</a> &middot; <a href="https://jit4labs.com" style="color:#008080;text-decoration:none">jit4labs.com</a></td></tr></table></td></tr></table></body></html>';
+  IBVM.subject='JIT4Labs '+String.fromCharCode(8211)+' invoice '+inv+(po?' / PO '+po:'');
+  return h;
+}
+function ibVmSetKind(k){ var r=IB.view&&IB.view[IBVM.idx]; if(!r) return; ibVmOpen(IBVM.idx,k); }
+// Send through Outlook from customersupport@ (same Send window as the other tabs). Vendor emails are not logged under A/R customers.
+function ibVmSend(){ if(!IBVM.html) return; var subj=(document.getElementById('ibVmSubj')||{}).value||IBVM.subject;
+  mailOpen(subj,edHtml('ibVmFrame',IBVM.html),IBVM.vendor||'Vendor',{to:IBVM.email,vendor:true}); }
 function ibVmMsg(t){ var e=document.getElementById('ibVmMsg'); if(e) e.textContent=t; }
 function ibSelRow(i,on){ var r=IB.view&&IB.view[i]; if(!r) return; IB.sel=on?r.key:''; ibRender(); }
 function ibVmOpenSel(){
   var v=IB.view||[], idx=-1; for(var k=0;k<v.length;k++){ if(v[k].key===IB.sel){ idx=k; break; } }
-  if(idx<0){ ibNote('warn','Tick the checkbox of an invoice with discrepancies first, then press Email vendor.'); return; }
-  if(!ibDiscLines(v[idx]).length){ ibNote('warn','The selected invoice has no rate discrepancies (over/under billed lines), so there is nothing to ask the vendor to correct.'); return; }
-  ibNote('',''); ibVmOpen(idx);
+  if(idx<0){ ibNote('warn','Tick the checkbox of an invoice first, then press Email vendor.'); return; }
+  ibNote('',''); ibVmOpen(idx, ibDiscLines(v[idx]).length?'disc':'blank');   // no discrepancy -> blank email in the same template
 }
-function ibVmOpen(i){
+function ibVmOpen(i,kind){
   var r=IB.view&&IB.view[i]; if(!r) return;
   var m=document.getElementById('ibVmModal'); if(m) m.parentNode.removeChild(m);
-  IBVM.html=ibVmBuild(r); IBVM.email=ibVmVendorEmail(r.vendor); IBVM.vendor=r.vendor||'';
+  var hasDisc=ibDiscLines(r).length>0; if(!hasDisc) kind='blank'; kind=kind||'disc';
+  IBVM.idx=i; IBVM.kind=kind; IBVM.html=(kind==='blank'?ibVmBuildBlank(r):ibVmBuild(r)); IBVM.email=ibVmVendorEmail(r.vendor); IBVM.vendor=r.vendor||'';
+  var kb=function(k,l){ var on=kind===k; return '<button class="mode-btn" style="margin:0;padding:6px 12px;min-height:0;width:auto;'+(on?'background:#101E3E;color:#fff;border-color:#101E3E;':'')+'" onclick="ibVmSetKind(&quot;'+k+'&quot;)">'+l+'</button>'; };
   var d=document.createElement('div'); d.id='ibVmModal';
   d.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(16,30,62,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;';
   d.innerHTML='<div style="background:#fff;border-radius:10px;max-width:1040px;width:100%;max-height:92vh;overflow:auto;padding:26px 30px;box-shadow:0 10px 40px rgba(0,0,0,.35);">'+
-   '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><b style="font-size:16px;color:#101E3E;">&#9993; Email vendor &mdash; invoice rate correction</b><a href="#" onclick="ibVmClose();return false;" style="font-size:20px;text-decoration:none;color:#555;">&times;</a></div>'+
-   '<div style="font-size:13px;margin-bottom:6px;"><b>To:</b> '+(IBVM.email?escapeHtml(IBVM.email):'<span style="color:#7f8c8d">(no vendor email on file - add it manually)</span>')+' &middot; '+escapeHtml(r.vendor||'')+'</div>'+
-   '<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0;"><div style="flex-basis:100%;display:flex;gap:8px;align-items:center;"><b style="font-size:13px;">Subject:</b><input id="ibVmSubj" type="text" readonly value="'+escapeHtml(IBVM.subject)+'" style="flex:1;padding:5px 8px;border:1px solid #cfd8e3;border-radius:6px;"><button class="mode-btn" style="margin:0;" onclick="ibVmCopySubj()">Copy subject</button></div>'+
+   '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><b style="font-size:16px;color:#101E3E;">&#9993; Email vendor &mdash; '+(kind==='blank'?'blank email':'invoice rate correction')+'</b><a href="#" onclick="ibVmClose();return false;" style="font-size:20px;text-decoration:none;color:#555;">&times;</a></div>'+
+   '<div style="display:flex;gap:6px;align-items:center;margin-bottom:8px;font-size:13px;">'+(hasDisc?kb('disc','Rate correction (discrepancies)')+kb('blank','Blank email'):'<span style="color:#7f8c8d;">No rate discrepancies on this invoice &mdash; blank email in the usual template.</span>')+'</div>'+
+   '<div style="font-size:13px;margin-bottom:6px;"><b>To:</b> '+(IBVM.email?escapeHtml(IBVM.email):'<span style="color:#7f8c8d">(no vendor email on file - add it manually)</span>')+' &middot; '+escapeHtml(r.vendor||'')+' &middot; invoice '+escapeHtml(ibInvNo(r))+'</div>'+
+   '<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0;"><div style="flex-basis:100%;display:flex;gap:8px;align-items:center;"><b style="font-size:13px;">Subject:</b><input id="ibVmSubj" type="text" value="'+escapeHtml(IBVM.subject)+'" style="flex:1;padding:5px 8px;border:1px solid #cfd8e3;border-radius:6px;"><button class="mode-btn" style="margin:0;" onclick="ibVmCopySubj()">Copy subject</button></div>'+
    '<button class="mode-btn" style="margin:0;" onclick="ibVmCopy(true)">Copy for pasting into email</button>'+
    '<button class="mode-btn" style="margin:0;" onclick="ibVmCopy(false)">Copy HTML source</button>'+
    '<button class="mode-btn" style="margin:0;" onclick="ibVmDl()">&#11015; Download .html</button>'+
+   '<button class="mode-btn" style="margin:0;background:#008080;color:#fff;" onclick="ibVmSend()">&#9993; Send via Outlook</button>'+
    '<span id="ibVmMsg" style="font-size:12px;color:#137333;"></span></div>'+
+   '<div style="font-size:12px;color:#008080;font-weight:600;margin:4px 0;">&#9998; Click inside the message to type or edit it before copying, downloading or sending.</div>'+
    '<iframe id="ibVmFrame" style="width:100%;height:540px;border:1px solid #e3e7ee;border-radius:6px;"></iframe></div>';
   document.body.appendChild(d);
-  document.getElementById('ibVmFrame').srcdoc=IBVM.html;
+  edOn('ibVmFrame',IBVM.html);
 }
 function ibVmClose(){ var m=document.getElementById('ibVmModal'); if(m) m.parentNode.removeChild(m); }
-function ibVmCopySubj(){ var t=IBVM.subject||''; function fb(){ var e=document.getElementById('ibVmSubj'); if(e){ e.select(); try{ document.execCommand('copy'); ibVmMsg('Subject copied.'); }catch(x){ ibVmMsg('Select the subject and copy manually.'); } } }
+function ibVmCopySubj(){ var t=((document.getElementById('ibVmSubj')||{}).value)||IBVM.subject||''; function fb(){ var e=document.getElementById('ibVmSubj'); if(e){ e.select(); try{ document.execCommand('copy'); ibVmMsg('Subject copied.'); }catch(x){ ibVmMsg('Select the subject and copy manually.'); } } }
   try{ if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(function(){ibVmMsg('Subject copied.');},function(){fb();}); else fb(); }catch(e){ fb(); } }
 function ibVmCopy(rich){
-  var h=IBVM.html; if(!h) return;
+  if(!IBVM.html) return; var h=edHtml('ibVmFrame',IBVM.html);
   function fb(){ var ta=document.createElement('textarea'); ta.value=h; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); ibVmMsg('Copied HTML source.'); }catch(e){ ibVmMsg('Copy failed - use Download.'); } document.body.removeChild(ta); }
   try{
     if(rich&&window.ClipboardItem&&navigator.clipboard&&navigator.clipboard.write){
@@ -6072,7 +6093,7 @@ function ibVmCopy(rich){
   }catch(e){ fb(); } }
 function ibVmDl(){
   if(!IBVM.html) return; var nm='', s=IBVM.vendor||'vendor'; for(var i=0;i<s.length;i++){ nm+=/[a-z0-9]/i.test(s.charAt(i))?s.charAt(i):'_'; }
-  var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([IBVM.html],{type:'text/html'})); a.download='JIT4Labs_Invoice_Correction_'+nm+'.html';
+  var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([edHtml('ibVmFrame',IBVM.html)],{type:'text/html'})); a.download='JIT4Labs_'+(IBVM.kind==='blank'?'Email_':'Invoice_Correction_')+nm+'.html';
   document.body.appendChild(a); a.click(); document.body.removeChild(a); }
 
 // ── Bulk invoice check: same item charged at different rates across invoices ──
@@ -6147,16 +6168,18 @@ function ibRvGen(){
    '<p style="margin:0 0 12px">Could you please clarify? If any invoice was billed at the wrong rate, please send us a corrected invoice.</p>'+
    '<p style="margin:18px 0 0">Thank you,<br><b>JIT4Labs team</b></p></td></tr>'+
    '<tr><td style="padding:14px 24px;border-top:3px solid #008080;font:12px/1.6 Arial, Helvetica, sans-serif;color:#6b7280">JIT4Labs &middot; <a href="mailto:CustomerSupport@jit4you.com" style="color:#008080;text-decoration:none">CustomerSupport@jit4you.com</a> &middot; <a href="tel:+18882422301" style="color:#008080;text-decoration:none">(888) 242-2301</a> &middot; <a href="https://jit4labs.com" style="color:#008080;text-decoration:none">jit4labs.com</a></td></tr></table></td></tr></table></body></html>';
-  IBVM.html=h; IBVM.vendor=g.vendor; IBVM.email=ibVmVendorEmail(g.vendor);
+  IBVM.html=h; IBVM.kind='rv'; IBVM.vendor=g.vendor; IBVM.email=ibVmVendorEmail(g.vendor);
   IBVM.subject='JIT4Labs '+String.fromCharCode(8211)+' please clarify different rates charged for the same item';
   document.getElementById('ibRvOut').innerHTML='<div style="font-size:13px;margin-bottom:6px;"><b>To:</b> '+(IBVM.email?escapeHtml(IBVM.email):'<span style="color:#7f8c8d">(no vendor email on file - add it manually)</span>')+' &middot; '+escapeHtml(g.vendor)+'</div>'+
-   '<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0;"><div style="flex-basis:100%;display:flex;gap:8px;align-items:center;"><b style="font-size:13px;">Subject:</b><input id="ibVmSubj" type="text" readonly value="'+escapeHtml(IBVM.subject)+'" style="flex:1;padding:5px 8px;border:1px solid #cfd8e3;border-radius:6px;"><button class="mode-btn" style="margin:0;" onclick="ibVmCopySubj()">Copy subject</button></div>'+
+   '<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0;"><div style="flex-basis:100%;display:flex;gap:8px;align-items:center;"><b style="font-size:13px;">Subject:</b><input id="ibVmSubj" type="text" value="'+escapeHtml(IBVM.subject)+'" style="flex:1;padding:5px 8px;border:1px solid #cfd8e3;border-radius:6px;"><button class="mode-btn" style="margin:0;" onclick="ibVmCopySubj()">Copy subject</button></div>'+
    '<button class="mode-btn" style="margin:0;" onclick="ibVmCopy(true)">Copy for pasting into email</button>'+
    '<button class="mode-btn" style="margin:0;" onclick="ibVmCopy(false)">Copy HTML source</button>'+
    '<button class="mode-btn" style="margin:0;" onclick="ibVmDl()">&#11015; Download .html</button>'+
+   '<button class="mode-btn" style="margin:0;background:#008080;color:#fff;" onclick="ibVmSend()">&#9993; Send via Outlook</button>'+
    '<span id="ibVmMsg" style="font-size:12px;color:#137333;"></span></div>'+
+   '<div style="font-size:12px;color:#008080;font-weight:600;margin:4px 0;">&#9998; Click inside the message to type or edit it before copying, downloading or sending.</div>'+
    '<iframe id="ibVmFrame" style="width:100%;height:520px;border:1px solid #e3e7ee;border-radius:6px;"></iframe>';
-  document.getElementById('ibVmFrame').srcdoc=h;
+  edOn('ibVmFrame',h);
 }
 IB.open={};
 function ibTog(i){ var r=document.getElementById('ib-det-'+i); if(r){ var show=(r.style.display==='none'); r.style.display=show?'':'none'; IB.open[i]=show; } }
