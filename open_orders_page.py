@@ -1340,8 +1340,11 @@ function dlvLoad(force){ if(dlvBusy) return; dlvBusy=true; dlvErr='';
 function dlvRefresh(){ DLV=null; dlvLoad(true); renderDelivPanel(); }
 function dlvPT(t){ return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Los_Angeles'}).format(new Date(t)); }
 function dlvFd(t){ return t?new Date(t).toLocaleString('en-US',{timeZone:'America/Los_Angeles',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):''; }
-function dlvFrom(){ var today=dlvPT(Date.now()), td=new Date(today+'T12:00:00Z'), dow=(td.getUTCDay()+6)%7;
-  return {today:today, week:new Date(td.getTime()-dow*864e5).toISOString().slice(0,10), month:today.slice(0,8)+'01', all:'0000'}[dlvP]; }
+function dlvRange(){ var today=dlvPT(Date.now()), td=new Date(today+'T12:00:00Z'), dow=(td.getUTCDay()+6)%7, mo=today.slice(0,8)+'01';
+  var pm=new Date(Date.UTC(+today.slice(0,4),+today.slice(5,7)-2,1)).toISOString().slice(0,10);
+  return {today:[today,'9999'], week:[new Date(td.getTime()-dow*864e5).toISOString().slice(0,10),'9999'], month:[mo,'9999'], last:[pm,mo]}[dlvP]||[mo,'9999']; }
+function dlvIn(f,rg){ var d=dlvPT(f.at); return d>=rg[0]&&d<rg[1]; }
+function dlvPo(f){ return (f.pos||[]).map(function(p){ return p.po; }).join(', '); }
 function dlvNoSup(){ return DLV&&DLV.no_location_access?'(supplier not available yet)':'(no location)'; }
 function dlvSet(k,v){ if(k==='p') dlvP=v; else if(k==='c') dlvCust=v; else if(k==='s') dlvSup=v; dlvLim=60; renderDelivPanel(); }
 function dlvSearch(v){ dlvQ=v; dlvLim=60; dlvDraw(); }
@@ -1351,20 +1354,20 @@ function renderDelivPanel(){
   var P=document.getElementById('panel');
   if(!DLV){ if(dlvErr){ P.innerHTML='<div class="empty">Could not load deliveries: '+escapeHtml(dlvErr)+(location.hostname.indexOf('workers.dev')<0?' (Deliveries are read live from Shopify by the Cloudflare app, so this tab works on the app, not on this copy.)':'')+' <a href="#" onclick="dlvRefresh();return false;">Try again</a></div>'; return; }
     P.innerHTML='<div class="empty">Loading deliveries from Shopify&hellip;</div>'; dlvLoad(false); return; }
-  var NOSUP=dlvNoSup(), f0=dlvFrom();
+  var NOSUP=dlvNoSup(), rg=dlvRange();
   DLV.orders.forEach(function(o){ o.fulfillments.forEach(function(f){ if(!f.supplier) f.supplier=NOSUP; }); });
-  var cw={}; DLV.orders.forEach(function(o){ if(o.fulfillments.some(function(f){ return dlvPT(f.at)>=f0; })) cw[o.customer]=1; });
+  var cw={}; DLV.orders.forEach(function(o){ if(o.fulfillments.some(function(f){ return dlvIn(f,rg); })) cw[o.customer]=1; });
   var CW=Object.keys(cw).sort(dlvCmpName); if(dlvCust&&!cw[dlvCust]) dlvCust='';
-  var vw={}; DLV.orders.forEach(function(o){ if(dlvCust&&o.customer!==dlvCust) return; o.fulfillments.forEach(function(f){ if(dlvPT(f.at)>=f0) vw[f.supplier]=1; }); });
+  var vw={}; DLV.orders.forEach(function(o){ if(dlvCust&&o.customer!==dlvCust) return; o.fulfillments.forEach(function(f){ if(dlvIn(f,rg)) vw[f.supplier]=1; }); });
   var VW=Object.keys(vw).sort(function(a,b){ return a===NOSUP?1:(b===NOSUP?-1:dlvCmpName(a,b)); }); if(dlvSup&&!vw[dlvSup]) dlvSup='';
   var chip=function(k,l){ var on=dlvP===k; return '<button class="mode-btn" style="margin:0;min-height:0;padding:6px 14px;width:auto;'+(on?'background:#101E3E;color:#fff;border-color:#101E3E;':'')+'" onclick="dlvSet(&quot;p&quot;,&quot;'+k+'&quot;)">'+l+'</button>'; };
   var selS='padding:6px 8px;border:1px solid #cfd8e3;border-radius:6px;font-size:13px;max-width:280px;';
   var h='<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px;"><h2 style="margin:0 12px 0 0;">Deliveries</h2>'+
-    chip('today','Today')+chip('week','This week')+chip('month','This month')+chip('all','Last 120 days')+'</div>'+
+    chip('today','Today')+chip('week','This week')+chip('month','This month')+chip('last','Last month')+'</div>'+
     '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:8px;font-size:13px;">'+
     '<select style="'+selS+'" onchange="dlvSet(&quot;c&quot;,this.value)"><option value="">All customers ('+CW.length+')</option>'+CW.map(function(c){ return '<option value="'+escapeHtml(c)+'"'+(c===dlvCust?' selected':'')+'>'+escapeHtml(c)+'</option>'; }).join('')+'</select>'+
-    '<select style="'+selS+'" onchange="dlvSet(&quot;s&quot;,this.value)"><option value="">All suppliers ('+VW.filter(function(v){ return v!==NOSUP; }).length+')</option>'+VW.map(function(v){ return '<option value="'+escapeHtml(v)+'"'+(v===dlvSup?' selected':'')+'>'+escapeHtml(v)+'</option>'; }).join('')+'</select>'+
-    '<input type="text" placeholder="Search tracking number, SKU or order #" value="'+escapeHtml(dlvQ)+'" oninput="dlvSearch(this.value)" style="padding:6px 8px;border:1px solid #cfd8e3;border-radius:6px;min-width:280px;font-size:13px;">'+
+    '<select style="'+selS+'" onchange="dlvSet(&quot;s&quot;,this.value)"><option value="">All suppliers / locations ('+VW.filter(function(v){ return v!==NOSUP; }).length+')</option>'+VW.map(function(v){ return '<option value="'+escapeHtml(v)+'"'+(v===dlvSup?' selected':'')+'>'+escapeHtml(v)+'</option>'; }).join('')+'</select>'+
+    '<input type="text" placeholder="Search tracking, SKU, order #, fulfillment or PO" value="'+escapeHtml(dlvQ)+'" oninput="dlvSearch(this.value)" style="padding:6px 8px;border:1px solid #cfd8e3;border-radius:6px;min-width:280px;font-size:13px;">'+
     '<span id="dlvSum" style="color:#4a5b70;"></span></div>'+
     '<div id="dlvList"></div>'+
     '<div style="font-size:12px;color:#7f8c8d;margin-top:8px;">Shopify fulfillments, updated '+escapeHtml(dlvFd(DLV.generated_at))+' &middot; <a href="#" onclick="dlvRefresh();return false;">Refresh</a></div>';
@@ -1375,15 +1378,16 @@ function dlvRow(f){
   var sup=f.supplier===NOSUP?'<span style="color:#999;">'+(DLV.no_location_access?'not available yet':'no location')+'</span>':escapeHtml(f.supplier);
   var when=f.delivered?'Delivered '+escapeHtml(dlvFd(f.delivered)):(f.eta?'Expected '+escapeHtml(dlvFd(f.eta)):'<span style="color:#999;">&mdash;</span>');
   var items=f.items.map(function(i){ return '<div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:520px;"><b style="display:inline-block;min-width:34px;">&times;'+i.qty+'</b><span style="font-size:11px;background:#eef1f5;border-radius:8px;padding:0 6px;margin-right:6px;">'+escapeHtml(i.sku||'no SKU')+'</span>'+escapeHtml(i.name)+(i.vendor?' <span style="color:#7f8c8d;font-size:11px;">&middot; '+escapeHtml(i.vendor)+'</span>':'')+'</div>'; }).join('');
-  return '<tr><td style="white-space:nowrap;vertical-align:top;">'+escapeHtml(dlvFd(f.at))+'</td>'+
+  var po=(f.pos||[]).length?f.pos.map(function(p){ return '<b>'+escapeHtml(p.po)+'</b>'+(p.vendor?' <span style="color:#7f8c8d;font-size:11px;">'+escapeHtml(p.vendor)+'</span>':''); }).join('<br>')+(f.so?'<div style="color:#7f8c8d;font-size:11px;">'+escapeHtml(f.so)+'</div>':'')+(f.po_match==='order'?'<div style="color:#b54708;font-size:10px;" title="No tracking match; these are all POs linked to this Shopify order">by order</div>':''):'<span style="color:#999;">&mdash;</span>';
+  return '<tr><td style="white-space:nowrap;vertical-align:top;font-weight:700;color:#101E3E;">'+escapeHtml(f.name||'')+'</td><td style="white-space:nowrap;vertical-align:top;">'+po+'</td><td style="white-space:nowrap;vertical-align:top;">'+escapeHtml(dlvFd(f.at))+'</td>'+
     '<td style="vertical-align:top;"><span style="background:'+st[0]+';color:'+st[1]+';border-radius:10px;padding:1px 9px;font-size:12px;font-weight:600;white-space:nowrap;">'+escapeHtml(st[2])+'</span></td>'+
     '<td style="vertical-align:top;">'+trk+'</td><td style="vertical-align:top;white-space:nowrap;">'+sup+'</td>'+
     '<td style="vertical-align:top;white-space:nowrap;font-size:12px;">'+when+'</td><td style="vertical-align:top;font-size:12px;">'+items+'</td></tr>'; }
 function dlvDraw(){
   var box=document.getElementById('dlvList'); if(!box||!DLV) return;
-  var q=(dlvQ||'').trim().toLowerCase(), f0=dlvFrom(), nf=0, nd=0;
+  var q=(dlvQ||'').trim().toLowerCase(), rg=dlvRange(), nf=0, nd=0;
   var L=DLV.orders.filter(function(o){ return !dlvCust||o.customer===dlvCust; }).map(function(o){
-    var fs=o.fulfillments.filter(function(f){ return (!dlvSup||f.supplier===dlvSup)&&dlvPT(f.at)>=f0&&(!q||o.order.toLowerCase().indexOf(q)>=0||f.tracking.some(function(t){ return t.number.toLowerCase().indexOf(q)>=0; })||f.items.some(function(i){ return (i.sku||'').toLowerCase().indexOf(q)>=0||(i.name||'').toLowerCase().indexOf(q)>=0; })); });
+    var fs=o.fulfillments.filter(function(f){ return (!dlvSup||f.supplier===dlvSup)&&dlvIn(f,rg)&&(!q||o.order.toLowerCase().indexOf(q)>=0||String(f.name||'').toLowerCase().indexOf(q)>=0||dlvPo(f).toLowerCase().indexOf(q)>=0||String(f.so||'').toLowerCase().indexOf(q)>=0||f.tracking.some(function(t){ return t.number.toLowerCase().indexOf(q)>=0; })||f.items.some(function(i){ return (i.sku||'').toLowerCase().indexOf(q)>=0||(i.name||'').toLowerCase().indexOf(q)>=0; })); });
     return {o:o, fs:fs}; }).filter(function(x){ return x.fs.length; }).sort(function(a,b){ return b.fs[0].at>a.fs[0].at?1:-1; });
   L.forEach(function(x){ x.fs.forEach(function(f){ nf++; if(f.status==='DELIVERED'||f.delivered) nd++; }); });
   var sum=document.getElementById('dlvSum'); if(sum) sum.textContent=L.length+' order'+(L.length===1?'':'s')+' · '+nf+' deliver'+(nf===1?'y':'ies')+' · '+nd+' delivered · '+(nf-nd)+' on the way';
@@ -1391,9 +1395,9 @@ function dlvDraw(){
   var h='';
   L.slice(0,dlvLim).forEach(function(x){ var o=x.o;
     h+='<div style="border:1px solid #dee5ec;border-left:5px solid #008080;border-radius:8px;margin-bottom:10px;overflow:hidden;background:#fff;">'+
-      '<div style="background:#eef3f6;padding:9px 14px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;"><div><b style="font-size:14px;color:#101E3E;">'+escapeHtml(o.order)+'</b> &nbsp;<span style="color:#1f3a5f;font-weight:600;">'+escapeHtml(o.customer)+'</span>'+(o.city?' <span style="color:#7f8c8d;">&middot; '+escapeHtml(o.city)+'</span>':'')+' <span style="color:#7f8c8d;">&middot; ordered '+escapeHtml(dlvFd(o.created).replace(/,.*/,''))+'</span></div>'+
+      '<div style="background:#eef3f6;padding:9px 14px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;"><div><span style="font-size:11px;color:#7f8c8d;">Shopify order</span> <b style="font-size:14px;color:#101E3E;">'+escapeHtml(o.order)+'</b>'+(function(){ var s={},l=[]; x.fs.forEach(function(f){ (f.pos||[]).forEach(function(p){ if(!s[p.po]){ s[p.po]=1; l.push(p.po); } }); }); return l.length?' &nbsp;<span style="font-size:11px;color:#7f8c8d;">Vtiger PO</span> <b style="color:#101E3E;">'+escapeHtml(l.join(', '))+'</b>':''; })()+' &nbsp;<span style="color:#1f3a5f;font-weight:600;">'+escapeHtml(o.customer)+'</span>'+(o.city?' <span style="color:#7f8c8d;">&middot; '+escapeHtml(o.city)+'</span>':'')+' <span style="color:#7f8c8d;">&middot; ordered '+escapeHtml(dlvFd(o.created).replace(/,.*/,''))+'</span></div>'+
       '<span style="color:#4a5b70;font-size:12px;">'+x.fs.length+' deliver'+(x.fs.length===1?'y':'ies')+'</span></div>'+
-      '<table class="tbl" style="width:100%;margin:0;"><thead><tr><th>Shipped</th><th>Status</th><th>Tracking</th><th>Supplier</th><th>Delivery</th><th>Items</th></tr></thead><tbody>'+x.fs.map(dlvRow).join('')+'</tbody></table></div>'; });
+      '<table class="tbl" style="width:100%;margin:0;"><thead><tr><th>Shopify fulfillment</th><th>Vtiger PO</th><th>Shipped</th><th>Status</th><th>Tracking</th><th>Supplier (Shopify location)</th><th>Delivery</th><th>Items</th></tr></thead><tbody>'+x.fs.map(dlvRow).join('')+'</tbody></table></div>'; });
   if(L.length>dlvLim) h+='<button class="mode-btn" style="margin:4px 0;min-height:0;padding:8px 16px;width:auto;" onclick="dlvMore()">Show more ('+(L.length-dlvLim)+' left)</button>';
   box.innerHTML=h; }
 
