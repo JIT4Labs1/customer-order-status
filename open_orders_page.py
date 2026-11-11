@@ -1034,6 +1034,7 @@ def build_html(page_data, embeds=None):
       <button class="mode-btn" data-mode="vendor" onclick="setMode('vendor')">Open Vendor POs</button>
       <button class="mode-btn" data-mode="iopp" onclick="setMode('iopp')">Inventory Opportunities</button>
       <button class="mode-btn" data-mode="ship" onclick="setMode('ship')">Shipments</button>
+      <button class="mode-btn" data-mode="deliv" onclick="setMode('deliv')">Deliveries</button>
       <button class="mode-btn" data-mode="cprices" onclick="setMode('cprices')">Customer Prices</button>
       <button class="mode-btn" data-mode="vspend" onclick="setMode('vspend')">Vendor Spend</button>
       <button class="mode-btn" data-mode="sku" onclick="setMode('sku')">High Demand SKUs</button>
@@ -1175,7 +1176,7 @@ function kpi(v,l,style){ return '<div class="kpi"'+(style?' style="'+style+'"':'
 
 function renderTabs(){
   var tabsEl=document.getElementById('tabs');
-  var fullWidth=(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay' || mode==='vspend' || mode==='cprices' || mode==='inv' || mode==='iopp');
+  var fullWidth=(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay' || mode==='vspend' || mode==='cprices' || mode==='inv' || mode==='iopp' || mode==='deliv');
   // Left-align: when a view has no left sidebar, collapse the side column so content aligns left (not centered).
   var sidecol=document.querySelector('.sidecol'); if(sidecol) sidecol.style.display = fullWidth ? 'none' : '';
   var pw=document.querySelector('.panel-wrap'); if(pw) pw.style.marginLeft = fullWidth ? '0' : '';
@@ -1327,6 +1328,75 @@ function renderVspendDetail(){
   box.innerHTML=h;
 }
 
+// ── Deliveries tab (same as the mobile app's Deliveries view): Shopify fulfillments per order, last 120 days ──
+// Data comes live from the Worker (/api/deliveries). Supplier = the Shopify fulfillment location (Allora, PMA Services, ADLX).
+var DLV=null, dlvBusy=false, dlvErr='', dlvP='week', dlvCust='', dlvSup='', dlvQ='', dlvLim=60;
+var DLV_ST={DELIVERED:['#e6f4ea','#137333','Delivered'],IN_TRANSIT:['#e8f0fe','#1a56b0','In transit'],OUT_FOR_DELIVERY:['#e8f0fe','#1a56b0','Out for delivery'],ATTEMPTED_DELIVERY:['#fff4e0','#b54708','Delivery attempted'],READY_FOR_PICKUP:['#fff4e0','#b54708','Ready for pickup'],PICKED_UP:['#e6f4ea','#137333','Picked up'],LABEL_PRINTED:['#eef1f5','#4a5b70','Label printed'],LABEL_PURCHASED:['#eef1f5','#4a5b70','Label purchased'],CONFIRMED:['#e0f2f1','#00695c','Confirmed'],FULFILLED:['#e0f2f1','#00695c','Fulfilled'],FAILURE:['#fde8e8','#c0392b','Delivery problem'],CARRIER_PICKED_UP:['#e8f0fe','#1a56b0','Picked up by carrier'],SUBMITTED:['#eef1f5','#4a5b70','Submitted'],NOT_DELIVERED:['#fde8e8','#c0392b','Not delivered']};
+function dlvLoad(force){ if(dlvBusy) return; dlvBusy=true; dlvErr='';
+  fetch('/api/deliveries'+(force?'?force=1':''),{credentials:'same-origin',cache:'no-store'})
+    .then(function(r){ return r.json().catch(function(){ return {error:'HTTP '+r.status}; }).then(function(d){ if(!r.ok||d.error) throw new Error(d.error||('HTTP '+r.status)); return d; }); })
+    .then(function(d){ DLV=d; dlvBusy=false; if(mode==='deliv') renderDelivPanel(); })
+    .catch(function(e){ dlvBusy=false; dlvErr=(e&&e.message)||String(e); if(mode==='deliv') renderDelivPanel(); }); }
+function dlvRefresh(){ DLV=null; dlvLoad(true); renderDelivPanel(); }
+function dlvPT(t){ return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Los_Angeles'}).format(new Date(t)); }
+function dlvFd(t){ return t?new Date(t).toLocaleString('en-US',{timeZone:'America/Los_Angeles',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):''; }
+function dlvFrom(){ var today=dlvPT(Date.now()), td=new Date(today+'T12:00:00Z'), dow=(td.getUTCDay()+6)%7;
+  return {today:today, week:new Date(td.getTime()-dow*864e5).toISOString().slice(0,10), month:today.slice(0,8)+'01', all:'0000'}[dlvP]; }
+function dlvNoSup(){ return DLV&&DLV.no_location_access?'(supplier not available yet)':'(no location)'; }
+function dlvSet(k,v){ if(k==='p') dlvP=v; else if(k==='c') dlvCust=v; else if(k==='s') dlvSup=v; dlvLim=60; renderDelivPanel(); }
+function dlvSearch(v){ dlvQ=v; dlvLim=60; dlvDraw(); }
+function dlvMore(){ dlvLim+=60; dlvDraw(); }
+function dlvCmpName(a,b){ return a.localeCompare(b,undefined,{sensitivity:'base'}); }
+function renderDelivPanel(){
+  var P=document.getElementById('panel');
+  if(!DLV){ if(dlvErr){ P.innerHTML='<div class="empty">Could not load deliveries: '+escapeHtml(dlvErr)+(location.hostname.indexOf('workers.dev')<0?' (Deliveries are read live from Shopify by the Cloudflare app, so this tab works on the app, not on this copy.)':'')+' <a href="#" onclick="dlvRefresh();return false;">Try again</a></div>'; return; }
+    P.innerHTML='<div class="empty">Loading deliveries from Shopify&hellip;</div>'; dlvLoad(false); return; }
+  var NOSUP=dlvNoSup(), f0=dlvFrom();
+  DLV.orders.forEach(function(o){ o.fulfillments.forEach(function(f){ if(!f.supplier) f.supplier=NOSUP; }); });
+  var cw={}; DLV.orders.forEach(function(o){ if(o.fulfillments.some(function(f){ return dlvPT(f.at)>=f0; })) cw[o.customer]=1; });
+  var CW=Object.keys(cw).sort(dlvCmpName); if(dlvCust&&!cw[dlvCust]) dlvCust='';
+  var vw={}; DLV.orders.forEach(function(o){ if(dlvCust&&o.customer!==dlvCust) return; o.fulfillments.forEach(function(f){ if(dlvPT(f.at)>=f0) vw[f.supplier]=1; }); });
+  var VW=Object.keys(vw).sort(function(a,b){ return a===NOSUP?1:(b===NOSUP?-1:dlvCmpName(a,b)); }); if(dlvSup&&!vw[dlvSup]) dlvSup='';
+  var chip=function(k,l){ var on=dlvP===k; return '<button class="mode-btn" style="margin:0;min-height:0;padding:6px 14px;width:auto;'+(on?'background:#101E3E;color:#fff;border-color:#101E3E;':'')+'" onclick="dlvSet(&quot;p&quot;,&quot;'+k+'&quot;)">'+l+'</button>'; };
+  var selS='padding:6px 8px;border:1px solid #cfd8e3;border-radius:6px;font-size:13px;max-width:280px;';
+  var h='<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px;"><h2 style="margin:0 12px 0 0;">Deliveries</h2>'+
+    chip('today','Today')+chip('week','This week')+chip('month','This month')+chip('all','Last 120 days')+'</div>'+
+    '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:8px;font-size:13px;">'+
+    '<select style="'+selS+'" onchange="dlvSet(&quot;c&quot;,this.value)"><option value="">All customers ('+CW.length+')</option>'+CW.map(function(c){ return '<option value="'+escapeHtml(c)+'"'+(c===dlvCust?' selected':'')+'>'+escapeHtml(c)+'</option>'; }).join('')+'</select>'+
+    '<select style="'+selS+'" onchange="dlvSet(&quot;s&quot;,this.value)"><option value="">All suppliers ('+VW.filter(function(v){ return v!==NOSUP; }).length+')</option>'+VW.map(function(v){ return '<option value="'+escapeHtml(v)+'"'+(v===dlvSup?' selected':'')+'>'+escapeHtml(v)+'</option>'; }).join('')+'</select>'+
+    '<input type="text" placeholder="Search tracking number, SKU or order #" value="'+escapeHtml(dlvQ)+'" oninput="dlvSearch(this.value)" style="padding:6px 8px;border:1px solid #cfd8e3;border-radius:6px;min-width:280px;font-size:13px;">'+
+    '<span id="dlvSum" style="color:#4a5b70;"></span></div>'+
+    '<div id="dlvList"></div>'+
+    '<div style="font-size:12px;color:#7f8c8d;margin-top:8px;">Shopify fulfillments, updated '+escapeHtml(dlvFd(DLV.generated_at))+' &middot; <a href="#" onclick="dlvRefresh();return false;">Refresh</a></div>';
+  P.innerHTML=h; dlvDraw(); }
+function dlvRow(f){
+  var NOSUP=dlvNoSup(), st=DLV_ST[f.status]||['#eef1f5','#4a5b70',String(f.status||'').replace(/_/g,' ').toLowerCase()||'—'];
+  var trk=f.tracking.length?f.tracking.map(function(t){ return (t.url?'<a href="'+escapeHtml(t.url)+'" target="_blank" rel="noopener" style="font-weight:600;color:#008080;">'+escapeHtml(t.number)+' &#8599;</a>':'<b>'+escapeHtml(t.number)+'</b>')+(t.company?' <span style="color:#7f8c8d;font-size:11px;">'+escapeHtml(t.company)+'</span>':''); }).join('<br>'):'<span style="color:#999;">No tracking number</span>';
+  var sup=f.supplier===NOSUP?'<span style="color:#999;">'+(DLV.no_location_access?'not available yet':'no location')+'</span>':escapeHtml(f.supplier);
+  var when=f.delivered?'Delivered '+escapeHtml(dlvFd(f.delivered)):(f.eta?'Expected '+escapeHtml(dlvFd(f.eta)):'<span style="color:#999;">&mdash;</span>');
+  var items=f.items.map(function(i){ return '<div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:520px;"><b style="display:inline-block;min-width:34px;">&times;'+i.qty+'</b><span style="font-size:11px;background:#eef1f5;border-radius:8px;padding:0 6px;margin-right:6px;">'+escapeHtml(i.sku||'no SKU')+'</span>'+escapeHtml(i.name)+(i.vendor?' <span style="color:#7f8c8d;font-size:11px;">&middot; '+escapeHtml(i.vendor)+'</span>':'')+'</div>'; }).join('');
+  return '<tr><td style="white-space:nowrap;vertical-align:top;">'+escapeHtml(dlvFd(f.at))+'</td>'+
+    '<td style="vertical-align:top;"><span style="background:'+st[0]+';color:'+st[1]+';border-radius:10px;padding:1px 9px;font-size:12px;font-weight:600;white-space:nowrap;">'+escapeHtml(st[2])+'</span></td>'+
+    '<td style="vertical-align:top;">'+trk+'</td><td style="vertical-align:top;white-space:nowrap;">'+sup+'</td>'+
+    '<td style="vertical-align:top;white-space:nowrap;font-size:12px;">'+when+'</td><td style="vertical-align:top;font-size:12px;">'+items+'</td></tr>'; }
+function dlvDraw(){
+  var box=document.getElementById('dlvList'); if(!box||!DLV) return;
+  var q=(dlvQ||'').trim().toLowerCase(), f0=dlvFrom(), nf=0, nd=0;
+  var L=DLV.orders.filter(function(o){ return !dlvCust||o.customer===dlvCust; }).map(function(o){
+    var fs=o.fulfillments.filter(function(f){ return (!dlvSup||f.supplier===dlvSup)&&dlvPT(f.at)>=f0&&(!q||o.order.toLowerCase().indexOf(q)>=0||f.tracking.some(function(t){ return t.number.toLowerCase().indexOf(q)>=0; })||f.items.some(function(i){ return (i.sku||'').toLowerCase().indexOf(q)>=0||(i.name||'').toLowerCase().indexOf(q)>=0; })); });
+    return {o:o, fs:fs}; }).filter(function(x){ return x.fs.length; }).sort(function(a,b){ return b.fs[0].at>a.fs[0].at?1:-1; });
+  L.forEach(function(x){ x.fs.forEach(function(f){ nf++; if(f.status==='DELIVERED'||f.delivered) nd++; }); });
+  var sum=document.getElementById('dlvSum'); if(sum) sum.textContent=L.length+' order'+(L.length===1?'':'s')+' · '+nf+' deliver'+(nf===1?'y':'ies')+' · '+nd+' delivered · '+(nf-nd)+' on the way';
+  if(!L.length){ box.innerHTML='<div class="empty">No deliveries for these filters.</div>'; return; }
+  var h='';
+  L.slice(0,dlvLim).forEach(function(x){ var o=x.o;
+    h+='<div style="border:1px solid #dee5ec;border-left:5px solid #008080;border-radius:8px;margin-bottom:10px;overflow:hidden;background:#fff;">'+
+      '<div style="background:#eef3f6;padding:9px 14px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;"><div><b style="font-size:14px;color:#101E3E;">'+escapeHtml(o.order)+'</b> &nbsp;<span style="color:#1f3a5f;font-weight:600;">'+escapeHtml(o.customer)+'</span>'+(o.city?' <span style="color:#7f8c8d;">&middot; '+escapeHtml(o.city)+'</span>':'')+' <span style="color:#7f8c8d;">&middot; ordered '+escapeHtml(dlvFd(o.created).replace(/,.*/,''))+'</span></div>'+
+      '<span style="color:#4a5b70;font-size:12px;">'+x.fs.length+' deliver'+(x.fs.length===1?'y':'ies')+'</span></div>'+
+      '<table class="tbl" style="width:100%;margin:0;"><thead><tr><th>Shipped</th><th>Status</th><th>Tracking</th><th>Supplier</th><th>Delivery</th><th>Items</th></tr></thead><tbody>'+x.fs.map(dlvRow).join('')+'</tbody></table></div>'; });
+  if(L.length>dlvLim) h+='<button class="mode-btn" style="margin:4px 0;min-height:0;padding:8px 16px;width:auto;" onclick="dlvMore()">Show more ('+(L.length-dlvLim)+' left)</button>';
+  box.innerHTML=h; }
+
 function renderPanel(){
   if(mode==='pnl') renderPnlPanel();
   else if(mode==='vendor') renderVendorPanel();
@@ -1341,6 +1411,7 @@ function renderPanel(){
   else if(mode==='wt') renderWtPanel();
   else if(mode==='cj') renderCjPanel();
   else if(mode==='ship') renderShipPanel();
+  else if(mode==='deliv') renderDelivPanel();
   else if(mode==='spnl') renderSpnlPanel();
   else if(mode==='pay') renderPayPanel();
   else if(mode==='inv') renderInvPanel();
@@ -4083,31 +4154,27 @@ function arSetHideZero(cb){ arHideZero=!!cb.checked; renderPayPanel(); }
 function arSetRec(cb){ arRecOnly=!!cb.checked; renderPayPanel(); }
 function arBtn(label,on,fn){ return '<button class="mode-btn'+(on?' active':'')+'" style="margin:0 4px 4px 0;" onclick="'+fn+'">'+label+'</button>'; }
 // A/R "Emails sent": every email sent from the app plus the customersupport Sent Items, per customer (built by the Worker)
-var ESENT=null, esBusy=false, esOpenAll={}, esFilt='all';
+var ESENT=null, esBusy=false, esOpenAll={};
 function esLoad(){ if(ESENT||esBusy) return; esBusy=true; fetch('_emails_sent.json?cb='+Date.now(),{cache:'no-store',credentials:'same-origin'}).then(function(r){ return r.ok?r.json():{customers:{}}; }).catch(function(){ return {customers:{}}; }).then(function(d){ ESENT=d||{customers:{}}; esBusy=false; if(mode==='pay'&&arSub==='ar') renderPayPanel(); }); }
 function esFor(name){ return (ESENT&&ESENT.customers&&ESENT.customers[ceKey(name)])||[]; }
 function esWhen(t){ var d=new Date(t); if(isNaN(d)) return ''; return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+' '+d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}); }
 function esShort(t){ var d=new Date(t); return isNaN(d)?'':d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
-function esBadge(name){ var L=esFor(name); if(!L.length) return ''; var n=((ESENT.counts||{})[ceKey(name)]||{}).total||L.length; return ' <span title="'+n+' email(s) sent to this customer; most recent '+escapeHtml(esWhen(L[0].at))+'" style="font-size:11px;font-weight:500;color:#4a5b70;margin-left:6px;white-space:nowrap;">&#9993; '+n+' sent &middot; last '+escapeHtml(esShort(L[0].at))+'</span>'; }
+function esBadge(name){ var L=esFor(name); if(!L.length) return ''; var n=((ESENT.counts||{})[ceKey(name)]||{}).total||L.length; return ' <span title="'+n+' email(s) sent to this customer from the app; most recent '+escapeHtml(esWhen(L[0].at))+'" style="font-size:11px;font-weight:500;color:#4a5b70;margin-left:6px;white-space:nowrap;">&#9993; '+n+' sent from app &middot; last '+escapeHtml(esShort(L[0].at))+'</span>'; }
 function esToggleAll(i){ esOpenAll[i]=!esOpenAll[i]; renderPayPanel(); }
-function esSetFilt(f){ esFilt=f; renderPayPanel(); }
-function esBtn(l,on,f){ return '<a href="#" onclick="esSetFilt(&quot;'+f+'&quot;);return false;" style="font-size:11px;font-weight:600;text-decoration:none;border-radius:12px;padding:1px 9px;margin-right:4px;border:1px solid '+(on?'#101E3E;background:#101E3E;color:#fff':'#cfd8e3;background:#fff;color:#1f3a5f')+';">'+l+'</a>'; }
-function esIsSt(e){ return e.app||e.kind!=='Email'; }
+// "Emails sent" under each A/R customer: ONLY emails sent from the app (logged when sent, plus past app A/R emails found in Sent Items).
 function esBlock(i,name){
-  var L0=esFor(name), nS=0; for(var q=0;q<L0.length;q++) if(esIsSt(L0[q])) nS++;
-  var tot=((ESENT&&ESENT.counts&&ESENT.counts[ceKey(name)])||{}).total||L0.length;
-  var L=esFilt==='status'?L0.filter(esIsSt):L0;
-  var h='<div style="margin:2px 0 12px;"><div style="font-weight:700;color:#1f3a5f;font-size:13px;margin-bottom:4px;">&#9993; Emails sent'+(L0.length?' <span style="font-weight:400;color:#7f8c8d;">('+(tot>L0.length?'latest '+L0.length+' of '+tot:L0.length)+')</span>':'')+
-    (L0.length?' &nbsp; '+esBtn('All ('+L0.length+')',esFilt==='all','all')+esBtn('Invoice &amp; status emails ('+nS+')',esFilt==='status','status'):'')+'</div>';
+  var L=esFor(name);
+  var tot=((ESENT&&ESENT.counts&&ESENT.counts[ceKey(name)])||{}).total||L.length;
+  var h='<div style="margin:2px 0 12px;"><div style="font-weight:700;color:#1f3a5f;font-size:13px;margin-bottom:4px;">&#9993; Emails sent from the app'+(L.length?' <span style="font-weight:400;color:#7f8c8d;">('+(tot>L.length?'latest '+L.length+' of '+tot:L.length)+')</span>':'')+'</div>';
   if(!ESENT){ esLoad(); return h+'<div style="font-size:12px;color:#7f8c8d;">Loading&hellip;</div></div>'; }
-  if(!L.length) return h+'<div style="font-size:12px;color:#7f8c8d;">'+(L0.length?'No invoice or status emails to this customer.':'No emails to this customer found yet.')+(ESENT.sync_error?' Sent Items could not be read: '+escapeHtml(ESENT.sync_error):'')+'</div></div>';
+  if(!L.length) return h+'<div style="font-size:12px;color:#7f8c8d;">No emails sent to this customer from the app yet.'+(ESENT.sync_error?' Sent Items could not be read: '+escapeHtml(ESENT.sync_error):'')+'</div></div>';
   var show=esOpenAll[i]?L:L.slice(0,5);
-  h+='<table class="tbl" style="width:100%;"><thead><tr><th>Sent</th><th>Subject</th><th>To</th><th>Type</th><th>Source</th></tr></thead><tbody>';
+  h+='<table class="tbl" style="width:100%;"><thead><tr><th>Sent</th><th>Subject</th><th>To</th><th>Type</th><th>Sent by</th></tr></thead><tbody>';
   for(var k=0;k<show.length;k++){ var e=show[k], to=(e.to||[]).concat(e.cc||[]).join(', ');
-    h+='<tr><td style="white-space:nowrap;">'+escapeHtml(esWhen(e.at))+'</td><td>'+escapeHtml(e.subject||'(no subject)')+'</td><td style="font-size:12px;">'+escapeHtml(to||'')+'</td><td style="white-space:nowrap;">'+escapeHtml(e.kind||'Email')+'</td><td style="white-space:nowrap;font-size:12px;color:'+(e.app?'#137333':'#4a5b70')+';">'+(e.app?'Sent from the app':'Sent Items')+'</td></tr>'; }
+    h+='<tr><td style="white-space:nowrap;">'+escapeHtml(esWhen(e.at))+'</td><td>'+escapeHtml(e.subject||'(no subject)')+'</td><td style="font-size:12px;">'+escapeHtml(to||'')+'</td><td style="white-space:nowrap;">'+escapeHtml(e.kind||'Email')+'</td><td style="white-space:nowrap;font-size:12px;color:#4a5b70;">'+(e.by?escapeHtml(e.by):(e.backfilled?'found in Sent Items':'&mdash;'))+'</td></tr>'; }
   h+='</tbody></table>';
   if(L.length>5) h+='<a href="#" style="font-size:12px;" onclick="esToggleAll('+i+');return false;">'+(esOpenAll[i]?'Show fewer':'Show all '+L.length)+'</a>';
-  if(ESENT.sent_items_synced_at) h+='<div style="font-size:11px;color:#7f8c8d;margin-top:3px;">Sent Items of customersupport@jit4you.com checked '+escapeHtml(esWhen(ESENT.sent_items_synced_at))+'</div>';
+  if(ESENT.sent_items_synced_at) h+='<div style="font-size:11px;color:#7f8c8d;margin-top:3px;">Past app emails looked up in the Sent Items of customersupport@jit4you.com, checked '+escapeHtml(esWhen(ESENT.sent_items_synced_at))+'</div>';
   return h+'</div>';
 }
 function renderPayPanel(){
