@@ -1,66 +1,34 @@
 {
-  "generated_at": "2026-11-12 09:29:23 AM PST",
+  "generated_at": "2026-11-12 11:02:21 AM PST",
   "run_info": {
     "mode": "Incremental",
-    "label": "9:27 AM",
-    "completed_at": "2026-11-12 09:29:23 AM PST"
+    "label": "11:00 AM",
+    "completed_at": "2026-11-12 11:02:21 AM PST"
   },
   "totals": {
     "customers": 11,
     "open_sos": 18,
-    "open_items": 42,
+    "open_items": 39,
     "vendors": 3,
-    "high_demand_skus": 7
+    "high_demand_skus": 5
   },
   "customers": [
     {
       "name": "Chicago Lab",
       "open_sos": 1,
-      "open_items": 3,
+      "open_items": 1,
       "vendors": [
         "Allora Biotech LLC"
       ],
       "rows": [
         {
           "so_num": "SO625",
-          "so_status": "Approved",
-          "order_date": "2026-11-06",
-          "product": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
-          "sku": "37200",
-          "vendor": "Allora Biotech LLC",
-          "list_price": 175.0,
-          "ordered_qty": 3.0,
-          "delivered_qty": 0,
-          "open_qty": 3.0,
-          "so_total_lines": 3,
-          "pending_pos": "PO995",
-          "eta": "",
-          "cust_po": ""
-        },
-        {
-          "so_num": "SO625",
-          "so_status": "Approved",
+          "so_status": "Partially delivered",
           "order_date": "2026-11-06",
           "product": "Beckman Coulter OSR6106 Olympus Amylase Reagent 4x40mL",
           "sku": "OSR6106",
           "vendor": "Allora Biotech LLC",
           "list_price": 262.0,
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "so_total_lines": 3,
-          "pending_pos": "PO995",
-          "eta": "",
-          "cust_po": ""
-        },
-        {
-          "so_num": "SO625",
-          "so_status": "Approved",
-          "order_date": "2026-11-06",
-          "product": "Beckman Coulter OSR6230 Olympus LIP Lipase Reagent Incl Calibrator",
-          "sku": "OSR6230",
-          "vendor": "Allora Biotech LLC",
-          "list_price": 850.0,
           "ordered_qty": 1.0,
           "delivered_qty": 0,
           "open_qty": 1.0,
@@ -505,28 +473,12 @@
     {
       "name": "Mercedes Scientific",
       "open_sos": 3,
-      "open_items": 11,
+      "open_items": 10,
       "vendors": [
         "Allora Biotech LLC",
         "PMA Services"
       ],
       "rows": [
-        {
-          "so_num": "SO493",
-          "so_status": "Partially delivered",
-          "order_date": "2026-07-23",
-          "product": "Beckman Coulter A16953 Access Intact PTH Calibrator (S0-S5, RB)",
-          "sku": "A16953",
-          "vendor": "PMA Services",
-          "list_price": 100.7,
-          "ordered_qty": 2.0,
-          "delivered_qty": 0,
-          "open_qty": 2.0,
-          "so_total_lines": 66,
-          "pending_pos": "PO768",
-          "eta": "",
-          "cust_po": "PO 1332699"
-        },
         {
           "so_num": "SO493",
           "so_status": "Partially delivered",
@@ -845,7 +797,7 @@
     },
     {
       "name": "Allora Biotech LLC",
-      "open_items": 23,
+      "open_items": 21,
       "customers": [
         "Chicago Lab",
         "Clinical Laboratory, Inc.",
@@ -860,36 +812,10 @@
         {
           "customer": "Chicago Lab",
           "so_num": "SO625",
-          "so_status": "Approved",
-          "order_date": "2026-11-06",
-          "product": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
-          "sku": "37200",
-          "ordered_qty": 3.0,
-          "delivered_qty": 0,
-          "open_qty": 3.0,
-          "pending_pos": "PO995",
-          "eta": ""
-        },
-        {
-          "customer": "Chicago Lab",
-          "so_num": "SO625",
-          "so_status": "Approved",
+          "so_status": "Partially delivered",
           "order_date": "2026-11-06",
           "product": "Beckman Coulter OSR6106 Olympus Amylase Reagent 4x40mL",
           "sku": "OSR6106",
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "pending_pos": "PO995",
-          "eta": ""
-        },
-        {
-          "customer": "Chicago Lab",
-          "so_num": "SO625",
-          "so_status": "Approved",
-          "order_date": "2026-11-06",
-          "product": "Beckman Coulter OSR6230 Olympus LIP Lipase Reagent Incl Calibrator",
-          "sku": "OSR6230",
           "ordered_qty": 1.0,
           "delivered_qty": 0,
           "open_qty": 1.0,
@@ -1158,12 +1084,12 @@
         }
       ],
       "email": "Arthur@allorabiotech.com",
-      "email_subject": "JIT4You \u2014 Your Open Purchase Orders (23 open items) \u2014 please advise delivery",
-      "email_doc": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>Email draft \u2014 Allora Biotech LLC</title></head><body style=\"margin:0;background:#eef1f5;font-family:Arial,sans-serif;\"><div style=\"background:#0D2B45;color:#fff;padding:14px 20px;\"><div style=\"font-size:13px;margin-bottom:3px;\"><b>To:</b> Arthur@allorabiotech.com</div><div style=\"font-size:13px;margin-bottom:10px;\"><b>Subject:</b> JIT4You \u2014 Your Open Purchase Orders (23 open items) \u2014 please advise delivery</div><button id=\"cp\" style=\"padding:7px 14px;border:none;border-radius:5px;background:#008080;color:#fff;font-weight:700;cursor:pointer;\">Copy formatted email</button><a href=\"mailto:Arthur@allorabiotech.com?subject=JIT4You%20\u2014%20Your%20Open%20Purchase%20Orders%20(23%20open%20items)%20\u2014%20please%20advise%20delivery\" style=\"color:#7fd4d4;margin-left:14px;font-size:13px;\">Open blank email to customer</a><div style=\"margin-top:8px;font-size:12px;opacity:.9;\">Click <b>Copy formatted email</b>, then in Outlook paste with <b>Ctrl/Cmd+V</b> (it pastes the rendered email, not code). This only creates the draft \u2014 you send it.</div></div><div style=\"padding:20px;\"><div id=\"emailbody\" style=\"max-width:760px;margin:0 auto;background:#fff;\"><div style=\"font-family:Arial,Helvetica,sans-serif;color:#101E3E;max-width:840px;margin:0 auto;background:#fff;\"><div style=\"background:#fff;padding:18px 24px;border-bottom:3px solid #008080;\"><div style=\"font-family:'Open Sans',Arial,sans-serif;font-size:24px;font-weight:800;letter-spacing:.4px;\"><span style=\"color:#101E3E;\">JIT4</span><span style=\"color:#008080;\">Labs</span></div></div><div style=\"padding:22px 24px;font-size:14px;line-height:1.6;\"><p>Hi Arthur,</p><p>Find enclosed the list of open POs with previously provided ETA.</p><table cellspacing=\"0\" cellpadding=\"0\" style=\"border-collapse:collapse;width:100%;max-width:800px;background:#fff;font-family:Arial,sans-serif;\"><thead><tr style=\"background:#0D2B45;\"><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Order Date</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Product</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Customer</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Ordered</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Delivered</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Open</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">ETA</th></tr></thead><tbody><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO939</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6159 Olympus C3 Reagent (Complement 3 Reagent)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6195 Olympus HDL Cholesterol Reagent</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">8</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">8</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO767</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6196 Olympus LDL Cholesterol Reagent</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO980</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-08-11</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6199 C-reactive Protein High sensitive CRP</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">7</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">6</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO972</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-10-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6143 Apo B Reagent Specific Protein Apolipoprotein B (Apo B)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">LabX Diagnostic Systems</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO988</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-04</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Doctors General Laboratory</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-04</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Doctors General Laboratory</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">5</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">5</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-04</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6107 Olympus ALT Reagent Alanine Transaminase</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Doctors General Laboratory</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-04</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6116 Olympus Cholesterol Reagent</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Doctors General Laboratory</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-04</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Doctors General Laboratory</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-04</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6178 Olympus Creatinine Reagent</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Doctors General Laboratory</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO986</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-04</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 98201 Access BNP OC</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">OM Diagnostic Laboratories</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO995</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-06</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Chicago Lab</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">3</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">3</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-06</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6106 Olympus Amylase Reagent 4x40mL</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Chicago Lab</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-06</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6230 Olympus LIP Lipase Reagent Incl Calibrator</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Chicago Lab</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1001</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-09</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Siemens Atellica 10995523 CEA</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Clinical Laboratory, Inc.</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-09</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Siemens Atellica 10995561 Estradiol</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Clinical Laboratory, Inc.</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-09</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Siemens Atellica 10995708 Testosterone II</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Clinical Laboratory, Inc.</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-09</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Siemens Atellica 11537222 Triglycerides_2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Clinical Laboratory, Inc.</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1004</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-10</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6199 C-reactive Protein High sensitive CRP</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">LabX Diagnostic Systems</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1009</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-10</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6106 Olympus Amylase Reagent 4x40mL</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">3</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">3</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-10</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">4</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">4</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1008</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-10</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6142 Apolipoprotein A1 reagent</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Well Health Labs</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr></tbody></table><p style=\"margin-top:18px;\">Thank you,<br>JIT4You</p><p style=\"font-size:12px;color:#008080;\"><a href=\"mailto:CustomerSupport@jit4you.com\" style=\"color:#008080;text-decoration:none;\">CustomerSupport@jit4you.com</a> &nbsp;&middot;&nbsp; (949) 396-9194</p></div></div></div></div><script>(function(){var b=document.getElementById(\"cp\"),body=document.getElementById(\"emailbody\");function ok(){b.textContent=\"Copied \\u2713 \\u2014 paste into Outlook\";}function fail(){b.textContent=\"Select the email and press Ctrl/Cmd+C\";}function selCopy(){var r=document.createRange();r.selectNode(body);var s=window.getSelection();s.removeAllRanges();s.addRange(r);try{var done=document.execCommand(\"copy\");s.removeAllRanges();done?ok():fail();}catch(e){fail();}}b.addEventListener(\"click\",function(){var html=body.innerHTML;if(window.ClipboardItem&&navigator.clipboard&&navigator.clipboard.write){try{var item=new ClipboardItem({\"text/html\":new Blob([html],{type:\"text/html\"}),\"text/plain\":new Blob([body.innerText],{type:\"text/plain\"})});navigator.clipboard.write([item]).then(ok,selCopy);}catch(e){selCopy();}}else{selCopy();}});})();</script></body></html>"
+      "email_subject": "JIT4You \u2014 Your Open Purchase Orders (21 open items) \u2014 please advise delivery",
+      "email_doc": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>Email draft \u2014 Allora Biotech LLC</title></head><body style=\"margin:0;background:#eef1f5;font-family:Arial,sans-serif;\"><div style=\"background:#0D2B45;color:#fff;padding:14px 20px;\"><div style=\"font-size:13px;margin-bottom:3px;\"><b>To:</b> Arthur@allorabiotech.com</div><div style=\"font-size:13px;margin-bottom:10px;\"><b>Subject:</b> JIT4You \u2014 Your Open Purchase Orders (21 open items) \u2014 please advise delivery</div><button id=\"cp\" style=\"padding:7px 14px;border:none;border-radius:5px;background:#008080;color:#fff;font-weight:700;cursor:pointer;\">Copy formatted email</button><a href=\"mailto:Arthur@allorabiotech.com?subject=JIT4You%20\u2014%20Your%20Open%20Purchase%20Orders%20(21%20open%20items)%20\u2014%20please%20advise%20delivery\" style=\"color:#7fd4d4;margin-left:14px;font-size:13px;\">Open blank email to customer</a><div style=\"margin-top:8px;font-size:12px;opacity:.9;\">Click <b>Copy formatted email</b>, then in Outlook paste with <b>Ctrl/Cmd+V</b> (it pastes the rendered email, not code). This only creates the draft \u2014 you send it.</div></div><div style=\"padding:20px;\"><div id=\"emailbody\" style=\"max-width:760px;margin:0 auto;background:#fff;\"><div style=\"font-family:Arial,Helvetica,sans-serif;color:#101E3E;max-width:840px;margin:0 auto;background:#fff;\"><div style=\"background:#fff;padding:18px 24px;border-bottom:3px solid #008080;\"><div style=\"font-family:'Open Sans',Arial,sans-serif;font-size:24px;font-weight:800;letter-spacing:.4px;\"><span style=\"color:#101E3E;\">JIT4</span><span style=\"color:#008080;\">Labs</span></div></div><div style=\"padding:22px 24px;font-size:14px;line-height:1.6;\"><p>Hi Arthur,</p><p>Find enclosed the list of open POs with previously provided ETA.</p><table cellspacing=\"0\" cellpadding=\"0\" style=\"border-collapse:collapse;width:100%;max-width:800px;background:#fff;font-family:Arial,sans-serif;\"><thead><tr style=\"background:#0D2B45;\"><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Order Date</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Product</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Customer</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Ordered</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Delivered</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Open</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">ETA</th></tr></thead><tbody><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO939</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6159 Olympus C3 Reagent (Complement 3 Reagent)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6195 Olympus HDL Cholesterol Reagent</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">8</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">8</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO767</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6196 Olympus LDL Cholesterol Reagent</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO980</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-08-11</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6199 C-reactive Protein High sensitive CRP</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">7</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">6</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO972</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-10-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6143 Apo B Reagent Specific Protein Apolipoprotein B (Apo B)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">LabX Diagnostic Systems</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO988</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-04</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Doctors General Laboratory</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-04</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter A98856 Access 25OH Vitamin D Reagent, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Doctors General Laboratory</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">5</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">5</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-04</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6107 Olympus ALT Reagent Alanine Transaminase</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Doctors General Laboratory</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-04</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6116 Olympus Cholesterol Reagent</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Doctors General Laboratory</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-04</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Doctors General Laboratory</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-04</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6178 Olympus Creatinine Reagent</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Doctors General Laboratory</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO986</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-04</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 98201 Access BNP OC</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">OM Diagnostic Laboratories</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO995</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-06</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6106 Olympus Amylase Reagent 4x40mL</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Chicago Lab</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1001</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-09</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Siemens Atellica 10995523 CEA</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Clinical Laboratory, Inc.</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-09</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Siemens Atellica 10995561 Estradiol</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Clinical Laboratory, Inc.</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-09</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Siemens Atellica 10995708 Testosterone II</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Clinical Laboratory, Inc.</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-09</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Siemens Atellica 11537222 Triglycerides_2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Clinical Laboratory, Inc.</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1004</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-10</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6199 C-reactive Protein High sensitive CRP</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">LabX Diagnostic Systems</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1009</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-10</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6106 Olympus Amylase Reagent 4x40mL</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">3</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">3</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-10</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">4</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">4</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1008</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-10</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6142 Apolipoprotein A1 reagent</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Well Health Labs</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr></tbody></table><p style=\"margin-top:18px;\">Thank you,<br>JIT4You</p><p style=\"font-size:12px;color:#008080;\"><a href=\"mailto:CustomerSupport@jit4you.com\" style=\"color:#008080;text-decoration:none;\">CustomerSupport@jit4you.com</a> &nbsp;&middot;&nbsp; (949) 396-9194</p></div></div></div></div><script>(function(){var b=document.getElementById(\"cp\"),body=document.getElementById(\"emailbody\");function ok(){b.textContent=\"Copied \\u2713 \\u2014 paste into Outlook\";}function fail(){b.textContent=\"Select the email and press Ctrl/Cmd+C\";}function selCopy(){var r=document.createRange();r.selectNode(body);var s=window.getSelection();s.removeAllRanges();s.addRange(r);try{var done=document.execCommand(\"copy\");s.removeAllRanges();done?ok():fail();}catch(e){fail();}}b.addEventListener(\"click\",function(){var html=body.innerHTML;if(window.ClipboardItem&&navigator.clipboard&&navigator.clipboard.write){try{var item=new ClipboardItem({\"text/html\":new Blob([html],{type:\"text/html\"}),\"text/plain\":new Blob([body.innerText],{type:\"text/plain\"})});navigator.clipboard.write([item]).then(ok,selCopy);}catch(e){selCopy();}}else{selCopy();}});})();</script></body></html>"
     },
     {
       "name": "PMA Services",
-      "open_items": 17,
+      "open_items": 16,
       "customers": [
         "CliniCore Labs",
         "Helix Diagnostix",
@@ -1298,19 +1224,6 @@
           "so_num": "SO493",
           "so_status": "Partially delivered",
           "order_date": "2026-07-23",
-          "product": "Beckman Coulter A16953 Access Intact PTH Calibrator (S0-S5, RB)",
-          "sku": "A16953",
-          "ordered_qty": 2.0,
-          "delivered_qty": 0,
-          "open_qty": 2.0,
-          "pending_pos": "PO768",
-          "eta": ""
-        },
-        {
-          "customer": "Mercedes Scientific",
-          "so_num": "SO493",
-          "so_status": "Partially delivered",
-          "order_date": "2026-07-23",
           "product": "Beckman Coulter OSR61154 Olympus Ammonia Reagent R1 and Standard (AMMON)",
           "sku": "OSR61154",
           "ordered_qty": 1.0,
@@ -1399,8 +1312,8 @@
         }
       ],
       "email": "debbie@pmaservices.com",
-      "email_subject": "JIT4You \u2014 Your Open Purchase Orders (17 open items) \u2014 please advise delivery",
-      "email_doc": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>Email draft \u2014 PMA Services</title></head><body style=\"margin:0;background:#eef1f5;font-family:Arial,sans-serif;\"><div style=\"background:#0D2B45;color:#fff;padding:14px 20px;\"><div style=\"font-size:13px;margin-bottom:3px;\"><b>To:</b> debbie@pmaservices.com</div><div style=\"font-size:13px;margin-bottom:10px;\"><b>Subject:</b> JIT4You \u2014 Your Open Purchase Orders (17 open items) \u2014 please advise delivery</div><button id=\"cp\" style=\"padding:7px 14px;border:none;border-radius:5px;background:#008080;color:#fff;font-weight:700;cursor:pointer;\">Copy formatted email</button><a href=\"mailto:debbie@pmaservices.com?subject=JIT4You%20\u2014%20Your%20Open%20Purchase%20Orders%20(17%20open%20items)%20\u2014%20please%20advise%20delivery\" style=\"color:#7fd4d4;margin-left:14px;font-size:13px;\">Open blank email to customer</a><div style=\"margin-top:8px;font-size:12px;opacity:.9;\">Click <b>Copy formatted email</b>, then in Outlook paste with <b>Ctrl/Cmd+V</b> (it pastes the rendered email, not code). This only creates the draft \u2014 you send it.</div></div><div style=\"padding:20px;\"><div id=\"emailbody\" style=\"max-width:760px;margin:0 auto;background:#fff;\"><div style=\"font-family:Arial,Helvetica,sans-serif;color:#101E3E;max-width:840px;margin:0 auto;background:#fff;\"><div style=\"background:#fff;padding:18px 24px;border-bottom:3px solid #008080;\"><div style=\"font-family:'Open Sans',Arial,sans-serif;font-size:24px;font-weight:800;letter-spacing:.4px;\"><span style=\"color:#101E3E;\">JIT4</span><span style=\"color:#008080;\">Labs</span></div></div><div style=\"padding:22px 24px;font-size:14px;line-height:1.6;\"><p>Hi Debbie,</p><p>Find enclosed the list of open POs with previously provided ETA.</p><table cellspacing=\"0\" cellpadding=\"0\" style=\"border-collapse:collapse;width:100%;max-width:800px;background:#fff;font-family:Arial,sans-serif;\"><thead><tr style=\"background:#0D2B45;\"><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Order Date</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Product</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Customer</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Ordered</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Delivered</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Open</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">ETA</th></tr></thead><tbody><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO715</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-06-29</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter A16953 Access Intact PTH Calibrator (S0-S5, RB)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">OM Diagnostic Laboratories</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO768</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter A16953 Access Intact PTH Calibrator (S0-S5, RB)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR61154 Olympus Ammonia Reagent R1 and Standard (AMMON)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">10</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">6</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">4</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman coulter 33540 Reagent, Access, Estradiol (REF)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO947</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-10-13</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33580 Access hGH Ultrasensitive reagent</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">CliniCore Labs</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">3</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO965</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-10-20</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33805 Access Total T4 Calibrator (S0-S5)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Helix Diagnostix</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-10-20</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33885 Access Free T4 Calibrator</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Helix Diagnostix</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO964</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-10-20</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter B24839 Access 25OH Vitamin D Calibrators</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Radiance Diagnostics</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO973</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-10-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter A48619 Access SHBG Quality Control</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">LabX Diagnostic Systems</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-10-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter A98033 Access Folate Calibrator</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">LabX Diagnostic Systems</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-10-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter B38859 Olympus urine Calibrator/CSF Micro Albumin Calibrator</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">LabX Diagnostic Systems</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO982</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-02</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33805 Access Total T4 Calibrator (S0-S5)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">LabX Diagnostic Systems</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-02</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman coulter ODC0019 Calibrator, Olympus, Bicarbonate (REF)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">LabX Diagnostic Systems</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1010</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-10</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR61118 Olympus Triglyceride Reagent (4x735 tests)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">4</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">No PO assigned</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-09-01</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33830 Access Total T3, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">MEDICAL HEALTH LAB</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-10</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33810 Access Thyroid Uptake Reagent, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Well Health Labs</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr></tbody></table><p style=\"margin-top:18px;\">Thank you,<br>JIT4You</p><p style=\"font-size:12px;color:#008080;\"><a href=\"mailto:CustomerSupport@jit4you.com\" style=\"color:#008080;text-decoration:none;\">CustomerSupport@jit4you.com</a> &nbsp;&middot;&nbsp; (949) 396-9194</p></div></div></div></div><script>(function(){var b=document.getElementById(\"cp\"),body=document.getElementById(\"emailbody\");function ok(){b.textContent=\"Copied \\u2713 \\u2014 paste into Outlook\";}function fail(){b.textContent=\"Select the email and press Ctrl/Cmd+C\";}function selCopy(){var r=document.createRange();r.selectNode(body);var s=window.getSelection();s.removeAllRanges();s.addRange(r);try{var done=document.execCommand(\"copy\");s.removeAllRanges();done?ok():fail();}catch(e){fail();}}b.addEventListener(\"click\",function(){var html=body.innerHTML;if(window.ClipboardItem&&navigator.clipboard&&navigator.clipboard.write){try{var item=new ClipboardItem({\"text/html\":new Blob([html],{type:\"text/html\"}),\"text/plain\":new Blob([body.innerText],{type:\"text/plain\"})});navigator.clipboard.write([item]).then(ok,selCopy);}catch(e){selCopy();}}else{selCopy();}});})();</script></body></html>"
+      "email_subject": "JIT4You \u2014 Your Open Purchase Orders (16 open items) \u2014 please advise delivery",
+      "email_doc": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>Email draft \u2014 PMA Services</title></head><body style=\"margin:0;background:#eef1f5;font-family:Arial,sans-serif;\"><div style=\"background:#0D2B45;color:#fff;padding:14px 20px;\"><div style=\"font-size:13px;margin-bottom:3px;\"><b>To:</b> debbie@pmaservices.com</div><div style=\"font-size:13px;margin-bottom:10px;\"><b>Subject:</b> JIT4You \u2014 Your Open Purchase Orders (16 open items) \u2014 please advise delivery</div><button id=\"cp\" style=\"padding:7px 14px;border:none;border-radius:5px;background:#008080;color:#fff;font-weight:700;cursor:pointer;\">Copy formatted email</button><a href=\"mailto:debbie@pmaservices.com?subject=JIT4You%20\u2014%20Your%20Open%20Purchase%20Orders%20(16%20open%20items)%20\u2014%20please%20advise%20delivery\" style=\"color:#7fd4d4;margin-left:14px;font-size:13px;\">Open blank email to customer</a><div style=\"margin-top:8px;font-size:12px;opacity:.9;\">Click <b>Copy formatted email</b>, then in Outlook paste with <b>Ctrl/Cmd+V</b> (it pastes the rendered email, not code). This only creates the draft \u2014 you send it.</div></div><div style=\"padding:20px;\"><div id=\"emailbody\" style=\"max-width:760px;margin:0 auto;background:#fff;\"><div style=\"font-family:Arial,Helvetica,sans-serif;color:#101E3E;max-width:840px;margin:0 auto;background:#fff;\"><div style=\"background:#fff;padding:18px 24px;border-bottom:3px solid #008080;\"><div style=\"font-family:'Open Sans',Arial,sans-serif;font-size:24px;font-weight:800;letter-spacing:.4px;\"><span style=\"color:#101E3E;\">JIT4</span><span style=\"color:#008080;\">Labs</span></div></div><div style=\"padding:22px 24px;font-size:14px;line-height:1.6;\"><p>Hi Debbie,</p><p>Find enclosed the list of open POs with previously provided ETA.</p><table cellspacing=\"0\" cellpadding=\"0\" style=\"border-collapse:collapse;width:100%;max-width:800px;background:#fff;font-family:Arial,sans-serif;\"><thead><tr style=\"background:#0D2B45;\"><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Order Date</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Product</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Customer</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Ordered</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Delivered</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Open</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">ETA</th></tr></thead><tbody><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO715</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-06-29</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter A16953 Access Intact PTH Calibrator (S0-S5, RB)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">OM Diagnostic Laboratories</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO768</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR61154 Olympus Ammonia Reagent R1 and Standard (AMMON)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">10</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">6</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">4</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman coulter 33540 Reagent, Access, Estradiol (REF)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO947</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-10-13</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33580 Access hGH Ultrasensitive reagent</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">CliniCore Labs</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">3</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO965</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-10-20</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33805 Access Total T4 Calibrator (S0-S5)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Helix Diagnostix</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-10-20</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33885 Access Free T4 Calibrator</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Helix Diagnostix</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO964</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-10-20</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter B24839 Access 25OH Vitamin D Calibrators</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Radiance Diagnostics</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO973</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-10-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter A48619 Access SHBG Quality Control</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">LabX Diagnostic Systems</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-10-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter A98033 Access Folate Calibrator</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">LabX Diagnostic Systems</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-10-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter B38859 Olympus urine Calibrator/CSF Micro Albumin Calibrator</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">LabX Diagnostic Systems</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO982</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-02</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33805 Access Total T4 Calibrator (S0-S5)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">LabX Diagnostic Systems</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-02</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman coulter ODC0019 Calibrator, Olympus, Bicarbonate (REF)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">LabX Diagnostic Systems</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1010</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-10</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR61118 Olympus Triglyceride Reagent (4x735 tests)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">4</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">No PO assigned</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-09-01</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33830 Access Total T3, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">MEDICAL HEALTH LAB</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-10</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33810 Access Thyroid Uptake Reagent, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Well Health Labs</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr></tbody></table><p style=\"margin-top:18px;\">Thank you,<br>JIT4You</p><p style=\"font-size:12px;color:#008080;\"><a href=\"mailto:CustomerSupport@jit4you.com\" style=\"color:#008080;text-decoration:none;\">CustomerSupport@jit4you.com</a> &nbsp;&middot;&nbsp; (949) 396-9194</p></div></div></div></div><script>(function(){var b=document.getElementById(\"cp\"),body=document.getElementById(\"emailbody\");function ok(){b.textContent=\"Copied \\u2713 \\u2014 paste into Outlook\";}function fail(){b.textContent=\"Select the email and press Ctrl/Cmd+C\";}function selCopy(){var r=document.createRange();r.selectNode(body);var s=window.getSelection();s.removeAllRanges();s.addRange(r);try{var done=document.execCommand(\"copy\");s.removeAllRanges();done?ok():fail();}catch(e){fail();}}b.addEventListener(\"click\",function(){var html=body.innerHTML;if(window.ClipboardItem&&navigator.clipboard&&navigator.clipboard.write){try{var item=new ClipboardItem({\"text/html\":new Blob([html],{type:\"text/html\"}),\"text/plain\":new Blob([body.innerText],{type:\"text/plain\"})});navigator.clipboard.write([item]).then(ok,selCopy);}catch(e){selCopy();}}else{selCopy();}});})();</script></body></html>"
     }
   ],
   "high_demand": {
@@ -1409,8 +1322,7 @@
       "Doctors General Laboratory",
       "Helix Diagnostix",
       "LabX Diagnostic Systems",
-      "Mercedes Scientific",
-      "OM Diagnostic Laboratories"
+      "Mercedes Scientific"
     ],
     "items": [
       {
@@ -1496,40 +1408,6 @@
         }
       },
       {
-        "product": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
-        "vendor": "Allora Biotech LLC",
-        "total": 5.0,
-        "cust_count": 2,
-        "order_count": 2,
-        "po_count": 2,
-        "pos": [
-          "PO988",
-          "PO995"
-        ],
-        "qty": {
-          "Doctors General Laboratory": 2.0,
-          "Chicago Lab": 3.0
-        },
-        "detail": {
-          "Doctors General Laboratory": [
-            {
-              "po": "PO988",
-              "date": "2026-11-04",
-              "so": "SO621",
-              "qty": 2.0
-            }
-          ],
-          "Chicago Lab": [
-            {
-              "po": "PO995",
-              "date": "2026-11-06",
-              "so": "SO625",
-              "qty": 3.0
-            }
-          ]
-        }
-      },
-      {
         "product": "Beckman Coulter OSR6106 Olympus Amylase Reagent 4x40mL",
         "vendor": "Allora Biotech LLC",
         "total": 4.0,
@@ -1559,40 +1437,6 @@
               "date": "2026-11-10",
               "so": "SO634",
               "qty": 3.0
-            }
-          ]
-        }
-      },
-      {
-        "product": "Beckman Coulter A16953 Access Intact PTH Calibrator (S0-S5, RB)",
-        "vendor": "PMA Services",
-        "total": 3.0,
-        "cust_count": 2,
-        "order_count": 2,
-        "po_count": 2,
-        "pos": [
-          "PO715",
-          "PO768"
-        ],
-        "qty": {
-          "OM Diagnostic Laboratories": 1.0,
-          "Mercedes Scientific": 2.0
-        },
-        "detail": {
-          "OM Diagnostic Laboratories": [
-            {
-              "po": "PO715",
-              "date": "2026-06-29",
-              "so": "SO453",
-              "qty": 1.0
-            }
-          ],
-          "Mercedes Scientific": [
-            {
-              "po": "PO768",
-              "date": "2026-07-23",
-              "so": "SO493",
-              "qty": 2.0
             }
           ]
         }
@@ -1669,7 +1513,7 @@
   },
   "po_emails": {
     "PO715": "mailto:debbie@pmaservices.com?subject=PO715%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO715.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20A16953%20Access%20Intact%20PTH%20Calibrator%20%28S0-S5%2C%20RB%29%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
-    "PO768": "mailto:debbie@pmaservices.com?subject=PO768%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO768.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR6134%20Olympus%20BUN%20Reagent%20%284x620%20tests%29%20%E2%80%94%204%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20A16953%20Access%20Intact%20PTH%20Calibrator%20%28S0-S5%2C%20RB%29%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20OSR61154%20Olympus%20Ammonia%20Reagent%20R1%20and%20Standard%20%28AMMON%29%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20coulter%2033540%20Reagent%2C%20Access%2C%20Estradiol%20%28REF%29%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
+    "PO768": "mailto:debbie@pmaservices.com?subject=PO768%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO768.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR6134%20Olympus%20BUN%20Reagent%20%284x620%20tests%29%20%E2%80%94%204%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20OSR61154%20Olympus%20Ammonia%20Reagent%20R1%20and%20Standard%20%28AMMON%29%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20coulter%2033540%20Reagent%2C%20Access%2C%20Estradiol%20%28REF%29%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO939": "mailto:Arthur@allorabiotech.com?subject=PO939%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO939.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR6195%20Olympus%20HDL%20Cholesterol%20Reagent%20%E2%80%94%208%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20OSR6159%20Olympus%20C3%20Reagent%20%28Complement%203%20Reagent%29%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO767": "mailto:Arthur@allorabiotech.com?subject=PO767%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO767.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR6196%20Olympus%20LDL%20Cholesterol%20Reagent%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO980": "mailto:Arthur@allorabiotech.com?subject=PO980%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO980.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR6199%20C-reactive%20Protein%20High%20sensitive%20CRP%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
@@ -1682,7 +1526,7 @@
     "PO986": "mailto:Arthur@allorabiotech.com?subject=PO986%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO986.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%2098201%20Access%20BNP%20OC%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO988": "mailto:Arthur@allorabiotech.com?subject=PO988%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO988.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%2037200%20Access%20Hybritech%20PSA%20Reagent%20Kit%2C%20100%20Determinations%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20OSR6116%20Olympus%20Cholesterol%20Reagent%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20OSR6134%20Olympus%20BUN%20Reagent%20%284x620%20tests%29%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20A98856%20Access%2025OH%20Vitamin%20D%20Reagent%2C%20100%20Determinations%20%E2%80%94%205%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20OSR6178%20Olympus%20Creatinine%20Reagent%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20OSR6107%20Olympus%20ALT%20Reagent%20Alanine%20Transaminase%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO993": "mailto:Riad@aldxholding.com?subject=PO993%20ETA%3F&body=Hi%20Karen%2C%0A%0AFollowing%20up%20on%20PO%20PO993.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR61154%20Olympus%20Ammonia%20Reagent%20R1%20and%20Standard%20%28AMMON%29%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
-    "PO995": "mailto:Arthur@allorabiotech.com?subject=PO995%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO995.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR6230%20Olympus%20LIP%20Lipase%20Reagent%20Incl%20Calibrator%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20OSR6106%20Olympus%20Amylase%20Reagent%204x40mL%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%2037200%20Access%20Hybritech%20PSA%20Reagent%20Kit%2C%20100%20Determinations%20%E2%80%94%203%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
+    "PO995": "mailto:Arthur@allorabiotech.com?subject=PO995%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO995.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR6106%20Olympus%20Amylase%20Reagent%204x40mL%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO1001": "mailto:Arthur@allorabiotech.com?subject=PO1001%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO1001.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Siemens%20Atellica%2010995523%20CEA%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Siemens%20Atellica%2010995561%20Estradiol%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Siemens%20Atellica%2010995708%20Testosterone%20II%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Siemens%20Atellica%2011537222%20Triglycerides_2%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO1004": "mailto:Arthur@allorabiotech.com?subject=PO1004%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO1004.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR6199%20C-reactive%20Protein%20High%20sensitive%20CRP%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO1008": "mailto:Arthur@allorabiotech.com?subject=PO1008%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO1008.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR6142%20Apolipoprotein%20A1%20reagent%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
@@ -22416,7 +22260,7 @@
   },
   "customer_prices": {
     "year": 2026,
-    "generated_at": "2026-11-12 09:32 AM PT",
+    "generated_at": "2026-11-12 11:05 AM PT",
     "customers": [
       {
         "account_id": "3x100924",
@@ -26830,7 +26674,7 @@
           {
             "so_num": "SO625",
             "date": "2026-11-06",
-            "status": "Approved",
+            "status": "Partially delivered",
             "items": [
               {
                 "sku": "OSR6230",
@@ -42781,177 +42625,6 @@
         }
       }
     },
-    "PO768": {
-      "vendor": "PMA Services",
-      "status": "Partially received",
-      "skus": {
-        "81906": {
-          "product": "Beckman Coulter 81906 Access Substrate",
-          "unit": 42.0,
-          "qty": 40.0
-        },
-        "33560": {
-          "product": "Beckman Coulter 33560 Access Testosterone Reagent",
-          "unit": 56.7,
-          "qty": 20.0
-        },
-        "C76421": {
-          "product": "Beckman Coulter 33880 (c76421) Access Free T4 Reagent, 100 Determinations",
-          "unit": 39.4,
-          "qty": 15.0
-        },
-        "OSR6186": {
-          "product": "Beckman Coulter OSR6186 Iron reagent",
-          "unit": 283.2,
-          "qty": 12.0
-        },
-        "OSR6189": {
-          "product": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
-          "unit": 78.0,
-          "qty": 10.0
-        },
-        "OSR60118": {
-          "product": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
-          "unit": 78.0,
-          "qty": 10.0
-        },
-        "B84493": {
-          "product": "Beckman Coulter B84493 Access Sensitive Estradiol Reagent",
-          "unit": 56.93,
-          "qty": 10.0
-        },
-        "OSR6134": {
-          "product": "Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)",
-          "unit": 77.0,
-          "qty": 10.0
-        },
-        "81910": {
-          "product": "Beckman Coulter 81910 Solution, Access, System Check, 6x4mL",
-          "unit": 13.5,
-          "qty": 10.0
-        },
-        "OSR6116": {
-          "product": "Beckman Coulter OSR6116 Olympus Cholesterol Reagent",
-          "unit": 105.0,
-          "qty": 5.0
-        },
-        "33830": {
-          "product": "Beckman Coulter 33830 Access Total T3, 100 Determinations",
-          "unit": 39.4,
-          "qty": 5.0
-        },
-        "OSR6132": {
-          "product": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
-          "unit": 70.0,
-          "qty": 5.0
-        },
-        "OSR6104": {
-          "product": "Beckman Coulter OSR6104 General Chemistry Alkaline Phosphatase",
-          "unit": 114.3,
-          "qty": 5.0
-        },
-        "OSR6112": {
-          "product": "Beckman Coulter OSR6112 Olympus Total Bilirubin Reagent",
-          "unit": 75.9,
-          "qty": 5.0
-        },
-        "33565": {
-          "product": "Beckman Coulter 33565 Testosterone CalIbrator",
-          "unit": 26.72,
-          "qty": 5.0
-        },
-        "A85264": {
-          "product": "Beckman Coulter A85264 Access Total BHCG (5th IS)",
-          "unit": 75.5,
-          "qty": 4.0
-        },
-        "33550": {
-          "product": "Beckman Coulter 33550 Access Progesterone Reagent, 100 Determinations",
-          "unit": 55.0,
-          "qty": 4.0
-        },
-        "OSR6111": {
-          "product": "Beckman Coulter OSR6111 Direct Bilirubin reagent",
-          "unit": 44.0,
-          "qty": 4.0
-        },
-        "OSR6107": {
-          "product": "Beckman Coulter OSR6107 Olympus ALT Reagent Alanine Transaminase",
-          "unit": 95.0,
-          "qty": 4.0
-        },
-        "37205": {
-          "product": "Beckman Coulter 37205 Access Hybritech PSA Calibrator (S0-S5)",
-          "unit": 28.8,
-          "qty": 4.0
-        },
-        "33410": {
-          "product": "Beckman Coulter 33410 Access Ultrasensitive Insulin Reagent, 100 Determinations",
-          "unit": 126.5,
-          "qty": 2.0
-        },
-        "OSR6179": {
-          "product": "Beckman Coulter OSR6179 Olympus CK Reagent Creative Phosphokinase",
-          "unit": 153.0,
-          "qty": 2.0
-        },
-        "OSR6221": {
-          "product": "Beckman Coulter OSR6221 Olympus Glucose Reagent Kit",
-          "unit": 115.0,
-          "qty": 2.0
-        },
-        "A16953": {
-          "product": "Beckman Coulter A16953 Access Intact PTH Calibrator (S0-S5, RB)",
-          "unit": 89.9,
-          "qty": 2.0
-        },
-        "33005": {
-          "product": "Beckman Coulter 33005 Access Vitamin B12 Calibrator (S0-S5)",
-          "unit": 21.8,
-          "qty": 2.0
-        },
-        "A13430": {
-          "product": "Beckman Coulter A13430 Access Free T3 Calibrator",
-          "unit": 39.98,
-          "qty": 2.0
-        },
-        "B63285": {
-          "product": "Beckman Coulter B63285 Access TSH Calibrator (3rd IS) S0-S5",
-          "unit": 29.1,
-          "qty": 2.0
-        },
-        "OSR61118": {
-          "product": "Beckman Coulter OSR61118 Olympus Triglyceride Reagent (4x735 tests)",
-          "unit": 225.0,
-          "qty": 1.0
-        },
-        "OSR61154": {
-          "product": "Beckman Coulter OSR61154 Olympus Ammonia Reagent R1 and Standard (AMMON)",
-          "unit": 375.0,
-          "qty": 1.0
-        },
-        "AUH1011": {
-          "product": "Beckman Coulter AUH1011 Buffer 4 X 2000 mL",
-          "unit": 185.1,
-          "qty": 1.0
-        },
-        "B84494": {
-          "product": "Beckman coulter B84494 Access,Cal, Sensitive Estradiol",
-          "unit": 29.5,
-          "qty": 1.0
-        },
-        "A48618": {
-          "product": "Beckman Coulter A48618 Access SHBG Sex Hormone-Binding Globulin",
-          "unit": 65.6,
-          "qty": 1.0
-        },
-        "33540": {
-          "product": "Beckman coulter 33540 Reagent, Access, Estradiol (REF)",
-          "unit": 105.0,
-          "qty": 1.0
-        }
-      }
-    },
     "PO771": {
       "vendor": "PMA Services",
       "status": "Received Shipment",
@@ -46967,27 +46640,6 @@
         }
       }
     },
-    "PO995": {
-      "vendor": "Allora Biotech LLC",
-      "status": "Sent",
-      "skus": {
-        "OSR6230": {
-          "product": "Beckman Coulter OSR6230 Olympus LIP Lipase Reagent Incl Calibrator",
-          "unit": 550.0,
-          "qty": 1.0
-        },
-        "OSR6106": {
-          "product": "Beckman Coulter OSR6106 Olympus Amylase Reagent 4x40mL",
-          "unit": 180.0,
-          "qty": 1.0
-        },
-        "37200": {
-          "product": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
-          "unit": 105.0,
-          "qty": 3.0
-        }
-      }
-    },
     "PO998": {
       "vendor": "PMA Services",
       "status": "Received Shipment",
@@ -47222,6 +46874,198 @@
           "qty": 3.0
         }
       }
+    },
+    "PO768": {
+      "vendor": "PMA Services",
+      "status": "Partially received",
+      "skus": {
+        "81906": {
+          "product": "Beckman Coulter 81906 Access Substrate",
+          "unit": 42.0,
+          "qty": 40.0
+        },
+        "33560": {
+          "product": "Beckman Coulter 33560 Access Testosterone Reagent",
+          "unit": 56.7,
+          "qty": 20.0
+        },
+        "C76421": {
+          "product": "Beckman Coulter 33880 (c76421) Access Free T4 Reagent, 100 Determinations",
+          "unit": 39.4,
+          "qty": 15.0
+        },
+        "OSR6186": {
+          "product": "Beckman Coulter OSR6186 Iron reagent",
+          "unit": 283.2,
+          "qty": 12.0
+        },
+        "OSR6189": {
+          "product": "Beckman Coulter OSR6189 Olympus Magnesium Reagent",
+          "unit": 78.0,
+          "qty": 10.0
+        },
+        "OSR60118": {
+          "product": "Beckman Coulter OSR60118 Reagent, Olympus, Triglycerides",
+          "unit": 78.0,
+          "qty": 10.0
+        },
+        "B84493": {
+          "product": "Beckman Coulter B84493 Access Sensitive Estradiol Reagent",
+          "unit": 56.93,
+          "qty": 10.0
+        },
+        "OSR6134": {
+          "product": "Beckman Coulter OSR6134 Olympus BUN Reagent (4x620 tests)",
+          "unit": 77.0,
+          "qty": 10.0
+        },
+        "81910": {
+          "product": "Beckman Coulter 81910 Solution, Access, System Check, 6x4mL",
+          "unit": 13.5,
+          "qty": 10.0
+        },
+        "OSR6116": {
+          "product": "Beckman Coulter OSR6116 Olympus Cholesterol Reagent",
+          "unit": 105.0,
+          "qty": 5.0
+        },
+        "33830": {
+          "product": "Beckman Coulter 33830 Access Total T3, 100 Determinations",
+          "unit": 39.4,
+          "qty": 5.0
+        },
+        "OSR6132": {
+          "product": "Beckman Coulter OSR6132 Olympus TP Total Protein Reagent",
+          "unit": 70.0,
+          "qty": 5.0
+        },
+        "OSR6104": {
+          "product": "Beckman Coulter OSR6104 General Chemistry Alkaline Phosphatase",
+          "unit": 114.3,
+          "qty": 5.0
+        },
+        "OSR6112": {
+          "product": "Beckman Coulter OSR6112 Olympus Total Bilirubin Reagent",
+          "unit": 75.9,
+          "qty": 5.0
+        },
+        "33565": {
+          "product": "Beckman Coulter 33565 Testosterone CalIbrator",
+          "unit": 26.72,
+          "qty": 5.0
+        },
+        "A85264": {
+          "product": "Beckman Coulter A85264 Access Total BHCG (5th IS)",
+          "unit": 75.5,
+          "qty": 4.0
+        },
+        "33550": {
+          "product": "Beckman Coulter 33550 Access Progesterone Reagent, 100 Determinations",
+          "unit": 55.0,
+          "qty": 4.0
+        },
+        "OSR6111": {
+          "product": "Beckman Coulter OSR6111 Direct Bilirubin reagent",
+          "unit": 44.0,
+          "qty": 4.0
+        },
+        "OSR6107": {
+          "product": "Beckman Coulter OSR6107 Olympus ALT Reagent Alanine Transaminase",
+          "unit": 95.0,
+          "qty": 4.0
+        },
+        "37205": {
+          "product": "Beckman Coulter 37205 Access Hybritech PSA Calibrator (S0-S5)",
+          "unit": 28.8,
+          "qty": 4.0
+        },
+        "33410": {
+          "product": "Beckman Coulter 33410 Access Ultrasensitive Insulin Reagent, 100 Determinations",
+          "unit": 126.5,
+          "qty": 2.0
+        },
+        "OSR6179": {
+          "product": "Beckman Coulter OSR6179 Olympus CK Reagent Creative Phosphokinase",
+          "unit": 153.0,
+          "qty": 2.0
+        },
+        "OSR6221": {
+          "product": "Beckman Coulter OSR6221 Olympus Glucose Reagent Kit",
+          "unit": 115.0,
+          "qty": 2.0
+        },
+        "A16953": {
+          "product": "Beckman Coulter A16953 Access Intact PTH Calibrator (S0-S5, RB)",
+          "unit": 89.9,
+          "qty": 2.0
+        },
+        "33005": {
+          "product": "Beckman Coulter 33005 Access Vitamin B12 Calibrator (S0-S5)",
+          "unit": 21.8,
+          "qty": 2.0
+        },
+        "A13430": {
+          "product": "Beckman Coulter A13430 Access Free T3 Calibrator",
+          "unit": 39.98,
+          "qty": 2.0
+        },
+        "B63285": {
+          "product": "Beckman Coulter B63285 Access TSH Calibrator (3rd IS) S0-S5",
+          "unit": 29.1,
+          "qty": 2.0
+        },
+        "OSR61118": {
+          "product": "Beckman Coulter OSR61118 Olympus Triglyceride Reagent (4x735 tests)",
+          "unit": 225.0,
+          "qty": 1.0
+        },
+        "OSR61154": {
+          "product": "Beckman Coulter OSR61154 Olympus Ammonia Reagent R1 and Standard (AMMON)",
+          "unit": 375.0,
+          "qty": 1.0
+        },
+        "AUH1011": {
+          "product": "Beckman Coulter AUH1011 Buffer 4 X 2000 mL",
+          "unit": 185.1,
+          "qty": 1.0
+        },
+        "B84494": {
+          "product": "Beckman coulter B84494 Access,Cal, Sensitive Estradiol",
+          "unit": 29.5,
+          "qty": 1.0
+        },
+        "A48618": {
+          "product": "Beckman Coulter A48618 Access SHBG Sex Hormone-Binding Globulin",
+          "unit": 65.6,
+          "qty": 1.0
+        },
+        "33540": {
+          "product": "Beckman coulter 33540 Reagent, Access, Estradiol (REF)",
+          "unit": 105.0,
+          "qty": 1.0
+        }
+      }
+    },
+    "PO995": {
+      "vendor": "Allora Biotech LLC",
+      "status": "Partially received",
+      "skus": {
+        "OSR6230": {
+          "product": "Beckman Coulter OSR6230 Olympus LIP Lipase Reagent Incl Calibrator",
+          "unit": 550.0,
+          "qty": 1.0
+        },
+        "OSR6106": {
+          "product": "Beckman Coulter OSR6106 Olympus Amylase Reagent 4x40mL",
+          "unit": 180.0,
+          "qty": 1.0
+        },
+        "37200": {
+          "product": "Beckman Coulter 37200 Access Hybritech PSA Reagent Kit, 100 Determinations",
+          "unit": 105.0,
+          "qty": 3.0
+        }
+      }
     }
   },
   "paid_inventory": [
@@ -47265,7 +47109,7 @@
     }
   ],
   "vendor_spend": {
-    "generated_at": "2026-11-12 05:33:32 PM",
+    "generated_at": "2026-11-12 07:06:03 PM",
     "year": "2026",
     "vendors": [
       "Allora",
@@ -51297,7 +51141,7 @@
   },
   "ytd_demand": {
     "year": 2026,
-    "generated_at": "2026-11-12 09:33:35 AM PST",
+    "generated_at": "2026-11-12 11:06:06 AM PST",
     "months": [
       "Jan",
       "Feb",
@@ -66028,38 +65872,6 @@
             ],
             "amt_ytd": 119.0
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              10,
-              0,
-              0,
-              10,
-              0,
-              0
-            ],
-            "ytd": 20,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              847.0,
-              0.0,
-              0.0,
-              847.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 1694.0
-          },
           "Radiance Diagnostics": {
             "by_month": [
               0,
@@ -66155,6 +65967,38 @@
               0.0
             ],
             "amt_ytd": 277.2
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              10,
+              0,
+              0,
+              10,
+              0,
+              0
+            ],
+            "ytd": 20,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              847.0,
+              0.0,
+              0.0,
+              847.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 1694.0
           }
         },
         "so_count": 17
@@ -66386,38 +66230,6 @@
             ],
             "amt_ytd": 138.0
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              10,
-              0,
-              0,
-              4,
-              4,
-              0
-            ],
-            "ytd": 18,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              906.0,
-              0.0,
-              0.0,
-              362.4,
-              362.4,
-              0.0
-            ],
-            "amt_ytd": 1630.8
-          },
           "GENOLAB DIAGNOSTICS": {
             "by_month": [
               0,
@@ -66513,6 +66325,38 @@
               0.0
             ],
             "amt_ytd": 301.6
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              10,
+              0,
+              0,
+              4,
+              4,
+              0
+            ],
+            "ytd": 18,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              906.0,
+              0.0,
+              0.0,
+              362.4,
+              362.4,
+              0.0
+            ],
+            "amt_ytd": 1630.8
           }
         },
         "so_count": 22
@@ -66712,38 +66556,6 @@
             ],
             "amt_ytd": 204.6
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              10,
-              0,
-              0,
-              5,
-              0,
-              0
-            ],
-            "ytd": 15,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              448.0,
-              0.0,
-              0.0,
-              224.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 672.0
-          },
           "Stark Family Health Center": {
             "by_month": [
               0,
@@ -66807,6 +66619,38 @@
               0.0
             ],
             "amt_ytd": 85.0
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              10,
+              0,
+              0,
+              5,
+              0,
+              0
+            ],
+            "ytd": 15,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              448.0,
+              0.0,
+              0.0,
+              224.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 672.0
           }
         },
         "so_count": 16
@@ -66910,38 +66754,6 @@
             ],
             "amt_ytd": 311.6
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              10,
-              0,
-              0,
-              15,
-              0,
-              0
-            ],
-            "ytd": 25,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              670.0,
-              0.0,
-              0.0,
-              1005.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 1675.0
-          },
           "3 Alpha Labs, LLC": {
             "by_month": [
               0,
@@ -67037,6 +66849,38 @@
               0.0
             ],
             "amt_ytd": 393.6
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              10,
+              0,
+              0,
+              15,
+              0,
+              0
+            ],
+            "ytd": 25,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              670.0,
+              0.0,
+              0.0,
+              1005.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 1675.0
           }
         },
         "so_count": 11
@@ -68776,38 +68620,6 @@
             ],
             "amt_ytd": 274.0
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              5,
-              2,
-              0,
-              0,
-              0,
-              0
-            ],
-            "ytd": 7,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              437.5,
-              175.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 612.5
-          },
           "GENOLAB DIAGNOSTICS": {
             "by_month": [
               0,
@@ -68839,6 +68651,38 @@
               0.0
             ],
             "amt_ytd": 140.0
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              5,
+              2,
+              0,
+              0,
+              0,
+              0
+            ],
+            "ytd": 7,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              437.5,
+              175.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 612.5
           },
           "Prominis Medical Services": {
             "by_month": [
@@ -69204,38 +69048,6 @@
             ],
             "amt_ytd": 142.9
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              5,
-              0,
-              0,
-              5,
-              0,
-              0
-            ],
-            "ytd": 10,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              447.0,
-              0.0,
-              0.0,
-              447.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 894.0
-          },
           "Stark Family Health Center": {
             "by_month": [
               0,
@@ -69331,6 +69143,38 @@
               0.0
             ],
             "amt_ytd": 156.2
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              5,
+              0,
+              0,
+              5,
+              0,
+              0
+            ],
+            "ytd": 10,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              447.0,
+              0.0,
+              0.0,
+              447.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 894.0
           }
         },
         "so_count": 14
@@ -70144,38 +69988,6 @@
             ],
             "amt_ytd": 144.4
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              4,
-              0,
-              0,
-              13,
-              0,
-              0
-            ],
-            "ytd": 17,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              444.8,
-              0.0,
-              0.0,
-              1445.6,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 1890.4
-          },
           "Radiance Diagnostics": {
             "by_month": [
               0,
@@ -70239,6 +70051,38 @@
               0.0
             ],
             "amt_ytd": 310.0
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4,
+              0,
+              0,
+              13,
+              0,
+              0
+            ],
+            "ytd": 17,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              444.8,
+              0.0,
+              0.0,
+              1445.6,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 1890.4
           }
         },
         "so_count": 7
@@ -70342,38 +70186,6 @@
             ],
             "amt_ytd": 534.0
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              10,
-              0,
-              0,
-              5,
-              0,
-              0
-            ],
-            "ytd": 15,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              2167.0,
-              0.0,
-              0.0,
-              1083.5,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 3250.5
-          },
           "Stark Family Health Center": {
             "by_month": [
               0,
@@ -70437,6 +70249,38 @@
               0.0
             ],
             "amt_ytd": 159.0
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              10,
+              0,
+              0,
+              5,
+              0,
+              0
+            ],
+            "ytd": 15,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              2167.0,
+              0.0,
+              0.0,
+              1083.5,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 3250.5
           },
           "LabX Diagnostic Systems": {
             "by_month": [
@@ -70770,38 +70614,6 @@
             ],
             "amt_ytd": 205.6
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              4,
-              0,
-              0,
-              5,
-              0,
-              0
-            ],
-            "ytd": 9,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              224.0,
-              0.0,
-              0.0,
-              280.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 504.0
-          },
           "Radiance Diagnostics": {
             "by_month": [
               0,
@@ -70897,6 +70709,38 @@
               0.0
             ],
             "amt_ytd": 110.0
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4,
+              0,
+              0,
+              5,
+              0,
+              0
+            ],
+            "ytd": 9,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              224.0,
+              0.0,
+              0.0,
+              280.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 504.0
           }
         },
         "so_count": 11
@@ -70999,38 +70843,6 @@
               0.0
             ],
             "amt_ytd": 69.6
-          },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              10,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "ytd": 10,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              159.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 159.0
           },
           "Chicago Lab": {
             "by_month": [
@@ -71159,6 +70971,38 @@
               0.0
             ],
             "amt_ytd": 29.0
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              10,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "ytd": 10,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              159.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 159.0
           }
         },
         "so_count": 8
@@ -71492,38 +71336,6 @@
             ],
             "amt_ytd": 148.0
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              10,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "ytd": 10,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              1176.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 1176.0
-          },
           "Stark Family Health Center": {
             "by_month": [
               0,
@@ -71587,6 +71399,38 @@
               0.0
             ],
             "amt_ytd": 182.3
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              10,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "ytd": 10,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1176.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 1176.0
           }
         },
         "so_count": 6
@@ -71658,38 +71502,6 @@
             ],
             "amt_ytd": 200.0
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              8,
-              0,
-              0,
-              8,
-              0,
-              0
-            ],
-            "ytd": 16,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              1920.0,
-              0.0,
-              0.0,
-              1920.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 3840.0
-          },
           "Radiance Diagnostics": {
             "by_month": [
               0,
@@ -71721,6 +71533,38 @@
               0.0
             ],
             "amt_ytd": 582.0
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              8,
+              0,
+              0,
+              8,
+              0,
+              0
+            ],
+            "ytd": 16,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1920.0,
+              0.0,
+              0.0,
+              1920.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 3840.0
           }
         },
         "so_count": 4
@@ -72910,38 +72754,6 @@
             ],
             "amt_ytd": 426.8
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              5,
-              0,
-              0,
-              3,
-              0,
-              0
-            ],
-            "ytd": 8,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              385.0,
-              0.0,
-              0.0,
-              231.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 616.0
-          },
           "Radiance Diagnostics": {
             "by_month": [
               0,
@@ -73005,6 +72817,38 @@
               0.0
             ],
             "amt_ytd": 230.0
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              5,
+              0,
+              0,
+              3,
+              0,
+              0
+            ],
+            "ytd": 8,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              385.0,
+              0.0,
+              0.0,
+              231.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 616.0
           }
         },
         "so_count": 7
@@ -73140,38 +72984,6 @@
             ],
             "amt_ytd": 261.0
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              2,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "ytd": 2,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              449.2,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 449.2
-          },
           "Radiance Diagnostics": {
             "by_month": [
               0,
@@ -73299,6 +73111,38 @@
               0.0
             ],
             "amt_ytd": 315.0
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "ytd": 2,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              449.2,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 449.2
           }
         },
         "so_count": 13
@@ -73728,38 +73572,6 @@
             ],
             "amt_ytd": 752.8
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              5,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "ytd": 5,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              810.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 810.0
-          },
           "GENOLAB DIAGNOSTICS": {
             "by_month": [
               0,
@@ -73791,6 +73603,38 @@
               0.0
             ],
             "amt_ytd": 245.5
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              5,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "ytd": 5,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              810.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 810.0
           }
         },
         "so_count": 10
@@ -73990,38 +73834,6 @@
             ],
             "amt_ytd": 59.4
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              2,
-              0,
-              0,
-              1,
-              0,
-              0
-            ],
-            "ytd": 3,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              94.2,
-              0.0,
-              0.0,
-              47.1,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 141.3
-          },
           "GENOLAB DIAGNOSTICS": {
             "by_month": [
               0,
@@ -74085,6 +73897,38 @@
               0.0
             ],
             "amt_ytd": 89.5
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            "ytd": 3,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              94.2,
+              0.0,
+              0.0,
+              47.1,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 141.3
           },
           "Helix Diagnostix": {
             "by_month": [
@@ -74156,38 +74000,6 @@
         ],
         "amt_ytd": 5068.0,
         "cust": {
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              12,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "ytd": 12,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              4248.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 4248.0
-          },
           "Doctors General Laboratory": {
             "by_month": [
               0,
@@ -74219,6 +74031,38 @@
               0.0
             ],
             "amt_ytd": 820.0
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              12,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "ytd": 12,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              4248.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 4248.0
           }
         },
         "so_count": 2
@@ -74354,38 +74198,6 @@
             ],
             "amt_ytd": 42.3
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              5,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "ytd": 5,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              167.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 167.0
-          },
           "3 Alpha Labs, LLC": {
             "by_month": [
               0,
@@ -74481,6 +74293,38 @@
               0.0
             ],
             "amt_ytd": 55.0
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              5,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "ytd": 5,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              167.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 167.0
           }
         },
         "so_count": 9
@@ -74712,38 +74556,6 @@
             ],
             "amt_ytd": 146.1
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              2,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "ytd": 2,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              54.6,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 54.6
-          },
           "GENOLAB DIAGNOSTICS": {
             "by_month": [
               0,
@@ -74775,6 +74587,38 @@
               0.0
             ],
             "amt_ytd": 119.0
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "ytd": 2,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              54.6,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 54.6
           }
         },
         "so_count": 9
@@ -74942,38 +74786,6 @@
             ],
             "amt_ytd": 43.5
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              4,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "ytd": 4,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              145.2,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 145.2
-          },
           "GENOLAB DIAGNOSTICS": {
             "by_month": [
               0,
@@ -75037,6 +74849,38 @@
               0.0
             ],
             "amt_ytd": 138.2
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "ytd": 4,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              145.2,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 145.2
           }
         },
         "so_count": 9
@@ -75926,38 +75770,6 @@
             ],
             "amt_ytd": 426.3
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              1,
-              0,
-              0,
-              0,
-              4,
-              0
-            ],
-            "ytd": 5,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              440.0,
-              0.0,
-              0.0,
-              0.0,
-              1760.0,
-              0.0
-            ],
-            "amt_ytd": 2200.0
-          },
           "Doctors General Laboratory": {
             "by_month": [
               0,
@@ -75989,6 +75801,38 @@
               0.0
             ],
             "amt_ytd": 376.0
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              4,
+              0
+            ],
+            "ytd": 5,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              440.0,
+              0.0,
+              0.0,
+              0.0,
+              1760.0,
+              0.0
+            ],
+            "amt_ytd": 2200.0
           }
         },
         "so_count": 8
@@ -77050,38 +76894,6 @@
             ],
             "amt_ytd": 149.3
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              1,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "ytd": 1,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              82.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 82.0
-          },
           "CliniCore Labs": {
             "by_month": [
               0,
@@ -77113,6 +76925,38 @@
               0.0
             ],
             "amt_ytd": 308.8
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "ytd": 1,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              82.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 82.0
           }
         },
         "so_count": 8
@@ -77746,38 +77590,6 @@
         ],
         "amt_ytd": 1474.0,
         "cust": {
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              2,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "ytd": 2,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              324.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 324.0
-          },
           "CliniCore Labs": {
             "by_month": [
               0,
@@ -77809,6 +77621,38 @@
               0.0
             ],
             "amt_ytd": 1150.0
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "ytd": 2,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              324.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 324.0
           }
         },
         "so_count": 2
@@ -78940,38 +78784,6 @@
         ],
         "amt_ytd": 2176.3,
         "cust": {
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              1,
-              0,
-              0,
-              0,
-              3,
-              0
-            ],
-            "ytd": 4,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              212.4,
-              0.0,
-              0.0,
-              0.0,
-              637.2,
-              0.0
-            ],
-            "amt_ytd": 849.6
-          },
           "Healthquest Esoterics": {
             "by_month": [
               0,
@@ -79003,6 +78815,38 @@
               0.0
             ],
             "amt_ytd": 1064.7
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              3,
+              0
+            ],
+            "ytd": 4,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              212.4,
+              0.0,
+              0.0,
+              0.0,
+              637.2,
+              0.0
+            ],
+            "amt_ytd": 849.6
           },
           "Chicago Lab": {
             "by_month": [
@@ -80784,38 +80628,6 @@
             ],
             "amt_ytd": 56.2
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              1,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "ytd": 1,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              33.6,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 33.6
-          },
           "3 Alpha Labs, LLC": {
             "by_month": [
               0,
@@ -80911,6 +80723,38 @@
               0.0
             ],
             "amt_ytd": 61.6
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "ytd": 1,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              33.6,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 33.6
           }
         },
         "so_count": 5
@@ -81524,38 +81368,6 @@
             ],
             "amt_ytd": 1235.0
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              1,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "ytd": 1,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              1063.1,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 1063.1
-          },
           "CliniCore Labs": {
             "by_month": [
               0,
@@ -81619,6 +81431,38 @@
               0.0
             ],
             "amt_ytd": 2300.0
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "ytd": 1,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1063.1,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 1063.1
           }
         },
         "so_count": 4
@@ -82436,38 +82280,6 @@
             ],
             "amt_ytd": 389.0
           },
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              1,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "ytd": 1,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              468.8,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 468.8
-          },
           "Helix Diagnostix": {
             "by_month": [
               0,
@@ -82499,6 +82311,38 @@
               0.0
             ],
             "amt_ytd": 663.9
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "ytd": 1,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              468.8,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 468.8
           }
         },
         "so_count": 3
@@ -85336,38 +85180,6 @@
         ],
         "amt_ytd": 329.5,
         "cust": {
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              1,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "ytd": 1,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              131.3,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 131.3
-          },
           "Clinical Diagnostic Laboratories, LLC": {
             "by_month": [
               0,
@@ -85399,6 +85211,38 @@
               0.0
             ],
             "amt_ytd": 198.2
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "ytd": 1,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              131.3,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 131.3
           }
         },
         "so_count": 2
@@ -86718,38 +86562,6 @@
         ],
         "amt_ytd": 710.0,
         "cust": {
-          "Mercedes Scientific": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              1,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "ytd": 1,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              310.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 310.0
-          },
           "Radiance Diagnostics": {
             "by_month": [
               0,
@@ -86781,6 +86593,38 @@
               0.0
             ],
             "amt_ytd": 400.0
+          },
+          "Mercedes Scientific": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "ytd": 1,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              310.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 310.0
           }
         },
         "so_count": 2
