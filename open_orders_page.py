@@ -1035,6 +1035,7 @@ def build_html(page_data, embeds=None):
       <button class="mode-btn" data-mode="iopp" onclick="setMode('iopp')">Inventory Opportunities</button>
       <button class="mode-btn" data-mode="ship" onclick="setMode('ship')">Shipments</button>
       <button class="mode-btn" data-mode="deliv" onclick="setMode('deliv')">Deliveries</button>
+      <button class="mode-btn" data-mode="fda" onclick="setMode('fda')">FDA Notification</button>
       <button class="mode-btn" data-mode="cprices" onclick="setMode('cprices')">Customer Prices</button>
       <button class="mode-btn" data-mode="vspend" onclick="setMode('vspend')">Vendor Spend</button>
       <button class="mode-btn" data-mode="sku" onclick="setMode('sku')">High Demand SKUs</button>
@@ -1176,7 +1177,7 @@ function kpi(v,l,style){ return '<div class="kpi"'+(style?' style="'+style+'"':'
 
 function renderTabs(){
   var tabsEl=document.getElementById('tabs');
-  var fullWidth=(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay' || mode==='vspend' || mode==='cprices' || mode==='inv' || mode==='iopp' || mode==='deliv');
+  var fullWidth=(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay' || mode==='vspend' || mode==='cprices' || mode==='inv' || mode==='iopp' || mode==='deliv' || mode==='fda');
   // Left-align: when a view has no left sidebar, collapse the side column so content aligns left (not centered).
   var sidecol=document.querySelector('.sidecol'); if(sidecol) sidecol.style.display = fullWidth ? 'none' : '';
   var pw=document.querySelector('.panel-wrap'); if(pw) pw.style.marginLeft = fullWidth ? '0' : '';
@@ -1401,6 +1402,64 @@ function dlvDraw(){
   if(L.length>dlvLim) h+='<button class="mode-btn" style="margin:4px 0;min-height:0;padding:8px 16px;width:auto;" onclick="dlvMore()">Show more ('+(L.length-dlvLim)+' left)</button>';
   box.innerHTML=h; }
 
+// ── FDA Notification tab: FDA Medical Device Shortages List page (discontinuance + shortage tables) ──
+// Data: /fda-notifications.json, refreshed by the Cloudflare app on each scheduled run (FDA site, or its newest Internet Archive copy).
+// The FDA page has no SKU column: catalog numbers are inside the trade name, so the search looks at the whole row,
+// ignoring dashes, spaces and punctuation (08H00-01 = 08H0001).
+var FDA=null, fdaBusy=false, fdaErr='', fdaQ='', fdaArea='', fdaView='disc', fdaLim=100;
+function fdaNorm(x){ return String(x||'').toUpperCase().replace(/[^A-Z0-9]/g,''); }
+function fdaAreaOf(c){ var a=String(c||'').split(/ [-–] |-(?=[A-Z][a-z])|–/)[0].replace(/ and /gi,' & ').replace(/ +/g,' ').trim().toUpperCase(); return a||'OTHER'; }
+function fdaLoad(){ if(fdaBusy) return; fdaBusy=true; fdaErr='';
+  fetch('/fda-notifications.json?cb='+Date.now(),{credentials:'same-origin',cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(d){ FDA=d; fdaBusy=false; (d.discontinued||[]).forEach(function(x){ x._k=fdaNorm([x.device,x.catalogs.join(' '),x.manufacturer,x.code,x.code_desc].join(' ')); x._a=fdaAreaOf(x.category); }); (d.shortages||[]).forEach(function(x){ x._k=fdaNorm([x.code,x.code_desc,x.info,x.category].join(' ')); x._a=fdaAreaOf(x.category); }); if(mode==='fda') renderFdaPanel(); })
+    .catch(function(e){ fdaBusy=false; fdaErr=(e&&e.message)||String(e); if(mode==='fda') renderFdaPanel(); }); }
+function fdaSet(k,v){ if(k==='a') fdaArea=v; else if(k==='v') fdaView=v; fdaLim=100; renderFdaPanel(); }
+function fdaSearch(v){ fdaQ=v; fdaLim=100; fdaDraw(); }
+function fdaMore(){ fdaLim+=100; fdaDraw(); }
+function fdaFd(t){ return t?new Date(t).toLocaleString('en-US',{timeZone:'America/Los_Angeles',month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}):''; }
+function renderFdaPanel(){
+  var P=document.getElementById('panel');
+  if(!FDA){ if(fdaErr){ P.innerHTML='<div class="empty">Could not load the FDA list: '+escapeHtml(fdaErr)+' <a href="#" onclick="fdaErr=&quot;&quot;;fdaLoad();renderFdaPanel();return false;">Try again</a></div>'; return; }
+    P.innerHTML='<div class="empty">Loading the FDA list&hellip;</div>'; fdaLoad(); return; }
+  var D=FDA.discontinued||[], S=FDA.shortages||[], L=fdaView==='short'?S:D, am={};
+  L.forEach(function(x){ am[x._a]=(am[x._a]||0)+1; }); var AR=Object.keys(am).sort(); if(fdaArea&&!am[fdaArea]) fdaArea='';
+  var tab=function(k,l){ var on=fdaView===k; return '<button class="mode-btn" style="margin:0;min-height:0;padding:6px 14px;width:auto;'+(on?'background:#101E3E;color:#fff;border-color:#101E3E;':'')+'" onclick="fdaSet(&quot;v&quot;,&quot;'+k+'&quot;)">'+l+'</button>'; };
+  var h='<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:6px;"><h2 style="margin:0 12px 0 0;">FDA Notification</h2>'+tab('disc','Discontinued devices ('+D.length+')')+tab('short','Device shortages ('+S.length+')')+'</div>'+
+    '<div style="font-size:12px;color:#4a5b70;margin-bottom:10px;">FDA <a href="'+escapeHtml(FDA.source)+'" target="_blank" rel="noopener">Medical Device Shortages List</a>, page updated '+escapeHtml(FDA.page_updated||'?')+' &middot; read '+escapeHtml(fdaFd(FDA.fetched_at))+(FDA.via&&FDA.via!=='fda.gov'?' from the '+escapeHtml(FDA.via)+(FDA.snapshot_at?' of '+escapeHtml(fdaFd(FDA.snapshot_at)):''):'')+'</div>'+
+    '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:8px;">'+
+    '<input id="fdaQ" type="text" placeholder="Type a SKU / catalog # (e.g. 08H00-01), product code or name" value="'+escapeHtml(fdaQ)+'" oninput="fdaSearch(this.value)" style="padding:9px 12px;border:2px solid #008080;border-radius:8px;min-width:420px;font-size:14px;">'+
+    '<select style="padding:7px 8px;border:1px solid #cfd8e3;border-radius:6px;font-size:13px;max-width:340px;" onchange="fdaSet(&quot;a&quot;,this.value)"><option value="">All categories ('+AR.length+')</option>'+AR.map(function(a){ return '<option value="'+escapeHtml(a)+'"'+(a===fdaArea?' selected':'')+'>'+escapeHtml(a)+' ('+am[a]+')</option>'; }).join('')+'</select></div>'+
+    '<div id="fdaVerdict"></div><div id="fdaSum" style="font-size:12px;color:#4a5b70;margin:6px 0;"></div><div id="fdaList"></div>';
+  P.innerHTML=h; fdaDraw(); }
+function fdaHi(txt,nq){ var e=escapeHtml(txt); if(!nq) return e; return fdaNorm(txt).indexOf(nq)>=0?'<mark style="background:#fff3bf;padding:0 2px;border-radius:3px;">'+e+'</mark>':e; }
+function fdaDraw(){
+  var box=document.getElementById('fdaList'); if(!box||!FDA) return;
+  var nq=fdaNorm(fdaQ), D=FDA.discontinued||[], S=FDA.shortages||[];
+  var V=document.getElementById('fdaVerdict');
+  if(V){ if(nq.length>=3){ var dm=D.filter(function(x){ return x._k.indexOf(nq)>=0; }).length, sm=S.filter(function(x){ return x._k.indexOf(nq)>=0; }).length;
+      V.innerHTML=(dm||sm)?'<div style="background:#fde8e8;border:1px solid #f5b5b5;color:#9b1c1c;border-radius:8px;padding:10px 14px;font-weight:600;">&#9888; &ldquo;'+escapeHtml(fdaQ)+'&rdquo; appears on the FDA '+(dm?'discontinuance list ('+dm+' row'+(dm===1?'':'s')+')':'')+(dm&&sm?' and the ':'')+(sm?'shortage list ('+sm+')':'')+'. Check the rows below.</div>'
+        :'<div style="background:#e6f4ea;border:1px solid #a8d5b5;color:#137333;border-radius:8px;padding:10px 14px;font-weight:600;">&#10003; &ldquo;'+escapeHtml(fdaQ)+'&rdquo; is not on the FDA discontinuance or shortage list.</div>';
+      if((dm&&fdaView!=='disc'&&!sm)||(sm&&fdaView!=='short'&&!dm)){ fdaView=dm?'disc':'short'; renderFdaPanel(); var qi=document.getElementById('fdaQ'); if(qi){ qi.focus(); qi.setSelectionRange(qi.value.length,qi.value.length); } return; } }
+    else V.innerHTML=nq.length?'<div style="font-size:12px;color:#7f8c8d;">Type at least 3 letters or digits.</div>':''; }
+  var L=(fdaView==='short'?S:D).filter(function(x){ return (!fdaArea||x._a===fdaArea)&&(nq.length<3||x._k.indexOf(nq)>=0); });
+  var sum=document.getElementById('fdaSum'); if(sum) sum.textContent=L.length+' row'+(L.length===1?'':'s')+(nq.length>=3?' matching':'');
+  if(!L.length){ box.innerHTML=nq.length>=3?'':'<div class="empty">No rows.</div>'; return; }
+  var h='<table class="tbl" style="width:100%;"><thead><tr>';
+  if(fdaView==='short'){
+    h+='<th>Date</th><th>Category</th><th>Product code</th><th>Availability / duration</th><th>Additional information</th><th>Reason</th></tr></thead><tbody>';
+    L.slice(0,fdaLim).forEach(function(x){ h+='<tr><td style="white-space:nowrap;vertical-align:top;">'+escapeHtml(x.date)+'</td><td style="vertical-align:top;font-size:12px;">'+escapeHtml(x.category)+'</td><td style="vertical-align:top;"><b>'+escapeHtml(x.code)+'</b><div style="font-size:11px;color:#7f8c8d;">'+escapeHtml(x.code_desc)+'</div></td><td style="vertical-align:top;font-size:12px;">'+escapeHtml(x.availability)+'</td><td style="vertical-align:top;font-size:12px;">'+fdaHi(x.info,nq.length>=3?nq:'')+'</td><td style="vertical-align:top;font-size:12px;">'+escapeHtml(x.reason)+'</td></tr>'; });
+  } else {
+    h+='<th>Date posted</th><th>Manufacturer</th><th>Device trade name</th><th>Catalog / model #</th><th>Product code</th><th>Category</th><th>Reason</th></tr></thead><tbody>';
+    L.slice(0,fdaLim).forEach(function(x){ var q3=nq.length>=3?nq:'';
+      h+='<tr><td style="white-space:nowrap;vertical-align:top;">'+escapeHtml(x.date)+'</td><td style="vertical-align:top;font-size:12px;">'+fdaHi(x.manufacturer,q3)+'</td><td style="vertical-align:top;font-weight:600;color:#101E3E;">'+fdaHi(x.device,q3)+'</td>'+
+        '<td style="vertical-align:top;">'+(x.catalogs.length?x.catalogs.map(function(c){ var hit=q3&&fdaNorm(c).indexOf(q3)>=0; return '<span style="display:inline-block;font-size:11px;border-radius:8px;padding:1px 7px;margin:1px 2px;white-space:nowrap;'+(hit?'background:#fde8e8;color:#9b1c1c;font-weight:700;':'background:#eef1f5;')+'">'+escapeHtml(c)+'</span>'; }).join(''):'<span style="color:#999;">&mdash;</span>')+'</td>'+
+        '<td style="vertical-align:top;white-space:nowrap;" title="'+escapeHtml(x.code_desc)+'"><b>'+escapeHtml(x.code)+'</b></td><td style="vertical-align:top;font-size:11px;color:#4a5b70;">'+escapeHtml(x._a)+'</td><td style="vertical-align:top;font-size:12px;">'+escapeHtml(x.reason)+'</td></tr>'; });
+  }
+  h+='</tbody></table>';
+  if(L.length>fdaLim) h+='<button class="mode-btn" style="margin:6px 0;min-height:0;padding:8px 16px;width:auto;" onclick="fdaMore()">Show more ('+(L.length-fdaLim)+' left)</button>';
+  box.innerHTML=h; }
+
 function renderPanel(){
   if(mode==='pnl') renderPnlPanel();
   else if(mode==='vendor') renderVendorPanel();
@@ -1416,6 +1475,7 @@ function renderPanel(){
   else if(mode==='cj') renderCjPanel();
   else if(mode==='ship') renderShipPanel();
   else if(mode==='deliv') renderDelivPanel();
+  else if(mode==='fda') renderFdaPanel();
   else if(mode==='spnl') renderSpnlPanel();
   else if(mode==='pay') renderPayPanel();
   else if(mode==='inv') renderInvPanel();
