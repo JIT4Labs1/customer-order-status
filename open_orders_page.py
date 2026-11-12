@@ -1033,7 +1033,6 @@ def build_html(page_data, embeds=None):
       <button class="mode-btn" data-mode="cust" onclick="setMode('cust')">Customer Open SO's</button>
       <button class="mode-btn" data-mode="vendor" onclick="setMode('vendor')">Open Vendor POs</button>
       <button class="mode-btn" data-mode="iopp" onclick="setMode('iopp')">Inventory Opportunities</button>
-      <button class="mode-btn" data-mode="ship" onclick="setMode('ship')">Shipments</button>
       <button class="mode-btn" data-mode="deliv" onclick="setMode('deliv')">Deliveries</button>
       <button class="mode-btn" data-mode="fda" onclick="setMode('fda')">FDA Notification</button>
       <button class="mode-btn" data-mode="cprices" onclick="setMode('cprices')">Customer Prices</button>
