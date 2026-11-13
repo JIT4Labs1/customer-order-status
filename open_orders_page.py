@@ -3706,7 +3706,7 @@ var mailCtx=null, mailPinMem='', mailOnWorker=/workers[.]dev$/.test(location.hos
 function mailSha(t){ var b=new TextEncoder().encode(t); return crypto.subtle.digest('SHA-256',b).then(function(h){ var a=new Uint8Array(h),o=''; for(var i=0;i<a.length;i++){ o+=('0'+a[i].toString(16)).slice(-2); } return o; }); }
 function mailClose(){ var m=document.getElementById('mailSendModal'); if(m) m.parentNode.removeChild(m); }
 function mailOpen(subject,html,label,opt){
-  opt=opt||{}; mailClose(); mailCtx={html:html,label:label,vendor:!!opt.vendor};
+  opt=opt||{}; mailClose(); mailCtx={html:html,label:label,vendor:!!opt.vendor,onSent:opt.onSent||null};
   var d=document.createElement('div'); d.id='mailSendModal';
   d.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(16,30,62,.6);z-index:10000;display:flex;align-items:center;justify-content:center;padding:16px;';
   var inp='padding:5px 8px;border:1px solid #cfd8e3;border-radius:6px;flex:1;';
@@ -3742,7 +3742,7 @@ function mailGo(mode){
   mailPinMem=pin;
   if(mailOnWorker){ var w1=document.getElementById('mailBtnSend'), w2=document.getElementById('mailBtnDraft'); w1.disabled=true; w2.disabled=true; mailStatus(mode==='send'?'Sending...':'Saving draft...');
     fetch('/api/mail/send',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({mode:mode,to:to,cc:cc,subject:subj,html:edHtml('mailFrame',mailCtx.html),label:mailCtx.label||'',customer:mailCtx.vendor?'':(mailCtx.label||''),kind:mailCtx.vendor?'vendor':'customer',source:'desktop'})})
-    .then(function(r){ return r.json().catch(function(){return {};}).then(function(j){ if(!r.ok||j.error) throw new Error(j.error||('HTTP '+r.status)); mailStatus(mode==='send'?'Sent from customersupport@jit4you.com. Closing...':'Draft saved in the customersupport Drafts folder.'); if(mode==='send'){ setTimeout(mailClose,4000); setTimeout(function(){ ESENT=null; esLoad(); },3000); } }); })
+    .then(function(r){ return r.json().catch(function(){return {};}).then(function(j){ if(!r.ok||j.error) throw new Error(j.error||('HTTP '+r.status)); mailStatus(mode==='send'?'Sent from customersupport@jit4you.com. Closing...':'Draft saved in the customersupport Drafts folder.'); if(mode==='send'&&mailCtx&&mailCtx.onSent){ try{ mailCtx.onSent(); }catch(x){} } if(mode==='send'){ setTimeout(mailClose,4000); setTimeout(function(){ ESENT=null; esLoad(); },3000); } }); })
     .catch(function(e){ mailStatus('Failed: '+e.message,true); }).finally(function(){ w1.disabled=false; w2.disabled=false; }); return; }
   var id=Date.now().toString(36)+Math.random().toString(36).slice(2,8);
   var b1=document.getElementById('mailBtnSend'), b2=document.getElementById('mailBtnDraft'); b1.disabled=true; b2.disabled=true; mailStatus('Submitting...');
@@ -6034,6 +6034,13 @@ function ibRevSave(){
     });
   }).catch(function(e){ ibNote('warn','Saved in this browser only (could not sync: '+escapeHtml(e.message||String(e))+')'); });
 }
+// "Sent to accounting" marks: stored with the reviewed marks (invoice-bulk-reviewed.json) under the key 'acct:'+invoice key,
+// so they are shared across browsers. Set automatically when the accounting email is sent; can also be toggled by hand.
+function ibAcctMark(k){ var e=IB.rev&&IB.rev['acct:'+k]; return (e&&e.on!==false)?e:null; }
+function ibAcctSet(k,on){ if(!IB.rev) IB.rev={}; IB.rev['acct:'+k]={on:!!on,at:new Date().toISOString()}; ibLsSet(IB_REV,JSON.stringify(IB.rev)); ibRender(); ibRevSave(); }
+function ibAcctToggle(i){ var r=(IB.view||[])[i]; if(!r) return; var m=ibAcctMark(r.key);
+  if(m&&!window.confirm('Remove the "sent to accounting" mark from invoice '+ibInvNo(r)+'?')) return; ibAcctSet(r.key,!m); }
+function ibAcctShort(t){ try{ return new Date(t).toLocaleDateString('en-US',{timeZone:'America/Los_Angeles',month:'short',day:'numeric'}); }catch(e){ return ''; } }
 function ibRevToggle(i){
   var r=(IB.view||[])[i]; if(!r) return;
   IB.rev[r.key]={on:!ibIsRev(r.key),at:new Date().toISOString()};
@@ -6111,7 +6118,8 @@ function ibVmBuildBlank(r){
 function ibVmSetKind(k){ var r=IB.view&&IB.view[IBVM.idx]; if(!r) return; ibVmOpen(IBVM.idx,k); }
 // Send through Outlook from customersupport@ (same Send window as the other tabs). Vendor emails are not logged under A/R customers.
 function ibVmSend(){ if(!IBVM.html) return; var subj=(document.getElementById('ibVmSubj')||{}).value||IBVM.subject;
-  mailOpen(subj,edHtml('ibVmFrame',IBVM.html),IBVM.vendor||'Vendor',{to:IBVM.email,vendor:true}); }
+  var r=IBVM.kind==='acct'&&IB.view&&IB.view[IBVM.idx], key=r&&r.key;
+  mailOpen(subj,edHtml('ibVmFrame',IBVM.html),IBVM.vendor||'Vendor',{to:IBVM.email,vendor:true,onSent:key?function(){ ibAcctSet(key,true); }:null}); }
 function ibVmMsg(t){ var e=document.getElementById('ibVmMsg'); if(e) e.textContent=t; }
 function ibSelRow(i,on){ var r=IB.view&&IB.view[i]; if(!r) return; IB.sel=on?r.key:''; ibRender(); }
 // Email accounting: hold payment on an invoice with rate discrepancies (same branded template, sent to Accounting@jit4you.com).
@@ -6299,7 +6307,7 @@ function ibRender(){
   if(IB.pdf) res=res.filter(function(r){ var paid=!!(r.qb&&r.qb.entered&&!(r.qb.balance>0)); return IB.pdf==='paid'?paid:!paid; });
   if(IB.discOnly) res=res.filter(function(r){ return r.verdict==='discrepancy'; });
   IB.view=res;
-  var seen=ibSeen(), nNew=0, nRev=0, nHid=0, nDisc=0, body='';
+  var seen=ibSeen(), nNew=0, nRev=0, nHid=0, nDisc=0, nAcct=0, body='';
   function money(v){ return v==null?'&mdash;':'$'+Number(v).toFixed(2); }
   res.forEach(function(r,i){
     var isNew=!seen[r.key]; if(isNew) nNew++;
@@ -6326,12 +6334,15 @@ function ibRender(){
     else qbc='<span class="inv-badge miss" title="Not checked yet - runs with the next scan">?</span>';
     var rv=ibIsRev(r.key); if(rv) nRev++; if(rv&&IB.hideRev){ nHid++; return; }
     if(rv) chip='<span class="inv-badge ib-revbadge">Reviewed</span>';
-    var isDisc=(r.verdict==='discrepancy'&&!rv);
-    if(isDisc) nDisc++;
-    if(isDisc) chip='<span class="inv-badge over" style="font-size:11px;padding:3px 9px;">&#9888; '+(r.summary&&r.summary.bad||0)+' discrepanc'+((r.summary&&r.summary.bad)===1?'y':'ies')+' &mdash; action needed</span>';
+    var isDisc=(r.verdict==='discrepancy'&&!rv), am=ibAcctMark(r.key);
+    if(isDisc) nDisc++; if(am) nAcct++;
+    if(isDisc) chip='<span class="inv-badge over" style="font-size:11px;padding:3px 9px;">&#9888; '+(r.summary&&r.summary.bad||0)+' discrepanc'+((r.summary&&r.summary.bad)===1?'y':'ies')+' &mdash; '+(am?'sent to accounting':'action needed')+'</span>';
+    var acctCell=am?'<button type="button" onclick="ibAcctToggle('+i+')" title="Sent to accounting for review on '+escapeHtml(ibAcctShort(am.at))+'. Click to remove the mark." style="border:1px solid #f0b37e;background:#fff4e5;color:#b54708;border-radius:10px;padding:2px 8px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;">&#9888; Sent '+escapeHtml(ibAcctShort(am.at))+'</button>'
+      :'<button type="button" onclick="ibAcctToggle('+i+')" title="Mark as sent to accounting for review" style="border:1px dashed #cfd8e3;background:#fff;color:#7f8c8d;border-radius:10px;padding:2px 8px;font-size:11px;cursor:pointer;white-space:nowrap;">Mark</button>';
     body+='<tr class="'+(isNew?'ib-newrow':'')+(rv?' ib-revrow':'')+(isDisc?' ib-discrow':'')+'">'+
       '<td><input type="checkbox" title="Select to email vendor" '+(IB.sel===r.key?'checked ':'')+'onchange="ibSelRow('+i+',this.checked)"></td>'+
       '<td><input type="checkbox" title="Mark as reviewed" '+(rv?'checked ':'')+'onchange="ibRevToggle('+i+')"></td>'+
+      '<td>'+acctCell+'</td>'+
       '<td><span class="ib-tag '+(isNew?'ib-new':'ib-old')+'">'+(isNew?'&#9733; NEW':'Old')+'</span></td>'+
       '<td>'+escapeHtml(String(r.received||'').slice(0,16).replace('T',' '))+'</td>'+
       '<td>'+escapeHtml(r.source==='quickbooks'?'QuickBooks':'Zoho')+'</td>'+
@@ -6345,8 +6356,8 @@ function ibRender(){
   });
   var ls=(IB.data&&IB.data.last_scan)||null;
   var meta=ls?('Last scan: '+escapeHtml(String(ls.at||'').slice(0,16).replace('T',' '))+' UTC &middot; window: '+escapeHtml(ls.window||'')+' &middot; '+(ls.scanned||0)+' emails checked'):'No scan has been run yet.';
-  host.innerHTML='<div class="sub" style="margin:4px 0 8px;">'+meta+' &middot; '+res.length+' result'+(res.length===1?'':'s')+' in list, '+nNew+' new, '+nRev+' reviewed'+(nDisc?', <b style="color:#c62828;">'+nDisc+' with discrepancies to act on</b>':'')+(IB.hideRev&&nHid?' <b style="color:#b45309;">&mdash; '+nHid+' matching reviewed row'+(nHid===1?' is':'s are')+' hidden: tick &ldquo;Show reviewed&rdquo; to see '+(nHid===1?'it':'them')+'</b>':'')+'</div>'+
-    ((res.length&&body)?'<table><thead><tr><td>Select</td><td>Reviewed</td><td>New?</td><td>Received (UTC)</td><td>Source</td><td>Vendor</td><td>Invoice file</td><td>PO</td><td style="text-align:right">Total</td><td>QuickBooks</td><td>Result</td></tr></thead><tbody>'+body+'</tbody></table>':'<div class="inv-hint">'+(res.length?'All '+res.length+' matching invoice'+(res.length===1?' is':'s are')+' marked reviewed and hidden &mdash; tick &ldquo;Show reviewed&rdquo; above to see them.':((IB.data&&IB.data.results&&IB.data.results.length)?'No invoices match the current filters.':'Nothing here yet. Choose a window and press Search.'))+'</div>');
+  host.innerHTML='<div class="sub" style="margin:4px 0 8px;">'+meta+' &middot; '+res.length+' result'+(res.length===1?'':'s')+' in list, '+nNew+' new, '+nRev+' reviewed'+(nAcct?', <b style="color:#b54708;">'+nAcct+' sent to accounting</b>':'')+(nDisc?', <b style="color:#c62828;">'+nDisc+' with discrepancies to act on</b>':'')+(IB.hideRev&&nHid?' <b style="color:#b45309;">&mdash; '+nHid+' matching reviewed row'+(nHid===1?' is':'s are')+' hidden: tick &ldquo;Show reviewed&rdquo; to see '+(nHid===1?'it':'them')+'</b>':'')+'</div>'+
+    ((res.length&&body)?'<table><thead><tr><td>Select</td><td>Reviewed</td><td>Accounting</td><td>New?</td><td>Received (UTC)</td><td>Source</td><td>Vendor</td><td>Invoice file</td><td>PO</td><td style="text-align:right">Total</td><td>QuickBooks</td><td>Result</td></tr></thead><tbody>'+body+'</tbody></table>':'<div class="inv-hint">'+(res.length?'All '+res.length+' matching invoice'+(res.length===1?' is':'s are')+' marked reviewed and hidden &mdash; tick &ldquo;Show reviewed&rdquo; above to see them.':((IB.data&&IB.data.results&&IB.data.results.length)?'No invoices match the current filters.':'Nothing here yet. Choose a window and press Search.'))+'</div>');
 }
 
 soEtaLoad();
