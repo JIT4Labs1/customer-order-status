@@ -5853,6 +5853,7 @@ function renderInvPanel(){
        '<div class="ib-bar"><div class="inv-fld"><label for="ib-win">Search window</label><select id="ib-win"><option value="month">Current month</option><option value="week">Last week (7 days)</option><option value="2weeks">Last 2 weeks (14 days)</option></select></div>'+
        '<button class="inv-go" id="ib-go" onclick="ibSearch()">Search</button>'+
        '<button class="inv-go" style="background:#101E3E;" onclick="ibVmOpenSel()">&#9993; Email vendor</button>'+
+       '<button class="inv-go" style="background:#b54708;" title="Tell accounting not to pay this invoice until the discrepancy is resolved" onclick="ibAcctOpenSel()">&#9888; Email accounting</button>'+
        '<button class="inv-go" onclick="ibRvOpen()" title="Scan all invoices for the same item charged at different rates">&#9878; Rate variance scan</button>'+
        '<button class="ib-sec" onclick="ibSeenAll()">Mark all as seen</button>'+
        '<button class="ib-sec" onclick="ibRevAll(true)">Mark all reviewed</button>'+
@@ -6113,6 +6114,47 @@ function ibVmSend(){ if(!IBVM.html) return; var subj=(document.getElementById('i
   mailOpen(subj,edHtml('ibVmFrame',IBVM.html),IBVM.vendor||'Vendor',{to:IBVM.email,vendor:true}); }
 function ibVmMsg(t){ var e=document.getElementById('ibVmMsg'); if(e) e.textContent=t; }
 function ibSelRow(i,on){ var r=IB.view&&IB.view[i]; if(!r) return; IB.sel=on?r.key:''; ibRender(); }
+// Email accounting: hold payment on an invoice with rate discrepancies (same branded template, sent to Accounting@jit4you.com).
+var IB_ACCT_TO='Accounting@jit4you.com';
+function ibAcctBuild(r){
+  var th='background:#101E3E;color:#ffffff;padding:8px 10px;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;';
+  var td='padding:8px 10px;border-bottom:1px solid #e3e7ee;';
+  function m(v){ return v==null?'&mdash;':'$'+Number(v).toFixed(2); }
+  var rows='', ls=ibDiscLines(r), tot=0;
+  ls.forEach(function(l){
+    var d=Number(l.rate)-Number(l.po_unit), q=Number(l.qty)||0, ext=d*q; tot+=ext;
+    var ds=(d>0?'+':'-')+'$'+Math.abs(d).toFixed(2), es=(ext>0?'+':'-')+'$'+Math.abs(ext).toFixed(2);
+    rows+='<tr><td align="left" valign="top" style="'+td+'font-weight:700;">'+escapeHtml(l.sku||'')+'</td>'+
+      '<td align="left" valign="top" style="'+td+'">'+escapeHtml(l.desc||'')+'</td>'+
+      '<td align="center" valign="top" style="'+td+'white-space:nowrap;">'+escapeHtml(l.qty==null?'':l.qty)+'</td>'+
+      '<td align="right" valign="top" style="'+td+'white-space:nowrap;">'+m(l.po_unit)+'</td>'+
+      '<td align="right" valign="top" style="'+td+'white-space:nowrap;color:#c62828;font-weight:700;">'+m(l.rate)+'</td>'+
+      '<td align="right" valign="top" style="'+td+'white-space:nowrap;">'+ds+'</td>'+
+      '<td align="right" valign="top" style="'+td+'white-space:nowrap;font-weight:700;">'+es+'</td></tr>';
+  });
+  var inv=ibInvNo(r), po=r.po_key||r.po_raw||'', ven=ibVmName(r.vendor);
+  var totS=(tot>0?'+':'-')+'$'+Math.abs(tot).toFixed(2);
+  var h='<!DOCTYPE html><html><head><meta charset="utf-8"><title>JIT4Labs - invoice on hold</title></head><body style="margin:0;padding:0;background:#f4f6f9"><table cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#f4f6f9"><tr><td align="center" style="padding:18px 10px"><table cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:760px;width:100%;background:#fff;border:1px solid #e3e7ee">'+
+   '<tr><td style="padding:18px 24px;border-bottom:3px solid #008080"><a href="https://jit4labs.com" target="_blank" style="text-decoration:none;color:#101E3E"><img src="https://jit4labs.com/cdn/shop/files/JIT4LABS-Logo.png" alt="JIT4LABS" width="175" height="30" border="0" style="display:block;width:175px;max-width:175px;height:30px;border:0;outline:none;text-decoration:none;font:bold 22px Arial, Helvetica, sans-serif;color:#101E3E;line-height:30px"></a></td></tr>'+
+   '<tr><td style="padding:24px;font:14px/1.6 Arial, Helvetica, sans-serif;color:#101E3E">'+
+   '<p style="margin:0 0 12px">Hello Accounting team,</p>'+
+   '<p style="margin:0 0 12px">There is a discrepancy on <b>'+escapeHtml(ven)+'</b> invoice <b>'+escapeHtml(inv)+'</b>'+(po?' (our PO <b>'+escapeHtml(po)+'</b>)':'')+': the invoiced rate does not match the PO rate on the line'+(ls.length===1?'':'s')+' below.</p>'+
+   '<table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 14px;background:#fde8e8;border:1px solid #f5b5b5"><tr><td style="padding:10px 14px;font:bold 14px/1.5 Arial, Helvetica, sans-serif;color:#9b1c1c">Please do not pay this invoice until the discrepancy is resolved.</td></tr></table>'+
+   '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;font:13px/1.5 Arial, Helvetica, sans-serif;color:#101E3E;margin:0 0 8px"><tr>'+
+   '<th align="left" style="'+th+'">SKU</th><th align="left" style="'+th+'">Item</th><th align="center" style="'+th+'">Qty</th><th align="right" style="'+th+'">PO rate</th><th align="right" style="'+th+'">Invoice rate</th><th align="right" style="'+th+'">Diff / unit</th><th align="right" style="'+th+'">Line diff</th></tr>'+rows+
+   '<tr><td colspan="6" align="right" style="padding:8px 10px;font-weight:700;">Total difference</td><td align="right" style="padding:8px 10px;font-weight:700;color:#c62828;white-space:nowrap;">'+totS+'</td></tr></table>'+
+   '<p style="margin:12px 0 12px">Before this invoice is paid, please make sure that either '+escapeHtml(ven)+' sends a corrected invoice, or a credit is applied to our account for the difference.</p>'+
+   '<p style="margin:18px 0 0">Thank you,<br><b>JIT4Labs team</b></p></td></tr>'+
+   '<tr><td style="padding:14px 24px;border-top:3px solid #008080;font:12px/1.6 Arial, Helvetica, sans-serif;color:#6b7280">JIT4Labs &middot; <a href="mailto:CustomerSupport@jit4you.com" style="color:#008080;text-decoration:none">CustomerSupport@jit4you.com</a> &middot; <a href="tel:+18882422301" style="color:#008080;text-decoration:none">(888) 242-2301</a> &middot; <a href="https://jit4labs.com" style="color:#008080;text-decoration:none">jit4labs.com</a></td></tr></table></td></tr></table></body></html>';
+  IBVM.subject='HOLD PAYMENT '+String.fromCharCode(8211)+' '+ven+' invoice '+inv+(po?' / PO '+po:'')+': rate discrepancy';
+  return h;
+}
+function ibAcctOpenSel(){
+  var v=IB.view||[], idx=-1; for(var k=0;k<v.length;k++){ if(v[k].key===IB.sel){ idx=k; break; } }
+  if(idx<0){ ibNote('warn','Tick the checkbox of an invoice with a discrepancy first, then press Email accounting.'); return; }
+  if(!ibDiscLines(v[idx]).length){ ibNote('warn','The selected invoice has no rate discrepancies, so there is nothing to hold.'); return; }
+  ibNote('',''); ibVmOpen(idx,'acct');
+}
 function ibVmOpenSel(){
   var v=IB.view||[], idx=-1; for(var k=0;k<v.length;k++){ if(v[k].key===IB.sel){ idx=k; break; } }
   if(idx<0){ ibNote('warn','Tick the checkbox of an invoice first, then press Email vendor.'); return; }
@@ -6121,15 +6163,16 @@ function ibVmOpenSel(){
 function ibVmOpen(i,kind){
   var r=IB.view&&IB.view[i]; if(!r) return;
   var m=document.getElementById('ibVmModal'); if(m) m.parentNode.removeChild(m);
-  var hasDisc=ibDiscLines(r).length>0; if(!hasDisc) kind='blank'; kind=kind||'disc';
-  IBVM.idx=i; IBVM.kind=kind; IBVM.html=(kind==='blank'?ibVmBuildBlank(r):ibVmBuild(r)); IBVM.email=ibVmVendorEmail(r.vendor); IBVM.vendor=r.vendor||'';
+  var hasDisc=ibDiscLines(r).length>0; kind=kind||'disc'; if(!hasDisc&&kind!=='acct') kind='blank';
+  var acct=kind==='acct'; if(acct&&!hasDisc) return;
+  IBVM.idx=i; IBVM.kind=kind; IBVM.html=(acct?ibAcctBuild(r):kind==='blank'?ibVmBuildBlank(r):ibVmBuild(r)); IBVM.email=acct?IB_ACCT_TO:ibVmVendorEmail(r.vendor); IBVM.vendor=acct?'Accounting':(r.vendor||'');
   var kb=function(k,l){ var on=kind===k; return '<button class="mode-btn" style="margin:0;padding:6px 12px;min-height:0;width:auto;'+(on?'background:#101E3E;color:#fff;border-color:#101E3E;':'')+'" onclick="ibVmSetKind(&quot;'+k+'&quot;)">'+l+'</button>'; };
   var d=document.createElement('div'); d.id='ibVmModal';
   d.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(16,30,62,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;';
   d.innerHTML='<div style="background:#fff;border-radius:10px;max-width:1040px;width:100%;max-height:92vh;overflow:auto;padding:26px 30px;box-shadow:0 10px 40px rgba(0,0,0,.35);">'+
-   '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><b style="font-size:16px;color:#101E3E;">&#9993; Email vendor &mdash; '+(kind==='blank'?'blank email':'invoice rate correction')+'</b><a href="#" onclick="ibVmClose();return false;" style="font-size:20px;text-decoration:none;color:#555;">&times;</a></div>'+
-   '<div style="display:flex;gap:6px;align-items:center;margin-bottom:8px;font-size:13px;">'+(hasDisc?kb('disc','Rate correction (discrepancies)')+kb('blank','Blank email'):'<span style="color:#7f8c8d;">No rate discrepancies on this invoice &mdash; blank email in the usual template.</span>')+'</div>'+
-   '<div style="font-size:13px;margin-bottom:6px;"><b>To:</b> '+(IBVM.email?escapeHtml(IBVM.email):'<span style="color:#7f8c8d">(no vendor email on file - add it manually)</span>')+' &middot; '+escapeHtml(r.vendor||'')+' &middot; invoice '+escapeHtml(ibInvNo(r))+'</div>'+
+   '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><b style="font-size:16px;color:#101E3E;">'+(acct?'&#9888; Email accounting &mdash; hold payment until the discrepancy is resolved':'&#9993; Email vendor &mdash; '+(kind==='blank'?'blank email':'invoice rate correction'))+'</b><a href="#" onclick="ibVmClose();return false;" style="font-size:20px;text-decoration:none;color:#555;">&times;</a></div>'+
+   (acct?'':'<div style="display:flex;gap:6px;align-items:center;margin-bottom:8px;font-size:13px;">')+(acct?'':hasDisc?kb('disc','Rate correction (discrepancies)')+kb('blank','Blank email'):'<span style="color:#7f8c8d;">No rate discrepancies on this invoice &mdash; blank email in the usual template.</span>')+(acct?'':'</div>')+
+   '<div style="font-size:13px;margin-bottom:6px;"><b>To:</b> '+(IBVM.email?escapeHtml(IBVM.email):'<span style="color:#7f8c8d">(no vendor email on file - add it manually)</span>')+' &middot; '+escapeHtml(acct?'about '+(r.vendor||''):(r.vendor||''))+' &middot; invoice '+escapeHtml(ibInvNo(r))+'</div>'+
    '<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0;"><div style="flex-basis:100%;display:flex;gap:8px;align-items:center;"><b style="font-size:13px;">Subject:</b><input id="ibVmSubj" type="text" value="'+escapeHtml(IBVM.subject)+'" style="flex:1;padding:5px 8px;border:1px solid #cfd8e3;border-radius:6px;"><button class="mode-btn" style="margin:0;" onclick="ibVmCopySubj()">Copy subject</button></div>'+
    '<button class="mode-btn" style="margin:0;" onclick="ibVmCopy(true)">Copy for pasting into email</button>'+
    '<button class="mode-btn" style="margin:0;" onclick="ibVmCopy(false)">Copy HTML source</button>'+
@@ -6156,7 +6199,7 @@ function ibVmCopy(rich){
   }catch(e){ fb(); } }
 function ibVmDl(){
   if(!IBVM.html) return; var nm='', s=IBVM.vendor||'vendor'; for(var i=0;i<s.length;i++){ nm+=/[a-z0-9]/i.test(s.charAt(i))?s.charAt(i):'_'; }
-  var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([edHtml('ibVmFrame',IBVM.html)],{type:'text/html'})); a.download='JIT4Labs_'+(IBVM.kind==='blank'?'Email_':'Invoice_Correction_')+nm+'.html';
+  var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([edHtml('ibVmFrame',IBVM.html)],{type:'text/html'})); a.download='JIT4Labs_'+(IBVM.kind==='acct'?'Accounting_Hold_':IBVM.kind==='blank'?'Email_':'Invoice_Correction_')+nm+'.html';
   document.body.appendChild(a); a.click(); document.body.removeChild(a); }
 
 // ── Bulk invoice check: same item charged at different rates across invoices ──
