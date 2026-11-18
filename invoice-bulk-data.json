@@ -7896,15 +7896,196 @@
       "found_at": "2026-11-18T16:13:29Z",
       "scan_id": "req-20261118161303",
       "file": "invoices/INV-002303_dObAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsErdOMAAA=",
+      "source": "quickbooks",
+      "sender": "quickbooks@notification.intuit.com",
+      "subject": "New payment request from Allora Biotech LLC - invoice 1835",
+      "received": "2026-11-18T11:41:04Z",
+      "filename": "Invoice_1835_from_Allora_Biotech_LLC.pdf",
+      "vendor": "",
+      "po_raw": "",
+      "lines": [
+        {
+          "sku": "B63284",
+          "desc": "Access TSH (3rd IS) reagent, 2 x 100 DET - Beckman",
+          "qty": 1,
+          "rate": 79,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        },
+        {
+          "sku": "C76421",
+          "desc": "Free T4 reagent, 2 x 50 DET - Beckman Coulter Access",
+          "qty": 1,
+          "rate": 45,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        },
+        {
+          "sku": "A16792",
+          "desc": "Wash buffer II, 4 x 1950 mL - Beckman Coulter Access",
+          "qty": 3,
+          "rate": 27,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        },
+        {
+          "sku": "OSR6112",
+          "desc": "Bilirubin (Total) reagent, R1 4 x 15 mL, R2 4 x 15 mL -",
+          "qty": 1,
+          "rate": 85,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        },
+        {
+          "sku": "A98032",
+          "desc": "Folate (Folic Acid) reagent - Beckman Coulter Access",
+          "qty": 1,
+          "rate": 70,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "verdict": "no_po",
+      "po_key": "",
+      "summary": {
+        "ok": 0,
+        "bad": 0,
+        "miss": 5
+      },
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsErdOMAAA=|Invoice_1835_from_Allora_Biotech_LLC.pdf",
+      "found_at": "2026-11-18T18:59:50Z",
+      "scan_id": "allora-fix",
+      "file": "invoices/Invoice_1835_from_Allora_Biotech_LLC_dOMAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsErdOPAAA=",
+      "source": "quickbooks",
+      "sender": "quickbooks@notification.intuit.com",
+      "subject": "New payment request from Allora Biotech LLC - invoice 1838",
+      "received": "2026-11-18T12:20:25Z",
+      "filename": "Invoice_1838_from_Allora_Biotech_LLC.pdf",
+      "vendor": "Allora Biotech LLC",
+      "po_raw": "1017",
+      "lines": [
+        {
+          "sku": "81906",
+          "desc": "Substrate, 4 x 130 mL - Beckman Coulter Access",
+          "qty": 1,
+          "rate": 55,
+          "po_unit": 55.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO1017",
+      "po_status": "Received Shipment",
+      "po_missing": [],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsErdOPAAA=|Invoice_1838_from_Allora_Biotech_LLC.pdf",
+      "found_at": "2026-11-18T18:59:50Z",
+      "scan_id": "allora-fix",
+      "file": "invoices/Invoice_1838_from_Allora_Biotech_LLC_dOPAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsErdOQAAA=",
+      "source": "quickbooks",
+      "sender": "quickbooks@notification.intuit.com",
+      "subject": "New payment request from Allora Biotech LLC - invoice 1839",
+      "received": "2026-11-18T12:21:31Z",
+      "filename": "Invoice_1839_from_Allora_Biotech_LLC.pdf",
+      "vendor": "Allora Biotech LLC",
+      "po_raw": "988",
+      "lines": [
+        {
+          "sku": "37200",
+          "desc": "Hybritech PSA reagent, 2 x 50 DET - Beckman Coulter",
+          "qty": 2,
+          "rate": 105,
+          "po_unit": 105.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6116",
+          "desc": "Cholesterol reagent, R1 4 x 22.5 mL - Beckman",
+          "qty": 2,
+          "rate": 130,
+          "po_unit": 130.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "A98856",
+          "desc": "25(OH) Vitamin D Total reagent, 2 x 50 DET - Beckman",
+          "qty": 5,
+          "rate": 225,
+          "po_unit": 225.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6178",
+          "desc": "Creatinine reagent, R1 4 x 51 mL, R2 4 x 51 mL -",
+          "qty": 1,
+          "rate": 78.14,
+          "po_unit": 78.14,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6107",
+          "desc": "ALT - ALT with P5P reagent, R1 4 x 50 mL, R2 4 x 25",
+          "qty": 1,
+          "rate": 102,
+          "po_unit": 102.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "OSR6134",
+          "desc": "Urea / BUN reagent, R1 4 x 25 mL, R2 4 x 25 mL -",
+          "qty": 2,
+          "rate": 85,
+          "po_unit": 85.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO988",
+      "po_status": "Received Shipment",
+      "po_missing": [],
+      "summary": {
+        "ok": 6,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsErdOQAAA=|Invoice_1839_from_Allora_Biotech_LLC.pdf",
+      "found_at": "2026-11-18T18:59:50Z",
+      "scan_id": "allora-fix",
+      "file": "invoices/Invoice_1839_from_Allora_Biotech_LLC_dOQAAA.pdf"
     }
   ],
   "last_scan": {
-    "id": "req-20261118165442",
-    "at": "2026-11-18T16:55:06Z",
+    "id": "allora-fix",
+    "at": "2026-11-18T18:59:50Z",
     "window": "week",
-    "since": "2026-11-11T08:55:02.528166-08:00",
-    "scanned": 11,
-    "added": 0
+    "since": "2026-11-11T10:59:47.818599-08:00",
+    "scanned": 10,
+    "added": 3
   },
   "pulled_at": "2026-11-09 09:35 PM PT"
 }
