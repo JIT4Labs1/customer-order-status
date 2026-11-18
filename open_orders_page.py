@@ -343,6 +343,7 @@ def build_page_data(open_items):
         "open_items": len(open_items),
         "vendors": len(vendors),
         "high_demand_skus": len(hd_items),
+        "open_pos": sum(v.get("pos", 0) for v in vendors),   # open vendor POs (distinct per vendor), same as the Vendor POs tab
     }
     # Customer PO tag from the Shopify order ("PO 1234567"), keyed by SO number.
     # _so_customer_po.json is refreshed from Shopify by the scheduled task (STEP 10c-0b).
@@ -577,6 +578,8 @@ def build_html(page_data, embeds=None):
   .loading .spin { display:inline-block; }
 
   .kpis { display:flex; gap:12px; padding:16px 28px 0; flex-wrap:wrap; }
+  .kpi-title { padding:16px 28px 0; font-size:13px; font-weight:700; color:#1F4E79; text-transform:uppercase; letter-spacing:.6px; }
+  .kpi-title + .kpis { padding-top:8px; }
   .kpi { background:#fff; border:1px solid #d0dbe6; border-radius:8px; padding:12px 22px; text-align:center; min-width:120px; }
   .kpi .v { font-size:26px; font-weight:700; color:#1F4E79; }
   .kpi .l { font-size:11px; color:#666; font-weight:600; text-transform:uppercase; letter-spacing:.5px; margin-top:2px; }
@@ -891,7 +894,7 @@ def build_html(page_data, embeds=None):
     .header .meta{ font-size:11px; text-align:left; }
     .meta-scope{ display:none; }  /* drop "2026 Sales Orders · Excl. ConMed" on mobile */
     .refresh-btn{ padding:11px 20px; }
-    .kpis{ padding:14px 1.5% 0; gap:9px; }
+    .kpis{ padding:14px 1.5% 0; gap:9px; } .kpi-title{ padding:14px 1.5% 0; }
     /* Bigger KPI cards — 2 per row, larger numbers */
     .kpi{ min-width:0; flex:1 1 46%; padding:16px 12px; }
     .kpi .v{ font-size:28px; }
@@ -1015,6 +1018,7 @@ def build_html(page_data, embeds=None):
   </div>
 </div>
 
+<div id="kpiTitle" class="kpi-title">Current month KPIs</div>
 <div class="kpis" id="kpis"></div>
 
 <div class="modebar">
@@ -1170,7 +1174,18 @@ function etaColor(s){ if(!s) return '#999'; var d=new Date(s+'T00:00:00'); if(is
 function renderKpis(){
   var t=DATA.totals||{};
   document.getElementById('kpis').innerHTML =
-    kpi(t.customers,'Customers')+kpi(t.vendors,'Vendors')+kpi(t.open_sos,'Open SOs')+kpi(t.open_items,'Open Items')+kpi(t.high_demand_skus,'High-Demand');
+    kpi(kpiCustMonth(),'Customers this month')+kpi(t.open_sos,'Open SOs')+kpi(t.open_pos!=null?t.open_pos:kpiOpenPos(),'Open POs')+kpi(t.open_items,'Open Items');
+  var tt=document.getElementById('kpiTitle'); if(tt) tt.textContent='Current month KPIs ('+new Date().toLocaleDateString('en-US',{timeZone:'America/Los_Angeles',month:'long',year:'numeric'})+')';
+}
+// Customers with a sales order this month (Vtiger SOs, cancelled excluded), from the Customer Analysis data.
+function kpiCustMonth(){
+  var ca=DATA.customer_analysis; if(!ca||!ca.customers||!ca.months) return 0;
+  var now=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Los_Angeles'})), mn=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][now.getMonth()];
+  if(String(ca.year)!==String(now.getFullYear())) return 0;
+  var i=ca.months.indexOf(mn); if(i<0) return 0;
+  return ca.customers.filter(function(c){ return !isExclCust(c.name)&&(c.products||[]).some(function(p){ return (p.by_month&&p.by_month[i])>0; }); }).length;
+}
+function kpiOpenPos(){ return (DATA.vendors||[]).reduce(function(a,v){ return a+(v.pos||0); },0);
 }
 function kpi(v,l,style){ return '<div class="kpi"'+(style?' style="'+style+'"':'')+'><div class="v">'+(v==null?'0':v)+'</div><div class="l">'+l+'</div></div>'; }
 
