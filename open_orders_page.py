@@ -6330,9 +6330,14 @@ function ibRender(){
     if(v==='ok') chip='<span class="inv-badge ok">All match</span>';
     else if(v==='discrepancy') chip='<span class="inv-badge over">'+(r.summary&&r.summary.bad||0)+' discrepanc'+((r.summary&&r.summary.bad)===1?'y':'ies')+'</span>';
     else if(v==='partial') chip='<span class="inv-badge under">'+(r.summary&&r.summary.ok||0)+' ok, '+(r.summary&&r.summary.miss||0)+' not on PO</span>';
-    else if(v==='no_po') chip='<span class="inv-badge under">PO not found</span>';
+    else if(v==='no_po') chip='<span class="inv-badge under">'+(r.po_raw?'PO not found':'No PO on invoice')+'</span>';
     else chip='<span class="inv-badge miss">Unreadable</span>';
-    var det='<table><thead><tr><td>SKU</td><td>Description</td><td class="num">Qty</td><td class="num">Invoice rate</td><td class="num">PO unit</td><td class="num">&Delta;</td><td>Status</td></tr></thead><tbody>';
+    // Probable PO (from the Cloudflare app): invoice items + ship-to customer + supplier location + date vs Shopify orders.
+    var sg=(!r.po_key&&r.po_suggest&&r.po_suggest.po)?r.po_suggest:null, sgC={high:['#e6f4ea','#137333'],medium:['#fff4e5','#b54708'],low:['#eef1f5','#4a5b70']};
+    var sgTip=sg?('Shopify order '+sg.best.order+' ('+sg.best.customer+'), '+sg.best.items+' items'+(sg.best.qty_match?', same quantities':'')+(sg.best.so?', '+sg.best.so:'')+', shipped '+String(sg.best.shipped||'').slice(0,10)+(sg.pos.length>1?'. POs: '+sg.pos.join(', '):'')):'';
+    var sgCell=sg?'<div title="'+escapeHtml(sgTip)+'" style="margin-top:2px;white-space:nowrap;"><span style="font-size:10px;color:#7f8c8d;">probable</span> <b style="background:'+sgC[sg.confidence][0]+';color:'+sgC[sg.confidence][1]+';border-radius:8px;padding:1px 7px;">'+escapeHtml(sg.po)+'</b> <span style="font-size:10px;color:'+sgC[sg.confidence][1]+';">'+escapeHtml(sg.confidence)+'</span><div style="font-size:10px;color:#7f8c8d;">Shopify '+escapeHtml(sg.best.order)+' &middot; '+escapeHtml(sg.best.items)+' items'+(sg.others&&sg.others.length?' &middot; next: '+escapeHtml((sg.others[0].pos||[]).join('/')||sg.others[0].order):'')+'</div></div>':'';
+    var det='';
+    det+='<table><thead><tr><td>SKU</td><td>Description</td><td class="num">Qty</td><td class="num">Invoice rate</td><td class="num">PO unit</td><td class="num">&Delta;</td><td>Status</td></tr></thead><tbody>';
     (r.lines||[]).forEach(function(l){
       var st=l.status, bc=st==='ok'?'ok':(st==='over'?'over':(st==='under'?'under':'miss'));
       var lbl=st==='ok'?'OK':(st==='over'?'Overbilled':(st==='under'?'Underbilled':'Not on PO'));
@@ -6363,7 +6368,7 @@ function ibRender(){
       '<td>'+escapeHtml(r.source==='quickbooks'?'QuickBooks':'Zoho')+'</td>'+
       '<td>'+escapeHtml(r.vendor||'')+'</td>'+
       '<td>'+(r.file?'<a class="ib-link" target="_blank" rel="noopener" title="Open invoice copy (PDF)" href="'+escapeHtml(r.file)+'">&#128196; '+escapeHtml(r.filename||'')+'</a>':escapeHtml(r.filename||''))+(r.msg_id?' <a class="ib-link" target="_blank" rel="noopener" title="Open the original email in Outlook" href="https://outlook.office365.com/owa/?ItemID='+encodeURIComponent(r.msg_id)+'&exvsurl=1&viewmodel=ReadMessageItem">&#9993;</a>':'')+'</td>'+
-      '<td>'+escapeHtml(r.po_raw||'')+(r.po_key&&r.po_key!==String(r.po_raw||'').toUpperCase()?' &rarr; '+escapeHtml(r.po_key):'')+'</td>'+
+      '<td>'+escapeHtml(r.po_raw||'')+(r.po_key&&r.po_key!==String(r.po_raw||'').toUpperCase()?' &rarr; '+escapeHtml(r.po_key):'')+sgCell+'</td>'+
       '<td class="num" style="text-align:right;white-space:nowrap;">'+totTxt+'</td>'+
       '<td>'+qbc+'</td>'+
       '<td>'+chip+'</td></tr>';
