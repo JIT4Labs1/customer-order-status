@@ -893,6 +893,7 @@ def build_html(page_data, embeds=None):
     .header-right{ width:100%; justify-content:space-between; gap:12px; }
     .header .meta{ font-size:11px; text-align:left; }
     .meta-scope{ display:none; }  /* drop "2026 Sales Orders · Excl. ConMed" on mobile */
+    #rstat table{ font-size:9px; } #rstat td,#rstat th{ padding:1px 4px; }
     .refresh-btn{ padding:11px 20px; }
     .kpis{ padding:14px 1.5% 0; gap:9px; } .kpi-title{ padding:14px 1.5% 0; }
     /* Bigger KPI cards — 2 per row, larger numbers */
@@ -1009,6 +1010,7 @@ def build_html(page_data, embeds=None):
   <div class="brand"><span class="brand-word"><span class="brand-jit">JIT4</span><span class="brand-labs">Labs</span></span><small>Business Dashboard</small></div>
   <div class="header-right" style="display:flex;align-items:center;gap:18px;">
     <div class="meta">
+      <div id="rstat"></div>
       <div id="asof">&nbsp;</div>
       <div class="meta-scope">2026 Sales Orders &middot; Excl. ConMed</div>
     </div>
@@ -4916,6 +4918,23 @@ function renderYtdPanel(){
   document.getElementById('panel').innerHTML=head+ctrl+tbl+note;
 }
 
+// Header: today's refresh schedule (midnight full + incremental runs, Pacific) with a status per run, from the Cloudflare app.
+// Replaces the "Last refreshed ..." text lines (kept as the table's tooltip; shown as before when the status can't be loaded).
+function rstatLoad(){
+  fetch('/api/refresh-status',{credentials:'same-origin',cache:'no-store'}).then(function(r){ return r.ok?r.json():null; }).then(function(d){
+    var el=document.getElementById('rstat'), as=document.getElementById('asof'), sc=document.querySelector('.meta-scope'); if(!el) return;
+    if(!d||!d.slots){ el.innerHTML=''; if(as) as.style.display=''; if(sc) sc.style.display=''; return; }
+    var S={done:['&#10004;','#137333','Done'],finishing:['&#10004;','#7f8c8d','Finished, copying into the dashboard'],running:['&#9203;','#1a56b0','Running'],failed:['&#10006;','#c0392b','Failed'],missed:['&ndash;','#b54708','Did not run'],tbd:['TBD','#8a97a8','Not run yet']};
+    function cell(x){ var s=S[x.status]||S.tbd, tip=s[2]+(x.started?' · started '+x.started:'')+(x.finished?' · finished '+x.finished:''); return '<td title="'+escapeHtml(tip)+'" style="text-align:center;color:'+s[1]+';font-weight:700;">'+(x.url?'<a href="'+escapeHtml(x.url)+'" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">'+s[0]+'</a>':s[0])+'</td>'; }
+    var ad=d.adhoc||[], adOk=ad.filter(function(a){ return a.status==='done'||a.status==='finishing'; }).length, adRun=ad.filter(function(a){ return a.status==='running'; }).length;
+    var th='padding:1px 6px;font-weight:600;color:#4a5b70;white-space:nowrap;text-align:center;border-bottom:1px solid #dee5ec;';
+    var h='<table style="border-collapse:collapse;font-size:10.5px;line-height:1.35;"><tr><th style="'+th+'text-align:left;">Today</th>'+d.slots.map(function(x){ return '<th style="'+th+'">'+escapeHtml(x.label)+(x.kind==='Full'?'<div style="font-weight:400;font-size:9px;color:#7f8c8d;">full</div>':'')+'</th>'; }).join('')+(ad.length?'<th style="'+th+'">Ad hoc</th>':'')+'</tr>'+
+      '<tr><td style="padding:1px 6px;color:#7f8c8d;white-space:nowrap;">'+(d.last_ingested?'data '+escapeHtml(d.last_ingested):'')+'</td>'+d.slots.map(cell).join('')+(ad.length?'<td title="'+escapeHtml(ad.map(function(a){ return a.started+': '+((S[a.status]||S.tbd)[2]); }).join(' · '))+'" style="text-align:center;font-weight:700;color:#137333;white-space:nowrap;">'+adOk+' &#10004;'+(adRun?' <span style="color:#1a56b0;">'+adRun+' &#9203;</span>':'')+'</td>':'')+'</tr></table>';
+    el.innerHTML=h; el.title=(as&&as.textContent)||'';
+    if(as) as.style.display='none'; if(sc) sc.style.display='none';
+  }).catch(function(){});
+}
+setTimeout(function(){ rstatLoad(); setInterval(rstatLoad,120000); },300);
 function renderAsOf(){
   var ri=DATA.run_info||{}, txt='Last refreshed: '+(DATA.generated_at||'—');
   if(ri.mode) txt+=' · '+(ri.label?ri.label+' ':'')+ri.mode+' run completed';
