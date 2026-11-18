@@ -81,6 +81,19 @@ QROW = re.compile(r"^\s*(\d+)\.\s+(?:\d{1,2}/\d{1,2}/\d{2,4}\s+)?(\S+)\s{2,}(.*?
 # Newer QuickBooks invoice layout (from Nov 2026): "Purchase Order: 988" in the header and lines like
 # "1.   37200: Hybritech PSA reagent, 2 x 50 DET - Beckman Coulter     2     $105.00     $210.00" (SKU, colon, description).
 QROW2 = re.compile(r"^\s*(\d+)\.\s+(?:\d{1,2}/\d{1,2}/\d{2,4}\s+)?([A-Za-z0-9][A-Za-z0-9\-./]*):\s+(.*?)\s{2,}(\d+(?:\.\d+)?)\s+\$([\d,]+\.\d{2})\s+\$([\d,]+\.\d{2})\s*$")
+def qb_meta(text):
+    """Ship-to customer and ship date from a QuickBooks invoice (used to suggest a PO when none is printed)."""
+    L = text.splitlines(); ship_to = ""
+    for i, ln in enumerate(L):
+        c = ln.find("Ship to")
+        if c < 0: continue
+        for nx in L[i + 1:i + 4]:
+            if len(nx) > c - 2 and nx[max(0, c - 2):].strip():
+                ship_to = re.split(r"\s{2,}", nx[max(0, c - 2):].strip())[0]; break
+        break
+    m = re.search(r"Ship date:\s*(\d{1,2}/\d{1,2}/\d{4})", text); d = re.search(r"Invoice date:\s*(\d{1,2}/\d{1,2}/\d{4})", text)
+    return {"ship_to": ship_to, "ship_date": m.group(1) if m else "", "inv_date": d.group(1) if d else ""}
+
 def parse_qb(text):
     m = re.search(r"(?:P\.O\.\s*#|Purchase\s+Order(?:\s*(?:#|No\.?|Number))?)\s*:\s*([^\s][^\n]*?)\s*(?:\n|$)", text, re.I)
     po = m.group(1).strip() if m else ""
@@ -127,7 +140,7 @@ def main():
                     if not lines: print("skip (no invoice lines read):", nm); continue
                     if not po: print("no PO # on invoice (listed as No PO):", nm)
                     items.append({"msg_id": m["id"], "source": src, "sender": sender, "subject": subj, "received": m["receivedDateTime"],
-                                  "filename": nm, "vendor": "", "po_raw": po, "lines": lines})
+                                  "filename": nm, "vendor": "", "po_raw": po, "lines": lines, **(qb_meta(text) if src == "quickbooks" else {})})
             url = d.get("@odata.nextLink")
     if os.environ.get("PROBE") == "true": print("probe done", scanned); return
     if os.environ.get("PROBE") == "compare":
