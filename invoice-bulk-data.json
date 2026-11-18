@@ -7768,15 +7768,89 @@
       "found_at": "2026-11-13T17:32:51Z",
       "scan_id": "req-20261113173224",
       "file": "invoices/Invoice_1833_from_Allora_Biotech_LLC_71eAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsErdM9AAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-001948 from PMA Services -Next Day Reagents  confirming payment",
+      "received": "2026-11-17T16:38:03Z",
+      "filename": "INV-001948.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "PO902",
+      "lines": [
+        {
+          "sku": "A98032-BK",
+          "desc": "Folate Reagent For Serum/Plasma (Heparin) 2x50 Count 2x50/Ea",
+          "qty": 4,
+          "rate": 70,
+          "po_unit": 70.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO902",
+      "po_status": "Received Shipment",
+      "po_missing": [],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsErdM9AAA=|INV-001948.pdf",
+      "found_at": "2026-11-18T01:40:55Z",
+      "scan_id": "req-20261118014004",
+      "file": "invoices/INV-001948_dM9AAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsErdN5AAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002290 from PMA Services -Next Day Reagents",
+      "received": "2026-11-17T22:38:16Z",
+      "filename": "INV-002290.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "PO976",
+      "lines": [
+        {
+          "sku": "66039-BK",
+          "desc": "ISE Cleaning Solution 6x450mL",
+          "qty": 1,
+          "rate": 36,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO976",
+      "po_status": "Partially received",
+      "po_missing": [
+        "OSR6132",
+        "S66039",
+        "OSR6178",
+        "OSR6137",
+        "OSR6134"
+      ],
+      "summary": {
+        "ok": 0,
+        "bad": 0,
+        "miss": 1
+      },
+      "verdict": "partial",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsErdN5AAA=|INV-002290.pdf",
+      "found_at": "2026-11-18T01:40:55Z",
+      "scan_id": "req-20261118014004",
+      "file": "invoices/INV-002290_dN5AAA.pdf"
     }
   ],
   "last_scan": {
-    "id": "req-20261113173224",
-    "at": "2026-11-13T17:32:51Z",
+    "id": "req-20261118014004",
+    "at": "2026-11-18T01:40:55Z",
     "window": "week",
-    "since": "2026-11-06T09:32:45.464099-08:00",
-    "scanned": 18,
-    "added": 8
+    "since": "2026-11-10T17:40:26.618328-08:00",
+    "scanned": 10,
+    "added": 2
   },
   "pulled_at": "2026-11-09 09:35 PM PT"
 }
