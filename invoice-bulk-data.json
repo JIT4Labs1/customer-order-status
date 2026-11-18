@@ -7842,15 +7842,69 @@
       "found_at": "2026-11-18T01:40:55Z",
       "scan_id": "req-20261118014004",
       "file": "invoices/INV-002290_dN5AAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsErdObAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002303 from PMA Services -Next Day Reagents",
+      "received": "2026-11-18T15:16:50Z",
+      "filename": "INV-002303.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "SO1399--PO973",
+      "lines": [
+        {
+          "sku": "A98033-BK",
+          "desc": "Folate Calibrator Set 5x4mL",
+          "qty": 1,
+          "rate": 90.02,
+          "po_unit": 90.02,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "A48619-BK",
+          "desc": "Access SHBG Quality Control",
+          "qty": 1,
+          "rate": 439.5,
+          "po_unit": 419.3,
+          "delta": 20.2,
+          "status": "over"
+        }
+      ],
+      "po_key": "PO973",
+      "po_status": "Partially received",
+      "po_missing": [
+        "B24838",
+        "33560",
+        "A98032",
+        "33885",
+        "33565",
+        "ODC0027",
+        "B38859",
+        "B63285",
+        "A18227",
+        "OSR60117"
+      ],
+      "summary": {
+        "ok": 1,
+        "bad": 1,
+        "miss": 0
+      },
+      "verdict": "discrepancy",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsErdObAAA=|INV-002303.pdf",
+      "found_at": "2026-11-18T16:13:29Z",
+      "scan_id": "req-20261118161303",
+      "file": "invoices/INV-002303_dObAAA.pdf"
     }
   ],
   "last_scan": {
-    "id": "req-20261118014004",
-    "at": "2026-11-18T01:40:55Z",
+    "id": "req-20261118161303",
+    "at": "2026-11-18T16:13:29Z",
     "window": "week",
-    "since": "2026-11-10T17:40:26.618328-08:00",
-    "scanned": 10,
-    "added": 2
+    "since": "2026-11-11T08:13:24.692479-08:00",
+    "scanned": 11,
+    "added": 1
   },
   "pulled_at": "2026-11-09 09:35 PM PT"
 }
