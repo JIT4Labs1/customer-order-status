@@ -78,12 +78,15 @@ def parse_zoho(text):
     return po, lines
 
 QROW = re.compile(r"^\s*(\d+)\.\s+(?:\d{1,2}/\d{1,2}/\d{2,4}\s+)?(\S+)\s{2,}(.*?)\s+(\d+(?:\.\d+)?)\s+\$([\d,]+\.\d{2})\s+\$([\d,]+\.\d{2})\s*$")
+# Newer QuickBooks invoice layout (from Nov 2026): "Purchase Order: 988" in the header and lines like
+# "1.   37200: Hybritech PSA reagent, 2 x 50 DET - Beckman Coulter     2     $105.00     $210.00" (SKU, colon, description).
+QROW2 = re.compile(r"^\s*(\d+)\.\s+(?:\d{1,2}/\d{1,2}/\d{2,4}\s+)?([A-Za-z0-9][A-Za-z0-9\-./]*):\s+(.*?)\s{2,}(\d+(?:\.\d+)?)\s+\$([\d,]+\.\d{2})\s+\$([\d,]+\.\d{2})\s*$")
 def parse_qb(text):
-    m = re.search(r"P\.O\.\s*#\s*:\s*([^\s][^\n]*?)\s*(?:\n|$)", text)
+    m = re.search(r"(?:P\.O\.\s*#|Purchase\s+Order(?:\s*(?:#|No\.?|Number))?)\s*:\s*([^\s][^\n]*?)\s*(?:\n|$)", text, re.I)
     po = m.group(1).strip() if m else ""
     lines = []
     for ln in text.splitlines():
-        r = QROW.match(ln)
+        r = QROW.match(ln) or QROW2.match(ln)
         if r:
             lines.append({"sku": r.group(2).strip(), "desc": r.group(3).strip(), "qty": num(r.group(4)), "rate": num(r.group(5))})
     return po, lines
@@ -121,7 +124,8 @@ def main():
                         open("_probe/%s_%s.txt" % (src, re.sub(r"[^A-Za-z0-9]", "", m["id"])[-8:]), "w").write("SUBJECT: %s\nFILE: %s\n%s" % (subj, nm, text))
                         continue
                     po, lines = (parse_zoho if src == "zoho" else parse_qb)(text)
-                    if not po or not lines: print("skip (no PO/lines):", nm); continue
+                    if not lines: print("skip (no invoice lines read):", nm); continue
+                    if not po: print("no PO # on invoice (listed as No PO):", nm)
                     items.append({"msg_id": m["id"], "source": src, "sender": sender, "subject": subj, "received": m["receivedDateTime"],
                                   "filename": nm, "vendor": "", "po_raw": po, "lines": lines})
             url = d.get("@odata.nextLink")
