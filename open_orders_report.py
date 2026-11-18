@@ -587,13 +587,23 @@ def extract_open_orders(vt, dry_run=False):
 
     # First try with all candidate fields; if any cause a 400, fall back
     po_query_fields = "id, purchaseorder_no, postatus, createdtime"
+    n_link = 0
     for field in so_link_fields:
         try:
             vt.query(f"SELECT {field} FROM PurchaseOrder LIMIT 0, 1;")
-            po_query_fields += f", {field}"
+            po_query_fields += f", {field}"; n_link += 1
             log(f"  PO field '{field}' is accessible")
+        except urllib.error.HTTPError as e:
+            if e.code == 429:
+                # Rate-limited, NOT an invalid field: without this field POs can't be linked to SOs, so the pass
+                # must count as incomplete (retried) instead of publishing a page with no PO links. (2026-11-18)
+                vt.fetch_failures += 1
+                log(f"  PO field '{field}' check was rate-limited (429) - pass marked incomplete")
         except Exception:
-            pass
+            pass   # 400 = field doesn't exist on PurchaseOrder; expected for the other candidates
+    if n_link == 0:
+        vt.fetch_failures += 1
+        log("  No SO link field on PurchaseOrder could be read - pass marked incomplete")
 
     all_pos_raw = vt.query_all(f"SELECT {po_query_fields} FROM PurchaseOrder")
 
