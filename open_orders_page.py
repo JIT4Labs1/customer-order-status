@@ -1559,13 +1559,99 @@ function liGa4Html(){
 
 // ── Customer Journey tab (GA4→BigQuery: per-visitor journeys, add_to_cart + purchase) ──
 var CJ=null, cjLoading=false;
-var cjWin='ytd';          // 'ytd' | 'month' | 'custom'
+var cjWin='mon';          // 'mon' (one Pacific month, cjMonthSel) | 'ytd' | 'month' | 'custom'
 var cjCustStart='', cjCustEnd='';
 var cjSel='';             // selected visitor (user_pseudo_id); '' = All customers
 var cjTermFilter='', cjProdFilter='';   // active facet filters (search term / product)
 var cjOutcome='all';                     // 'all' | 'cart' (added to cart or purchased) | 'left' (browsed, no cart)
 var cjEntry='all';                       // 'all' | 'organic' | 'paid'  (entry-source filter)
 var cjLine='all';                        // 'all' | conmed | beckman | siemens | abbott | diazyme  (product-line filter)
+// Same filters / KPIs / cards / insight as the mobile app's Customer Journey (public/m in jit4labs-ops).
+var cjBot='all', cjCtry='all', cjMonthSel='';   // people filter (all|people|bots), country (all|us|intl), month YYYY-MM
+function cjPTm(t){ if(!t) return ''; try{ return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit'}).format(new Date(t)).slice(0,7); }catch(e){ return String(t).slice(0,7); } }
+function cjIsBot(s){ return !!(s.bot&&s.bot.likely); }
+function cjIsUS(s){ return s.country==='United States'||s.country==='Puerto Rico'; }
+function cjSrc(s){ var k=(s.entry&&s.entry.kind)||''; return k==='Paid ad'?'paid':k==='Organic search'?'organic':k==='Direct'?'direct':'other'; }
+function cjVal(s){ return s.class==='purchaser'?(s.revenue!=null?s.revenue:s.cart_value):s.cart_value; }
+function cjUsd(n,c){ return '$'+Number(n||0).toLocaleString(undefined,{minimumFractionDigits:c?2:0,maximumFractionDigits:c?2:0}); }
+function cjOrd(n){ var v=n%100; return n+(v>10&&v<14?'th':({1:'st',2:'nd',3:'rd'}[n%10]||'th')); }
+var CJ_ST={Alabama:'AL',Alaska:'AK',Arizona:'AZ',Arkansas:'AR',California:'CA',Colorado:'CO',Connecticut:'CT',Delaware:'DE',Florida:'FL',Georgia:'GA',Hawaii:'HI',Idaho:'ID',Illinois:'IL',Indiana:'IN',Iowa:'IA',Kansas:'KS',Kentucky:'KY',Louisiana:'LA',Maine:'ME',Maryland:'MD',Massachusetts:'MA',Michigan:'MI',Minnesota:'MN',Mississippi:'MS',Missouri:'MO',Montana:'MT',Nebraska:'NE',Nevada:'NV','New Hampshire':'NH','New Jersey':'NJ','New Mexico':'NM','New York':'NY','North Carolina':'NC','North Dakota':'ND',Ohio:'OH',Oklahoma:'OK',Oregon:'OR',Pennsylvania:'PA','Rhode Island':'RI','South Carolina':'SC','South Dakota':'SD',Tennessee:'TN',Texas:'TX',Utah:'UT',Vermont:'VT',Virginia:'VA',Washington:'WA','West Virginia':'WV',Wisconsin:'WI',Wyoming:'WY','District of Columbia':'DC'};
+function cjPlace(s){ return s.country==='United States'?([s.city,CJ_ST[s.region]||s.region].filter(Boolean).join(', ')||'United States'):([s.city,s.country].filter(Boolean).join(', ')||'Unknown'); }
+function cjMonths(){ var m={}; ((CJ&&CJ.sessions)||[]).forEach(function(s){ if(s.class!=='dev'){ var k=cjPTm(s.session_start); if(k) m[k]=1; } }); return Object.keys(m).sort().reverse(); }
+function cjMonName(m){ var a=m.split('-'); return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+a[1]-1]+' '+a[0]; }
+function cjSetMonth(v){ if(v){ cjWin='mon'; cjMonthSel=v; } else cjWin='ytd'; cjSel=''; renderTabs(); renderCjPanel(); }
+function cjSetBot(v){ cjBot=v; cjSel=''; renderTabs(); renderCjPanel(); }
+function cjSetCtry(v){ cjCtry=v; cjSel=''; renderTabs(); renderCjPanel(); }
+function cjShowUser(i){ var s=CJ.sessions[i]; cjSel=s?s.user:''; renderTabs(); renderCjPanel(); var p=document.getElementById('panel'); if(p) p.scrollTop=0; window.scrollTo(0,0); }
+function cjCartLines(s){
+  if((s.cart||[]).length) return s.cart.map(function(c){ return '<div style="font-size:12px;color:#a1362c;font-variant-numeric:tabular-nums;">'+escapeHtml(c.sku||c.name)+', ×'+Number(c.qty).toLocaleString()+(c.value!=null?' · '+cjUsd(c.value,1):'')+'</div>'; }).join('');
+  var atc=(s.atc_items||[]); return atc.length?'<div style="font-size:11px;color:#a1362c;">In cart: '+atc.map(escapeHtml).join(', ')+'</div>':'';
+}
+function cjMaybe(s,full){
+  var pc=s.possible_customers||[]; if(s.class!=='abandoner'||!pc.length) return '';
+  if(!full) return '<div style="font-size:12px;color:#8a5a00;margin-top:4px;">Could be: '+escapeHtml(pc.slice(0,3).map(function(c){return c.name;}).join(', '))+(pc.length>3?' +'+(pc.length-3)+' more':'')+' <span style="color:#7a8a99;">(same city as a customer, not confirmed)</span></div>';
+  return '<div style="font-size:12px;color:#8a5a00;margin-top:6px;"><b>Could be one of these customers</b> <span style="color:#7a8a99;">(same city as these Shopify customers — a city match only, not confirmed)</span>'+pc.map(function(c){ return '<div>• <b>'+escapeHtml(c.name)+'</b>'+(c.contact?' ('+escapeHtml(c.contact)+')':'')+' · '+Number(c.orders).toLocaleString()+' order'+(c.orders===1?'':'s')+'</div>'; }).join('')+'</div>';
+}
+// ── Insight & analysis (why carts were abandoned) — same logic as the mobile app ──
+function cjInClose(){ var o=document.getElementById('cjin'); if(o) o.remove(); }
+function cjInGo(i){ cjInClose(); cjShowUser(i); }
+function cjInsightHtml(rows){
+  var all=CJ.sessions;
+  var later=function(s){ return all.some(function(x){ return x.user===s.user&&x.class==='purchaser'&&(x.session_start||'')>(s.session_start||''); }); };
+  var urls=function(s){ return (s.journey||[]).map(function(j){ return ((j.url||'')+' '+(j.label||'')).toLowerCase(); }).join(' | '); };
+  var skuSet=function(s){ var o={}; (s.cart||[]).forEach(function(c){ var k=String(c.sku||'').toUpperCase(); if(k) o[k]=1; }); return o; };
+  var A=rows.filter(function(s){ return !cjIsBot(s); }), botN=rows.length-A.length;
+  if(!A.length) return '<p>No abandoned carts from real people match the current filters.</p>';
+  var V=function(l){ return l.reduce(function(t,s){ return t+(s.cart_value||0); },0); }, tot=V(A);
+  var stg={added:0,cart_viewed:0,checkout:0,shipping:0,payment:0}; A.forEach(function(s){ if(stg[s.stage]!=null) stg[s.stage]++; else stg.added++; });
+  var R=[]; var add=function(key,title,why,f){ var l=A.filter(f); if(l.length) R.push({key:key,title:title,why:why,l:l}); };
+  add('later','Came back and bought later','Not lost: the same visitor placed an order in a later visit. Typical of labs that build a cart, get approval, then return.',later);
+  add('big','Big-ticket cart (capital purchase)','Carts of $10k+ or analyzer/instrument items usually need a quote, a PO or management sign-off, which a web checkout does not provide.',function(s){ return (s.cart_value||0)>=10000||(s.cart||[]).some(function(c){ return /analy[sz]er|instrument/i.test(c.name||'')&&(c.value||0)>=2000; }); });
+  add('pay','Stopped at the payment step','They entered shipping and reached payment, then left: most likely payment method — labs often buy on net terms or a PO, not a card.',function(s){ return s.stage==='payment'; });
+  add('ship','Stopped after seeing shipping','They entered an address and left before paying: shipping cost or delivery time (cold-chain reagents) is the usual reason.',function(s){ return s.stage==='shipping'; });
+  add('co','Opened checkout, left before the address','Left at the first checkout screen: account/login prompt, surprise totals, or they only wanted to see the final price.',function(s){ return s.stage==='checkout'; });
+  add('acct','Hit the login / account pages','Visited account or login pages during the visit: possible login friction or looking for their pricing/terms.',function(s){ return urls(s).indexOf('/account')>=0; });
+  add('policy','Read shipping / contact / return pages','Looked for shipping, return or contact information: had a question the product page did not answer.',function(s){ return /(shipping|contact|return|refund|polic|faq)/.test(urls(s)); });
+  add('research','Price / product research','Viewed 5+ products, searched the site, or it was a repeat visit without buying: comparing prices or alternatives.',function(s){ return !later(s)&&((s.product_views||0)>=5||(s.search_terms||[]).length>0||(s.visit||1)>1); });
+  add('quick','Quick exit after adding to cart','Added an item and left within a minute without opening checkout: price check or saving the cart for later.',function(s){ return (s.stage==='added'||s.stage==='cart_viewed'||!s.stage)&&(s.engaged_sec||0)<60; });
+  add('paid','Arrived from a paid ad','Came from Google Ads: ad traffic includes many price-checkers. Check that ad prices and landing pages match the cart.',function(s){ return cjSrc(s)==='paid'; });
+  add('mobile','On a phone','Mobile visitors often browse at work and finish on a desktop — or not at all.',function(s){ return (s.device&&s.device.category)==='mobile'; });
+  add('intl','Outside the US','International visitors may not be able to ship there or may hit customs/import limits.',function(s){ return !cjIsUS(s); });
+  add('known','Could be an existing customer','City matches a current Shopify customer: may have built the cart and then ordered through their usual channel (email/PO/rep).',function(s){ return (s.possible_customers||[]).length>0; });
+  R.sort(function(a,b){ return b.l.length-a.l.length||V(b.l)-V(a.l); });
+  var pct=function(n){ return Math.round(n*100/A.length)+'%'; };
+  var lnk=function(s,txt){ return '<a href="javascript:void(0)" onclick="cjInGo('+all.indexOf(s)+')">'+txt+'</a>'; };
+  var ex=function(l){ return l.slice(0,4).map(function(s){ return lnk(s,escapeHtml(cjPlace(s))+(s.cart_value?' '+cjUsd(s.cart_value,1):'')); }).join(', '); };
+  var fun=[['added','Added to cart only'],['cart_viewed','Opened the cart'],['checkout','Started checkout'],['shipping','Entered shipping'],['payment','Reached payment']];
+  // each Shopify abandoned checkout goes to at most one cart: within 3 h, same SKU (or within 30 min), same city preferred
+  var named=[], used={};
+  (CJ.abandoned_checkouts||[]).forEach(function(c){ var ct=Date.parse(c.created), best=null;
+    A.forEach(function(s){ var i=all.indexOf(s); if(used[i]) return; var t=Date.parse(s.session_start||''); if(!t) return; var d=Math.abs(ct-t)/36e5; if(d>3) return;
+      var k=skuSet(s), hit=(c.lines||[]).some(function(l){ return k[String(l.sku||'').toUpperCase()]; }); if(!hit&&d>0.5) return;
+      var city=c.city&&s.city&&c.city.toLowerCase()===String(s.city).toLowerCase(); var sc=d-(city?10:0)-(hit?1:0); if(!best||sc<best.sc) best={s:s,i:i,sc:sc}; });
+    if(best){ used[best.i]=1; named.push([best.s,c]); } });
+  var recs=[], has=function(k){ return R.some(function(r){ return r.key===k; }); };
+  if(has('big')) recs.push('Add a “Request a quote” button on analyzers and large carts, and call every $10k+ abandoned cart within a day.');
+  if(has('pay')||has('known')) recs.push('Offer “Pay on terms / upload PO” at checkout for approved lab accounts.');
+  if(has('ship')||has('policy')) recs.push('Show shipping cost and cold-chain delivery time on the product and cart pages, before checkout.');
+  if(has('co')||has('acct')) recs.push('Check that guest checkout is on and that logged-in labs see their contract pricing before checkout.');
+  if(has('paid')||has('quick')||has('research')) recs.push('Check ad prices against store prices, and turn on Shopify’s abandoned-cart email for visitors who left an email.');
+  if(named.length) recs.push('Follow up personally with the '+named.length+' visitor'+(named.length>1?'s':'')+' Shopify identified (listed above).');
+  var sec=function(t){ return '<div style="font-size:12px;font-weight:700;color:#5a6b7b;text-transform:uppercase;letter-spacing:.04em;margin:14px 0 6px;">'+t+'</div>'; };
+  return '<p style="margin:0 0 6px;font-size:14px;"><b>'+A.length+'</b> abandoned carts from real people · cart potential <b>'+cjUsd(tot)+'</b>'+(botN?' <span style="color:#7a8a99;font-size:12px;">('+botN+' likely-bot cart'+(botN>1?'s':'')+' left out)</span>':'')+'</p>'+
+    sec('Where they stopped')+fun.map(function(f){ return '<div style="display:flex;align-items:center;gap:10px;margin:4px 0;"><span style="width:150px;font-size:13px;">'+f[1]+'</span><span style="flex:1;background:#eef1f4;border-radius:4px;height:12px;"><span style="display:block;height:12px;border-radius:4px;background:#1a73e8;width:'+(stg[f[0]]*100/A.length)+'%"></span></span><b style="width:34px;text-align:right;font-size:13px;">'+stg[f[0]]+'</b></div>'; }).join('')+
+    sec('Likely reasons, most common first')+R.map(function(r){ return '<div style="margin:8px 0;padding:10px 12px;border:1px solid #e3e8ee;border-radius:8px;"><div style="display:flex;justify-content:space-between;gap:10px;"><b style="font-size:14px;">'+escapeHtml(r.title)+'</b><span style="white-space:nowrap;font-size:13px;">'+r.l.length+' · '+pct(r.l.length)+' · '+cjUsd(V(r.l))+'</span></div><div style="font-size:12px;color:#5a6b7b;margin-top:3px;">'+escapeHtml(r.why)+'</div><div style="font-size:12px;color:#5a6b7b;margin-top:3px;">e.g. '+ex(r.l)+'</div></div>'; }).join('')+
+    '<div style="font-size:12px;color:#7a8a99;">A cart can show several reasons, so these add up to more than '+A.length+'. GA4 shows behavior, not intent — these are best guesses.</div>'+
+    sec('Who they were (Shopify abandoned checkouts)')+(CJ.abandoned_checkouts?(named.length?named.map(function(x){ var s=x[0],c=x[1]; return '<div style="font-size:13px;margin:3px 0;">• <b>'+escapeHtml(c.company||c.customer||c.email||'Unnamed')+'</b>'+(c.company&&c.customer?' ('+escapeHtml(c.customer)+')':'')+(c.email&&(c.company||c.customer)&&c.customer!==c.email?' · '+escapeHtml(c.email):'')+(c.city?' · ship-to '+escapeHtml(c.city+(c.region?', '+c.region:'')):'')+' · '+cjUsd(c.total,1)+(c.prior_orders?' · '+c.prior_orders+' past orders':' · new')+' — '+lnk(s,escapeHtml(cjPlace(s)))+'</div>'; }).join(''):'<div style="font-size:12px;color:#7a8a99;">None of these carts reached the checkout email step, so Shopify has no name for them.</div>'):'<div style="font-size:12px;color:#7a8a99;">Not available'+(CJ.abandoned_checkouts_error?': '+escapeHtml(CJ.abandoned_checkouts_error.slice(0,120)):'')+'</div>')+
+    (recs.length?sec('What to do')+recs.map(function(r){ return '<div style="font-size:13px;margin:3px 0;">• '+escapeHtml(r)+'</div>'; }).join(''):'');
+}
+function cjOpenInsight(){
+  var ab=cjSessions().filter(function(s){ return s.class==='abandoner'; });
+  var o=document.createElement('div'); o.id='cjin'; o.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:1000;display:flex;align-items:center;justify-content:center;';
+  var when=cjWin==='mon'?cjMonName(cjMonthSel):cjWin==='ytd'?'2026 YTD':cjWin==='month'?'Current month':(cjCustStart+' → '+cjCustEnd);
+  o.innerHTML='<div style="background:#fff;width:min(720px,94vw);max-height:86vh;overflow:auto;border-radius:12px;padding:18px 22px 24px;box-shadow:0 10px 40px rgba(0,0,0,.25);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;"><b style="font-size:18px;">Why carts were abandoned</b><button onclick="cjInClose()" aria-label="Close" style="border:0;background:none;font-size:24px;line-height:1;cursor:pointer;">×</button></div><div style="font-size:12px;color:#7a8a99;margin-bottom:10px;">'+escapeHtml(when)+' · current filters</div>'+cjInsightHtml(ab)+'</div>';
+  o.onclick=function(e){ if(e.target===o) cjInClose(); }; document.body.appendChild(o);
+}
 var cjLineOrder=['all','conmed','beckman','siemens','abbott','diazyme'];
 var cjLineDefs=[['conmed','Conmed',/conmed|virovac|vv120|vs35302|armstand/i],['beckman','Beckman Coulter',/beckman/i],['siemens','Siemens',/siemens/i],['abbott','Abbott',/abbott/i],['diazyme','Diazyme',/diazyme|\bDZ\d/i]];
 var cjTermList=[], cjProdList=[];        // facet lists (index -> value) for onclick handlers
@@ -1581,7 +1667,8 @@ function loadCJ(){
     .catch(function(e){ cjLoading=false; if(mode==='cj') document.getElementById('panel').innerHTML='<div class="empty">Could not load Customer Journey data: '+escapeHtml(e.message)+'</div>'; });
 }
 function cjRefresh(){ CJ=CJ_EMBED||null; cjLoading=false; document.getElementById('panel').innerHTML='<div class="empty">Reloading customer-journey snapshot…</div>'; loadCJ(); }
-function cjInitCustom(){ if(!cjCustStart && CJ){ cjCustStart=CJ.data_from||''; cjCustEnd=CJ.data_through||''; } }
+function cjInitCustom(){ if(!cjCustStart && CJ){ cjCustStart=CJ.data_from||''; cjCustEnd=CJ.data_through||''; }
+  if(CJ && !cjMonthSel){ var ms=cjMonths(), cur=cjPTm(new Date().toISOString()); cjMonthSel=ms.indexOf(cur)>=0?cur:(ms[0]||cur); } }
 function cjShortUrl(u){
   if(!u) return '';
   try{ var a=document.createElement('a'); a.href=u; var p=a.pathname||'/'; if(a.search) p+=a.search; return (p||'/').slice(0,80); }
@@ -1595,6 +1682,7 @@ function cjWhen(iso){
 function cjDay(iso){ return (iso||'').slice(0,10); }
 function cjInWin(iso){
   var day=cjDay(iso); if(!day) return false;
+  if(cjWin==='mon'){ return cjPTm(iso)===cjMonthSel; }
   if(cjWin==='ytd'){ return day>='2026-01-01' && day<='2026-12-31'; }
   if(cjWin==='month'){ var now=new Date(); var mk=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0'); return day.slice(0,7)===mk; }
   // custom
@@ -1611,9 +1699,9 @@ function cjBaseSessions(){   // window + outcome filter (drives the sidebar face
   return cjWinSessions().filter(function(s){
     if(cjOutcome==='cart' && !(s.class==='abandoner'||s.class==='purchaser')) return false;
     if(cjOutcome==='left' && s.class!=='browser') return false;
-    if(cjEntry!=='all'){ var ek=String((s.entry||{}).kind||'').toLowerCase();
-      if(cjEntry==='organic' && ek.indexOf('organic')<0) return false;
-      if(cjEntry==='paid' && ek.indexOf('paid')<0) return false; }
+    if(cjEntry!=='all' && cjSrc(s)!==cjEntry) return false;
+    if(cjBot!=='all' && (cjBot==='bots')!==cjIsBot(s)) return false;
+    if(cjCtry!=='all' && (cjCtry==='us')!==cjIsUS(s)) return false;
     if(cjLine!=='all' && cjSessionLines(s).indexOf(cjLine)<0) return false;
     return true;
   });
@@ -1686,11 +1774,11 @@ var cjVisList=[];
 function cjSelectVisitor(i){ cjSel = (i<0 ? '' : ((cjVisList[i]||{}).user||'')); renderTabs(); renderCjPanel(); }
 function cjToggleTermIdx(i){ var v=(i<0?'':((cjTermList[i]||{}).v||'')); cjTermFilter=(cjTermFilter===v?'':v); cjSel=''; renderTabs(); renderCjPanel(); }
 function cjToggleProdIdx(i){ var v=(i<0?'':((cjProdList[i]||{}).v||'')); cjProdFilter=(cjProdFilter===v?'':v); cjSel=''; renderTabs(); renderCjPanel(); }
-function cjClearFilters(){ cjTermFilter=''; cjProdFilter=''; cjOutcome='all'; cjEntry='all'; cjLine='all'; cjSel=''; renderTabs(); renderCjPanel(); }
+function cjClearFilters(){ cjTermFilter=''; cjProdFilter=''; cjOutcome='all'; cjEntry='all'; cjLine='all'; cjBot='all'; cjCtry='all'; cjSel=''; renderTabs(); renderCjPanel(); }
 function cjSetOutcome(o){ cjOutcome=o; cjSel=''; renderTabs(); renderCjPanel(); }
 function cjSetOutcomeIdx(i){ cjSetOutcome(['all','cart','left'][i]||'all'); }
 function cjSetEntry(o){ cjEntry=o; cjSel=''; renderTabs(); renderCjPanel(); }
-function cjSetEntryIdx(i){ cjSetEntry(['all','organic','paid'][i]||'all'); }
+function cjSetEntryIdx(i){ cjSetEntry(['all','paid','organic','direct','other'][i]||'all'); }
 function cjSetLine(o){ cjLine=o; cjSel=''; renderTabs(); renderCjPanel(); }
 function cjSetLineIdx(i){ cjSetLine(cjLineOrder[i]||'all'); }
 function cjStepHtml(step){
@@ -1738,15 +1826,23 @@ function cjJourneyCard(s){
     ? '<span class="status" style="background:#fff8e1;color:#8a6d00;">🔎 Search: '+terms.map(escapeHtml).join(', ')+'</span>'
     : (String((e.kind||'')).toLowerCase().indexOf('organic')>=0 || String((e.kind||'')).toLowerCase().indexOf('paid')>=0
         ? '<span class="status" style="background:#f4f6f8;color:#8a97a5;" title="Google withholds the exact keyword for most organic/paid clicks">🔎 keyword not provided</span>' : '');
-  var atc=(s.atc_items||[]);
-  var atcLine = atc.length ? '<div style="font-size:11px;color:#a1362c;margin-top:4px;">In cart: '+atc.map(escapeHtml).join(', ')+'</div>' : '';
+  var idx=CJ.sessions.indexOf(s), v=cjVal(s);
+  var nVis=CJ.sessions.filter(function(x){ return x.user===s.user&&x.class!=='dev'; }).length;
+  var pills=(v!=null&&s.class!=='browser'?'<b style="font-size:14px;">'+cjUsd(v,1)+'</b> ':'')+
+    (s.visit>1?'<span class="status" style="background:#e8f0fe;color:#1a56c4;">'+cjOrd(s.visit)+' visit</span> ':'')+
+    (cjIsBot(s)?'<span class="status" style="background:#fde8e8;color:#9b1c1c;" title="'+escapeHtml((s.bot.reasons||[]).join(', '))+'">likely bot</span> ':'');
+  var atcLine='<div style="margin-top:4px;">'+cjCartLines(s)+'</div>'+cjMaybe(s,true);
+  var dev=[s.device&&s.device.category,s.device&&s.device.os,s.device&&s.device.browser].filter(function(x){ return x&&x!=='(not set)'; }).join(' · ');
+  var devLine='<div style="font-size:11px;color:#7a8a99;margin-top:6px;">'+escapeHtml(dev||'Device not reported')+(s.engaged_sec!=null?' · engaged '+s.engaged_sec+' s':'')+
+    (cjIsBot(s)?' · <span style="color:#9b1c1c;">Likely bot: '+escapeHtml((s.bot.reasons||[]).join(', '))+'</span>':(s.bot&&s.bot.score?' · bot signals (not enough to flag): '+escapeHtml((s.bot.reasons||[]).join(', ')):''))+
+    (!cjSel&&nVis>1?' · <a href="javascript:void(0)" onclick="cjShowUser('+idx+')" style="color:#1a73e8;font-weight:600;">All '+nVis+' recorded visits by this visitor →</a>':'')+'</div>';
   var steps=(s.journey||[]).map(cjStepHtml).join('');
   return '<div style="border:1px solid #e3e8ee;border-radius:8px;padding:12px 14px;margin:10px 16px;background:#fff;">'+
     '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px;">'+
-      '<div style="font-weight:600;color:#2c3e50;">'+escapeHtml(loc||'Unknown location')+' <span style="font-weight:400;color:#7a8a99;font-size:12px;">· '+cjWhen(s.session_start)+' · '+(s.page_views||0)+' pages</span></div>'+
-      outcome+'</div>'+
+      '<div style="font-weight:600;color:#2c3e50;">'+escapeHtml(cjPlace(s)||loc||'Unknown location')+' <span style="font-weight:400;color:#7a8a99;font-size:12px;">· '+cjWhen(s.session_start)+' · '+(s.page_views||0)+' pages</span></div>'+
+      '<span style="display:flex;align-items:center;gap:6px;">'+pills+outcome+'</span></div>'+
     '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;">'+entryPill+searchPill+'</div>'+
-    atcLine+
+    atcLine+devLine+
     '<div style="font-size:11px;color:#7a8a99;margin:8px 0 2px;font-weight:600;">Page sequence</div>'+
     '<div style="border-left:2px solid #eef2f6;margin-left:6px;">'+steps+'</div></div>';
 }
@@ -1757,6 +1853,7 @@ function renderCjPanel(){
   function wb(w,lbl,idx){ return '<button class="mode-btn'+(cjWin===w?' active':'')+'" style="padding:5px 11px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;" onclick="cjSetWinIdx('+idx+')">'+lbl+'</button>'; }
   var sel='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:2px 0 4px;">'+
     '<span style="font-size:12px;color:#7a8a99;margin-right:2px;">Window:</span>'+
+    '<select onchange="cjSetMonth(this.value)" style="font:inherit;font-size:12px;padding:4px 6px;border:1px solid #cdd9e6;border-radius:6px;'+(cjWin==='mon'?'background:#e8f0fe;font-weight:600;':'')+'"><option value="">Month…</option>'+cjMonths().map(function(m){ return '<option value="'+m+'"'+(cjWin==='mon'&&m===cjMonthSel?' selected':'')+'>'+cjMonName(m)+'</option>'; }).join('')+'</select>'+
     wb('ytd','2026 YTD',0)+wb('month','Current month',1)+wb('custom','Custom',2)+
     '<span style="margin-left:8px;font-size:12px;color:#7a8a99;">'+
       'from <input type="date" id="cjStart" value="'+escapeHtml(cjCustStart)+'" onchange="cjSetCustom()" style="font:inherit;padding:2px 4px;border:1px solid #cfd8e0;border-radius:4px;"> '+
@@ -1769,7 +1866,14 @@ function renderCjPanel(){
   function eb(o,lbl,idx){ return '<button class="mode-btn'+(cjEntry===o?' active':'')+'" style="padding:5px 11px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;" onclick="cjSetEntryIdx('+idx+')">'+lbl+'</button>'; }
   sel+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 4px;">'+
     '<span style="font-size:12px;color:#7a8a99;margin-right:2px;">Source:</span>'+
-    eb('all','All',0)+eb('organic','🔍 Organic search',1)+eb('paid','📣 Paid search',2)+'</div>';
+    eb('all','All traffic',0)+eb('paid','📣 Paid',1)+eb('organic','🔍 Organic',2)+eb('direct','Direct',3)+eb('other','Other',4)+'</div>';
+  var cnt0=cjWinSessions().filter(function(s){ return (cjEntry==='all'||cjSrc(s)===cjEntry)&&(cjCtry==='all'||(cjCtry==='us')===cjIsUS(s)); });
+  function bb(o,lbl){ var n=o==='all'?cnt0.length:cnt0.filter(function(s){ return (o==='bots')===cjIsBot(s); }).length; return '<button class="mode-btn'+(cjBot===o?' active':'')+'" style="padding:5px 11px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;" onclick="cjSetBot(&quot;'+o+'&quot;)">'+lbl+' '+n+'</button>'; }
+  sel+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 4px;">'+
+    '<span style="font-size:12px;color:#7a8a99;margin-right:2px;">Visitors:</span>'+bb('all','Everyone')+bb('people','Real people')+bb('bots','Likely bots')+
+    '<span style="font-size:12px;color:#7a8a99;margin:0 2px 0 12px;">Country:</span>';
+  function cb(o,lbl){ return '<button class="mode-btn'+(cjCtry===o?' active':'')+'" style="padding:5px 11px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;" onclick="cjSetCtry(&quot;'+o+'&quot;)">'+lbl+'</button>'; }
+  sel+=cb('all','All countries')+cb('us','US')+cb('intl','Outside US')+'</div>';
   function lb(o,lbl,idx){ return '<button class="mode-btn'+(cjLine===o?' active':'')+'" style="padding:5px 11px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;" onclick="cjSetLineIdx('+idx+')">'+lbl+'</button>'; }
   sel+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 4px;">'+
     '<span style="font-size:12px;color:#7a8a99;margin-right:2px;">Product line:</span>'+
@@ -1781,19 +1885,21 @@ function renderCjPanel(){
   var ss=cjSessions();
   var visN=cjVisitors().length, buyN=0, abN=0, brN=0, rev=0;
   for(var i=0;i<ss.length;i++){ var c=ss[i].class; if(c==='purchaser'){ buyN++; rev+=(ss[i].revenue||0); } else if(c==='abandoner'){ abN++; } else { brN++; } }
+  var pot=0, prev=0; for(var k=0;k<ss.length;k++){ if(ss[k].class==='abandoner') pot+=(ss[k].cart_value||0); else if(ss[k].class==='purchaser') prev+=(cjVal(ss[k])||0); }
   var cards='<div class="kpis" style="padding:6px 0 0;">'+
+    kpi(Number(abN).toLocaleString(),'Abandoned carts<br><span style="font-weight:600;">Cart potential '+cjUsd(pot)+'</span>')+
+    kpi(Number(buyN).toLocaleString(),'Purchases<br><span style="font-weight:600;">Purchased '+cjUsd(prev)+'</span>')+
+    '<div class="kpi" onclick="cjOpenInsight()" title="Analysis of the abandoned carts in the current filters" style="cursor:pointer;border:1px solid #1a73e8;"><div class="v" style="color:#1a73e8;">›</div><div class="l"><b>Insight &amp; analysis</b><br>Why carts were abandoned</div></div>'+
     kpi(Number(visN).toLocaleString(),'Visitors')+
     kpi(Number(ss.length).toLocaleString(),'Sessions')+
-    kpi(Number(buyN).toLocaleString(),'Purchased')+
-    kpi(Number(abN).toLocaleString(),'Abandoned cart')+
-    kpi(Number(brN).toLocaleString(),'Browsed only')+
-    kpi(rev?('$'+Number(rev).toLocaleString()):'$0','Revenue')+'</div>';
+    kpi(Number(brN).toLocaleString(),'Browsed only')+'</div>';
   // active filter banner
   var fnote='';
-  if(cjTermFilter||cjProdFilter||cjOutcome!=='all'||cjEntry!=='all'||cjLine!=='all'){
+  if(cjTermFilter||cjProdFilter||cjOutcome!=='all'||cjEntry!=='all'||cjLine!=='all'||cjBot!=='all'||cjCtry!=='all'){
     var parts=[];
-    if(cjEntry==='organic') parts.push('source: organic search');
-    if(cjEntry==='paid') parts.push('source: paid search');
+    if(cjEntry!=='all') parts.push('traffic: '+cjEntry);
+    if(cjBot!=='all') parts.push(cjBot==='bots'?'likely bots':'real people');
+    if(cjCtry!=='all') parts.push(cjCtry==='us'?'US':'outside US');
     if(cjLine!=='all'){ for(var li=0;li<cjLineDefs.length;li++){ if(cjLineDefs[li][0]===cjLine) parts.push('product line: '+cjLineDefs[li][1]); } }
     if(cjOutcome==='cart') parts.push('outcome: added to cart / purchased');
     if(cjOutcome==='left') parts.push('outcome: left without cart');
@@ -1803,7 +1909,7 @@ function renderCjPanel(){
   }
   cards+=fnote;
   // body: selected visitor's journeys, else all in-window sessions
-  var shown = cjSel ? ss.filter(function(s){ return s.user===cjSel; }) : ss;
+  var shown = cjSel ? CJ.sessions.filter(function(s){ return s.user===cjSel && s.class!=='dev'; }).sort(function(a,b){ return (a.session_start||'').localeCompare(b.session_start||''); }) : ss;
   var body;
   if(!shown.length){
     body='<div class="empty" style="margin:14px 16px;line-height:1.6;">'+
@@ -1814,7 +1920,8 @@ function renderCjPanel(){
       '</div>';
   } else {
     var CAP=50, over=shown.length-CAP, listS=shown.slice(0,CAP);
-    var title = cjSel ? ('<div class="ca-h" style="margin:10px 16px 0;">'+escapeHtml(cjVisitorLabel(shown[0]))+' — '+shown.length+' session'+(shown.length>1?'s':'')+'</div>') : '';
+    var lastV=shown.reduce(function(m,x){ return Math.max(m,x.visit||0); },0);
+    var title = cjSel ? ('<div class="ca-h" style="margin:10px 16px 0;">All visits by this visitor — '+escapeHtml(cjPlace(shown[0]))+' ('+shown.length+' recorded'+(lastV>shown.length?' of '+lastV:'')+', oldest first) &middot; <a href="javascript:void(0)" onclick="cjSel=&quot;&quot;;renderTabs();renderCjPanel();" style="color:#1a73e8;font-weight:600;">← back to all journeys</a></div>') : '';
     body=title+listS.map(cjJourneyCard).join('')+
       (over>0?('<div class="empty" style="margin:10px 16px;">Showing first '+CAP+' of '+shown.length+' sessions — use the Search terms / Products filters or pick a customer in the sidebar to narrow.</div>'):'');
   }
