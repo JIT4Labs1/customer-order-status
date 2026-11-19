@@ -8080,15 +8080,55 @@
       "found_at": "2026-11-18T18:59:50Z",
       "scan_id": "allora-fix",
       "file": "invoices/Invoice_1839_from_Allora_Biotech_LLC_dOQAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsErdPjAAA=",
+      "source": "quickbooks",
+      "sender": "quickbooks@notification.intuit.com",
+      "subject": "New payment request from Allora Biotech LLC - invoice 1841",
+      "received": "2026-11-19T02:15:30Z",
+      "filename": "Invoice_1841_from_Allora_Biotech_LLC.pdf",
+      "vendor": "Allora Biotech LLC",
+      "po_raw": "995",
+      "lines": [
+        {
+          "sku": "OSR6106",
+          "desc": "Amylase (PNPG3) reagent, R1 4 x 40 mL - Beckman",
+          "qty": 1,
+          "rate": 180,
+          "po_unit": 180.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "ship_to": "Chicago Lab",
+      "ship_date": "11/18/2026",
+      "inv_date": "11/18/2026",
+      "po_key": "PO995",
+      "po_status": "Received Shipment",
+      "po_missing": [
+        "OSR6230",
+        "37200"
+      ],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsErdPjAAA=|Invoice_1841_from_Allora_Biotech_LLC.pdf",
+      "found_at": "2026-11-19T06:05:41Z",
+      "scan_id": "req-20261119060516",
+      "file": "invoices/Invoice_1841_from_Allora_Biotech_LLC_dPjAAA.pdf"
     }
   ],
   "last_scan": {
-    "id": "req-20261118190244",
-    "at": "2026-11-18T19:03:09Z",
+    "id": "req-20261119060516",
+    "at": "2026-11-19T06:05:41Z",
     "window": "week",
-    "since": "2026-11-11T11:03:06.380057-08:00",
+    "since": "2026-11-11T22:05:35.833662-08:00",
     "scanned": 10,
-    "added": 0
+    "added": 1
   },
   "pulled_at": "2026-11-09 09:35 PM PT"
 }
