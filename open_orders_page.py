@@ -1053,6 +1053,7 @@ def build_html(page_data, embeds=None):
       <button class="mode-btn" data-mode="ca" onclick="setMode('ca')">Customer Analysis</button>
       <button class="mode-btn" data-mode="wt" onclick="setMode('wt')">Website Traffic</button>
       <button class="mode-btn" data-mode="cj" onclick="setMode('cj')">Customer Journey</button>
+      <button class="mode-btn" data-mode="ai" onclick="setMode('ai')">AI Engines</button>
       <button class="mode-btn" data-mode="gads" onclick="setMode('gads')">Google Ads</button>
       <button class="mode-btn" data-mode="li" onclick="setMode('li')">LinkedIn</button>
     </div>
@@ -1194,7 +1195,7 @@ function kpi(v,l,style){ return '<div class="kpi"'+(style?' style="'+style+'"':'
 
 function renderTabs(){
   var tabsEl=document.getElementById('tabs');
-  var fullWidth=(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay' || mode==='vspend' || mode==='cprices' || mode==='inv' || mode==='iopp' || mode==='deliv' || mode==='fda' || mode==='cj');
+  var fullWidth=(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay' || mode==='vspend' || mode==='cprices' || mode==='inv' || mode==='iopp' || mode==='deliv' || mode==='fda' || mode==='cj' || mode==='ai');
   // Left-align: when a view has no left sidebar, collapse the side column so content aligns left (not centered).
   var sidecol=document.querySelector('.sidecol'); if(sidecol) sidecol.style.display = fullWidth ? 'none' : '';
   var pw=document.querySelector('.panel-wrap'); if(pw) pw.style.marginLeft = fullWidth ? '0' : '';
@@ -1490,6 +1491,7 @@ function renderPanel(){
   else if(mode==='li') renderLiPanel();
   else if(mode==='wt') renderWtPanel();
   else if(mode==='cj') renderCjPanel();
+  else if(mode==='ai') renderAiPanel();
   else if(mode==='ship') renderShipPanel();
   else if(mode==='deliv') renderDelivPanel();
   else if(mode==='fda') renderFdaPanel();
@@ -1668,8 +1670,69 @@ function loadCJ(){
   if(cjLoading) return; cjLoading=true;
   fetch('customer-journey-data.json?cb='+Date.now(),{cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
-    .then(function(d){ CJ=d; cjLoading=false; cjInitCustom(); if(mode==='cj'){ renderTabs(); renderCjPanel(); } })
+    .then(function(d){ CJ=d; cjLoading=false; cjInitCustom(); if(mode==='cj'){ renderTabs(); renderCjPanel(); } if(mode==='ai') renderAiPanel(); })
     .catch(function(e){ cjLoading=false; if(mode==='cj') document.getElementById('panel').innerHTML='<div class="empty">Could not load Customer Journey data: '+escapeHtml(e.message)+'</div>'; });
+}
+// ── AI Engines tab (Marketing): visits that came from ChatGPT, Copilot, Gemini, Perplexity and other AI assistants.
+// Data: customer-journey-data.json "ai" (GA4 sessions whose traffic source or referrer is an AI assistant; kept in R2 so
+// months older than GA4's 60-day export stay). Same session layout as the mobile app's AI Engines screen.
+var aiEng='all', aiMon='all', aiSelUser='';
+function aiAll(){ return ((CJ&&CJ.ai&&CJ.ai.sessions)||[]); }
+function aiEngines(){ var o={}; aiAll().forEach(function(s){ o[s.ai]=(o[s.ai]||0)+1; }); var l=Object.keys(o).sort(function(a,b){ return o[b]-o[a]; }); ['ChatGPT','Copilot'].forEach(function(e){ if(l.indexOf(e)<0) l.push(e); }); return l; }
+function aiVisits(s){   // every recorded session of this visitor (AI or not)
+  var m={}; aiAll().concat((CJ&&CJ.sessions)||[]).forEach(function(x){ if(x.user===s.user) m[x.session_id]=x; });
+  return Object.keys(m).map(function(k){ return m[k]; }).sort(function(a,b){ return String(a.session_start).localeCompare(String(b.session_start)); });
+}
+function aiSetEng(v){ aiEng=v; aiSelUser=''; renderAiPanel(); }
+function aiSetMon(v){ aiMon=v; aiSelUser=''; renderAiPanel(); }
+function aiShowUser(u){ aiSelUser=u; renderAiPanel(); window.scrollTo(0,0); }
+function aiCard(s){
+  var vis=aiVisits(s), n=Math.max(vis.length, s.visit||1);
+  var rep = (s.visit||1)>1||vis.length>1;
+  var out = s.class==='purchaser'?'<span class="status" style="background:#e3f6ea;color:#1e7b3c;">Purchased'+(s.revenue!=null?' '+cjUsd(s.revenue,1):'')+'</span>'
+    : s.class==='abandoner'?'<span class="status" style="background:#fdecea;color:#a1362c;">Added to cart · no purchase</span>'
+    : '<span class="status" style="background:#eef1f4;color:#5a6b7b;">No purchase</span>';
+  var visPill = rep?'<span class="status" style="background:#e8f0fe;color:#1a56c4;">Returning visitor · '+cjOrd(s.visit||vis.indexOf(s)+1)+' visit</span>':'<span class="status" style="background:#f3f0fa;color:#5b3fa0;">Single visit</span>';
+  var steps=(s.journey||[]).map(cjStepHtml).join('');
+  return '<div style="border:1px solid #e3e8ee;border-radius:10px;padding:12px 14px;margin:10px 16px;background:#fff;">'+
+    '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">'+
+      '<div style="font-weight:600;color:#2c3e50;">'+escapeHtml(cjPlace(s))+' <span style="font-weight:400;color:#7a8a99;font-size:12px;">· '+cjWhen(s.session_start)+' · '+(s.page_views||0)+' page'+(s.page_views===1?'':'s')+' viewed</span></div>'+
+      '<span style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;"><span class="status" style="background:#fff4e0;color:#8a5a00;">'+escapeHtml(s.ai)+'</span>'+visPill+out+'</span></div>'+
+    (s.class!=='purchaser'&&(s.cart||[]).length?'<div style="margin-top:4px;">'+cjCartLines(s)+'</div>':'')+
+    '<div style="font-size:11px;color:#7a8a99;margin-top:6px;">'+escapeHtml([s.device&&s.device.category,s.device&&s.device.browser].filter(function(x){ return x&&x!=='(not set)'; }).join(' · ')||'Device not reported')+(s.engaged_sec!=null?' · engaged '+s.engaged_sec+' s':'')+
+      (rep&&!aiSelUser?' · <a href="javascript:void(0)" onclick="aiShowUser(&quot;'+escapeHtml(s.user)+'&quot;)" style="color:#1a73e8;font-weight:600;">All '+n+' visits by this visitor →</a>':'')+
+      (cjIsBot(s)?' · <span style="color:#9b1c1c;">likely bot: '+escapeHtml((s.bot.reasons||[]).join(', '))+'</span>':'')+'</div>'+
+    '<div style="font-size:11px;color:#7a8a99;margin:8px 0 2px;font-weight:600;">User journey</div>'+(steps||'<div style="font-size:12px;color:#7a8a99;">No page views recorded</div>')+
+  '</div>';
+}
+function renderAiPanel(){
+  if(!CJ){ document.getElementById('panel').innerHTML='<div class="empty">Loading AI Engines data…</div>'; loadCJ(); return; }
+  var all=aiAll(), engs=aiEngines();
+  var head='<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;"><div><h2>AI Engines</h2>'+
+    '<div class="sub">Visits that came from ChatGPT, Copilot, Gemini, Perplexity and other AI assistants (GA4 traffic source or referrer)'+(CJ.ai&&CJ.ai.since?' · recorded since '+escapeHtml(String(CJ.ai.since).slice(0,10)):'')+' · pulled '+escapeHtml(CJ.pulled_at||'')+'</div></div>'+
+    '<button class="refresh-btn" onclick="cjRefresh()"><span class="lbl">↻ Reload</span></button></div></div>';
+  if(CJ.ai_error) head+='<div class="empty" style="margin:10px 16px;">AI data error: '+escapeHtml(CJ.ai_error)+'</div>';
+  // monthly table
+  var mons={}; all.forEach(function(s){ var m=cjPTm(s.session_start); (mons[m]=mons[m]||{})[s.ai]=(mons[m][s.ai]||0)+1; });
+  var ml=Object.keys(mons).sort().reverse();
+  var th='<th style="text-align:left;padding:6px 10px;">Month</th>'+engs.map(function(e){ return '<th class="c" style="padding:6px 10px;">'+escapeHtml(e)+'</th>'; }).join('')+'<th class="c" style="padding:6px 10px;">Total</th>';
+  var tr=ml.map(function(m){ var t=0; return '<tr><td style="padding:6px 10px;font-weight:600;">'+cjMonName(m)+'</td>'+engs.map(function(e){ var n=mons[m][e]||0; t+=n; return '<td class="c" style="padding:6px 10px;">'+(n||'<span style="color:#c0c8d0;">0</span>')+'</td>'; }).join('')+'<td class="c" style="padding:6px 10px;font-weight:700;">'+t+'</td></tr>'; }).join('');
+  var table='<div style="margin:12px 16px;"><div style="font-size:12px;font-weight:700;color:#5a6b7b;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;">Sessions per month</div><table style="width:auto;min-width:420px;"><thead><tr>'+th+'</tr></thead><tbody>'+(tr||'<tr><td colspan="'+(engs.length+2)+'" style="padding:8px;">No AI sessions yet</td></tr>')+'</tbody></table></div>';
+  // filters
+  var chip=function(on,fn,val,lbl){ return '<button class="mode-btn'+(on?' active':'')+'" style="padding:5px 11px;border-radius:16px;border:1px solid #cdd9e6;font-size:12px;" onclick="'+fn+'(&quot;'+val+'&quot;)">'+lbl+'</button>'; };
+  var inMon=function(s){ return aiMon==='all'||cjPTm(s.session_start)===aiMon; };
+  var base=all.filter(inMon);
+  var f='<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:4px 16px 8px;">'+
+    '<select onchange="aiSetMon(this.value)" style="font:inherit;font-size:13px;padding:6px 8px;border:1px solid #cdd9e6;border-radius:6px;"><option value="all">All months</option>'+ml.map(function(m){ return '<option value="'+m+'"'+(m===aiMon?' selected':'')+'>'+cjMonName(m)+'</option>'; }).join('')+'</select>'+
+    chip(aiEng==='all','aiSetEng','all','All engines '+base.length)+engs.map(function(e){ return chip(aiEng===e,'aiSetEng',e,escapeHtml(e)+' '+base.filter(function(s){ return s.ai===e; }).length); }).join('')+'</div>';
+  var list=aiSelUser?aiVisits({user:aiSelUser}):base.filter(function(s){ return aiEng==='all'||s.ai===aiEng; });
+  var buys=list.filter(function(s){ return s.class==='purchaser'; }), rev=buys.reduce(function(t,s){ return t+(s.revenue||0); },0);
+  var users={}; list.forEach(function(s){ users[s.user]=1; });
+  var ret=list.filter(function(s){ return (s.visit||1)>1||aiVisits(s).length>1; }).length;
+  var k='<div class="kpis" style="padding:6px 0 4px;">'+kpi(list.length,'AI sessions')+kpi(Object.keys(users).length,'Visitors')+kpi(ret,'Returning visitor sessions')+kpi(buys.length,'Purchases<br><span style="font-weight:600;">'+cjUsd(rev)+'</span>')+'</div>';
+  var hdr=aiSelUser?'<div class="ca-h" style="margin:6px 16px 0;">All visits by this visitor ('+list.length+' recorded, oldest first) &middot; <a href="javascript:void(0)" onclick="aiShowUser(&quot;&quot;)" style="color:#1a73e8;font-weight:600;">← back</a></div>':'';
+  if(aiSelUser) list=list.slice(); else list=list.slice().sort(function(a,b){ return String(b.session_start).localeCompare(String(a.session_start)); });
+  document.getElementById('panel').innerHTML=head+(aiSelUser?'':table+f)+k+hdr+(list.length?list.map(function(s){ return s.ai?aiCard(s):cjJourneyCard(s); }).join(''):'<div class="empty" style="margin:14px 16px;">No sessions</div>');
 }
 function cjRefresh(){ CJ=CJ_EMBED||null; cjLoading=false; document.getElementById('panel').innerHTML='<div class="empty">Reloading customer-journey snapshot…</div>'; loadCJ(); }
 function cjInitCustom(){ if(!cjCustStart && CJ){ cjCustStart=CJ.data_from||''; cjCustEnd=CJ.data_through||''; }
