@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-11-19 09:02:36 AM PST",
+  "generated_at": "2026-11-19 11:02:57 AM PST",
   "run_info": {
     "mode": "Incremental",
-    "label": "9:00 AM",
-    "completed_at": "2026-11-19 09:02:36 AM PST"
+    "label": "11:00 AM",
+    "completed_at": "2026-11-19 11:02:57 AM PST"
   },
   "totals": {
     "customers": 11,
     "open_sos": 15,
-    "open_items": 41,
+    "open_items": 40,
     "vendors": 3,
-    "high_demand_skus": 5,
-    "open_pos": 19
+    "high_demand_skus": 6,
+    "open_pos": 20
   },
   "customers": [
     {
@@ -207,7 +207,7 @@
     {
       "name": "Helix Diagnostix",
       "open_sos": 1,
-      "open_items": 2,
+      "open_items": 1,
       "vendors": [
         "PMA Services"
       ],
@@ -220,22 +220,6 @@
           "sku": "33805",
           "vendor": "PMA Services",
           "list_price": 99.3,
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "so_total_lines": 8,
-          "pending_pos": "PO965",
-          "eta": "",
-          "cust_po": ""
-        },
-        {
-          "so_num": "SO609",
-          "so_status": "Partially delivered",
-          "order_date": "2026-10-20",
-          "product": "Beckman Coulter 33885 Access Free T4 Calibrator",
-          "sku": "33885",
-          "vendor": "PMA Services",
-          "list_price": 120.0,
           "ordered_qty": 1.0,
           "delivered_qty": 0,
           "open_qty": 1.0,
@@ -349,8 +333,8 @@
     },
     {
       "name": "Mercedes Scientific",
-      "open_sos": 2,
-      "open_items": 5,
+      "open_sos": 3,
+      "open_items": 6,
       "vendors": [
         "ALDX HOLDING CORPORATION",
         "Allora Biotech LLC",
@@ -436,6 +420,22 @@
           "pending_pos": "PO980",
           "eta": "",
           "cust_po": "PO 1333593"
+        },
+        {
+          "so_num": "SO634",
+          "so_status": "Partially delivered",
+          "order_date": "2026-11-10",
+          "product": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "vendor": "PMA Services",
+          "list_price": 249.0,
+          "ordered_qty": 5.0,
+          "delivered_qty": 0.0,
+          "open_qty": 5.0,
+          "so_total_lines": 7,
+          "pending_pos": "PO1009, PO1010",
+          "eta": "",
+          "cust_po": ""
         }
       ]
     },
@@ -558,30 +558,13 @@
     },
     {
       "name": "Radiance Diagnostics",
-      "open_sos": 2,
-      "open_items": 12,
+      "open_sos": 1,
+      "open_items": 11,
       "vendors": [
         "ALDX HOLDING CORPORATION",
-        "Allora Biotech LLC",
-        "PMA Services"
+        "Allora Biotech LLC"
       ],
       "rows": [
-        {
-          "so_num": "SO608",
-          "so_status": "Partially delivered",
-          "order_date": "2026-10-20",
-          "product": "Beckman Coulter B24839 Access 25OH Vitamin D Calibrators",
-          "sku": "B24839",
-          "vendor": "PMA Services",
-          "list_price": 227.3,
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "so_total_lines": 21,
-          "pending_pos": "PO964",
-          "eta": "",
-          "cust_po": ""
-        },
         {
           "so_num": "SO643",
           "so_status": "Partially delivered",
@@ -1268,15 +1251,14 @@
     },
     {
       "name": "PMA Services",
-      "open_items": 7,
+      "open_items": 6,
       "customers": [
         "Helix Diagnostix",
         "LabX Diagnostic Systems",
         "MEDICAL HEALTH LAB",
-        "Mercedes Scientific",
-        "Radiance Diagnostics"
+        "Mercedes Scientific"
       ],
-      "pos": 5,
+      "pos": 6,
       "rows": [
         {
           "customer": "Helix Diagnostix",
@@ -1285,19 +1267,6 @@
           "order_date": "2026-10-20",
           "product": "Beckman Coulter 33805 Access Total T4 Calibrator (S0-S5)",
           "sku": "33805",
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "pending_pos": "PO965",
-          "eta": ""
-        },
-        {
-          "customer": "Helix Diagnostix",
-          "so_num": "SO609",
-          "so_status": "Partially delivered",
-          "order_date": "2026-10-20",
-          "product": "Beckman Coulter 33885 Access Free T4 Calibrator",
-          "sku": "33885",
           "ordered_qty": 1.0,
           "delivered_qty": 0,
           "open_qty": 1.0,
@@ -1357,22 +1326,22 @@
           "eta": ""
         },
         {
-          "customer": "Radiance Diagnostics",
-          "so_num": "SO608",
+          "customer": "Mercedes Scientific",
+          "so_num": "SO634",
           "so_status": "Partially delivered",
-          "order_date": "2026-10-20",
-          "product": "Beckman Coulter B24839 Access 25OH Vitamin D Calibrators",
-          "sku": "B24839",
-          "ordered_qty": 1.0,
-          "delivered_qty": 0,
-          "open_qty": 1.0,
-          "pending_pos": "PO964",
+          "order_date": "2026-11-10",
+          "product": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+          "sku": "B24838",
+          "ordered_qty": 5.0,
+          "delivered_qty": 0.0,
+          "open_qty": 5.0,
+          "pending_pos": "PO1009, PO1010",
           "eta": ""
         }
       ],
       "email": "debbie@pmaservices.com",
-      "email_subject": "JIT4You \u2014 Your Open Purchase Orders (7 open items) \u2014 please advise delivery",
-      "email_doc": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>Email draft \u2014 PMA Services</title></head><body style=\"margin:0;background:#eef1f5;font-family:Arial,sans-serif;\"><div style=\"background:#0D2B45;color:#fff;padding:14px 20px;\"><div style=\"font-size:13px;margin-bottom:3px;\"><b>To:</b> debbie@pmaservices.com</div><div style=\"font-size:13px;margin-bottom:10px;\"><b>Subject:</b> JIT4You \u2014 Your Open Purchase Orders (7 open items) \u2014 please advise delivery</div><button id=\"cp\" style=\"padding:7px 14px;border:none;border-radius:5px;background:#008080;color:#fff;font-weight:700;cursor:pointer;\">Copy formatted email</button><a href=\"mailto:debbie@pmaservices.com?subject=JIT4You%20\u2014%20Your%20Open%20Purchase%20Orders%20(7%20open%20items)%20\u2014%20please%20advise%20delivery\" style=\"color:#7fd4d4;margin-left:14px;font-size:13px;\">Open blank email to customer</a><div style=\"margin-top:8px;font-size:12px;opacity:.9;\">Click <b>Copy formatted email</b>, then in Outlook paste with <b>Ctrl/Cmd+V</b> (it pastes the rendered email, not code). This only creates the draft \u2014 you send it.</div></div><div style=\"padding:20px;\"><div id=\"emailbody\" style=\"max-width:760px;margin:0 auto;background:#fff;\"><div style=\"font-family:Arial,Helvetica,sans-serif;color:#101E3E;max-width:840px;margin:0 auto;background:#fff;\"><div style=\"background:#fff;padding:18px 24px;border-bottom:3px solid #008080;\"><div style=\"font-family:'Open Sans',Arial,sans-serif;font-size:24px;font-weight:800;letter-spacing:.4px;\"><span style=\"color:#101E3E;\">JIT4</span><span style=\"color:#008080;\">Labs</span></div></div><div style=\"padding:22px 24px;font-size:14px;line-height:1.6;\"><p>Hi Debbie,</p><p>Find enclosed the list of open POs with previously provided ETA.</p><table cellspacing=\"0\" cellpadding=\"0\" style=\"border-collapse:collapse;width:100%;max-width:800px;background:#fff;font-family:Arial,sans-serif;\"><thead><tr style=\"background:#0D2B45;\"><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Order Date</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Product</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Customer</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Ordered</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Delivered</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Open</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">ETA</th></tr></thead><tbody><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1028</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6195 Olympus HDL Cholesterol Reagent</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">8</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">8</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO768</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6195 Olympus HDL Cholesterol Reagent</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">8</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">8</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO965</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-10-20</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33805 Access Total T4 Calibrator (S0-S5)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Helix Diagnostix</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-10-20</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33885 Access Free T4 Calibrator</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Helix Diagnostix</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO964</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-10-20</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter B24839 Access 25OH Vitamin D Calibrators</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Radiance Diagnostics</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO982</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-02</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33805 Access Total T4 Calibrator (S0-S5)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">LabX Diagnostic Systems</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-02</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman coulter ODC0019 Calibrator, Olympus, Bicarbonate (REF)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">LabX Diagnostic Systems</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">No PO assigned</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-09-01</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33830 Access Total T3, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">MEDICAL HEALTH LAB</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr></tbody></table><p style=\"margin-top:18px;\">Thank you,<br>JIT4You</p><p style=\"font-size:12px;color:#008080;\"><a href=\"mailto:CustomerSupport@jit4you.com\" style=\"color:#008080;text-decoration:none;\">CustomerSupport@jit4you.com</a> &nbsp;&middot;&nbsp; (949) 396-9194</p></div></div></div></div><script>(function(){var b=document.getElementById(\"cp\"),body=document.getElementById(\"emailbody\");function ok(){b.textContent=\"Copied \\u2713 \\u2014 paste into Outlook\";}function fail(){b.textContent=\"Select the email and press Ctrl/Cmd+C\";}function selCopy(){var r=document.createRange();r.selectNode(body);var s=window.getSelection();s.removeAllRanges();s.addRange(r);try{var done=document.execCommand(\"copy\");s.removeAllRanges();done?ok():fail();}catch(e){fail();}}b.addEventListener(\"click\",function(){var html=body.innerHTML;if(window.ClipboardItem&&navigator.clipboard&&navigator.clipboard.write){try{var item=new ClipboardItem({\"text/html\":new Blob([html],{type:\"text/html\"}),\"text/plain\":new Blob([body.innerText],{type:\"text/plain\"})});navigator.clipboard.write([item]).then(ok,selCopy);}catch(e){selCopy();}}else{selCopy();}});})();</script></body></html>"
+      "email_subject": "JIT4You \u2014 Your Open Purchase Orders (6 open items) \u2014 please advise delivery",
+      "email_doc": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>Email draft \u2014 PMA Services</title></head><body style=\"margin:0;background:#eef1f5;font-family:Arial,sans-serif;\"><div style=\"background:#0D2B45;color:#fff;padding:14px 20px;\"><div style=\"font-size:13px;margin-bottom:3px;\"><b>To:</b> debbie@pmaservices.com</div><div style=\"font-size:13px;margin-bottom:10px;\"><b>Subject:</b> JIT4You \u2014 Your Open Purchase Orders (6 open items) \u2014 please advise delivery</div><button id=\"cp\" style=\"padding:7px 14px;border:none;border-radius:5px;background:#008080;color:#fff;font-weight:700;cursor:pointer;\">Copy formatted email</button><a href=\"mailto:debbie@pmaservices.com?subject=JIT4You%20\u2014%20Your%20Open%20Purchase%20Orders%20(6%20open%20items)%20\u2014%20please%20advise%20delivery\" style=\"color:#7fd4d4;margin-left:14px;font-size:13px;\">Open blank email to customer</a><div style=\"margin-top:8px;font-size:12px;opacity:.9;\">Click <b>Copy formatted email</b>, then in Outlook paste with <b>Ctrl/Cmd+V</b> (it pastes the rendered email, not code). This only creates the draft \u2014 you send it.</div></div><div style=\"padding:20px;\"><div id=\"emailbody\" style=\"max-width:760px;margin:0 auto;background:#fff;\"><div style=\"font-family:Arial,Helvetica,sans-serif;color:#101E3E;max-width:840px;margin:0 auto;background:#fff;\"><div style=\"background:#fff;padding:18px 24px;border-bottom:3px solid #008080;\"><div style=\"font-family:'Open Sans',Arial,sans-serif;font-size:24px;font-weight:800;letter-spacing:.4px;\"><span style=\"color:#101E3E;\">JIT4</span><span style=\"color:#008080;\">Labs</span></div></div><div style=\"padding:22px 24px;font-size:14px;line-height:1.6;\"><p>Hi Debbie,</p><p>Find enclosed the list of open POs with previously provided ETA.</p><table cellspacing=\"0\" cellpadding=\"0\" style=\"border-collapse:collapse;width:100%;max-width:800px;background:#fff;font-family:Arial,sans-serif;\"><thead><tr style=\"background:#0D2B45;\"><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Order Date</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Product</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Customer</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Ordered</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Delivered</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Open</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">ETA</th></tr></thead><tbody><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1028</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6195 Olympus HDL Cholesterol Reagent</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">8</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">8</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO768</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6195 Olympus HDL Cholesterol Reagent</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">8</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">8</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO965</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-10-20</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33805 Access Total T4 Calibrator (S0-S5)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Helix Diagnostix</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO982</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-02</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33805 Access Total T4 Calibrator (S0-S5)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">LabX Diagnostic Systems</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-02</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman coulter ODC0019 Calibrator, Olympus, Bicarbonate (REF)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">LabX Diagnostic Systems</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1009</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-10</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">5</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">5</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1010</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-10</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">5</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">5</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">No PO assigned</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-09-01</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33830 Access Total T3, 100 Determinations</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">MEDICAL HEALTH LAB</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr></tbody></table><p style=\"margin-top:18px;\">Thank you,<br>JIT4You</p><p style=\"font-size:12px;color:#008080;\"><a href=\"mailto:CustomerSupport@jit4you.com\" style=\"color:#008080;text-decoration:none;\">CustomerSupport@jit4you.com</a> &nbsp;&middot;&nbsp; (949) 396-9194</p></div></div></div></div><script>(function(){var b=document.getElementById(\"cp\"),body=document.getElementById(\"emailbody\");function ok(){b.textContent=\"Copied \\u2713 \\u2014 paste into Outlook\";}function fail(){b.textContent=\"Select the email and press Ctrl/Cmd+C\";}function selCopy(){var r=document.createRange();r.selectNode(body);var s=window.getSelection();s.removeAllRanges();s.addRange(r);try{var done=document.execCommand(\"copy\");s.removeAllRanges();done?ok():fail();}catch(e){fail();}}b.addEventListener(\"click\",function(){var html=body.innerHTML;if(window.ClipboardItem&&navigator.clipboard&&navigator.clipboard.write){try{var item=new ClipboardItem({\"text/html\":new Blob([html],{type:\"text/html\"}),\"text/plain\":new Blob([body.innerText],{type:\"text/plain\"})});navigator.clipboard.write([item]).then(ok,selCopy);}catch(e){selCopy();}}else{selCopy();}});})();</script></body></html>"
     }
   ],
   "high_demand": {
@@ -1424,6 +1393,41 @@
               "date": "2026-11-17",
               "so": "SO643",
               "qty": 1.0
+            }
+          ]
+        }
+      },
+      {
+        "product": "Beckman Coulter B24838 Access 25 OH Vitamin D Reagent, 100 Determinations",
+        "vendor": "PMA Services",
+        "total": 15.0,
+        "cust_count": 2,
+        "order_count": 2,
+        "po_count": 3,
+        "pos": [
+          "PO1009",
+          "PO1010",
+          "PO1025"
+        ],
+        "qty": {
+          "Mercedes Scientific": 5.0,
+          "Radiance Diagnostics": 10.0
+        },
+        "detail": {
+          "Mercedes Scientific": [
+            {
+              "po": "PO1009, PO1010",
+              "date": "2026-11-10",
+              "so": "SO634",
+              "qty": 5.0
+            }
+          ],
+          "Radiance Diagnostics": [
+            {
+              "po": "PO1025",
+              "date": "2026-11-17",
+              "so": "SO643",
+              "qty": 10.0
             }
           ]
         }
@@ -1563,14 +1567,15 @@
     "PO939": "mailto:Arthur@allorabiotech.com?subject=PO939%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO939.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR6159%20Olympus%20C3%20Reagent%20%28Complement%203%20Reagent%29%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO1029": "mailto:Riad@aldxholding.com?subject=PO1029%20ETA%3F&body=Hi%20Karen%2C%0A%0AFollowing%20up%20on%20PO%20PO1029.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR61154%20Olympus%20Ammonia%20Reagent%20R1%20and%20Standard%20%28AMMON%29%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20coulter%2033540%20Reagent%2C%20Access%2C%20Estradiol%20%28REF%29%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO980": "mailto:Arthur@allorabiotech.com?subject=PO980%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO980.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR6199%20C-reactive%20Protein%20High%20sensitive%20CRP%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
-    "PO964": "mailto:debbie@pmaservices.com?subject=PO964%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO964.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20B24839%20Access%2025OH%20Vitamin%20D%20Calibrators%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
-    "PO965": "mailto:debbie@pmaservices.com?subject=PO965%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO965.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%2033805%20Access%20Total%20T4%20Calibrator%20%28S0-S5%29%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%2033885%20Access%20Free%20T4%20Calibrator%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
+    "PO965": "mailto:debbie@pmaservices.com?subject=PO965%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO965.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%2033805%20Access%20Total%20T4%20Calibrator%20%28S0-S5%29%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO972": "mailto:Arthur@allorabiotech.com?subject=PO972%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO972.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR6143%20Apo%20B%20Reagent%20Specific%20Protein%20Apolipoprotein%20B%20%28Apo%20B%29%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO982": "mailto:debbie@pmaservices.com?subject=PO982%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO982.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%2033805%20Access%20Total%20T4%20Calibrator%20%28S0-S5%29%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20coulter%20ODC0019%20Calibrator%2C%20Olympus%2C%20Bicarbonate%20%28REF%29%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO986": "mailto:Arthur@allorabiotech.com?subject=PO986%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO986.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%2098201%20Access%20BNP%20OC%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO1001": "mailto:Arthur@allorabiotech.com?subject=PO1001%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO1001.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Siemens%20Atellica%2010995523%20CEA%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Siemens%20Atellica%2010995561%20Estradiol%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Siemens%20Atellica%2010995708%20Testosterone%20II%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Siemens%20Atellica%2011537222%20Triglycerides_2%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO1004": "mailto:Arthur@allorabiotech.com?subject=PO1004%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO1004.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR6199%20C-reactive%20Protein%20High%20sensitive%20CRP%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO1008": "mailto:Arthur@allorabiotech.com?subject=PO1008%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO1008.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR6142%20Apolipoprotein%20A1%20reagent%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
+    "PO1009": "mailto:debbie@pmaservices.com?subject=PO1009%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO1009.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20B24838%20Access%2025%20OH%20Vitamin%20D%20Reagent%2C%20100%20Determinations%20%E2%80%94%205%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
+    "PO1010": "mailto:debbie@pmaservices.com?subject=PO1010%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO1010.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20B24838%20Access%2025%20OH%20Vitamin%20D%20Reagent%2C%20100%20Determinations%20%E2%80%94%205%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO1018": "mailto:Riad@aldxholding.com?subject=PO1018%20ETA%3F&body=Hi%20Karen%2C%0A%0AFollowing%20up%20on%20PO%20PO1018.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR6137%20Olympus%20Bicarbonate%20Reagent%2C%204%20x%20580%20Tests%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20B36868%20DxH%20Series%20Cleaner%2C%20500mL%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20B36846%20Lyse%2C%20DXH%20500%2C%20500ml%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO1019": "mailto:Arthur@allorabiotech.com?subject=PO1019%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO1019.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR6116%20Olympus%20Cholesterol%20Reagent%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20OSR6178%20Olympus%20Creatinine%20Reagent%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO1020": "mailto:Riad@aldxholding.com?subject=PO1020%20ETA%3F&body=Hi%20Karen%2C%0A%0AFollowing%20up%20on%20PO%20PO1020.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Diazyme%20DZ888A%20EZ%20Vitamin%20D%20Assay%20%2825-OH%20Vitamin%20D%29%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Diazyme%20DZ888A-CAL%20EZ%20Vitamin%20D%20Calibrator%20Set%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Diazyme%20DZ131B-CAL%20LIPOPROTEIN%20%28a%29%20CALIBRATOR%20SET%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Diazyme%20DZ131B-CON%20LIPOPROTEIN%20%28a%29%20CONTROL%20SET%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Diazyme%20DZ888A-CON%20EZ%20Vitamin%20D%20Control%20Set%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
@@ -22655,7 +22660,7 @@
   },
   "customer_prices": {
     "year": 2026,
-    "generated_at": "2026-11-19 09:05 AM PT",
+    "generated_at": "2026-11-19 11:06 AM PT",
     "customers": [
       {
         "account_id": "3x100924",
@@ -30063,7 +30068,7 @@
           {
             "so_num": "SO608",
             "date": "2026-10-20",
-            "status": "Partially delivered",
+            "status": "Sent",
             "items": [
               {
                 "sku": "33000",
@@ -46836,68 +46841,6 @@
         }
       }
     },
-    "PO964": {
-      "vendor": "PMA Services",
-      "status": "Partially received",
-      "skus": {
-        "A98032": {
-          "product": "Beckman Coulter A98032 Access Folate Reagent, 100 Determinations",
-          "unit": 70.0,
-          "qty": 10.0
-        },
-        "B24839": {
-          "product": "Beckman Coulter B24839 Access 25OH Vitamin D Calibrators",
-          "unit": 135.0,
-          "qty": 1.0
-        },
-        "33025": {
-          "product": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
-          "unit": 34.58,
-          "qty": 1.0
-        },
-        "33605": {
-          "product": "Beckman Coulter 33605 Access\u0412\u00ac\u0413\u2020 Cortisol Calibrators (S0\u0432\u0402\u0459\u0413\u201e\u0413\u00acS5)",
-          "unit": 30.6,
-          "qty": 1.0
-        },
-        "33805": {
-          "product": "Beckman Coulter 33805 Access Total T4 Calibrator (S0-S5)",
-          "unit": 54.57,
-          "qty": 1.0
-        },
-        "33525": {
-          "product": "Beckman Coulter 33525 Access hFSH Calibrator (S0-S5)",
-          "unit": 21.8,
-          "qty": 1.0
-        },
-        "81910": {
-          "product": "Beckman Coulter 81910 Solution, Access, System Check, 6x4mL",
-          "unit": 15.95,
-          "qty": 2.0
-        }
-      }
-    },
-    "PO965": {
-      "vendor": "PMA Services",
-      "status": "Partially received",
-      "skus": {
-        "33805": {
-          "product": "Beckman Coulter 33805 Access Total T4 Calibrator (S0-S5)",
-          "unit": 54.57,
-          "qty": 1.0
-        },
-        "33885": {
-          "product": "Beckman Coulter 33885 Access Free T4 Calibrator",
-          "unit": 66.0,
-          "qty": 1.0
-        },
-        "A13430": {
-          "product": "Beckman Coulter A13430 Access Free T3 Calibrator",
-          "unit": 49.2,
-          "qty": 1.0
-        }
-      }
-    },
     "PO966": {
       "vendor": "Allora Biotech LLC",
       "status": "Received Shipment",
@@ -48201,6 +48144,68 @@
           "qty": 5.0
         }
       }
+    },
+    "PO964": {
+      "vendor": "PMA Services",
+      "status": "Received Shipment",
+      "skus": {
+        "A98032": {
+          "product": "Beckman Coulter A98032 Access Folate Reagent, 100 Determinations",
+          "unit": 70.0,
+          "qty": 10.0
+        },
+        "B24839": {
+          "product": "Beckman Coulter B24839 Access 25OH Vitamin D Calibrators",
+          "unit": 135.0,
+          "qty": 1.0
+        },
+        "33025": {
+          "product": "Beckman Coulter 33025 Access Ferritin Calibrator (S0-S5)",
+          "unit": 34.58,
+          "qty": 1.0
+        },
+        "33605": {
+          "product": "Beckman Coulter 33605 Access\u0412\u00ac\u0413\u2020 Cortisol Calibrators (S0\u0432\u0402\u0459\u0413\u201e\u0413\u00acS5)",
+          "unit": 30.6,
+          "qty": 1.0
+        },
+        "33805": {
+          "product": "Beckman Coulter 33805 Access Total T4 Calibrator (S0-S5)",
+          "unit": 54.57,
+          "qty": 1.0
+        },
+        "33525": {
+          "product": "Beckman Coulter 33525 Access hFSH Calibrator (S0-S5)",
+          "unit": 21.8,
+          "qty": 1.0
+        },
+        "81910": {
+          "product": "Beckman Coulter 81910 Solution, Access, System Check, 6x4mL",
+          "unit": 15.95,
+          "qty": 2.0
+        }
+      }
+    },
+    "PO965": {
+      "vendor": "PMA Services",
+      "status": "Partially received",
+      "skus": {
+        "33805": {
+          "product": "Beckman Coulter 33805 Access Total T4 Calibrator (S0-S5)",
+          "unit": 54.57,
+          "qty": 1.0
+        },
+        "33885": {
+          "product": "Beckman Coulter 33885 Access Free T4 Calibrator",
+          "unit": 66.0,
+          "qty": 1.0
+        },
+        "A13430": {
+          "product": "Beckman Coulter A13430 Access Free T3 Calibrator",
+          "unit": 49.2,
+          "qty": 1.0
+        }
+      }
     }
   },
   "paid_inventory": [
@@ -48244,7 +48249,7 @@
     }
   ],
   "vendor_spend": {
-    "generated_at": "2026-11-19 05:07:04 PM",
+    "generated_at": "2026-11-19 07:08:10 PM",
     "year": "2026",
     "vendors": [
       "Allora",
@@ -52412,7 +52417,7 @@
   },
   "ytd_demand": {
     "year": 2026,
-    "generated_at": "2026-11-19 09:07:07 AM PST",
+    "generated_at": "2026-11-19 11:08:13 AM PST",
     "months": [
       "Jan",
       "Feb",
@@ -61629,38 +61634,6 @@
             ],
             "amt_ytd": 298.4
           },
-          "Helix Diagnostix": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              1,
-              0,
-              0
-            ],
-            "ytd": 1,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              74.6,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 74.6
-          },
           "LabX Diagnostic Systems": {
             "by_month": [
               0,
@@ -61689,6 +61662,38 @@
               0.0,
               0.0,
               74.6,
+              0.0
+            ],
+            "amt_ytd": 74.6
+          },
+          "Helix Diagnostix": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            "ytd": 1,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              74.6,
+              0.0,
               0.0
             ],
             "amt_ytd": 74.6
@@ -72435,38 +72440,6 @@
             ],
             "amt_ytd": 25.0
           },
-          "Radiance Diagnostics": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              2,
-              0,
-              0
-            ],
-            "ytd": 2,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              58.0,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 58.0
-          },
           "trumed clinical labs llc": {
             "by_month": [
               0,
@@ -72530,6 +72503,38 @@
               0.0
             ],
             "amt_ytd": 25.0
+          },
+          "Radiance Diagnostics": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            "ytd": 2,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              58.0,
+              0.0,
+              0.0
+            ],
+            "amt_ytd": 58.0
           }
         },
         "so_count": 9
@@ -84693,38 +84698,6 @@
             ],
             "amt_ytd": 65.5
           },
-          "Radiance Diagnostics": {
-            "by_month": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              1,
-              0,
-              0
-            ],
-            "ytd": 1,
-            "amt_by_month": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              66.4,
-              0.0,
-              0.0
-            ],
-            "amt_ytd": 66.4
-          },
           "LabX Diagnostic Systems": {
             "by_month": [
               0,
@@ -84753,6 +84726,38 @@
               0.0,
               0.0,
               66.4,
+              0.0
+            ],
+            "amt_ytd": 66.4
+          },
+          "Radiance Diagnostics": {
+            "by_month": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            "ytd": 1,
+            "amt_by_month": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              66.4,
+              0.0,
               0.0
             ],
             "amt_ytd": 66.4
