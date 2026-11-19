@@ -1106,6 +1106,7 @@ var COLS_CUST = [
 // Vendor view: table grouped by customer (Customer appears in group headers).
 var COLS_VENDOR = [
   {key:'so_num',     label:'SO #',       type:'str'},
+  {key:'shopify_order', label:'Shopify Order', type:'str'},
   {key:'order_date', label:'Order Date', type:'date'},
   {key:'product',    label:'Product',    type:'str'},
   {key:'ordered_qty',label:'Ord',        type:'num',  c:true},
@@ -3871,8 +3872,16 @@ function fallbackCopyHtml(html, cb){
   sel.removeAllRanges(); document.body.removeChild(div);
 }
 
+// Vtiger SO # -> Shopify order # (Worker endpoint, from the "Vtiger SO:" tags on Shopify orders)
+var SO_SHOP=null, soShopBusy=false;
+function soShopLoad(){ if(SO_SHOP||soShopBusy) return; soShopBusy=true;
+  fetch('/api/so-shopify',{cache:'no-store'}).then(function(r){ return r.ok?r.json():{}; }).catch(function(){ return {}; })
+    .then(function(m){ SO_SHOP=m||{}; soShopBusy=false; if(mode==='vendor') renderVendorPanel(); }); }
+function soShopOf(so){ return (SO_SHOP&&SO_SHOP[String(so||'').toUpperCase()])||''; }
 function renderVendorPanel(){
+  soShopLoad();
   var v=(DATA.vendors||[])[vactive];
+  if(v) (v.rows||[]).forEach(function(r){ r.shopify_order=soShopOf(r.so_num); });
   if(!v){ document.getElementById('panel').innerHTML='<div class="empty">No open vendor orders.</div>'; return; }
   // Group this vendor's rows by customer.
   var groups={}, order=[], rows=(v.rows||[]);
@@ -3910,6 +3919,7 @@ function renderVendorPanel(){
       var r2=its[j]; var sc=statusColors(r2.so_status);
       body+='<tr>'+
         '<td class="so">'+escapeHtml(r2.so_num)+'</td>'+
+        '<td style="white-space:nowrap;">'+(r2.shopify_order?escapeHtml(r2.shopify_order):(SO_SHOP?'<span style="color:#aab4bf;">—</span>':'…'))+'</td>'+
         '<td>'+fmtDate(r2.order_date)+'</td>'+
         '<td>'+escapeHtml(r2.product)+'</td>'+
         '<td class="c">'+fmtQty(r2.ordered_qty)+'</td>'+
