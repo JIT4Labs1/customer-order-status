@@ -1193,7 +1193,7 @@ function kpi(v,l,style){ return '<div class="kpi"'+(style?' style="'+style+'"':'
 
 function renderTabs(){
   var tabsEl=document.getElementById('tabs');
-  var fullWidth=(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay' || mode==='vspend' || mode==='cprices' || mode==='inv' || mode==='iopp' || mode==='deliv' || mode==='fda');
+  var fullWidth=(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay' || mode==='vspend' || mode==='cprices' || mode==='inv' || mode==='iopp' || mode==='deliv' || mode==='fda' || mode==='cj');
   // Left-align: when a view has no left sidebar, collapse the side column so content aligns left (not centered).
   var sidecol=document.querySelector('.sidecol'); if(sidecol) sidecol.style.display = fullWidth ? 'none' : '';
   var pw=document.querySelector('.panel-wrap'); if(pw) pw.style.marginLeft = fullWidth ? '0' : '';
@@ -1579,10 +1579,14 @@ var CJ_ST={Alabama:'AL',Alaska:'AK',Arizona:'AZ',Arkansas:'AR',California:'CA',C
 function cjPlace(s){ return s.country==='United States'?([s.city,CJ_ST[s.region]||s.region].filter(Boolean).join(', ')||'United States'):([s.city,s.country].filter(Boolean).join(', ')||'Unknown'); }
 function cjMonths(){ var m={}; ((CJ&&CJ.sessions)||[]).forEach(function(s){ if(s.class!=='dev'){ var k=cjPTm(s.session_start); if(k) m[k]=1; } }); return Object.keys(m).sort().reverse(); }
 function cjMonName(m){ var a=m.split('-'); return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+a[1]-1]+' '+a[0]; }
-function cjSetMonth(v){ if(v){ cjWin='mon'; cjMonthSel=v; } else cjWin='ytd'; cjSel=''; renderTabs(); renderCjPanel(); }
-function cjSetBot(v){ cjBot=v; cjSel=''; renderTabs(); renderCjPanel(); }
-function cjSetCtry(v){ cjCtry=v; cjSel=''; renderTabs(); renderCjPanel(); }
-function cjShowUser(i){ var s=CJ.sessions[i]; cjSel=s?s.user:''; renderTabs(); renderCjPanel(); var p=document.getElementById('panel'); if(p) p.scrollTop=0; window.scrollTo(0,0); }
+function cjSetMonth(v){ cjWin='mon'; cjMonthSel=v||'all'; cjSel=''; cjLim=60; renderCjPanel(); }
+function cjSetBot(v){ cjBot=v; cjSel=''; cjLim=60; renderCjPanel(); }
+function cjSetCtry(v){ cjCtry=v; cjSel=''; cjLim=60; renderCjPanel(); }
+function cjSetSrc(v){ cjEntry=v; cjSel=''; cjLim=60; renderCjPanel(); }
+function cjSetCls(v){ cjCls=v; cjSel=''; cjLim=60; renderCjPanel(); }
+function cjSearch(v){ cjQ=v; cjSel=''; cjLim=60; cjDraw(); }
+function cjMore(){ cjLim+=60; cjDraw(); }
+function cjShowUser(i){ var s=CJ.sessions[i]; cjSel=s?s.user:''; renderCjPanel(); var p=document.getElementById('panel'); if(p) p.scrollTop=0; window.scrollTo(0,0); }
 function cjCartLines(s){
   if((s.cart||[]).length) return s.cart.map(function(c){ return '<div style="font-size:12px;color:#a1362c;font-variant-numeric:tabular-nums;">'+escapeHtml(c.sku||c.name)+', ×'+Number(c.qty).toLocaleString()+(c.value!=null?' · '+cjUsd(c.value,1):'')+'</div>'; }).join('');
   var atc=(s.atc_items||[]); return atc.length?'<div style="font-size:11px;color:#a1362c;">In cart: '+atc.map(escapeHtml).join(', ')+'</div>':'';
@@ -1648,7 +1652,7 @@ function cjInsightHtml(rows){
 function cjOpenInsight(){
   var ab=cjSessions().filter(function(s){ return s.class==='abandoner'; });
   var o=document.createElement('div'); o.id='cjin'; o.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:1000;display:flex;align-items:center;justify-content:center;';
-  var when=cjWin==='mon'?cjMonName(cjMonthSel):cjWin==='ytd'?'2026 YTD':cjWin==='month'?'Current month':(cjCustStart+' → '+cjCustEnd);
+  var when=cjMonthSel==='all'?'All months':cjMonName(cjMonthSel);
   o.innerHTML='<div style="background:#fff;width:min(720px,94vw);max-height:86vh;overflow:auto;border-radius:12px;padding:18px 22px 24px;box-shadow:0 10px 40px rgba(0,0,0,.25);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;"><b style="font-size:18px;">Why carts were abandoned</b><button onclick="cjInClose()" aria-label="Close" style="border:0;background:none;font-size:24px;line-height:1;cursor:pointer;">×</button></div><div style="font-size:12px;color:#7a8a99;margin-bottom:10px;">'+escapeHtml(when)+' · current filters</div>'+cjInsightHtml(ab)+'</div>';
   o.onclick=function(e){ if(e.target===o) cjInClose(); }; document.body.appendChild(o);
 }
@@ -1682,7 +1686,7 @@ function cjWhen(iso){
 function cjDay(iso){ return (iso||'').slice(0,10); }
 function cjInWin(iso){
   var day=cjDay(iso); if(!day) return false;
-  if(cjWin==='mon'){ return cjPTm(iso)===cjMonthSel; }
+  if(cjWin==='mon'){ return cjMonthSel==='all'||cjPTm(iso)===cjMonthSel; }
   if(cjWin==='ytd'){ return day>='2026-01-01' && day<='2026-12-31'; }
   if(cjWin==='month'){ var now=new Date(); var mk=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0'); return day.slice(0,7)===mk; }
   // custom
@@ -1695,24 +1699,16 @@ function cjWinSessions(){   // non-dev sessions within the window (no facet filt
   out.sort(function(a,b){ return (b.session_start||'').localeCompare(a.session_start||''); });
   return out;
 }
-function cjBaseSessions(){   // window + outcome filter (drives the sidebar facet boxes)
-  return cjWinSessions().filter(function(s){
-    if(cjOutcome==='cart' && !(s.class==='abandoner'||s.class==='purchaser')) return false;
-    if(cjOutcome==='left' && s.class!=='browser') return false;
-    if(cjEntry!=='all' && cjSrc(s)!==cjEntry) return false;
+var cjCls='all', cjQ='', cjLim=60;   // class chip (all|purchaser|abandoner|browser), search text, cards shown
+function cjMatch(txt,q){ q=String(q||'').toLowerCase().trim(); if(!q) return true; txt=String(txt||'').toLowerCase(); return q.split(' ').filter(Boolean).every(function(w){ return txt.indexOf(w)>=0; }); }
+function cjB0(){ return cjWinSessions().filter(function(s){ return (cjCtry==='all'||(cjCtry==='us')===cjIsUS(s))&&(cjEntry==='all'||cjSrc(s)===cjEntry); }); }
+function cjBaseSessions(){   // month + country + traffic + people + search (same as the mobile app)
+  return cjB0().filter(function(s){
     if(cjBot!=='all' && (cjBot==='bots')!==cjIsBot(s)) return false;
-    if(cjCtry!=='all' && (cjCtry==='us')!==cjIsUS(s)) return false;
-    if(cjLine!=='all' && cjSessionLines(s).indexOf(cjLine)<0) return false;
-    return true;
+    return cjMatch([s.city,s.region,s.country,(s.entry||{}).detail,(s.entry||{}).kind,(s.atc_items||[]).join(' '),(s.cart||[]).map(function(c){ return c.sku; }).join(' '),(s.search_terms||[]).join(' ')].join(' '),cjQ);
   });
 }
-function cjSessions(){   // base sessions with the active search-term / product facet filters applied
-  return cjBaseSessions().filter(function(s){
-    if(cjTermFilter && (s.search_terms||[]).indexOf(cjTermFilter)<0) return false;
-    if(cjProdFilter && cjSessProducts(s).indexOf(cjProdFilter)<0) return false;
-    return true;
-  });
-}
+function cjSessions(){ return cjBaseSessions().filter(function(s){ return cjCls==='all'||s.class===cjCls; }); }
 function cjFacetBase(applyTerm, applyProd){   // base sessions with the OTHER facet applied (for cross-filtering)
   return cjBaseSessions().filter(function(s){
     if(applyTerm && cjTermFilter && (s.search_terms||[]).indexOf(cjTermFilter)<0) return false;
@@ -1840,7 +1836,7 @@ function cjJourneyCard(s){
   return '<div style="border:1px solid #e3e8ee;border-radius:8px;padding:12px 14px;margin:10px 16px;background:#fff;">'+
     '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px;">'+
       '<div style="font-weight:600;color:#2c3e50;">'+escapeHtml(cjPlace(s)||loc||'Unknown location')+' <span style="font-weight:400;color:#7a8a99;font-size:12px;">· '+cjWhen(s.session_start)+' · '+(s.page_views||0)+' pages</span></div>'+
-      '<span style="display:flex;align-items:center;gap:6px;">'+pills+outcome+'</span></div>'+
+      '<span style="display:flex;align-items:center;gap:6px;">'+outcome+pills+'</span></div>'+
     '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;">'+entryPill+searchPill+'</div>'+
     atcLine+devLine+
     '<div style="font-size:11px;color:#7a8a99;margin:8px 0 2px;font-weight:600;">Page sequence</div>'+
@@ -1848,85 +1844,41 @@ function cjJourneyCard(s){
 }
 function renderCjPanel(){
   if(!CJ){ document.getElementById('panel').innerHTML='<div class="empty">Loading Customer Journey data…</div>'; loadCJ(); return; }
-  cjInitCustom();
-  // window selector
-  function wb(w,lbl,idx){ return '<button class="mode-btn'+(cjWin===w?' active':'')+'" style="padding:5px 11px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;" onclick="cjSetWinIdx('+idx+')">'+lbl+'</button>'; }
-  var sel='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:2px 0 4px;">'+
-    '<span style="font-size:12px;color:#7a8a99;margin-right:2px;">Window:</span>'+
-    '<select onchange="cjSetMonth(this.value)" style="font:inherit;font-size:12px;padding:4px 6px;border:1px solid #cdd9e6;border-radius:6px;'+(cjWin==='mon'?'background:#e8f0fe;font-weight:600;':'')+'"><option value="">Month…</option>'+cjMonths().map(function(m){ return '<option value="'+m+'"'+(cjWin==='mon'&&m===cjMonthSel?' selected':'')+'>'+cjMonName(m)+'</option>'; }).join('')+'</select>'+
-    wb('ytd','2026 YTD',0)+wb('month','Current month',1)+wb('custom','Custom',2)+
-    '<span style="margin-left:8px;font-size:12px;color:#7a8a99;">'+
-      'from <input type="date" id="cjStart" value="'+escapeHtml(cjCustStart)+'" onchange="cjSetCustom()" style="font:inherit;padding:2px 4px;border:1px solid #cfd8e0;border-radius:4px;"> '+
-      'to <input type="date" id="cjEnd" value="'+escapeHtml(cjCustEnd)+'" onchange="cjSetCustom()" style="font:inherit;padding:2px 4px;border:1px solid #cfd8e0;border-radius:4px;"></span>'+
-    '</div>';
-  function ob(o,lbl,idx){ return '<button class="mode-btn'+(cjOutcome===o?' active':'')+'" style="padding:5px 11px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;" onclick="cjSetOutcomeIdx('+idx+')">'+lbl+'</button>'; }
-  sel+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 4px;">'+
-    '<span style="font-size:12px;color:#7a8a99;margin-right:2px;">Outcome:</span>'+
-    ob('all','All',0)+ob('cart','🛒 Added to cart / Purchased',1)+ob('left','Left without cart',2)+'</div>';
-  function eb(o,lbl,idx){ return '<button class="mode-btn'+(cjEntry===o?' active':'')+'" style="padding:5px 11px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;" onclick="cjSetEntryIdx('+idx+')">'+lbl+'</button>'; }
-  sel+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 4px;">'+
-    '<span style="font-size:12px;color:#7a8a99;margin-right:2px;">Source:</span>'+
-    eb('all','All traffic',0)+eb('paid','📣 Paid',1)+eb('organic','🔍 Organic',2)+eb('direct','Direct',3)+eb('other','Other',4)+'</div>';
-  var cnt0=cjWinSessions().filter(function(s){ return (cjEntry==='all'||cjSrc(s)===cjEntry)&&(cjCtry==='all'||(cjCtry==='us')===cjIsUS(s)); });
-  function bb(o,lbl){ var n=o==='all'?cnt0.length:cnt0.filter(function(s){ return (o==='bots')===cjIsBot(s); }).length; return '<button class="mode-btn'+(cjBot===o?' active':'')+'" style="padding:5px 11px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;" onclick="cjSetBot(&quot;'+o+'&quot;)">'+lbl+' '+n+'</button>'; }
-  sel+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 4px;">'+
-    '<span style="font-size:12px;color:#7a8a99;margin-right:2px;">Visitors:</span>'+bb('all','Everyone')+bb('people','Real people')+bb('bots','Likely bots')+
-    '<span style="font-size:12px;color:#7a8a99;margin:0 2px 0 12px;">Country:</span>';
-  function cb(o,lbl){ return '<button class="mode-btn'+(cjCtry===o?' active':'')+'" style="padding:5px 11px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;" onclick="cjSetCtry(&quot;'+o+'&quot;)">'+lbl+'</button>'; }
-  sel+=cb('all','All countries')+cb('us','US')+cb('intl','Outside US')+'</div>';
-  function lb(o,lbl,idx){ return '<button class="mode-btn'+(cjLine===o?' active':'')+'" style="padding:5px 11px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;" onclick="cjSetLineIdx('+idx+')">'+lbl+'</button>'; }
-  sel+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 4px;">'+
-    '<span style="font-size:12px;color:#7a8a99;margin-right:2px;">Product line:</span>'+
-    lb('all','All',0)+lb('conmed','Conmed',1)+lb('beckman','Beckman Coulter',2)+lb('siemens','Siemens',3)+lb('abbott','Abbott',4)+lb('diazyme','Diazyme',5)+'</div>';
-  var head='<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">'+
-    '<div><h2>Customer Journey</h2><div class="sub">GA4→BigQuery event export &middot; '+escapeHtml(CJ.property||'')+' &middot; entry source, search term &amp; page path (add-to-cart &amp; purchase mapped) &middot; data '+escapeHtml(CJ.data_from||'')+' → '+escapeHtml(CJ.data_through||'')+' ('+(CJ.days_of_data||0)+' days) &middot; pulled '+escapeHtml(CJ.pulled_at||'')+'</div></div>'+
-    '<button class="refresh-btn" onclick="cjRefresh()" title="Reload the latest Customer Journey snapshot"><span class="lbl">↻ Reload</span></button></div>'+sel+'</div>';
-  // KPIs over in-window non-dev sessions (after active facet filters)
-  var ss=cjSessions();
-  var visN=cjVisitors().length, buyN=0, abN=0, brN=0, rev=0;
-  for(var i=0;i<ss.length;i++){ var c=ss[i].class; if(c==='purchaser'){ buyN++; rev+=(ss[i].revenue||0); } else if(c==='abandoner'){ abN++; } else { brN++; } }
-  var pot=0, prev=0; for(var k=0;k<ss.length;k++){ if(ss[k].class==='abandoner') pot+=(ss[k].cart_value||0); else if(ss[k].class==='purchaser') prev+=(cjVal(ss[k])||0); }
-  var cards='<div class="kpis" style="padding:6px 0 0;">'+
-    kpi(Number(abN).toLocaleString(),'Abandoned carts<br><span style="font-weight:600;">Cart potential '+cjUsd(pot)+'</span>')+
-    kpi(Number(buyN).toLocaleString(),'Purchases<br><span style="font-weight:600;">Purchased '+cjUsd(prev)+'</span>')+
-    '<div class="kpi" onclick="cjOpenInsight()" title="Analysis of the abandoned carts in the current filters" style="cursor:pointer;border:1px solid #1a73e8;"><div class="v" style="color:#1a73e8;">›</div><div class="l"><b>Insight &amp; analysis</b><br>Why carts were abandoned</div></div>'+
-    kpi(Number(visN).toLocaleString(),'Visitors')+
-    kpi(Number(ss.length).toLocaleString(),'Sessions')+
-    kpi(Number(brN).toLocaleString(),'Browsed only')+'</div>';
-  // active filter banner
-  var fnote='';
-  if(cjTermFilter||cjProdFilter||cjOutcome!=='all'||cjEntry!=='all'||cjLine!=='all'||cjBot!=='all'||cjCtry!=='all'){
-    var parts=[];
-    if(cjEntry!=='all') parts.push('traffic: '+cjEntry);
-    if(cjBot!=='all') parts.push(cjBot==='bots'?'likely bots':'real people');
-    if(cjCtry!=='all') parts.push(cjCtry==='us'?'US':'outside US');
-    if(cjLine!=='all'){ for(var li=0;li<cjLineDefs.length;li++){ if(cjLineDefs[li][0]===cjLine) parts.push('product line: '+cjLineDefs[li][1]); } }
-    if(cjOutcome==='cart') parts.push('outcome: added to cart / purchased');
-    if(cjOutcome==='left') parts.push('outcome: left without cart');
-    if(cjTermFilter) parts.push('search term “'+escapeHtml(cjTermFilter)+'”');
-    if(cjProdFilter) parts.push('product “'+escapeHtml(cjProdFilter)+'”');
-    fnote='<div style="margin:8px 16px 0;font-size:12px;color:#1a56c4;background:#eef4fb;border:1px solid #d3e2f7;border-radius:6px;padding:6px 10px;">Filtered by '+parts.join(' + ')+' &middot; <a href="javascript:void(0)" onclick="cjClearFilters()" style="color:#1a73e8;font-weight:600;">clear filters</a></div>';
-  }
-  cards+=fnote;
-  // body: selected visitor's journeys, else all in-window sessions
-  var shown = cjSel ? CJ.sessions.filter(function(s){ return s.user===cjSel && s.class!=='dev'; }).sort(function(a,b){ return (a.session_start||'').localeCompare(b.session_start||''); }) : ss;
-  var body;
-  if(!shown.length){
-    body='<div class="empty" style="margin:14px 16px;line-height:1.6;">'+
-      '<div style="font-size:15px;font-weight:600;color:#2c3e50;margin-bottom:6px;">No journeys match'+((cjTermFilter||cjProdFilter)?' this filter':' in this window')+'.</div>'+
-      'This maps every visitor who searched, viewed a product, added to cart, or purchased (Belgrade developer traffic excluded). '+
-      ((cjTermFilter||cjProdFilter)?'Try clearing the filters. ':'')+
-      'The GA4→BigQuery export is not retroactive — it holds data from the link date ('+escapeHtml(CJ.link_date||'')+') forward and builds history from there.'+
-      '</div>';
-  } else {
-    var CAP=50, over=shown.length-CAP, listS=shown.slice(0,CAP);
+  cjInitCustom(); cjWin='mon';
+  var chip=function(on,fn,val,lbl,attr){ return '<button class="mode-btn'+(on?' active':'')+'" '+(attr||'')+' style="padding:5px 11px;border-radius:16px;border:1px solid #cdd9e6;font-size:12px;" onclick="'+fn+'(&quot;'+val+'&quot;)">'+lbl+'</button>'; };
+  var row=function(h){ return '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 16px 8px;">'+h+'</div>'; };
+  var head='<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;"><h2>Customer Journey</h2>'+
+    '<button class="refresh-btn" onclick="cjRefresh()" title="Reload the latest Customer Journey snapshot"><span class="lbl">↻ Reload</span></button></div></div>';
+  var h=head+'<div class="kpis" id="cjKpi" style="padding:6px 0 10px;"></div>'+
+    row('<select onchange="cjSetMonth(this.value)" aria-label="Month" style="font:inherit;font-size:13px;padding:6px 8px;border:1px solid #cdd9e6;border-radius:6px;min-width:220px;"><option value="all"'+(cjMonthSel==='all'?' selected':'')+'>All months</option>'+cjMonths().map(function(m){ return '<option value="'+m+'"'+(m===cjMonthSel?' selected':'')+'>'+cjMonName(m)+'</option>'; }).join('')+'</select>')+
+    row([['all','Everyone'],['people','Real people'],['bots','Likely bots']].map(function(x){ return chip(cjBot===x[0],'cjSetBot',x[0],x[1],'data-cjb="'+x[0]+'"'); }).join(''))+
+    row([['all','All countries'],['us','US'],['intl','Outside US']].map(function(x){ return chip(cjCtry===x[0],'cjSetCtry',x[0],x[1]); }).join(''))+
+    row([['all','All traffic'],['paid','Paid'],['organic','Organic'],['direct','Direct'],['other','Other']].map(function(x){ return chip(cjEntry===x[0],'cjSetSrc',x[0],x[1]); }).join(''))+
+    row([['all','All'],['purchaser','Purchasers'],['abandoner','Abandoners'],['browser','Browsers']].map(function(x){ return chip(cjCls===x[0],'cjSetCls',x[0],x[1],'data-cjc="'+x[0]+'"'); }).join(''))+
+    row('<input type="search" placeholder="City, SKU, product, search term" value="'+escapeHtml(cjQ)+'" oninput="cjSearch(this.value)" style="font:inherit;font-size:13px;padding:7px 10px;border:1px solid #cdd9e6;border-radius:6px;width:min(420px,100%);">')+
+    '<div id="cjList"></div><div style="margin:10px 16px 16px;font-size:12px;color:#7a8a99;">Data '+escapeHtml(CJ.data_from||'')+' → '+escapeHtml(CJ.data_through||'')+' · '+escapeHtml(CJ.pulled_at||'')+'</div>';
+  document.getElementById('panel').innerHTML=h;
+  cjDraw();
+}
+function cjDraw(){
+  var B=cjBaseSessions(), ab=B.filter(function(s){ return s.class==='abandoner'; }), pu=B.filter(function(s){ return s.class==='purchaser'; });
+  var pot=ab.reduce(function(t,s){ return t+(s.cart_value||0); },0), rev=pu.reduce(function(t,s){ return t+(cjVal(s)||0); },0);
+  var k=document.getElementById('cjKpi'); if(!k) return;
+  k.innerHTML=kpi(Number(ab.length).toLocaleString(),'Abandoned carts<br><span style="font-weight:600;">Cart potential '+cjUsd(pot)+'</span>')+
+    kpi(Number(pu.length).toLocaleString(),'Purchases<br><span style="font-weight:600;">Purchased '+cjUsd(rev)+'</span>')+
+    '<div class="kpi" onclick="cjOpenInsight()" title="Analysis of the abandoned carts in the current filters" style="cursor:pointer;border:1px solid #1a73e8;"><div class="v" style="color:#1a73e8;">›</div><div class="l"><b>Insight &amp; analysis</b><br>Why carts were abandoned</div></div>';
+  var B0=cjB0();
+  document.querySelectorAll('[data-cjb]').forEach(function(b){ var v=b.getAttribute('data-cjb'), n=v==='all'?B0.length:B0.filter(function(s){ return (v==='bots')===cjIsBot(s); }).length; b.textContent=({all:'Everyone',people:'Real people',bots:'Likely bots'})[v]+' '+n; });
+  document.querySelectorAll('[data-cjc]').forEach(function(b){ var v=b.getAttribute('data-cjc'), n=v==='all'?B.length:B.filter(function(s){ return s.class===v; }).length; b.textContent=({all:'All',purchaser:'Purchasers',abandoner:'Abandoners',browser:'Browsers'})[v]+' '+n; });
+  var L=document.getElementById('cjList');
+  if(cjSel){
+    var shown=CJ.sessions.filter(function(s){ return s.user===cjSel && s.class!=='dev'; }).sort(function(a,b){ return (a.session_start||'').localeCompare(b.session_start||''); });
     var lastV=shown.reduce(function(m,x){ return Math.max(m,x.visit||0); },0);
-    var title = cjSel ? ('<div class="ca-h" style="margin:10px 16px 0;">All visits by this visitor — '+escapeHtml(cjPlace(shown[0]))+' ('+shown.length+' recorded'+(lastV>shown.length?' of '+lastV:'')+', oldest first) &middot; <a href="javascript:void(0)" onclick="cjSel=&quot;&quot;;renderTabs();renderCjPanel();" style="color:#1a73e8;font-weight:600;">← back to all journeys</a></div>') : '';
-    body=title+listS.map(cjJourneyCard).join('')+
-      (over>0?('<div class="empty" style="margin:10px 16px;">Showing first '+CAP+' of '+shown.length+' sessions — use the Search terms / Products filters or pick a customer in the sidebar to narrow.</div>'):'');
+    L.innerHTML='<div class="ca-h" style="margin:4px 16px 0;">All visits by this visitor — '+escapeHtml(shown.length?cjPlace(shown[0]):'')+' ('+shown.length+' recorded'+(lastV>shown.length?' of '+lastV:'')+', oldest first) &middot; <a href="javascript:void(0)" onclick="cjSel=&quot;&quot;;cjDraw();" style="color:#1a73e8;font-weight:600;">← back to all journeys</a></div>'+shown.map(cjJourneyCard).join('');
+    return;
   }
-  var note='<div style="margin:14px 16px;padding:12px 16px;background:#eef4fb;border-left:4px solid #1a73e8;font-size:12px;border-radius:6px;line-height:1.55;color:#2c3e50;">'+escapeHtml(CJ.note||'')+'</div>';
-  document.getElementById('panel').innerHTML = head + cards + body + note;
+  var l=cjSessions();
+  L.innerHTML=l.length?(l.slice(0,cjLim).map(cjJourneyCard).join('')+(l.length>cjLim?'<button onclick="cjMore()" style="display:block;margin:10px 16px;padding:8px 14px;border:1px solid #cdd9e6;border-radius:6px;background:#fff;font-weight:600;color:#1a73e8;cursor:pointer;">Show more ('+(l.length-cjLim)+' left)</button>':'')):'<div class="empty" style="margin:14px 16px;">No sessions</div>';
 }
 
 // ── Website Traffic tab (GA4 daily visitors by source + sales by source) ──────
