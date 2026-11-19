@@ -1,6 +1,7 @@
 name: Invoice Check Scan
 
-# Triggered by the Search button on the Invoice Check tab (workflow_dispatch).
+# Triggered by the Search button on the Invoice Check tab, and automatically by the jit4labs-ops Worker after every
+# scheduled dashboard refresh finishes (request_id auto-<time>, window 2weeks).
 # Reads the customersupport mailbox through Microsoft Graph, extracts vendor invoice PDFs, compares against Vtiger POs
 # and QuickBooks bills (invoice_bulk.py) and commits invoice-bulk-data.json + generated PDF copies.
 
@@ -68,7 +69,7 @@ jobs:
           python - <<'PY'
           import json, os, datetime
           rid = os.environ.get("REQ_ID") or ""
-          if rid:
+          if rid and not rid.startswith("auto-"):   # automatic scans (after each dashboard refresh) don't touch the page's Search status
               json.dump({"id": rid, "window": os.environ.get("REQ_WINDOW", "week"), "status": "done",
                          "done_at": datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z"},
                         open("invoice-bulk-request.json", "w"))
