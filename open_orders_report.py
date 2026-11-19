@@ -730,6 +730,12 @@ def extract_open_orders(vt, dry_run=False):
             continue
 
         _so_start, _so_total = len(open_items), 0   # total product lines on the original SO
+        # Delivered qty per product, used up line by line: an SO can list the same product on two lines
+        # (SO634: B24838 x5 twice), and each line must not count the full delivered qty (2026-11-19).
+        _dleft = dict(delivered_map.get(so_num, {}))
+        _pids = [l.get("productid", "") for l in line_items if l.get("productid")]
+        if len(_pids) != len(set(_pids)):
+            log(f"  {so_num}: same product on more than one line - delivered qty split across those lines")
         for li in line_items:
             pid = li.get("productid", "")
             if not pid:
@@ -759,7 +765,8 @@ def extract_open_orders(vt, dry_run=False):
                 continue
 
             ordered_qty = float(li.get("quantity", li.get("qty", 0)))
-            delivered_qty = delivered_map.get(so_num, {}).get(pid, 0)
+            delivered_qty = min(ordered_qty, _dleft.get(pid, 0))
+            _dleft[pid] = _dleft.get(pid, 0) - delivered_qty
             open_qty = ordered_qty - delivered_qty
             _so_total += 1
 
