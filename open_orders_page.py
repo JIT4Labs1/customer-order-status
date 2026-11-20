@@ -4369,7 +4369,7 @@ function arExportCsv(){
 }
 function arClearExcl(){ arExcl={}; try{ localStorage.setItem('jit4_ar_excl','{}'); }catch(e){} renderPayPanel(); }
 function arCnt(r){ return arIsExcl(r)?0:arEff(r); }
-function arEff(r){ return r.reconcile?0:(Number(r.balance)||0); }
+function arEff(r){ return r.reconcile?0:Math.max(0,(Number(r.balance)||0)-(Number(r.shopify_covered)||0)); }
 // ── sortable headers ──
 var srt={arC:{k:'bal',d:-1},arI:{k:'due',d:1},apV:{k:'bal',d:-1},apB:{k:'due',d:1}};
 function srtSet(t,k,ty){ var s=srt[t]; if(s.k===k){ s.d=-s.d; } else { s.k=k; s.d=(ty==='s'?1:-1); } renderPayPanel(); }
@@ -4380,7 +4380,7 @@ function srtCmp(t,get){ var s=srt[t]; return function(a,b){ var x=get(a,s.k), y=
   else { r=(x||0)-(y||0); } return r*s.d; }; }
 function arInvGet(r,k){ if(k==='no') return r.number; if(k==='ord') return r.shopify_order||''; if(k==='ship'){ var f=r.shopify_fulfillments||[]; return f.length?(f[0].shipment||''):''; }
   if(k==='paid') return arPaidVal(r); if(k==='date') return r.date||''; if(k==='due') return r.due||''; if(k==='days') return arDays(r); if(k==='amt') return Number(r.amount)||0; if(k==='bal') return arEff(r); if(k==='so') return r.so_num||''; return ''; }
-function arPaidVal(r){ return r.reconcile?'Yes':(r.shopify_status==='PARTIALLY_PAID'?'Partial':'No'); }
+function arPaidVal(r){ return r.reconcile?'Yes':((r.shopify_covered||r.shopify_status==='PARTIALLY_PAID')?'Partial':'No'); }
 function arPaidCell(r){ var v=arPaidVal(r);
   if(v==='Yes') return '<span style="color:#137333;font-weight:700;">Yes</span>';
   if(v==='Partial') return '<span style="color:#b42318;font-weight:700;" title="Shopify shows only part of this order paid">Partial</span>';
@@ -4410,6 +4410,8 @@ function arFulCell(r){
   return h.length?h.join(''):'<span style="color:#999;">&mdash;</span>';
 }
 function arShopBadge(r){
+  if(r.shopify_covered){ var nx=(r.not_in_order||[]).map(function(x){ return payMoney(x.amount)+' shipping (tracking '+x.tracking+(x.order?', on Shopify '+x.order:', not on this Shopify order')+')'; }).join('; ');
+    return ' <span title="'+escapeHtml(payMoney(r.shopify_covered)+' of this invoice was paid in Shopify '+(r.shopify_order||'')+' - apply it in QuickBooks. Still owed: '+nx)+'" style="display:inline-block;background:#e6f4ea;color:#137333;border:1px solid #a8d5b5;border-radius:10px;padding:0 7px;font-size:11px;font-weight:700;white-space:nowrap;">&#128179; '+payMoney(r.shopify_covered)+' paid in Shopify &mdash; reconcile</span><div style="font-size:10px;color:#b54708;">Still owed: '+escapeHtml(nx)+'</div>'; }
   if(r.reconcile) return ' <span title="Shopify shows this order as PAID, but the QuickBooks invoice is still open. Apply the payment / reconcile in QuickBooks." style="display:inline-block;background:#e6f4ea;color:#137333;border:1px solid #a8d5b5;border-radius:10px;padding:0 7px;font-size:11px;font-weight:700;white-space:nowrap;">&#128179; Paid in Shopify &mdash; reconcile</span>';
   if(r.shopify_status==='PARTIALLY_PAID') return ' <span title="Shopify shows this order partially paid ('+payMoney(r.shopify_received!=null?r.shopify_received:((r.shopify_total||0)-(r.shopify_outstanding||0)))+' of '+payMoney(r.shopify_total||0)+'). Check whether a payment needs to be applied to this invoice in QuickBooks." style="display:inline-block;background:#fdecea;color:#b42318;border:1px solid #f4b6ae;border-radius:10px;padding:0 7px;font-size:11px;font-weight:700;white-space:nowrap;">&#128179; Part-paid in Shopify</span>';
   return '';
@@ -4547,7 +4549,7 @@ function arMailDl(){
 // customers in one email, same template and table style as the customer email. Sent from the app like the other emails.
 var acMail={sel:{},html:'',subject:''};
 function acRows(){ var out=[], cs=(PAY&&PAY.ar&&PAY.ar.customers)||[];
-  for(var i=0;i<cs.length;i++){ var iv=cs[i].invoices||[]; for(var j=0;j<iv.length;j++){ var r=iv[j]; if(r.reconcile&&(Number(r.balance)||0)>0.005) out.push({c:cs[i].name,r:r}); } }
+  for(var i=0;i<cs.length;i++){ var iv=cs[i].invoices||[]; for(var j=0;j<iv.length;j++){ var r=iv[j]; if((r.reconcile||r.shopify_covered)&&(Number(r.balance)||0)>0.005) out.push({c:cs[i].name,r:r,paid:r.reconcile?Number(r.balance):Number(r.shopify_covered)}); } }
   out.sort(function(a,b){ return String(a.r.date||'').localeCompare(String(b.r.date||''))||String(a.c).toLowerCase().localeCompare(String(b.c).toLowerCase()); });   // by invoice date, oldest first
   return out; }
 function acMailOpen(){
@@ -4564,19 +4566,20 @@ function acMailDraw(){
   var el=document.getElementById('acMailBody'); if(!el) return; var rows=acRows();
   if(!rows.length){ el.innerHTML='<div style="font-size:13px;color:#7f8c8d;">No invoices are paid in Shopify and still open in QuickBooks right now.</div>'; return; }
   var h='<div style="margin-bottom:6px;font-size:13px;"><a href="#" onclick="acMailAll(true);return false;">Select all</a> &nbsp; <a href="#" onclick="acMailAll(false);return false;">Select none</a> &nbsp; <span style="color:#7f8c8d;">All customers, one email.</span></div>'+
-    '<table class="tbl" style="width:100%;"><thead><tr><th class="c"></th><th>Customer</th><th>Invoice #</th><th>Shopify order</th><th>Issued</th><th style="text-align:right;">Open in QuickBooks</th></tr></thead><tbody>';
+    '<table class="tbl" style="width:100%;"><thead><tr><th class="c"></th><th>Customer</th><th>Invoice #</th><th>Shopify order</th><th>Issued</th><th style="text-align:right;">Open in QuickBooks</th><th style="text-align:right;">Paid in Shopify</th></tr></thead><tbody>';
   var tot=0,n=0;
-  for(var i=0;i<rows.length;i++){ var r=rows[i].r, on=!!acMail.sel[r.number]; if(on){ tot+=Number(r.balance)||0; n++; }
-    h+='<tr><td class="c"><input type="checkbox" '+(on?'checked ':'')+'onclick="acMailTog(&quot;'+escapeHtml(r.number)+'&quot;)"></td><td>'+escapeHtml(rows[i].c)+'</td><td>'+escapeHtml(r.number)+'</td><td>'+escapeHtml(r.shopify_order||'')+'</td><td>'+fmtDate(r.date)+'</td><td style="text-align:right;">'+payMoney(r.balance)+'</td></tr>'; }
-  h+='<tr class="so-group"><td></td><td colspan="4" style="font-weight:700;">Selected: '+n+' invoice'+(n===1?'':'s')+'</td><td style="text-align:right;font-weight:700;">'+payMoney(tot)+'</td></tr></tbody></table>'+
+  for(var i=0;i<rows.length;i++){ var r=rows[i].r, on=!!acMail.sel[r.number]; if(on){ tot+=rows[i].paid||0; n++; }
+    h+='<tr><td class="c"><input type="checkbox" '+(on?'checked ':'')+'onclick="acMailTog(&quot;'+escapeHtml(r.number)+'&quot;)"></td><td>'+escapeHtml(rows[i].c)+'</td><td>'+escapeHtml(r.number)+(r.shopify_covered?' <span style="font-size:10px;color:#b54708;">partly</span>':'')+'</td><td>'+escapeHtml(r.shopify_order||'')+'</td><td>'+fmtDate(r.date)+'</td><td style="text-align:right;">'+payMoney(r.balance)+'</td><td style="text-align:right;">'+payMoney(rows[i].paid)+'</td></tr>'; }
+  h+='<tr class="so-group"><td></td><td colspan="5" style="font-weight:700;">Selected: '+n+' invoice'+(n===1?'':'s')+'</td><td style="text-align:right;font-weight:700;">'+payMoney(tot)+'</td></tr></tbody></table>'+
     '<div style="margin-top:12px;"><button class="mode-btn" style="margin:0;background:#008080;color:#fff;" '+(n?'':'disabled ')+'onclick="acMailGen()">Create email</button></div>';
   el.innerHTML=h; }
 function acMailTog(num){ acMail.sel[num]=!acMail.sel[num]; acMailDraw(); }
 function acMailAll(on){ var rows=acRows(); for(var i=0;i<rows.length;i++) acMail.sel[rows[i].r.number]=on; acMailDraw(); }
 function acMailBuild(rows){
   var tot=0, tr='', td='padding:7px 10px;border-bottom:1px solid #e3e7ee;', th='padding:8px 10px;';
-  for(var i=0;i<rows.length;i++){ var r=rows[i].r; tot+=Number(r.balance)||0;
-    tr+='<tr><td style="'+td+'">'+escapeHtml(rows[i].c)+'</td><td style="'+td+'">'+escapeHtml(r.number)+'</td><td style="'+td+'">'+escapeHtml(r.shopify_order||'')+'</td><td style="'+td+'">'+fmtDate(r.date)+'</td><td style="'+td+'">'+fmtDate(r.due)+'</td><td align="right" style="'+td+'">'+payMoney(r.balance)+'</td></tr>'; }
+  for(var i=0;i<rows.length;i++){ var r=rows[i].r; tot+=rows[i].paid||0;
+    var part=r.shopify_covered?'<div style="font-size:11px;color:#b54708;">Only '+payMoney(r.shopify_covered)+' of this invoice was paid in Shopify; '+(r.not_in_order||[]).map(function(x){ return payMoney(x.amount)+' shipping (tracking '+escapeHtml(x.tracking)+') is not part of this order'; }).join('; ')+' and is still owed.</div>':'';
+    tr+='<tr><td style="'+td+'">'+escapeHtml(rows[i].c)+'</td><td style="'+td+'">'+escapeHtml(r.number)+part+'</td><td style="'+td+'">'+escapeHtml(r.shopify_order||'')+'</td><td style="'+td+'">'+fmtDate(r.date)+'</td><td align="right" style="'+td+'">'+payMoney(r.balance)+'</td><td align="right" style="'+td+'">'+payMoney(rows[i].paid)+'</td></tr>'; }
   return '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Invoices paid in Shopify, still open in QuickBooks</title></head><body style="margin:0;padding:0;background:#f4f6f9">'+
   '<table cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#f4f6f9"><tr><td align="center" style="padding:18px 10px">'+
   '<table cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:700px;width:100%;background:#fff;border:1px solid #e3e7ee">'+
@@ -4584,14 +4587,14 @@ function acMailBuild(rows){
   '<tr><td style="padding:24px;font:14px/1.6 Arial,Helvetica,sans-serif;color:#101E3E">'+
   '<p style="margin:0 0 12px">Hello,<br><br>The invoices below were <b style="color:#008080">paid in Shopify</b> but are still <b>open in QuickBooks</b>. Could you please apply the payments and close them in QuickBooks?</p>'+
   '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;font-size:13px;color:#101E3E;margin:6px 0 14px">'+
-  '<thead><tr style="background:#101E3E;color:#fff"><th align="left" style="'+th+'">Customer</th><th align="left" style="'+th+'">Invoice #</th><th align="left" style="'+th+'">Shopify order</th><th align="left" style="'+th+'">Date issued</th><th align="left" style="'+th+'">Due date</th><th align="right" style="'+th+'">Open in QuickBooks</th></tr></thead><tbody>'+tr+
-  '<tr style="background:#f4f6f9"><td colspan="5" style="padding:9px 10px;font-weight:700;border-top:2px solid #008080">Total ('+rows.length+' invoice'+(rows.length===1?'':'s')+')</td><td align="right" style="padding:9px 10px;font-weight:700;border-top:2px solid #008080">'+payMoney(tot)+'</td></tr></tbody></table>'+
+  '<thead><tr style="background:#101E3E;color:#fff"><th align="left" style="'+th+'">Customer</th><th align="left" style="'+th+'">Invoice #</th><th align="left" style="'+th+'">Shopify order</th><th align="left" style="'+th+'">Date issued</th><th align="right" style="'+th+'">Open in QuickBooks</th><th align="right" style="'+th+'">Paid in Shopify</th></tr></thead><tbody>'+tr+
+  '<tr style="background:#f4f6f9"><td colspan="5" style="padding:9px 10px;font-weight:700;border-top:2px solid #008080">Total paid in Shopify ('+rows.length+' invoice'+(rows.length===1?'':'s')+')</td><td align="right" style="padding:9px 10px;font-weight:700;border-top:2px solid #008080">'+payMoney(tot)+'</td></tr></tbody></table>'+
   '<p style="margin:0 0 12px">Thank you,<br>JIT4Labs team</p></td></tr>'+
   '<tr><td style="padding:14px 24px;border-top:3px solid #008080;font:12px/1.6 Arial,Helvetica,sans-serif;color:#6b7280">JIT4Labs &middot; <a href="mailto:CustomerSupport@jit4you.com" style="color:#008080;text-decoration:none">CustomerSupport@jit4you.com</a> &middot; <a href="tel:+18882422301" style="color:#008080;text-decoration:none">(888) 242-2301</a></td></tr>'+
   '</table></td></tr></table></body></html>'; }
 function acMailGen(){
   var rows=acRows().filter(function(x){ return acMail.sel[x.r.number]; }); if(!rows.length) return;
-  var tot=0; for(var i=0;i<rows.length;i++) tot+=Number(rows[i].r.balance)||0;
+  var tot=0; for(var i=0;i<rows.length;i++) tot+=rows[i].paid||0;
   var subj='JIT4Labs '+String.fromCharCode(8211)+' invoices paid in Shopify, still open in QuickBooks ('+rows.length+', '+payMoney(tot)+')';
   arMailClose();
   mailOpen(subj, acMailBuild(rows), 'Accountant', {to:IB_ACCT_TO, vendor:true});   // not logged under a customer's "Emails sent"
@@ -4652,7 +4655,7 @@ function arRenderAR(){
           '<td>'+arFulCell(r)+'</td>'+
           '<td>'+fmtDate(r.date)+'</td><td>'+fmtDate(r.due)+'</td>'+
           '<td class="c" style="color:'+col+';font-weight:600;">'+(dd>0?dd:'—')+'</td>'+
-          '<td style="text-align:right;">'+payMoney(r.amount)+'</td><td style="text-align:right;font-weight:600;">'+payMoney(arEff(r))+(r.reconcile?'<div style="font-size:10px;font-weight:400;color:#b54708;" title="QuickBooks still shows this invoice open">QB open: '+payMoney(r.balance)+'</div>':'')+'</td>'+'</tr>'; }
+          '<td style="text-align:right;">'+payMoney(r.amount)+'</td><td style="text-align:right;font-weight:600;">'+payMoney(arEff(r))+((r.reconcile||r.shopify_covered)?'<div style="font-size:10px;font-weight:400;color:#b54708;" title="QuickBooks still shows this invoice open">QB open: '+payMoney(r.balance)+'</div>':'')+'</td>'+'</tr>'; }
       t+='</tbody></table>';
       t+=esBlock(i,c.name);
       rows+='<tr><td colspan="5" style="padding:0 0 0 24px;background:#fafcfe;">'+t+'</td></tr>';
