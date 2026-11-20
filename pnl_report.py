@@ -523,8 +523,9 @@ def build_pnl(vt):
     rows6 = []
     for aid, d in idl.items():
         ytd = sum(d["months"])
-        first_m = next((i + 1 for i, v in enumerate(d["months"]) if v > 0), cur_month)
-        avg = ytd / (cur_month - first_m + 1) if (cur_month - first_m + 1) > 0 else 0
+        # Average over the months that had orders only: months with no orders are left out (Nov 20, 2026)
+        n_ord = sum(1 for v in d["months"] if v > 0)
+        avg = ytd / n_ord if n_ord else 0
         cm = d["months"][cur_month - 1]
         rows6.append((d["name"], ytd, avg, d["months"], cm, d.get("last", "")))
     # Labs with no purchase in the last 3 months (90 days) are pushed to the bottom.
@@ -548,8 +549,8 @@ def build_pnl(vt):
                     ('<div style="font-size:10px;color:#888;font-weight:normal;">No order since %s</div>' % last) if dormant else "", td, _money(ytd), td, _money(avg), tdl, spark, td, _money(cm),
                     td, pcolor, ("%.0f%%" % pa) if avg else "—"))
     H.append('</tbody></table>')
-    H.append('<div style="font-size:11px;color:#888;margin-bottom:16px;">Monthly Average = YTD SO Amount / (months '
-             'since customer\'s first %d order). Monthly Trend = bar chart of SO amounts (Jan–%s %d), scaled per row; '
+    H.append('<div style="font-size:11px;color:#888;margin-bottom:16px;">Monthly Average = YTD SO Amount / number of months with orders '
+             '(months with no orders are not counted, %d). Monthly Trend = bar chart of SO amounts (Jan–%s %d), scaled per row; '
              'last bar green if current-month ≥ avg, red if &lt; avg. %% of Avg = Current Month / Monthly Avg. '
              'Only %d data used. Labs with no purchase in the last 3 months are listed at the bottom. SO Amount is net of shipping &amp; tax.</div>' % (Y, MONTHS[cur_month - 1], Y, Y))
 
