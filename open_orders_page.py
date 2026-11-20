@@ -1595,7 +1595,7 @@ function cjCartLines(s){
   var atc=(s.atc_items||[]); return atc.length?'<div style="font-size:11px;color:#a1362c;">In cart: '+atc.map(escapeHtml).join(', ')+'</div>':'';
 }
 function cjMaybe(s,full){
-  var pc=s.possible_customers||[]; if(s.class!=='abandoner'||!pc.length) return '';
+  var pc=s.possible_customers||[]; if(s.class!=='abandoner'||s.identity||!pc.length) return '';
   if(!full) return '<div style="font-size:12px;color:#8a5a00;margin-top:4px;">Could be: '+escapeHtml(pc.slice(0,3).map(function(c){return c.name;}).join(', '))+(pc.length>3?' +'+(pc.length-3)+' more':'')+' <span style="color:#7a8a99;">(same city as a customer, not confirmed)</span></div>';
   return '<div style="font-size:12px;color:#8a5a00;margin-top:6px;"><b>Could be one of these customers</b> <span style="color:#7a8a99;">(same city as these Shopify customers — a city match only, not confirmed)</span>'+pc.map(function(c){ return '<div>• <b>'+escapeHtml(c.name)+'</b>'+(c.contact?' ('+escapeHtml(c.contact)+')':'')+' · '+Number(c.orders).toLocaleString()+' order'+(c.orders===1?'':'s')+'</div>'; }).join('')+'</div>';
 }
@@ -1627,7 +1627,9 @@ function cjSetRad(v,src){
   document.querySelectorAll('[data-cjlb]').forEach(function(el){ el.innerHTML=cjLabBlockIn(CJ.sessions[+el.getAttribute('data-cjlb')], el.getAttribute('data-max').split(',').map(Number)); });
   document.querySelectorAll('[data-cjll]').forEach(function(el){ el.innerHTML=cjLabSummary(CJ.sessions[+el.getAttribute('data-cjll')])||'Possible labs'; });
 }
+function cjWho(s){ var w=s.identity; if(!w) return ''; return (w.company||w.customer)+(w.company&&w.customer&&w.customer!==w.company?' ('+w.customer+')':''); }
 function cjLabBlockIn(s,max){
+  if(s.identity) return '<div style="font-size:12px;color:#1e7b3c;"><b>Known customer: '+escapeHtml(cjWho(s))+'</b> — this browser placed Shopify order'+(s.identity.orders.length>1?'s ':' ')+escapeHtml(s.identity.orders.join(', '))+'. No lab search needed.</div>';
   var p=s.possible_labs;
   if(!p) return '<div style="font-size:12px;color:#7a8a99;">Outside the US — no lab lookup.</div>';
   if(!p.located&&!p.n) return '<div style="font-size:12px;color:#7a8a99;">The city Google gave ('+escapeHtml(s.city||'unknown')+') is not precise enough for a radius search.</div>';
@@ -1639,6 +1641,7 @@ function cjLabBlockIn(s,max){
 }
 function cjLabBlock(s,max){ return '<div data-cjlb="'+CJ.sessions.indexOf(s)+'" data-max="'+max.join(',')+'">'+cjLabBlockIn(s,max)+'</div>'; }
 function cjLabSummary(s){
+  if(s.class==='abandoner'&&s.identity) return '<b style="color:#1e7b3c;">Known customer: '+escapeHtml(cjWho(s))+'</b> · no lab search needed';
   var p=s.possible_labs; if(s.class!=='abandoner'||!p) return '';
   var c=cjPIn(p);
   return (p.confirmed&&p.confirmed.mi<=cjLRad?'<b style="color:#1e7b3c;">Confirmed: '+escapeHtml(p.confirmed.name)+'</b> · ':'')+(c.n?'Possible labs: '+Number(c.n).toLocaleString()+' '+cjRadTxt()+(c.k?' · <b style="color:#8a5a00;">'+c.k+' already in a workflow / Pipeline</b>':''):(p.located?'No labs '+cjRadTxt():'City not precise enough for a radius search'));
@@ -1936,7 +1939,8 @@ function cjJourneyCard(s){
   var nVis=CJ.sessions.filter(function(x){ return x.user===s.user&&x.class!=='dev'; }).length;
   var pills=(v!=null&&s.class!=='browser'?'<b style="font-size:14px;">'+cjUsd(v,1)+'</b> ':'')+
     (s.visit>1?'<span class="status" style="background:#e8f0fe;color:#1a56c4;">'+cjOrd(s.visit)+' visit</span> ':'')+
-    (cjIsBot(s)?'<span class="status" style="background:#fde8e8;color:#9b1c1c;" title="'+escapeHtml((s.bot.reasons||[]).join(', '))+'">likely bot</span> ':'');
+    (cjIsBot(s)?'<span class="status" style="background:#fde8e8;color:#9b1c1c;" title="'+escapeHtml((s.bot.reasons||[]).join(', '))+'">likely bot</span> ':'')+
+    (s.identity?'<span class="status" style="background:#e3f6ea;color:#1e7b3c;" title="Matched to Shopify order '+escapeHtml(s.identity.orders.join(', '))+'">Customer: '+escapeHtml(cjWho(s))+'</span> ':'');
   var atcLine='<div style="margin-top:4px;">'+cjCartLines(s)+'</div>'+cjMaybe(s,true)+
     (s.class==='abandoner'?'<details style="margin-top:6px;"><summary style="cursor:pointer;font-size:12px;"><span data-cjll="'+CJ.sessions.indexOf(s)+'">'+(cjLabSummary(s)||'Possible labs')+'</span></summary><div style="margin-top:4px;">'+cjRadSlider()+cjLabBlock(s,[5,5])+'</div></details>':'');
   var dev=[s.device&&s.device.category,s.device&&s.device.os,s.device&&s.device.browser].filter(function(x){ return x&&x!=='(not set)'; }).join(' · ');
