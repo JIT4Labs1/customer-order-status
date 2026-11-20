@@ -4548,7 +4548,7 @@ function arMailDl(){
 var acMail={sel:{},html:'',subject:''};
 function acRows(){ var out=[], cs=(PAY&&PAY.ar&&PAY.ar.customers)||[];
   for(var i=0;i<cs.length;i++){ var iv=cs[i].invoices||[]; for(var j=0;j<iv.length;j++){ var r=iv[j]; if(r.reconcile&&(Number(r.balance)||0)>0.005) out.push({c:cs[i].name,r:r}); } }
-  out.sort(function(a,b){ return String(a.c).toLowerCase().localeCompare(String(b.c).toLowerCase())||String(a.r.date||'').localeCompare(String(b.r.date||'')); });
+  out.sort(function(a,b){ return String(a.r.date||'').localeCompare(String(b.r.date||''))||String(a.c).toLowerCase().localeCompare(String(b.c).toLowerCase()); });   // by invoice date, oldest first
   return out; }
 function acMailOpen(){
   var m=document.getElementById('arMailModal'); if(m) m.parentNode.removeChild(m);
