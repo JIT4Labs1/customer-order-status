@@ -1618,7 +1618,8 @@ function cjLabBlock(s,max){
   if(!p) return '<div style="font-size:12px;color:#7a8a99;">Outside the US — no lab lookup.</div>';
   if(!p.n) return '<div style="font-size:12px;color:#7a8a99;">'+(p.located?'No independent labs or LabReach labs within 50 miles.':'The city Google gave ('+escapeHtml(s.city||'unknown')+') is not precise enough for a 50-mile search.')+'</div>';
   return (p.confirmed_deal?'<div style="font-size:12px;color:#1e7b3c;"><b>Confirmed visitor:</b> '+escapeHtml(p.confirmed_deal.person||'LabReach contact')+' (clicked a LabReach email)</div>':'')+
-    p.labs.slice(0,max).map(cjLabRow).join('')+(p.n>max?'<div style="font-size:12px;color:#7a8a99;padding-top:6px;">+'+Number(p.n-max).toLocaleString()+' more within 50 miles</div>':'');
+    (function(){ var kn=p.labs.filter(function(l){ return l.confirmed||l.customer||l.wf||l.stage; }), fr=p.labs.filter(function(l){ return !(l.confirmed||l.customer||l.wf||l.stage); }), sh=kn.slice(0,max[0]).concat(fr.slice(0,max[1]));
+      return sh.map(cjLabRow).join('')+(p.n>sh.length?'<div style="font-size:12px;color:#7a8a99;padding-top:6px;">+'+Number(p.n-sh.length).toLocaleString()+' more within 50 miles</div>':''); })();
 }
 function cjLabSummary(s){
   var p=s.possible_labs; if(s.class!=='abandoner'||!p) return '';
@@ -1676,7 +1677,7 @@ function cjInsightHtml(rows){
     '<div style="font-size:12px;color:#7a8a99;">A cart can show several reasons, so these add up to more than '+A.length+'. GA4 shows behavior, not intent — these are best guesses.</div>'+
     sec('Who they were (Shopify abandoned checkouts)')+(CJ.abandoned_checkouts?(named.length?named.map(function(x){ var s=x[0],c=x[1]; return '<div style="font-size:13px;margin:3px 0;">• <b>'+escapeHtml(c.company||c.customer||c.email||'Unnamed')+'</b>'+(c.company&&c.customer?' ('+escapeHtml(c.customer)+')':'')+(c.email&&(c.company||c.customer)&&c.customer!==c.email?' · '+escapeHtml(c.email):'')+(c.city?' · ship-to '+escapeHtml(c.city+(c.region?', '+c.region:'')):'')+' · '+cjUsd(c.total,1)+(c.prior_orders?' · '+c.prior_orders+' past orders':' · new')+' — '+lnk(s,escapeHtml(cjPlace(s)))+'</div>'; }).join(''):'<div style="font-size:12px;color:#7a8a99;">None of these carts reached the checkout email step, so Shopify has no name for them.</div>'):'<div style="font-size:12px;color:#7a8a99;">Not available'+(CJ.abandoned_checkouts_error?': '+escapeHtml(CJ.abandoned_checkouts_error.slice(0,120)):'')+'</div>')+
     sec('Possible labs by location')+'<div style="font-size:12px;color:#7a8a99;margin-bottom:4px;">Labs within 50 miles of each cart (LabReach list), most likely first: confirmed, customer, already in a workflow or on the Pipeline, then independent chemistry/immunoassay labs by Medicare volume. The city from Google is approximate.</div>'+
-      A.slice().sort(function(x,y){ return (y.cart_value||0)-(x.cart_value||0); }).map(function(s){ return '<div style="margin:8px 0;padding:10px 12px;border:1px solid #e3e8ee;border-radius:8px;"><div style="display:flex;justify-content:space-between;gap:10px;">'+lnk(s,'<b>'+escapeHtml(cjPlace(s))+'</b>')+'<span style="font-size:12px;color:#5a6b7b;">'+cjUsd(s.cart_value||0,1)+' · '+cjWhen(s.session_start)+'</span></div>'+cjLabBlock(s,3)+'</div>'; }).join('')+
+      A.slice().sort(function(x,y){ return (y.cart_value||0)-(x.cart_value||0); }).map(function(s){ return '<div style="margin:8px 0;padding:10px 12px;border:1px solid #e3e8ee;border-radius:8px;"><div style="display:flex;justify-content:space-between;gap:10px;">'+lnk(s,'<b>'+escapeHtml(cjPlace(s))+'</b>')+'<span style="font-size:12px;color:#5a6b7b;">'+cjUsd(s.cart_value||0,1)+' · '+cjWhen(s.session_start)+'</span></div>'+cjLabBlock(s,[3,2])+'</div>'; }).join('')+
     (recs.length?sec('What to do')+recs.map(function(r){ return '<div style="font-size:13px;margin:3px 0;">• '+escapeHtml(r)+'</div>'; }).join(''):'');
 }
 function cjOpenInsight(){
@@ -1919,7 +1920,7 @@ function cjJourneyCard(s){
     (s.visit>1?'<span class="status" style="background:#e8f0fe;color:#1a56c4;">'+cjOrd(s.visit)+' visit</span> ':'')+
     (cjIsBot(s)?'<span class="status" style="background:#fde8e8;color:#9b1c1c;" title="'+escapeHtml((s.bot.reasons||[]).join(', '))+'">likely bot</span> ':'');
   var atcLine='<div style="margin-top:4px;">'+cjCartLines(s)+'</div>'+cjMaybe(s,true)+
-    (s.class==='abandoner'?'<details style="margin-top:6px;"><summary style="cursor:pointer;font-size:12px;">'+(cjLabSummary(s)||'Possible labs')+'</summary><div style="margin-top:4px;">'+cjLabBlock(s,8)+'</div></details>':'');
+    (s.class==='abandoner'?'<details style="margin-top:6px;"><summary style="cursor:pointer;font-size:12px;">'+(cjLabSummary(s)||'Possible labs')+'</summary><div style="margin-top:4px;">'+cjLabBlock(s,[5,5])+'</div></details>':'');
   var dev=[s.device&&s.device.category,s.device&&s.device.os,s.device&&s.device.browser].filter(function(x){ return x&&x!=='(not set)'; }).join(' · ');
   var devLine='<div style="font-size:11px;color:#7a8a99;margin-top:6px;">'+escapeHtml(dev||'Device not reported')+(s.engaged_sec!=null?' · engaged '+s.engaged_sec+' s':'')+
     (cjIsBot(s)?' · <span style="color:#9b1c1c;">Likely bot: '+escapeHtml((s.bot.reasons||[]).join(', '))+'</span>':(s.bot&&s.bot.score?' · bot signals (not enough to flag): '+escapeHtml((s.bot.reasons||[]).join(', ')):''))+
