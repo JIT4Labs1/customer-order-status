@@ -1599,6 +1599,31 @@ function cjMaybe(s,full){
   if(!full) return '<div style="font-size:12px;color:#8a5a00;margin-top:4px;">Could be: '+escapeHtml(pc.slice(0,3).map(function(c){return c.name;}).join(', '))+(pc.length>3?' +'+(pc.length-3)+' more':'')+' <span style="color:#7a8a99;">(same city as a customer, not confirmed)</span></div>';
   return '<div style="font-size:12px;color:#8a5a00;margin-top:6px;"><b>Could be one of these customers</b> <span style="color:#7a8a99;">(same city as these Shopify customers — a city match only, not confirmed)</span>'+pc.map(function(c){ return '<div>• <b>'+escapeHtml(c.name)+'</b>'+(c.contact?' ('+escapeHtml(c.contact)+')':'')+' · '+Number(c.orders).toLocaleString()+' order'+(c.orders===1?'':'s')+'</div>'; }).join('')+'</div>';
 }
+// ── Possible labs within 50 miles of an abandoned cart (LabReach database) — same as the mobile app ──
+var CJ_LR='https://jit4labs-lab-finder.jit4labs-vendors.workers.dev', CJ_STG={target:'Target companies',outreach:'Outreach',engaged:'Engaged',quote:'Quote',preorder:'Pre-order',ordered:'Ordered'};
+function cjTag(bg,fg,t){ return '<span class="status" style="background:'+bg+';color:'+fg+';margin-right:4px;">'+t+'</span>'; }
+function cjLabRow(l){
+  return '<div style="padding:8px 0;border-top:1px solid #eef1f4;">'+
+    '<div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;"><b style="font-size:13px;">'+escapeHtml(l.name)+'</b>'+
+    '<span style="display:flex;gap:6px;align-items:center;"><span style="font-size:12px;color:#7a8a99;">'+(l.mi<1?'same city':l.mi+' mi')+'</span>'+
+    '<a href="'+CJ_LR+'/?lab='+l.id+'" target="_blank" rel="noopener" style="font-size:12px;padding:3px 9px;border:1px solid #cdd9e6;border-radius:12px;color:#1a73e8;text-decoration:none;">Open in LabReach</a>'+
+    (l.stage?'':'<a href="'+CJ_LR+'/?lab='+l.id+'&add=1" target="_blank" rel="noopener" style="font-size:12px;padding:3px 9px;border:1px solid #1a73e8;border-radius:12px;color:#fff;background:#1a73e8;text-decoration:none;">Add to Pipeline</a>')+'</span></div>'+
+    '<div style="font-size:12px;color:#5a6b7b;margin-top:2px;">'+escapeHtml(l.city+', '+l.state)+(l.independent?' · Independent':'')+(l.tests.length?' · '+escapeHtml(l.tests.join(', ')):'')+(l.medicare?' · '+Number(l.medicare).toLocaleString()+' Medicare tests':'')+'</div>'+
+    '<div style="margin-top:4px;">'+(l.confirmed?cjTag('#e3f6ea','#1e7b3c','Confirmed visitor'):'')+(l.customer?cjTag('#e3f6ea','#1e7b3c','Customer'):'')+
+      (l.wf?cjTag('#fff4e0','#8a5a00','Workflow '+escapeHtml(l.wf.wfs)+' · '+(l.wf.live?'running':'finished')):'')+(l.stage?cjTag('#fff4e0','#8a5a00','Pipeline: '+escapeHtml(CJ_STG[l.stage]||l.stage)):'')+
+      (!l.wf&&!l.stage&&!l.customer&&!l.confirmed?cjTag('#eef1f4','#5a6b7b','Not contacted'):'')+'</div></div>';
+}
+function cjLabBlock(s,max){
+  var p=s.possible_labs;
+  if(!p) return '<div style="font-size:12px;color:#7a8a99;">Outside the US — no lab lookup.</div>';
+  if(!p.n) return '<div style="font-size:12px;color:#7a8a99;">'+(p.located?'No independent labs or LabReach labs within 50 miles.':'The city Google gave ('+escapeHtml(s.city||'unknown')+') is not precise enough for a 50-mile search.')+'</div>';
+  return (p.confirmed_deal?'<div style="font-size:12px;color:#1e7b3c;"><b>Confirmed visitor:</b> '+escapeHtml(p.confirmed_deal.person||'LabReach contact')+' (clicked a LabReach email)</div>':'')+
+    p.labs.slice(0,max).map(cjLabRow).join('')+(p.n>max?'<div style="font-size:12px;color:#7a8a99;padding-top:6px;">+'+Number(p.n-max).toLocaleString()+' more within 50 miles</div>':'');
+}
+function cjLabSummary(s){
+  var p=s.possible_labs; if(s.class!=='abandoner'||!p) return '';
+  return (p.confirmed?'<b style="color:#1e7b3c;">Confirmed: '+escapeHtml(p.confirmed.name)+'</b> · ':'')+(p.n?'Possible labs: '+Number(p.n).toLocaleString()+' within 50 mi'+(p.in_wf?' · <b style="color:#8a5a00;">'+p.in_wf+' already in a workflow / Pipeline</b>':''):(p.located?'No independent labs within 50 mi':'City not precise enough for a 50-mile search'));
+}
 // ── Insight & analysis (why carts were abandoned) — same logic as the mobile app ──
 function cjInClose(){ var o=document.getElementById('cjin'); if(o) o.remove(); }
 function cjInGo(i){ cjInClose(); cjShowUser(i); }
@@ -1650,6 +1675,8 @@ function cjInsightHtml(rows){
     sec('Likely reasons, most common first')+R.map(function(r){ return '<div style="margin:8px 0;padding:10px 12px;border:1px solid #e3e8ee;border-radius:8px;"><div style="display:flex;justify-content:space-between;gap:10px;"><b style="font-size:14px;">'+escapeHtml(r.title)+'</b><span style="white-space:nowrap;font-size:13px;">'+r.l.length+' · '+pct(r.l.length)+' · '+cjUsd(V(r.l))+'</span></div><div style="font-size:12px;color:#5a6b7b;margin-top:3px;">'+escapeHtml(r.why)+'</div><div style="font-size:12px;color:#5a6b7b;margin-top:3px;">e.g. '+ex(r.l)+'</div></div>'; }).join('')+
     '<div style="font-size:12px;color:#7a8a99;">A cart can show several reasons, so these add up to more than '+A.length+'. GA4 shows behavior, not intent — these are best guesses.</div>'+
     sec('Who they were (Shopify abandoned checkouts)')+(CJ.abandoned_checkouts?(named.length?named.map(function(x){ var s=x[0],c=x[1]; return '<div style="font-size:13px;margin:3px 0;">• <b>'+escapeHtml(c.company||c.customer||c.email||'Unnamed')+'</b>'+(c.company&&c.customer?' ('+escapeHtml(c.customer)+')':'')+(c.email&&(c.company||c.customer)&&c.customer!==c.email?' · '+escapeHtml(c.email):'')+(c.city?' · ship-to '+escapeHtml(c.city+(c.region?', '+c.region:'')):'')+' · '+cjUsd(c.total,1)+(c.prior_orders?' · '+c.prior_orders+' past orders':' · new')+' — '+lnk(s,escapeHtml(cjPlace(s)))+'</div>'; }).join(''):'<div style="font-size:12px;color:#7a8a99;">None of these carts reached the checkout email step, so Shopify has no name for them.</div>'):'<div style="font-size:12px;color:#7a8a99;">Not available'+(CJ.abandoned_checkouts_error?': '+escapeHtml(CJ.abandoned_checkouts_error.slice(0,120)):'')+'</div>')+
+    sec('Possible labs by location')+'<div style="font-size:12px;color:#7a8a99;margin-bottom:4px;">Labs within 50 miles of each cart (LabReach list), most likely first: confirmed, customer, already in a workflow or on the Pipeline, then independent chemistry/immunoassay labs by Medicare volume. The city from Google is approximate.</div>'+
+      A.slice().sort(function(x,y){ return (y.cart_value||0)-(x.cart_value||0); }).map(function(s){ return '<div style="margin:8px 0;padding:10px 12px;border:1px solid #e3e8ee;border-radius:8px;"><div style="display:flex;justify-content:space-between;gap:10px;">'+lnk(s,'<b>'+escapeHtml(cjPlace(s))+'</b>')+'<span style="font-size:12px;color:#5a6b7b;">'+cjUsd(s.cart_value||0,1)+' · '+cjWhen(s.session_start)+'</span></div>'+cjLabBlock(s,3)+'</div>'; }).join('')+
     (recs.length?sec('What to do')+recs.map(function(r){ return '<div style="font-size:13px;margin:3px 0;">• '+escapeHtml(r)+'</div>'; }).join(''):'');
 }
 function cjOpenInsight(){
@@ -1891,7 +1918,8 @@ function cjJourneyCard(s){
   var pills=(v!=null&&s.class!=='browser'?'<b style="font-size:14px;">'+cjUsd(v,1)+'</b> ':'')+
     (s.visit>1?'<span class="status" style="background:#e8f0fe;color:#1a56c4;">'+cjOrd(s.visit)+' visit</span> ':'')+
     (cjIsBot(s)?'<span class="status" style="background:#fde8e8;color:#9b1c1c;" title="'+escapeHtml((s.bot.reasons||[]).join(', '))+'">likely bot</span> ':'');
-  var atcLine='<div style="margin-top:4px;">'+cjCartLines(s)+'</div>'+cjMaybe(s,true);
+  var atcLine='<div style="margin-top:4px;">'+cjCartLines(s)+'</div>'+cjMaybe(s,true)+
+    (s.class==='abandoner'?'<details style="margin-top:6px;"><summary style="cursor:pointer;font-size:12px;">'+(cjLabSummary(s)||'Possible labs')+'</summary><div style="margin-top:4px;">'+cjLabBlock(s,8)+'</div></details>':'');
   var dev=[s.device&&s.device.category,s.device&&s.device.os,s.device&&s.device.browser].filter(function(x){ return x&&x!=='(not set)'; }).join(' · ');
   var devLine='<div style="font-size:11px;color:#7a8a99;margin-top:6px;">'+escapeHtml(dev||'Device not reported')+(s.engaged_sec!=null?' · engaged '+s.engaged_sec+' s':'')+
     (cjIsBot(s)?' · <span style="color:#9b1c1c;">Likely bot: '+escapeHtml((s.bot.reasons||[]).join(', '))+'</span>':(s.bot&&s.bot.score?' · bot signals (not enough to flag): '+escapeHtml((s.bot.reasons||[]).join(', ')):''))+
