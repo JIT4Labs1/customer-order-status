@@ -1613,17 +1613,35 @@ function cjLabRow(l){
       (l.wf?cjTag('#fff4e0','#8a5a00','Workflow '+escapeHtml(l.wf.wfs)+' · '+(l.wf.live?'running':'finished')):'')+(l.stage?cjTag('#fff4e0','#8a5a00','Pipeline: '+escapeHtml(CJ_STG[l.stage]||l.stage)):'')+
       (!l.wf&&!l.stage&&!l.customer&&!l.confirmed?cjTag('#eef1f4','#5a6b7b','Not contacted'):'')+'</div></div>';
 }
-function cjLabBlock(s,max){
+// Radius slider (0–50 mi), shared by the list, the cart cards and the insight window; remembered in this browser.
+var cjLRad=50; try{ var _lr=localStorage.getItem('cj-lrad'); if(_lr!==null&&_lr!=='') cjLRad=Math.max(0,Math.min(50,+_lr)); }catch(e){}
+function cjPIn(p){ var n=0,k=0; (p.dist||[]).forEach(function(d,x){ if(d<=cjLRad){ n++; if((p.known||'').charAt(x)==='1') k++; } }); return {n:n,k:k}; }
+function cjRadTxt(){ return cjLRad===0?'same town only':'within '+cjLRad+' mi'; }
+function cjRadSlider(){ return '<div style="display:flex;align-items:center;gap:10px;margin:6px 0 8px;max-width:520px;"><span style="font-size:12px;color:#5a6b7b;white-space:nowrap;">Lab radius</span>'+
+  '<input class="cj-lrad" type="range" min="0" max="50" step="1" value="'+cjLRad+'" oninput="cjSetRad(this.value,this)" aria-label="Lab search radius in miles" style="flex:1;accent-color:#1a73e8;">'+
+  '<b class="cj-lradv" style="min-width:52px;text-align:right;font-size:13px;">'+cjLRad+' mi</b></div>'; }
+function cjSetRad(v,src){
+  cjLRad=+v; try{ localStorage.setItem('cj-lrad',cjLRad); }catch(e){}
+  document.querySelectorAll('.cj-lrad').forEach(function(x){ if(x!==src) x.value=cjLRad; });
+  document.querySelectorAll('.cj-lradv').forEach(function(x){ x.textContent=cjLRad+' mi'; });
+  document.querySelectorAll('[data-cjlb]').forEach(function(el){ el.innerHTML=cjLabBlockIn(CJ.sessions[+el.getAttribute('data-cjlb')], el.getAttribute('data-max').split(',').map(Number)); });
+  document.querySelectorAll('[data-cjll]').forEach(function(el){ el.innerHTML=cjLabSummary(CJ.sessions[+el.getAttribute('data-cjll')])||'Possible labs'; });
+}
+function cjLabBlockIn(s,max){
   var p=s.possible_labs;
   if(!p) return '<div style="font-size:12px;color:#7a8a99;">Outside the US — no lab lookup.</div>';
-  if(!p.n) return '<div style="font-size:12px;color:#7a8a99;">'+(p.located?'No independent labs or LabReach labs within 50 miles.':'The city Google gave ('+escapeHtml(s.city||'unknown')+') is not precise enough for a 50-mile search.')+'</div>';
+  if(!p.located&&!p.n) return '<div style="font-size:12px;color:#7a8a99;">The city Google gave ('+escapeHtml(s.city||'unknown')+') is not precise enough for a radius search.</div>';
+  var c=cjPIn(p), L=(p.labs||[]).filter(function(l){ return l.mi<=cjLRad; });
+  if(!c.n) return '<div style="font-size:12px;color:#7a8a99;">No independent labs or LabReach labs '+cjRadTxt()+'.</div>';
+  var kn=L.filter(function(l){ return l.known; }), fr=L.filter(function(l){ return !l.known; }), sh=kn.slice(0,max[0]).concat(fr.slice(0,max[1]));
   return (p.confirmed_deal?'<div style="font-size:12px;color:#1e7b3c;"><b>Confirmed visitor:</b> '+escapeHtml(p.confirmed_deal.person||'LabReach contact')+' (clicked a LabReach email)</div>':'')+
-    (function(){ var kn=p.labs.filter(function(l){ return l.confirmed||l.customer||l.wf||l.stage; }), fr=p.labs.filter(function(l){ return !(l.confirmed||l.customer||l.wf||l.stage); }), sh=kn.slice(0,max[0]).concat(fr.slice(0,max[1]));
-      return sh.map(cjLabRow).join('')+(p.n>sh.length?'<div style="font-size:12px;color:#7a8a99;padding-top:6px;">+'+Number(p.n-sh.length).toLocaleString()+' more within 50 miles</div>':''); })();
+    sh.map(cjLabRow).join('')+(c.n>sh.length?'<div style="font-size:12px;color:#7a8a99;padding-top:6px;">+'+Number(c.n-sh.length).toLocaleString()+' more '+cjRadTxt()+'</div>':'');
 }
+function cjLabBlock(s,max){ return '<div data-cjlb="'+CJ.sessions.indexOf(s)+'" data-max="'+max.join(',')+'">'+cjLabBlockIn(s,max)+'</div>'; }
 function cjLabSummary(s){
   var p=s.possible_labs; if(s.class!=='abandoner'||!p) return '';
-  return (p.confirmed?'<b style="color:#1e7b3c;">Confirmed: '+escapeHtml(p.confirmed.name)+'</b> · ':'')+(p.n?'Possible labs: '+Number(p.n).toLocaleString()+' within 50 mi'+(p.in_wf?' · <b style="color:#8a5a00;">'+p.in_wf+' already in a workflow / Pipeline</b>':''):(p.located?'No independent labs within 50 mi':'City not precise enough for a 50-mile search'));
+  var c=cjPIn(p);
+  return (p.confirmed&&p.confirmed.mi<=cjLRad?'<b style="color:#1e7b3c;">Confirmed: '+escapeHtml(p.confirmed.name)+'</b> · ':'')+(c.n?'Possible labs: '+Number(c.n).toLocaleString()+' '+cjRadTxt()+(c.k?' · <b style="color:#8a5a00;">'+c.k+' already in a workflow / Pipeline</b>':''):(p.located?'No labs '+cjRadTxt():'City not precise enough for a radius search'));
 }
 // ── Insight & analysis (why carts were abandoned) — same logic as the mobile app ──
 function cjInClose(){ var o=document.getElementById('cjin'); if(o) o.remove(); }
@@ -1676,7 +1694,7 @@ function cjInsightHtml(rows){
     sec('Likely reasons, most common first')+R.map(function(r){ return '<div style="margin:8px 0;padding:10px 12px;border:1px solid #e3e8ee;border-radius:8px;"><div style="display:flex;justify-content:space-between;gap:10px;"><b style="font-size:14px;">'+escapeHtml(r.title)+'</b><span style="white-space:nowrap;font-size:13px;">'+r.l.length+' · '+pct(r.l.length)+' · '+cjUsd(V(r.l))+'</span></div><div style="font-size:12px;color:#5a6b7b;margin-top:3px;">'+escapeHtml(r.why)+'</div><div style="font-size:12px;color:#5a6b7b;margin-top:3px;">e.g. '+ex(r.l)+'</div></div>'; }).join('')+
     '<div style="font-size:12px;color:#7a8a99;">A cart can show several reasons, so these add up to more than '+A.length+'. GA4 shows behavior, not intent — these are best guesses.</div>'+
     sec('Who they were (Shopify abandoned checkouts)')+(CJ.abandoned_checkouts?(named.length?named.map(function(x){ var s=x[0],c=x[1]; return '<div style="font-size:13px;margin:3px 0;">• <b>'+escapeHtml(c.company||c.customer||c.email||'Unnamed')+'</b>'+(c.company&&c.customer?' ('+escapeHtml(c.customer)+')':'')+(c.email&&(c.company||c.customer)&&c.customer!==c.email?' · '+escapeHtml(c.email):'')+(c.city?' · ship-to '+escapeHtml(c.city+(c.region?', '+c.region:'')):'')+' · '+cjUsd(c.total,1)+(c.prior_orders?' · '+c.prior_orders+' past orders':' · new')+' — '+lnk(s,escapeHtml(cjPlace(s)))+'</div>'; }).join(''):'<div style="font-size:12px;color:#7a8a99;">None of these carts reached the checkout email step, so Shopify has no name for them.</div>'):'<div style="font-size:12px;color:#7a8a99;">Not available'+(CJ.abandoned_checkouts_error?': '+escapeHtml(CJ.abandoned_checkouts_error.slice(0,120)):'')+'</div>')+
-    sec('Possible labs by location')+'<div style="font-size:12px;color:#7a8a99;margin-bottom:4px;">Labs within 50 miles of each cart (LabReach list), most likely first: confirmed, customer, already in a workflow or on the Pipeline, then independent chemistry/immunoassay labs by Medicare volume. The city from Google is approximate.</div>'+
+    sec('Possible labs by location')+cjRadSlider()+'<div style="font-size:12px;color:#7a8a99;margin-bottom:4px;">Labs within the radius of each cart (LabReach list, up to 50 miles), most likely first: confirmed, customer, already in a workflow or on the Pipeline, then independent chemistry/immunoassay labs by Medicare volume. The city from Google is approximate.</div>'+
       A.slice().sort(function(x,y){ return (y.cart_value||0)-(x.cart_value||0); }).map(function(s){ return '<div style="margin:8px 0;padding:10px 12px;border:1px solid #e3e8ee;border-radius:8px;"><div style="display:flex;justify-content:space-between;gap:10px;">'+lnk(s,'<b>'+escapeHtml(cjPlace(s))+'</b>')+'<span style="font-size:12px;color:#5a6b7b;">'+cjUsd(s.cart_value||0,1)+' · '+cjWhen(s.session_start)+'</span></div>'+cjLabBlock(s,[3,2])+'</div>'; }).join('')+
     (recs.length?sec('What to do')+recs.map(function(r){ return '<div style="font-size:13px;margin:3px 0;">• '+escapeHtml(r)+'</div>'; }).join(''):'');
 }
@@ -1920,7 +1938,7 @@ function cjJourneyCard(s){
     (s.visit>1?'<span class="status" style="background:#e8f0fe;color:#1a56c4;">'+cjOrd(s.visit)+' visit</span> ':'')+
     (cjIsBot(s)?'<span class="status" style="background:#fde8e8;color:#9b1c1c;" title="'+escapeHtml((s.bot.reasons||[]).join(', '))+'">likely bot</span> ':'');
   var atcLine='<div style="margin-top:4px;">'+cjCartLines(s)+'</div>'+cjMaybe(s,true)+
-    (s.class==='abandoner'?'<details style="margin-top:6px;"><summary style="cursor:pointer;font-size:12px;">'+(cjLabSummary(s)||'Possible labs')+'</summary><div style="margin-top:4px;">'+cjLabBlock(s,[5,5])+'</div></details>':'');
+    (s.class==='abandoner'?'<details style="margin-top:6px;"><summary style="cursor:pointer;font-size:12px;"><span data-cjll="'+CJ.sessions.indexOf(s)+'">'+(cjLabSummary(s)||'Possible labs')+'</span></summary><div style="margin-top:4px;">'+cjRadSlider()+cjLabBlock(s,[5,5])+'</div></details>':'');
   var dev=[s.device&&s.device.category,s.device&&s.device.os,s.device&&s.device.browser].filter(function(x){ return x&&x!=='(not set)'; }).join(' · ');
   var devLine='<div style="font-size:11px;color:#7a8a99;margin-top:6px;">'+escapeHtml(dev||'Device not reported')+(s.engaged_sec!=null?' · engaged '+s.engaged_sec+' s':'')+
     (cjIsBot(s)?' · <span style="color:#9b1c1c;">Likely bot: '+escapeHtml((s.bot.reasons||[]).join(', '))+'</span>':(s.bot&&s.bot.score?' · bot signals (not enough to flag): '+escapeHtml((s.bot.reasons||[]).join(', ')):''))+
@@ -1949,6 +1967,7 @@ function renderCjPanel(){
     row([['all','All traffic'],['paid','Paid'],['organic','Organic'],['direct','Direct'],['other','Other']].map(function(x){ return chip(cjEntry===x[0],'cjSetSrc',x[0],x[1]); }).join(''))+
     row([['all','All'],['purchaser','Purchasers'],['abandoner','Abandoners'],['browser','Browsers']].map(function(x){ return chip(cjCls===x[0],'cjSetCls',x[0],x[1],'data-cjc="'+x[0]+'"'); }).join(''))+
     row('<input type="search" placeholder="City, SKU, product, search term" value="'+escapeHtml(cjQ)+'" oninput="cjSearch(this.value)" style="font:inherit;font-size:13px;padding:7px 10px;border:1px solid #cdd9e6;border-radius:6px;width:min(420px,100%);">')+
+    '<div style="margin:0 16px;">'+cjRadSlider()+'</div>'+
     '<div id="cjList"></div><div style="margin:10px 16px 16px;font-size:12px;color:#7a8a99;">Data '+escapeHtml(CJ.data_from||'')+' → '+escapeHtml(CJ.data_through||'')+' · '+escapeHtml(CJ.pulled_at||'')+'</div>';
   document.getElementById('panel').innerHTML=h;
   cjDraw();
