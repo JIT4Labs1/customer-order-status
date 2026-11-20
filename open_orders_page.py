@@ -4543,6 +4543,59 @@ function arMailDl(){
   var nm='', s=c.name||'customer'; for(var i=0;i<s.length;i++){ nm+=/[a-z0-9]/i.test(s.charAt(i))?s.charAt(i):'_'; }
   var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([edHtml('arMailFrame',arMail.html)],{type:'text/html'})); a.download='JIT4Labs_Open_Invoices_'+nm+'.html';
   document.body.appendChild(a); a.click(); document.body.removeChild(a); }
+// ── Accountant email: every invoice paid in Shopify but still open in QuickBooks ("Paid in Shopify — reconcile"), all
+// customers in one email, same template and table style as the customer email. Sent from the app like the other emails.
+var acMail={sel:{},html:'',subject:''};
+function acRows(){ var out=[], cs=(PAY&&PAY.ar&&PAY.ar.customers)||[];
+  for(var i=0;i<cs.length;i++){ var iv=cs[i].invoices||[]; for(var j=0;j<iv.length;j++){ var r=iv[j]; if(r.reconcile&&(Number(r.balance)||0)>0.005) out.push({c:cs[i].name,r:r}); } }
+  out.sort(function(a,b){ return String(a.c).toLowerCase().localeCompare(String(b.c).toLowerCase())||String(a.r.date||'').localeCompare(String(b.r.date||'')); });
+  return out; }
+function acMailOpen(){
+  var m=document.getElementById('arMailModal'); if(m) m.parentNode.removeChild(m);
+  acMail={sel:{},html:'',subject:''}; var rows=acRows();
+  for(var i=0;i<rows.length;i++) acMail.sel[rows[i].r.number]=true;
+  var d=document.createElement('div'); d.id='arMailModal';
+  d.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(16,30,62,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;';
+  d.innerHTML='<div style="background:#fff;border-radius:10px;max-width:820px;width:100%;max-height:92vh;overflow:auto;padding:18px 20px;box-shadow:0 10px 40px rgba(0,0,0,.35);">'+
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><b style="font-size:16px;color:#101E3E;">&#9993; Email accountant &mdash; paid in Shopify, still open in QuickBooks</b><a href="#" onclick="arMailClose();return false;" style="font-size:20px;text-decoration:none;color:#555;">&times;</a></div>'+
+    '<div id="acMailBody"></div></div>';
+  document.body.appendChild(d); acMailDraw(); }
+function acMailDraw(){
+  var el=document.getElementById('acMailBody'); if(!el) return; var rows=acRows();
+  if(!rows.length){ el.innerHTML='<div style="font-size:13px;color:#7f8c8d;">No invoices are paid in Shopify and still open in QuickBooks right now.</div>'; return; }
+  var h='<div style="margin-bottom:6px;font-size:13px;"><a href="#" onclick="acMailAll(true);return false;">Select all</a> &nbsp; <a href="#" onclick="acMailAll(false);return false;">Select none</a> &nbsp; <span style="color:#7f8c8d;">All customers, one email.</span></div>'+
+    '<table class="tbl" style="width:100%;"><thead><tr><th class="c"></th><th>Customer</th><th>Invoice #</th><th>Shopify order</th><th>Issued</th><th style="text-align:right;">Open in QuickBooks</th></tr></thead><tbody>';
+  var tot=0,n=0;
+  for(var i=0;i<rows.length;i++){ var r=rows[i].r, on=!!acMail.sel[r.number]; if(on){ tot+=Number(r.balance)||0; n++; }
+    h+='<tr><td class="c"><input type="checkbox" '+(on?'checked ':'')+'onclick="acMailTog(&quot;'+escapeHtml(r.number)+'&quot;)"></td><td>'+escapeHtml(rows[i].c)+'</td><td>'+escapeHtml(r.number)+'</td><td>'+escapeHtml(r.shopify_order||'')+'</td><td>'+fmtDate(r.date)+'</td><td style="text-align:right;">'+payMoney(r.balance)+'</td></tr>'; }
+  h+='<tr class="so-group"><td></td><td colspan="4" style="font-weight:700;">Selected: '+n+' invoice'+(n===1?'':'s')+'</td><td style="text-align:right;font-weight:700;">'+payMoney(tot)+'</td></tr></tbody></table>'+
+    '<div style="margin-top:12px;"><button class="mode-btn" style="margin:0;background:#008080;color:#fff;" '+(n?'':'disabled ')+'onclick="acMailGen()">Create email</button></div>';
+  el.innerHTML=h; }
+function acMailTog(num){ acMail.sel[num]=!acMail.sel[num]; acMailDraw(); }
+function acMailAll(on){ var rows=acRows(); for(var i=0;i<rows.length;i++) acMail.sel[rows[i].r.number]=on; acMailDraw(); }
+function acMailBuild(rows){
+  var tot=0, tr='', td='padding:7px 10px;border-bottom:1px solid #e3e7ee;', th='padding:8px 10px;';
+  for(var i=0;i<rows.length;i++){ var r=rows[i].r; tot+=Number(r.balance)||0;
+    tr+='<tr><td style="'+td+'">'+escapeHtml(rows[i].c)+'</td><td style="'+td+'">'+escapeHtml(r.number)+'</td><td style="'+td+'">'+escapeHtml(r.shopify_order||'')+'</td><td style="'+td+'">'+fmtDate(r.date)+'</td><td style="'+td+'">'+fmtDate(r.due)+'</td><td align="right" style="'+td+'">'+payMoney(r.balance)+'</td></tr>'; }
+  return '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Invoices paid in Shopify, still open in QuickBooks</title></head><body style="margin:0;padding:0;background:#f4f6f9">'+
+  '<table cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#f4f6f9"><tr><td align="center" style="padding:18px 10px">'+
+  '<table cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:700px;width:100%;background:#fff;border:1px solid #e3e7ee">'+
+  '<tr><td style="padding:18px 24px;border-bottom:3px solid #008080"><a href="https://jit4labs.com" target="_blank" style="text-decoration:none;color:#101E3E"><img src="https://jit4labs.com/cdn/shop/files/JIT4LABS-Logo.png" alt="JIT4LABS" width="175" height="30" border="0" style="display:block;width:175px;max-width:175px;height:30px;border:0;outline:none;text-decoration:none;font:bold 22px Arial,Helvetica,sans-serif;color:#101E3E"></a></td></tr>'+
+  '<tr><td style="padding:24px;font:14px/1.6 Arial,Helvetica,sans-serif;color:#101E3E">'+
+  '<p style="margin:0 0 12px">Hello,<br><br>The invoices below were <b style="color:#008080">paid in Shopify</b> but are still <b>open in QuickBooks</b>. Could you please apply the payments and close them in QuickBooks?</p>'+
+  '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;font-size:13px;color:#101E3E;margin:6px 0 14px">'+
+  '<thead><tr style="background:#101E3E;color:#fff"><th align="left" style="'+th+'">Customer</th><th align="left" style="'+th+'">Invoice #</th><th align="left" style="'+th+'">Shopify order</th><th align="left" style="'+th+'">Date issued</th><th align="left" style="'+th+'">Due date</th><th align="right" style="'+th+'">Open in QuickBooks</th></tr></thead><tbody>'+tr+
+  '<tr style="background:#f4f6f9"><td colspan="5" style="padding:9px 10px;font-weight:700;border-top:2px solid #008080">Total ('+rows.length+' invoice'+(rows.length===1?'':'s')+')</td><td align="right" style="padding:9px 10px;font-weight:700;border-top:2px solid #008080">'+payMoney(tot)+'</td></tr></tbody></table>'+
+  '<p style="margin:0 0 12px">Thank you,<br>JIT4Labs team</p></td></tr>'+
+  '<tr><td style="padding:14px 24px;border-top:3px solid #008080;font:12px/1.6 Arial,Helvetica,sans-serif;color:#6b7280">JIT4Labs &middot; <a href="mailto:CustomerSupport@jit4you.com" style="color:#008080;text-decoration:none">CustomerSupport@jit4you.com</a> &middot; <a href="tel:+18882422301" style="color:#008080;text-decoration:none">(888) 242-2301</a></td></tr>'+
+  '</table></td></tr></table></body></html>'; }
+function acMailGen(){
+  var rows=acRows().filter(function(x){ return acMail.sel[x.r.number]; }); if(!rows.length) return;
+  var tot=0; for(var i=0;i<rows.length;i++) tot+=Number(rows[i].r.balance)||0;
+  var subj='JIT4Labs '+String.fromCharCode(8211)+' invoices paid in Shopify, still open in QuickBooks ('+rows.length+', '+payMoney(tot)+')';
+  arMailClose();
+  mailOpen(subj, acMailBuild(rows), 'Accountant', {to:IB_ACCT_TO, vendor:true});   // not logged under a customer's "Emails sent"
+}
 function arRenderAR(){
   var cs=PAY.ar.customers||[], tot={all:0,current:0,b1:0,b2:0,b3:0}, nAll=0;
   var q=(arSearch||'').toLowerCase();
@@ -4562,6 +4615,7 @@ function arRenderAR(){
     (function(){var n=0,m=arExclMap();for(var k in m) if(m.hasOwnProperty(k)) n++; return n?'<a href="#" onclick="arClearExcl();return false;" title="Put all manually excluded rows back into the totals">Clear '+n+' excluded</a>':'';})()+
     '<button class="mode-btn" style="margin:0;" onclick="arExportCsv()" title="Download the invoices currently listed (filters and sort applied; rows ticked Excl. are left out) as CSV">&#11015; Export CSV</button>'+
     '<button class="mode-btn" style="margin:0;" onclick="arMailOpen()" title="Create an HTML email asking the customer for a status update on selected open invoices">&#9993; Email customer</button>'+
+    '<button class="mode-btn" style="margin:0;" onclick="acMailOpen()" title="One email to the accountant listing every invoice paid in Shopify but still open in QuickBooks, for all customers">&#9993; Accountant</button>'+
         '<a href="#" onclick="arExpandAll(true);return false;">Expand all</a><a href="#" onclick="arExpandAll(false);return false;">Collapse all</a>'+
     '<span style="color:#7f8c8d;">Aging = '+basisLbl+'</span></div>';
   var rows='', shownC=0, shownInv=0, shownAmt=0, items=[];
