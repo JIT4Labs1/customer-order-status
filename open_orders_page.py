@@ -4622,7 +4622,8 @@ function arReconHead(){
   var cs=(PAY.ar&&PAY.ar.customers)||[], nm=[]; for(var i=0;i<cs.length;i++) nm.push(cs[i].name); nm.sort(function(x,y){ return x.localeCompare(y); });
   h+='<div style="margin:0 0 10px;font-size:13px;">Customer: <select onchange="arSetCust(this.value)" style="padding:5px 8px;border:1px solid #cfd8e3;border-radius:6px;min-width:260px;"><option value="">All customers</option>';
   for(var j=0;j<nm.length;j++) h+='<option'+(arCust===nm[j]?' selected':'')+' value="'+escapeHtml(nm[j])+'">'+escapeHtml(nm[j])+'</option>';
-  return h+'</select></div>';
+  h+='</select> <label style="cursor:pointer;white-space:nowrap;margin-left:12px;"><input type="checkbox" onchange="arSetRes(this.checked?&quot;paid&quot;:&quot;all&quot;)"'+(arRes==='paid'?' checked':'')+'> Paid in Shopify only'+((rc.summary||{}).paid?' &middot; '+rc.summary.paid.n+' invoices, '+payMoney(rc.summary.paid.total):'')+'</label>';
+  return h+'</div>';
 }
 function arRenderAR(){
   var cs=PAY.ar.customers||[], tot={all:0,current:0,b1:0,b2:0,b3:0}, nAll=0;
