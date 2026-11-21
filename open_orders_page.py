@@ -4380,7 +4380,7 @@ function srtCmp(t,get){ var s=srt[t]; return function(a,b){ var x=get(a,s.k), y=
   else { r=(x||0)-(y||0); } return r*s.d; }; }
 function arInvGet(r,k){ if(k==='no') return r.number; if(k==='ord') return r.shopify_order||''; if(k==='ship'){ var f=r.shopify_fulfillments||[]; return f.length?(f[0].shipment||''):''; }
   if(k==='paid') return arPaidVal(r); if(k==='date') return r.date||''; if(k==='due') return r.due||''; if(k==='days') return arDays(r); if(k==='amt') return Number(r.amount)||0; if(k==='bal') return arEff(r); if(k==='so') return r.so_num||''; return ''; }
-function arPaidVal(r){ return r.reconcile?'Yes':((r.shopify_covered||r.shopify_status==='PARTIALLY_PAID')?'Partial':'No'); }
+function arPaidVal(r){ if(r.ar_kind!==undefined) return r.reconcile?'Yes':(r.ar_kind==='manual'?'Confirm':(r.ar_kind==='check'?'Check':'No')); return r.reconcile?'Yes':((r.shopify_covered||r.shopify_status==='PARTIALLY_PAID')?'Partial':'No'); }
 function arPaidCell(r){ var v=arPaidVal(r);
   if(v==='Yes') return '<span style="color:#137333;font-weight:700;">Yes</span>';
   if(v==='Partial') return '<span style="color:#b42318;font-weight:700;" title="Shopify shows only part of this order paid">Partial</span>';
@@ -4410,6 +4410,16 @@ function arFulCell(r){
   return h.length?h.join(''):'<span style="color:#999;">&mdash;</span>';
 }
 function arShopBadge(r){
+  // decided by the A/R audit (QuickBooks Invoice ID field on the Shopify order + exact money fit); tooltip = the evidence
+  if(r.ar_kind!==undefined){
+    var tip=escapeHtml((r.ar_evidence||[]).join('  ·  '));
+    var b=function(bg,fg,bd,t){ return ' <span title="'+tip+'" style="display:inline-block;background:'+bg+';color:'+fg+';border:1px solid '+bd+';border-radius:10px;padding:0 7px;font-size:11px;font-weight:700;white-space:nowrap;cursor:help;">'+t+'</span>'; };
+    if(r.ar_kind==='paid') return b('#e6f4ea','#137333','#a8d5b5','&#128179; Paid in Shopify &mdash; reconcile');
+    if(r.ar_kind==='manual') return b('#fff4e0','#8a5a00','#f0d090','&#9997; Manual payment in Shopify &mdash; confirm');
+    if(r.ar_kind==='check') return b('#fdecea','#a1362c','#f2b8b5','&#9888; Check &mdash; amounts don&#39;t fit');
+    if(r.ar_kind==='id_missing') return b('#eef1f4','#5a6b7b','#d5dde5','Invoice ID missing on '+escapeHtml(r.shopify_order||'Shopify order'));
+    return (r.ar_evidence||[]).length&&/PAID/.test((r.ar_evidence||[]).join(' '))?' <span title="'+tip+'" style="font-size:10px;color:#b54708;cursor:help;">not paid in Shopify &#9432;</span>':'';
+  }
   if(r.shopify_covered||(r.not_in_order&&r.not_in_order.length)){ var nx=(r.not_in_order||[]).map(function(x){ return x.why==='not charged in Shopify'?payMoney(x.amount)+' shipping never charged on Shopify '+(r.shopify_order||''):payMoney(x.amount)+' shipping (tracking '+x.tracking+(x.order?', a shipment of Shopify '+x.order:', not on this Shopify order')+')'; }).join('; ');
     if(!r.shopify_covered) return ' <div style="font-size:10px;color:#b54708;" title="Shopify shows the order paid, but this invoice was not part of that payment">Not paid in Shopify: '+escapeHtml(nx)+'</div>';
     return ' <span title="'+escapeHtml(payMoney(r.shopify_covered)+' of this invoice was paid in Shopify '+(r.shopify_order||'')+' - apply it in QuickBooks. Still owed: '+nx)+'" style="display:inline-block;background:#e6f4ea;color:#137333;border:1px solid #a8d5b5;border-radius:10px;padding:0 7px;font-size:11px;font-weight:700;white-space:nowrap;">&#128179; '+payMoney(r.shopify_covered)+' paid in Shopify &mdash; reconcile</span><div style="font-size:10px;color:#b54708;">Still owed: '+escapeHtml(nx)+'</div>'; }
