@@ -4344,7 +4344,7 @@ function copyPayTable(){
 
 // ── A/R & A/P tab (replaces the old Payment Status view) ──────────────────────────────
 // Data: PAY.ar (open QuickBooks invoices per customer) and PAY.ap (open QuickBooks bills per supplier).
-var arHideZero=false, arRecOnly=false, arRes='all', arSub='ar', arAge='all', arBasis='due', arOpen={}, apOpen={}, arSearch='';
+var arHideZero=false, arRecOnly=false, arRes='all', arCust='', arSub='ar', arAge='all', arBasis='due', arOpen={}, apOpen={}, arSearch='';
 var arLast=[], arExcl=null;
 function arExclMap(){ if(arExcl==null){ arExcl={}; try{ var p=JSON.parse(localStorage.getItem('jit4_ar_excl')||'{}'); for(var k in p){ if(p.hasOwnProperty(k)) arExcl[k]=1; } }catch(e){} } return arExcl; }
 function arIsExcl(r){ return !!arExclMap()[arRowKey(r)]; }
@@ -4373,6 +4373,7 @@ var AR_RES={paid:['Paid in Shopify','#e6f4ea','#137333','Shopify collected it. R
 var AR_ORD=['paid','manual','partial','check','later','open','noshop','credit'];
 function arResTag(r){ var x=AR_RES[r.res]; if(!x) return ''; return '<span title="'+x[3]+'" style="display:inline-block;background:'+x[1]+';color:'+x[2]+';border-radius:10px;padding:0 8px;font-size:11px;font-weight:700;white-space:nowrap;">'+x[0]+'</span>'; }
 function arSetRes(k){ arRes=k; renderPayPanel(); }
+function arSetCust(v){ arCust=v; renderPayPanel(); }
 function arAllItems(c){ var a=(c.invoices||[]).slice(); var cr=c.credits||[]; for(var i=0;i<cr.length;i++){ var x=cr[i]; a.push({t:x.type,number:x.number,date:x.date,due:x.due,amount:x.amount,balance:x.balance,res:'credit',note:x.note,isCredit:true}); } return a; }
 function arRowKey(r){ return r.isCredit?('CR|'+(r.t||'')+'|'+(r.date||'')+'|'+(r.number||'')+'|'+r.balance):r.number; }
 // ── sortable headers ──
@@ -4618,9 +4619,10 @@ function acMailGen(){
 function arReconHead(){
   var rc=(PAY.ar&&PAY.ar.recon)||{}, tie=rc.tie||{}, sm=rc.summary||{}, h='';
   if(tie.inv_n!=null) h+='<div style="display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin:0 0 8px;font-size:13px;color:#1f3a5f;">QuickBooks A/R: <b>'+tie.inv_n+' open invoices '+payMoney(tie.inv_total)+'</b> &minus; <b>'+tie.cr_n+' credits / payments / JEs '+payMoney(Math.abs(tie.cr_total))+'</b> = <b>'+payMoney(tie.total)+'</b>'+(tie.ties===true?'<span style="color:#137333;font-weight:600;">&#10003; ties to the QuickBooks A/R aging report</span>':(tie.ties===false?'<span style="color:#c0392b;font-weight:600;">differs from the QuickBooks report ('+payMoney(tie.qb_report_total)+')</span>':''))+'</div>';
-  h+='<div style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px;">'+arBtn('All',arRes==='all',"arSetRes('all')");
-  for(var i=0;i<AR_ORD.length;i++){ var k=AR_ORD[i], x=sm[k]; if(!x||!x.n) continue; h+=arBtn(AR_RES[k][0]+' &middot; '+x.n+' &middot; '+payMoney(x.total),arRes===k,"arSetRes('"+k+"')"); }
-  return h+'</div>';
+  var cs=(PAY.ar&&PAY.ar.customers)||[], nm=[]; for(var i=0;i<cs.length;i++) nm.push(cs[i].name); nm.sort(function(x,y){ return x.localeCompare(y); });
+  h+='<div style="margin:0 0 10px;font-size:13px;">Customer: <select onchange="arSetCust(this.value)" style="padding:5px 8px;border:1px solid #cfd8e3;border-radius:6px;min-width:260px;"><option value="">All customers</option>';
+  for(var j=0;j<nm.length;j++) h+='<option'+(arCust===nm[j]?' selected':'')+' value="'+escapeHtml(nm[j])+'">'+escapeHtml(nm[j])+'</option>';
+  return h+'</select></div>';
 }
 function arRenderAR(){
   var cs=PAY.ar.customers||[], tot={all:0,current:0,b1:0,b2:0,b3:0}, nAll=0;
@@ -4648,6 +4650,7 @@ function arRenderAR(){
   var rows='', shownC=0, shownInv=0, shownAmt=0, items=[];
   for(var i=0;i<cs.length;i++){
     var c=cs[i], iv=arIv(c), keep=[];
+    if(arCust&&c.name!==arCust) continue;
     var custHit=(q&&(c.name||'').toLowerCase().indexOf(q)>=0);
     for(var j=0;j<iv.length;j++){ var r=iv[j], bk=arBucket(arDays(r));
       if(arAge!=='all'&&bk!==arAge) continue;
@@ -4669,20 +4672,19 @@ function arRenderAR(){
     rows+='<tr class="so-group" style="cursor:pointer;" onclick="arToggle('+i+')"><td style="font-weight:700;'+(items[ii].exn?'color:#c0392b;':'')+'">'+(open?'&#9660;':'&#9654;')+' '+escapeHtml(c.name)+' <a href="#" class="ar-rowmail" title="Email this customer about their open invoices" onclick="event.stopPropagation();arMailOpenFor('+i+');return false;" style="font-size:12px;font-weight:600;text-decoration:none;background:#e8f5f5;color:#008080;border:1px solid #bfe0e0;border-radius:12px;padding:1px 9px;margin-left:6px;white-space:nowrap;">&#9993; Email</a>'+esBadge(c.name)+(items[ii].exn?' <span style="font-size:11px;font-weight:400;" title="Rows you excluded from the totals">('+items[ii].exn+' excluded)</span>':'')+(function(){var n=0;for(var z=0;z<keep.length;z++) if(keep[z].reconcile) n++; return n?' <span title="'+n+' invoice(s) paid in Shopify but still open in QuickBooks" style="background:#e6f4ea;color:#137333;border-radius:10px;padding:0 7px;font-size:11px;">&#128179; '+n+' to reconcile</span>':'';})()+'</td>'+
       '<td class="c">'+keep.length+'</td><td style="text-align:right;font-weight:700;">'+payMoney(sub)+'</td><td style="text-align:right;color:#4a5b70;">'+payMoney(cum)+'</td><td style="text-align:right;">'+(shownAmt>0.005?(sub/shownAmt*100).toFixed(1)+'%':'&mdash;')+'</td></tr>';
     if(open){
-      var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr><th class="c" title="Tick to exclude a row from all totals (saved in this browser)">Excl.</th>'+srtTh('arI','date','s','Date')+srtTh('arI','no','s','Type / No.')+srtTh('arI','due','s','Due')+srtTh('arI','days','n','Days','c')+srtTh('arI','amt','n','Amount','r')+srtTh('arI','bal','n','Open balance','r')+srtTh('arI','ord','s','Shopify order')+'<th>Linked by</th>'+srtTh('arI','ship','s','Shipment')+'<th>Shopify payment</th>'+srtTh('arI','res','n','Result')+'</tr></thead><tbody>';
+      var t='<table class="tbl" style="width:100%;margin:4px 0 8px;"><thead><tr><th class="c" title="Tick to exclude a row from all totals (saved in this browser)">Excl.</th>'+srtTh('arI','date','s','Date')+srtTh('arI','no','s','Shopify, Invoice')+srtTh('arI','due','s','Due')+srtTh('arI','days','n','Days','c')+srtTh('arI','amt','n','Amount','r')+srtTh('arI','bal','n','Open balance','r')+'<th>Linked by</th>'+srtTh('arI','ship','s','Shipment')+srtTh('arI','res','n','Result')+'</tr></thead><tbody>';
       var keepS=arSortInv(keep);
       for(var k=0;k<keepS.length;k++){ var r=keepS[k], dd=arDays(r), col=dd>60?'#c0392b':(dd>30?'#d35400':(dd>0?'#b7950b':'#27ae60'));
         var ex=arIsExcl(r);
         var dash='<span style="color:#999;">&mdash;</span>';
         t+='<tr'+(ex?' style="opacity:.45;"':'')+'><td class="c"'+(r.note?' rowspan="2"':'')+'><input type="checkbox" '+(ex?'checked ':'')+'onclick="arToggleExcl(&quot;'+escapeHtml(arRowKey(r))+'&quot;)"></td>'+
-          '<td style="white-space:nowrap;">'+fmtDate(r.date)+'</td><td style="white-space:nowrap;">'+(r.isCredit?escapeHtml(r.t||'')+(r.number?' '+escapeHtml(r.number):''):escapeHtml(r.number))+'</td><td style="white-space:nowrap;">'+fmtDate(r.due)+'</td>'+
+          '<td style="white-space:nowrap;">'+fmtDate(r.date)+'</td><td style="white-space:nowrap;">'+(r.isCredit?escapeHtml(r.t||'')+(r.number?' '+escapeHtml(r.number):''):(r.shopify_order?escapeHtml(r.shopify_order)+', ':'')+escapeHtml(r.number))+'</td><td style="white-space:nowrap;">'+fmtDate(r.due)+'</td>'+
           '<td class="c" style="color:'+col+';font-weight:600;">'+(dd>0&&!r.isCredit&&r.res!=='paid'?dd:'&mdash;')+'</td>'+
           '<td style="text-align:right;">'+payMoney(r.amount)+'</td><td style="text-align:right;font-weight:600;">'+payMoney(arEff(r))+'</td>'+
-          '<td>'+(r.shopify_order?escapeHtml(r.shopify_order):dash)+'</td><td style="font-size:12px;color:#4a5b70;">'+(r.link?escapeHtml(r.link):dash)+'</td>'+
-          '<td style="font-size:12px;">'+(r.ship?escapeHtml(r.ship):dash)+(r.ful&&r.shopify_order?'<div style="color:#7f8c8d;font-size:11px;">Order '+escapeHtml(r.ful.toLowerCase())+'</div>':'')+'</td>'+
-          '<td style="font-size:12px;">'+(r.fin?escapeHtml(r.fin)+(r.oout!=null?'<div style="color:#7f8c8d;font-size:11px;">'+payMoney(r.oout)+' due on order</div>':''):dash)+'</td>'+
-          '<td>'+arResTag(r)+(r.pay_link?' <a href="'+escapeHtml(r.pay_link)+'" target="_blank" rel="noopener" style="font-size:11px;">Pay link</a>':'')+'</td></tr>'+
-          (r.note?'<tr'+(ex?' style="opacity:.45;"':'')+'><td colspan="11" style="font-size:12px;color:#4a5b70;padding-top:0;border-top:0;">'+escapeHtml(r.note)+'</td></tr>':''); }
+          '<td style="font-size:12px;color:#4a5b70;">'+(r.link?escapeHtml(r.link):dash)+'</td>'+
+          '<td style="font-size:12px;">'+(r.ship?escapeHtml(r.ship):dash)+'</td>'+
+          '<td>'+(r.res==='open'?'':arResTag(r))+'</td></tr>'+
+          (r.note?'<tr'+(ex?' style="opacity:.45;"':'')+'><td colspan="9" style="font-size:12px;color:#4a5b70;padding-top:0;border-top:0;">'+escapeHtml(r.note)+'</td></tr>':''); }
       t+='</tbody></table>';
       t+=esBlock(i,c.name);
       rows+='<tr><td colspan="5" style="padding:0 0 0 24px;background:#fafcfe;">'+t+'</td></tr>';
