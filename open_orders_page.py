@@ -1754,6 +1754,35 @@ function aiCard(s){
     '<div style="font-size:11px;color:#7a8a99;margin:8px 0 2px;font-weight:600;">User journey</div>'+(steps||'<div style="font-size:12px;color:#7a8a99;">No page views recorded</div>')+
   '</div>';
 }
+// AI search visibility (ai-search-data.json, built by the jit4labs-ops Worker, src/aisearch.js): AI answers citing jit4labs.com
+// (Google AI Overviews/AI Mode impressions and Bing Copilot citations, captured daily from their reports by a Mac task) plus
+// Google and Bing search from their APIs. Shown above the AI-assistant visits. Same content as the mobile app.
+var AIS=null, aisLoading=false, aisFailed=false;
+function loadAIS(){ if(aisLoading||AIS||aisFailed) return; aisLoading=true;
+  fetch('ai-search-data.json?cb='+Date.now(),{cache:'no-store'}).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(d){ AIS=d; aisLoading=false; if(mode==='ai') renderAiPanel(); }).catch(function(){ aisLoading=false; aisFailed=true; if(mode==='ai') renderAiPanel(); }); }
+function aisSpark(pts,c){ var v=(pts||[]).map(function(p){ return +p.value||0; }); if(v.length<2) return ''; var m=Math.max.apply(null,[1].concat(v));
+  return '<svg viewBox="0 0 300 50" width="100%" height="50" preserveAspectRatio="none" style="display:block;margin-top:6px;"><polyline fill="none" stroke="'+c+'" stroke-width="2" points="'+v.map(function(x,i){ return (i/(v.length-1)*296+2).toFixed(1)+','+(46-x/m*42).toFixed(1); }).join(' ')+'"/></svg>'; }
+function aisWhen(t){ return t?new Date(t).toLocaleString('en-US',{timeZone:'America/Los_Angeles',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):''; }
+function aisShort(u){ u=String(u||''); var i=u.indexOf('jit4labs.com'); return i>=0?(u.slice(i+12)||'/'):u; }
+function aisRows(l,k,n){ return (l||[]).slice(0,n||8).map(function(x){ return '<div style="display:flex;justify-content:space-between;gap:10px;font-size:12px;margin-top:3px;"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+escapeHtml(k==='url'?aisShort(x.url):x[k])+'</span><b>'+(x.value==null?'':x.value)+(x.share!=null?' · '+escapeHtml(String(x.share))+'%':'')+'</b></div>'; }).join(''); }
+function aisBox(inner){ return '<div style="flex:1 1 340px;border:1px solid #e3e8ee;border-radius:10px;padding:12px 14px;background:#fff;">'+inner+'</div>'; }
+function aisAi(r,c){ if(!r||!r.captured) return aisBox('<b>'+escapeHtml((r&&r.label)||'')+'</b><div style="font-size:12px;color:#7a8a99;margin-top:4px;">No capture yet — the daily Mac task reads this report.</div>');
+  var t=Object.keys(r.totals||{}).map(function(k){ return kpi(r.totals[k],escapeHtml(k.split('_').join(' '))); }).join('');
+  return aisBox('<b>'+escapeHtml(r.label)+'</b><div style="font-size:12px;color:#7a8a99;">'+escapeHtml(r.range||'')+' · captured '+escapeHtml(aisWhen(r.captured_at))+'</div>'+(t?'<div class="kpis" style="padding:6px 0 0;">'+t+'</div>':'')+aisSpark(r.daily,c)+
+    ((r.pages||[]).length?'<div style="font-size:12px;font-weight:700;color:#5a6b7b;margin-top:8px;">Top pages</div>'+aisRows(r.pages,'url'):'')+
+    ((r.queries||[]).length?'<div style="font-size:12px;font-weight:700;color:#5a6b7b;margin-top:8px;">Grounding queries</div>'+aisRows(r.queries,'query'):'')+
+    (r.note?'<div style="font-size:11px;color:#7a8a99;margin-top:6px;">'+escapeHtml(r.note)+'</div>':'')); }
+function aisSe(g,name,c){ if(!g) return ''; if(g.error) return aisBox('<b>'+name+'</b><div style="font-size:12px;color:#7a8a99;margin-top:4px;">'+escapeHtml(g.error)+'</div>');
+  return aisBox('<b>'+name+'</b><div style="font-size:12px;color:#7a8a99;">'+escapeHtml(g.window||'')+'</div><div class="kpis" style="padding:6px 0 0;">'+kpi((g.totals&&g.totals.clicks)||0,'Clicks')+kpi((g.totals&&g.totals.impressions)||0,'Impressions')+'</div>'+
+    aisSpark((g.daily||[]).map(function(d){ return {value:d.clicks}; }),c)+
+    ((g.queries||[]).length?'<div style="font-size:12px;font-weight:700;color:#5a6b7b;margin-top:8px;">Top queries (impressions · clicks)</div>'+g.queries.slice(0,10).map(function(q){ return '<div style="display:flex;justify-content:space-between;gap:10px;font-size:12px;margin-top:3px;"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+escapeHtml(q.key)+'</span><b>'+q.impressions+' · '+q.clicks+'</b></div>'; }).join(''):'')+
+    (g.note?'<div style="font-size:11px;color:#7a8a99;margin-top:6px;">'+escapeHtml(g.note)+'</div>':'')+(g.stale_note?'<div style="font-size:11px;color:#b45309;margin-top:4px;">'+escapeHtml(g.stale_note)+'</div>':'')); }
+function aisHtml(){ if(!AIS){ loadAIS(); return aisFailed?'':'<div class="empty" style="margin:10px 16px;">Loading AI search visibility…</div>'; }
+  var R=AIS.ai_reports||{}, sec=function(t){ return '<div style="font-size:12px;font-weight:700;color:#5a6b7b;text-transform:uppercase;letter-spacing:.04em;margin:14px 16px 6px;">'+t+'</div>'; };
+  return sec('AI answers citing jit4labs.com')+'<div style="display:flex;gap:10px;flex-wrap:wrap;margin:0 16px;">'+aisAi(R.google_ai,'#334fb4')+aisAi(R.bing_ai,'#008080')+'</div>'+
+    sec('Search engines')+'<div style="display:flex;gap:10px;flex-wrap:wrap;margin:0 16px;">'+aisSe(AIS.google,'Google Search','#334fb4')+aisSe(AIS.bing,'Bing Search','#008080')+'</div>'+
+    '<div style="font-size:11px;color:#7a8a99;margin:6px 16px 0;">Search data as of '+escapeHtml(aisWhen(AIS.pulled_at))+'</div>'+sec('Visits from AI assistants'); }
 function renderAiPanel(){
   if(!CJ){ document.getElementById('panel').innerHTML='<div class="empty">Loading AI Engines data…</div>'; loadCJ(); return; }
   var all=aiAll(), engs=aiEngines();
@@ -1781,7 +1810,7 @@ function renderAiPanel(){
   var k='<div class="kpis" style="padding:6px 0 4px;">'+kpi(list.length,'AI sessions')+kpi(Object.keys(users).length,'Visitors')+kpi(ret,'Returning visitor sessions')+kpi(buys.length,'Purchases<br><span style="font-weight:600;">'+cjUsd(rev)+'</span>')+'</div>';
   var hdr=aiSelUser?'<div class="ca-h" style="margin:6px 16px 0;">All visits by this visitor ('+list.length+' recorded, oldest first) &middot; <a href="javascript:void(0)" onclick="aiShowUser(&quot;&quot;)" style="color:#1a73e8;font-weight:600;">← back</a></div>':'';
   if(aiSelUser) list=list.slice(); else list=list.slice().sort(function(a,b){ return String(b.session_start).localeCompare(String(a.session_start)); });
-  document.getElementById('panel').innerHTML=head+(aiSelUser?'':table+f)+k+hdr+(list.length?list.map(function(s){ return s.ai?aiCard(s):cjJourneyCard(s); }).join(''):'<div class="empty" style="margin:14px 16px;">No sessions</div>');
+  document.getElementById('panel').innerHTML=head+(aiSelUser?'':aisHtml()+table+f)+k+hdr+(list.length?list.map(function(s){ return s.ai?aiCard(s):cjJourneyCard(s); }).join(''):'<div class="empty" style="margin:14px 16px;">No sessions</div>');
 }
 function cjRefresh(){ CJ=CJ_EMBED||null; cjLoading=false; document.getElementById('panel').innerHTML='<div class="empty">Reloading customer-journey snapshot…</div>'; loadCJ(); }
 function cjInitCustom(){ if(!cjCustStart && CJ){ cjCustStart=CJ.data_from||''; cjCustEnd=CJ.data_through||''; }
