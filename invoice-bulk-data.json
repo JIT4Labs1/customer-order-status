@@ -8163,15 +8163,163 @@
       "found_at": "2026-11-19T16:26:26Z",
       "scan_id": "auto-test1119",
       "file": "invoices/INV-002314_dQRAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsH_6bXAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002006 from PMA Services -Next Day Reagents",
+      "received": "2026-11-23T16:25:52Z",
+      "filename": "INV-002006.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "SO1329--PO938",
+      "lines": [
+        {
+          "sku": "B24838-BK",
+          "desc": "Total Vitamin D 2x50 Tests Ea",
+          "qty": 1,
+          "rate": 228,
+          "po_unit": 228.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO938",
+      "po_status": "Received Shipment",
+      "po_missing": [],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsH_6bXAAA=|INV-002006.pdf",
+      "found_at": "2026-11-23T17:16:54Z",
+      "scan_id": "auto-202611231716",
+      "file": "invoices/INV-002006_6bXAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsH_6biAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002329 from PMA Services -Next Day Reagents   PO1028",
+      "received": "2026-11-23T17:10:49Z",
+      "filename": "INV-002329.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "SO1518--PO1028",
+      "lines": [
+        {
+          "sku": "OSR6196-BK",
+          "desc": "General Chemistry Reagent Direct Low-Density Lipoprotein (LDL)",
+          "qty": 1,
+          "rate": 995.85,
+          "po_unit": 995.85,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO1028",
+      "po_status": "Partially received",
+      "po_missing": [
+        "OSR6195"
+      ],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsH_6biAAA=|INV-002329.pdf",
+      "found_at": "2026-11-23T17:16:54Z",
+      "scan_id": "auto-202611231716",
+      "file": "invoices/INV-002329_6biAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsH_6bjAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002328 from PMA Services -Next Day Reagents  PO1027",
+      "received": "2026-11-23T17:11:28Z",
+      "filename": "INV-002328.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "SO1517--PO1027",
+      "lines": [
+        {
+          "sku": "81901-BK",
+          "desc": "Reaction Vessels (Access)",
+          "qty": 5,
+          "rate": 27.5,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO1027",
+      "po_status": "Received Shipment",
+      "po_missing": [
+        "DR0070-1",
+        "DR0070-2"
+      ],
+      "summary": {
+        "ok": 0,
+        "bad": 0,
+        "miss": 1
+      },
+      "verdict": "partial",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsH_6bjAAA=|INV-002328.pdf",
+      "found_at": "2026-11-23T17:16:54Z",
+      "scan_id": "auto-202611231716",
+      "file": "invoices/INV-002328_6bjAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsH_6bkAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002327 from PMA Services -Next Day Reagents   PO964",
+      "received": "2026-11-23T17:12:15Z",
+      "filename": "INV-002327.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "SO1376--PO964",
+      "lines": [
+        {
+          "sku": "B24839-BK",
+          "desc": "Total Vitamin D Calibrator",
+          "qty": 1,
+          "rate": 170,
+          "po_unit": 135.0,
+          "delta": 35.0,
+          "status": "over"
+        }
+      ],
+      "po_key": "PO964",
+      "po_status": "Received Shipment",
+      "po_missing": [
+        "A98032",
+        "33025",
+        "33605",
+        "33805",
+        "33525",
+        "81910"
+      ],
+      "summary": {
+        "ok": 0,
+        "bad": 1,
+        "miss": 0
+      },
+      "verdict": "discrepancy",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsH_6bkAAA=|INV-002327.pdf",
+      "found_at": "2026-11-23T17:16:54Z",
+      "scan_id": "auto-202611231716",
+      "file": "invoices/INV-002327_6bkAAA.pdf"
     }
   ],
   "last_scan": {
-    "id": "auto-202611231415",
-    "at": "2026-11-23T14:16:01Z",
+    "id": "auto-202611231716",
+    "at": "2026-11-23T17:16:54Z",
     "window": "2weeks",
-    "since": "2026-11-09T06:15:52.429510-08:00",
-    "scanned": 26,
-    "added": 0
+    "since": "2026-11-09T09:16:41.960765-08:00",
+    "scanned": 30,
+    "added": 4
   },
   "pulled_at": "2026-11-09 09:35 PM PT"
 }
