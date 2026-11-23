@@ -8311,15 +8311,103 @@
       "found_at": "2026-11-23T17:16:54Z",
       "scan_id": "auto-202611231716",
       "file": "invoices/INV-002327_6bkAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsH_6bpAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002315 from PMA Services -Next Day Reagents     SO1516--PO1024",
+      "received": "2026-11-23T17:24:49Z",
+      "filename": "INV-002315.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "SO1516--PO1024",
+      "lines": [
+        {
+          "sku": "OSR6195-BK",
+          "desc": "HDL-Cholesterol Reagent, 4 x 30mL & 4 x 10mL",
+          "qty": 1,
+          "rate": 385,
+          "po_unit": 385.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO1024",
+      "po_status": "Received Shipment",
+      "po_missing": [],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsH_6bpAAA=|INV-002315.pdf",
+      "found_at": "2026-11-23T19:16:39Z",
+      "scan_id": "auto-202611231916",
+      "file": "invoices/INV-002315_6bpAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsH_6brAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002308 from PMA Services -Next Day Reagents   PO973",
+      "received": "2026-11-23T17:30:45Z",
+      "filename": "INV-002308.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "PO973",
+      "lines": [
+        {
+          "sku": "33885-BK",
+          "desc": "fT4: Free Thyroxine Calibrator For Analyzer 6x2.5mL 6/Kt",
+          "qty": 1,
+          "rate": 66,
+          "po_unit": 66.0,
+          "delta": 0.0,
+          "status": "ok"
+        },
+        {
+          "sku": "B38859-BK",
+          "desc": "Urine/CSF Albumin Calibrator 2mL",
+          "qty": 1,
+          "rate": 113,
+          "po_unit": 113.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO973",
+      "po_status": "Received Shipment",
+      "po_missing": [
+        "B24838",
+        "33560",
+        "A98032",
+        "33565",
+        "ODC0027",
+        "B63285",
+        "A48619",
+        "A18227",
+        "OSR60117",
+        "A98033"
+      ],
+      "summary": {
+        "ok": 2,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsH_6brAAA=|INV-002308.pdf",
+      "found_at": "2026-11-23T19:16:39Z",
+      "scan_id": "auto-202611231916",
+      "file": "invoices/INV-002308_6brAAA.pdf"
     }
   ],
   "last_scan": {
-    "id": "auto-202611231716",
-    "at": "2026-11-23T17:16:54Z",
+    "id": "auto-202611231916",
+    "at": "2026-11-23T19:16:39Z",
     "window": "2weeks",
-    "since": "2026-11-09T09:16:41.960765-08:00",
-    "scanned": 30,
-    "added": 4
+    "since": "2026-11-09T11:16:33.365568-08:00",
+    "scanned": 32,
+    "added": 2
   },
   "pulled_at": "2026-11-09 09:35 PM PT"
 }
