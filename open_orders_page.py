@@ -1765,14 +1765,28 @@ function aisSpark(pts,c){ var v=(pts||[]).map(function(p){ return +p.value||0; }
   return '<svg viewBox="0 0 300 50" width="100%" height="50" preserveAspectRatio="none" style="display:block;margin-top:6px;"><polyline fill="none" stroke="'+c+'" stroke-width="2" points="'+v.map(function(x,i){ return (i/(v.length-1)*296+2).toFixed(1)+','+(46-x/m*42).toFixed(1); }).join(' ')+'"/></svg>'; }
 // Daily chart with axes for the AI Engines boxes: dates on the x axis, values on the y axis (a second y axis on the right
 // when a second series is given, e.g. clicks next to impressions), gridlines and a legend. Same code on desktop and mobile.
-function aisChart(pts,o){
-  o=o||{}; pts=(pts||[]).filter(function(p){ return p&&p.date; });
-  if(pts.length<2) return '<div style="font-size:12px;color:#7a8a99;margin-top:6px;">Chart appears once there are at least 2 days of data.</div>';
+// Each chart has its own time-window selector (YTD, previous month, current month, last 3 months); a click redraws only
+// that chart. Default: last 3 months. The totals under the chart are for the selected window.
+var AIS_CH={}, AIS_WIN={}, AIS_WINS=[['ytd','YTD'],['prev','Previous month'],['cur','Current month'],['l3m','Last 3 months']];
+function aisRange(w){ var t=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Los_Angeles'}).format(new Date()), y=+t.slice(0,4), m=+t.slice(5,7);
+  function p(n){ return (n<10?'0':'')+n; }
+  if(w==='ytd') return [y+'-01-01',t]; if(w==='cur') return [y+'-'+p(m)+'-01',t];
+  if(w==='prev'){ var py=m===1?y-1:y, pm=m===1?12:m-1; return [py+'-'+p(pm)+'-01',py+'-'+p(pm)+'-31']; }
+  var ly=m<=3?y-1:y, lm=m<=3?m+9:m-3; return [ly+'-'+p(lm)+t.slice(7),t]; }
+function aisSetWin(id,w){ AIS_WIN[id]=w; var c=AIS_CH[id], el=document.getElementById('aisc-'+id); if(c&&el) el.innerHTML=aisChartInner(id,c.pts,c.o); }
+function aisChart(pts,o){ o=o||{}; var id=o.id||('c'+Object.keys(AIS_CH).length); AIS_CH[id]={pts:pts,o:o}; return '<div id="aisc-'+id+'">'+aisChartInner(id,pts,o)+'</div>'; }
+function aisChartInner(id,all,o){
   var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function day(s){ var a=String(s).split('-'); return MON[(+a[1]||1)-1]+' '+(+a[2]||''); }
+  var win=AIS_WIN[id]||'l3m', rg=aisRange(win);
+  var sel='<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:8px;">'+AIS_WINS.map(function(x){ var on=x[0]===win; return '<button type="button" onclick="aisSetWin(&#39;'+id+'&#39;,&#39;'+x[0]+'&#39;)" style="font:inherit;font-size:11px;padding:3px 9px;border-radius:12px;cursor:pointer;border:1px solid '+(on?'#1f3a5f':'#cfd8e3')+';background:'+(on?'#1f3a5f':'#fff')+';color:'+(on?'#fff':'#1f3a5f')+';">'+x[1]+'</button>'; }).join('')+'</div>';
+  all=(all||[]).filter(function(p){ return p&&p.date; });
+  var pts=all.filter(function(p){ return p.date>=rg[0]&&p.date<=rg[1]; });
+  if(pts.length<2) return sel+'<div style="font-size:12px;color:#7a8a99;margin-top:8px;">'+(pts.length?'Only 1 day of data in this window ('+day(pts[0].date)+': '+pts[0].a+').':'No data in this window.')+(all.length?' Data available: '+day(all[0].date)+' &ndash; '+day(all[all.length-1].date)+'.':'')+'</div>';
   var W=o.w||520, H=o.h||200, L=46, R=o.bLabel?46:14, T=12, B=40, pw=W-L-R, ph=H-T-B, n=pts.length;
   function nice(m){ if(m<=4) return 4; var e=Math.pow(10,Math.floor(Math.log(m)/Math.LN10)), f=m/e; return (f<=1?1:f<=2?2:f<=4?4:f<=5?5:10)*e; }
   function fmt(v){ v=Math.round(v*100)/100; return v>=1000?(v/1000).toFixed(v>=10000?0:1).replace('.0','')+'k':String(Math.round(v)===v?v:v.toFixed(1)); }
-  function day(s){ var a=String(s).split('-'); return MON[(+a[1]||1)-1]+' '+(+a[2]||''); }
+  function sum(a){ return a.reduce(function(s,x){ return s+x; },0); }
   var va=pts.map(function(p){ return +p.a||0; }), ma=nice(Math.max.apply(null,va));
   var vb=o.bLabel?pts.map(function(p){ return +p.b||0; }):[], mb=o.bLabel?nice(Math.max.apply(null,vb)):1;
   function X(i){ return L+i/(n-1)*pw; } function Ya(v){ return T+ph-v/ma*ph; } function Yb(v){ return T+ph-v/mb*ph; }
@@ -1791,8 +1805,8 @@ function aisChart(pts,o){
     if(n<=31) r+=v.map(function(x,i){ return '<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(x).toFixed(1)+'" r="'+(n<=10?3:2)+'" fill="'+c+'"><title>'+day(pts[i].date)+': '+x+'</title></circle>'; }).join('');
     return r; }
   s+=line(va,Ya,ac); if(o.bLabel) s+=line(vb,Yb,bc); s+='</svg>';
-  function key(c,t){ return '<span style="white-space:nowrap;"><i style="display:inline-block;width:12px;height:3px;background:'+c+';vertical-align:middle;margin-right:5px;"></i>'+t+'</span>'; }
-  return s+'<div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#5a6b7b;margin-top:2px;">'+key(ac,(o.aLabel||'Value')+(o.bLabel?' (left axis)':''))+(o.bLabel?key(bc,o.bLabel+' (right axis)'):'')+'<span>'+day(pts[0].date)+' &ndash; '+day(pts[n-1].date)+' ('+n+' days)</span></div>';
+  function key(c,t,v){ return '<span style="white-space:nowrap;"><i style="display:inline-block;width:12px;height:3px;background:'+c+';vertical-align:middle;margin-right:5px;"></i>'+t+' &middot; <b>'+fmt(v)+'</b> total</span>'; }
+  return sel+s+'<div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#5a6b7b;margin-top:2px;">'+key(ac,(o.aLabel||'Value')+(o.bLabel?' (left axis)':''),sum(va))+(o.bLabel?key(bc,o.bLabel+' (right axis)',sum(vb)):'')+'<span>'+day(pts[0].date)+' &ndash; '+day(pts[n-1].date)+' ('+n+' days with data)</span></div>';
 }
 // What each AI Engines box represents (shown under its title).
 var AIS_INFO={
@@ -1809,13 +1823,13 @@ function aisBox(inner){ return '<div style="flex:1 1 340px;border:1px solid #e3e
 function aisAi(r,c,key){ if(!r||!r.captured) return aisBox('<b>'+escapeHtml((r&&r.label)||'')+'</b>'+aisInfo(key)+'<div style="font-size:12px;color:#7a8a99;margin-top:4px;">No capture yet — the daily Mac task reads this report.</div>');
   var t=Object.keys(r.totals||{}).map(function(k){ return kpi(r.totals[k],escapeHtml(k.split('_').join(' '))); }).join('');
   var mk=Object.keys(r.totals||{})[0]||'value', ml=mk.charAt(0).toUpperCase()+mk.slice(1).split('_').join(' ');
-  return aisBox('<b>'+escapeHtml(r.label)+'</b><div style="font-size:12px;color:#7a8a99;">'+escapeHtml(r.range||'')+' · captured '+escapeHtml(aisWhen(r.captured_at))+'</div>'+aisInfo(key)+(t?'<div class="kpis" style="padding:6px 0 0;">'+t+'</div>':'')+aisChart((r.daily||[]).map(function(p){ return {date:p.date,a:p.value}; }),{ac:c,aLabel:ml+' per day',w:560})+
+  return aisBox('<b>'+escapeHtml(r.label)+'</b><div style="font-size:12px;color:#7a8a99;">'+escapeHtml(r.range||'')+' · captured '+escapeHtml(aisWhen(r.captured_at))+'</div>'+aisInfo(key)+(t?'<div class="kpis" style="padding:6px 0 0;">'+t+'</div>':'')+aisChart((r.daily||[]).map(function(p){ return {date:p.date,a:p.value}; }),{id:key,ac:c,aLabel:ml+' per day',w:560})+
     ((r.pages||[]).length?'<div style="font-size:12px;font-weight:700;color:#5a6b7b;margin-top:8px;">Top pages</div>'+aisRows(r.pages,'url'):'')+
     ((r.queries||[]).length?'<div style="font-size:12px;font-weight:700;color:#5a6b7b;margin-top:8px;">Grounding queries</div>'+aisRows(r.queries,'query'):'')+
     (r.note?'<div style="font-size:11px;color:#7a8a99;margin-top:6px;">'+escapeHtml(r.note)+'</div>':'')); }
 function aisSe(g,name,c,key){ if(!g) return ''; if(g.error) return aisBox('<b>'+name+'</b><div style="font-size:12px;color:#7a8a99;margin-top:4px;">'+escapeHtml(g.error)+'</div>');
   return aisBox('<b>'+name+'</b><div style="font-size:12px;color:#7a8a99;">'+escapeHtml(g.window||'')+'</div>'+aisInfo(key)+'<div class="kpis" style="padding:6px 0 0;">'+kpi((g.totals&&g.totals.clicks)||0,'Clicks')+kpi((g.totals&&g.totals.impressions)||0,'Impressions')+'</div>'+
-    aisChart((g.daily||[]).map(function(d){ return {date:d.date,a:d.impressions,b:d.clicks}; }),{ac:c,aLabel:'Impressions per day',bLabel:'Clicks per day',w:560})+
+    aisChart((g.daily||[]).map(function(d){ return {date:d.date,a:d.impressions,b:d.clicks}; }),{id:key,ac:c,aLabel:'Impressions per day',bLabel:'Clicks per day',w:560})+
     ((g.queries||[]).length?'<div style="font-size:12px;font-weight:700;color:#5a6b7b;margin-top:8px;">Top queries (impressions · clicks)</div>'+g.queries.slice(0,10).map(function(q){ return '<div style="display:flex;justify-content:space-between;gap:10px;font-size:12px;margin-top:3px;"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+escapeHtml(q.key)+'</span><b>'+q.impressions+' · '+q.clicks+'</b></div>'; }).join(''):'')+
     (g.note?'<div style="font-size:11px;color:#7a8a99;margin-top:6px;">'+escapeHtml(g.note)+'</div>':'')+(g.stale_note?'<div style="font-size:11px;color:#b45309;margin-top:4px;">'+escapeHtml(g.stale_note)+'</div>':'')); }
 function aisHtml(){ if(!AIS){ loadAIS(); return aisFailed?'':'<div class="empty" style="margin:10px 16px;">Loading AI search visibility…</div>'; }
