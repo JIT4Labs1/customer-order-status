@@ -8399,15 +8399,85 @@
       "found_at": "2026-11-23T19:16:39Z",
       "scan_id": "auto-202611231916",
       "file": "invoices/INV-002308_6brAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsH_6daAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002342 from PMA Services -Next Day Reagents   SO1539--PO1039",
+      "received": "2026-11-24T21:31:10Z",
+      "filename": "INV-002342.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "SO1539--PO1039",
+      "lines": [
+        {
+          "sku": "33565-BK",
+          "desc": "Testosterone Calibrator Set 6x2.5mL",
+          "qty": 1,
+          "rate": 33,
+          "po_unit": 33.0,
+          "delta": 0.0,
+          "status": "ok"
+        }
+      ],
+      "po_key": "PO1039",
+      "po_status": "Received Shipment",
+      "po_missing": [],
+      "summary": {
+        "ok": 1,
+        "bad": 0,
+        "miss": 0
+      },
+      "verdict": "ok",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsH_6daAAA=|INV-002342.pdf",
+      "found_at": "2026-11-24T22:31:41Z",
+      "scan_id": "auto-202611242231",
+      "file": "invoices/INV-002342_6daAAA.pdf"
+    },
+    {
+      "msg_id": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsJwo2gAAA=",
+      "source": "zoho",
+      "sender": "message-service@sender.zohobooks.com",
+      "subject": "Invoice - INV-002352 from PMA Services -Next Day Reagents   PO1039",
+      "received": "2026-11-24T22:29:48Z",
+      "filename": "INV-002352.pdf",
+      "vendor": "PMA Services",
+      "po_raw": "PO1039",
+      "lines": [
+        {
+          "sku": "81901-BK",
+          "desc": "Reaction Vessels (Access)",
+          "qty": 3,
+          "rate": 27.5,
+          "po_unit": null,
+          "delta": null,
+          "status": "notpo"
+        }
+      ],
+      "po_key": "PO1039",
+      "po_status": "Received Shipment",
+      "po_missing": [
+        "33565"
+      ],
+      "summary": {
+        "ok": 0,
+        "bad": 0,
+        "miss": 1
+      },
+      "verdict": "partial",
+      "key": "AAMkAGExYTAyOTFjLTRiZDYtNGFjZS05NWJjLTJjNjYxZTdlMzhjZQBGAAAAAAA-YG0n8JVlR4UAA8sdz7UqBwBxZ4eWnyvhQrKWUlMQh-jmAAAAAAEMAABxZ4eWnyvhQrKWUlMQh-jmAAsJwo2gAAA=|INV-002352.pdf",
+      "found_at": "2026-11-24T22:31:41Z",
+      "scan_id": "auto-202611242231",
+      "file": "invoices/INV-002352_o2gAAA.pdf"
     }
   ],
   "last_scan": {
-    "id": "auto-202611242006",
-    "at": "2026-11-24T20:07:14Z",
+    "id": "auto-202611242231",
+    "at": "2026-11-24T22:31:41Z",
     "window": "2weeks",
-    "since": "2026-11-10T12:07:07.402753-08:00",
+    "since": "2026-11-10T14:31:32.998424-08:00",
     "scanned": 24,
-    "added": 0
+    "added": 2
   },
   "pulled_at": "2026-11-09 09:35 PM PT"
 }
