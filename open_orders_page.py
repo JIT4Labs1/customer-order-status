@@ -1776,7 +1776,7 @@ function aisChart(pts,o){
   var va=pts.map(function(p){ return +p.a||0; }), ma=nice(Math.max.apply(null,va));
   var vb=o.bLabel?pts.map(function(p){ return +p.b||0; }):[], mb=o.bLabel?nice(Math.max.apply(null,vb)):1;
   function X(i){ return L+i/(n-1)*pw; } function Ya(v){ return T+ph-v/ma*ph; } function Yb(v){ return T+ph-v/mb*ph; }
-  var ac=o.ac||'#334fb4', bc=o.bc||'#d9822b', s='<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="'+(o.aLabel||'Daily values')+' by day" style="display:block;margin-top:6px;overflow:visible;">';
+  var ac=o.ac||'#334fb4', bc=o.bc||'#d9822b', s='<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="'+(o.aLabel||'Daily values')+' by day" style="display:block;margin-top:6px;overflow:visible;max-width:'+Math.round(W*1.25)+'px;">';
   for(var k=0;k<=4;k++){ var y=(T+ph-k/4*ph).toFixed(1);
     s+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y+'" y2="'+y+'" stroke="'+(k?'#e8edf2':'#b8c4d0')+'" stroke-width="1"/>';
     s+='<text x="'+(L-6)+'" y="'+(+y+4)+'" text-anchor="end" font-size="11" fill="'+(o.bLabel?ac:'#6b7a89')+'">'+fmt(ma*k/4)+'</text>';
