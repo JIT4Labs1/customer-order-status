@@ -5230,10 +5230,18 @@ function rstatLoad(){
     var th='padding:1px 6px;font-weight:600;color:#4a5b70;white-space:nowrap;text-align:center;border-bottom:1px solid #dee5ec;';
     var h='<table style="border-collapse:collapse;font-size:10.5px;line-height:1.35;"><tr><th style="'+th+'text-align:left;">Today</th>'+d.slots.map(function(x){ return '<th style="'+th+'">'+escapeHtml(x.label)+(x.kind==='Full'?'<div style="font-weight:400;font-size:9px;color:#7f8c8d;">full</div>':'')+'</th>'; }).join('')+(ad.length?'<th style="'+th+'">Ad hoc</th>':'')+'</tr>'+
       '<tr><td style="padding:1px 6px;color:#7f8c8d;white-space:nowrap;">'+(d.last_ingested?'data '+escapeHtml(d.last_ingested):'')+'</td>'+d.slots.map(cell).join('')+(ad.length?'<td title="'+escapeHtml(ad.map(function(a){ return a.started+': '+((S[a.status]||S.tbd)[2]); }).join(' · '))+'" style="text-align:center;font-weight:700;color:#137333;white-space:nowrap;">'+adOk+' &#10004;'+(adRun?' <span style="color:#1a56b0;">'+adRun+' &#9203;</span>':'')+'</td>':'')+'</tr></table>';
+    var stale=d.last_ingested_at&&window.CF_SERVED_AT&&(Date.parse(d.last_ingested_at)>Date.parse(window.CF_SERVED_AT)+5000);
+    if(stale){ h='<div style="display:flex;align-items:center;gap:8px;">'+h+'<button onclick="location.reload()" title="A newer refresh finished after this page was opened. Reload to see it." style="background:#c0392b;color:#fff;border:0;border-radius:6px;padding:6px 10px;font-weight:700;cursor:pointer;white-space:nowrap;">New data &middot; Reload</button></div>'; rstatStale=true; rstatAutoReload(); }
     el.innerHTML=h; el.title=(as&&as.textContent)||'';
     if(as) as.style.display='none'; if(sc) sc.style.display='none';
   }).catch(function(){});
 }
+// The page's tables are fixed when it opens; the strip above refreshes every 2 minutes. When a newer refresh has landed,
+// reload by itself as soon as it is safe (tab not in view, or no typing / clicking for 5 minutes), otherwise show the Reload button.
+var rstatStale=false, rstatLastAct=Date.now();
+['keydown','mousedown','touchstart','input'].forEach(function(ev){ document.addEventListener(ev,function(){ rstatLastAct=Date.now(); },true); });
+function rstatAutoReload(){ if(!rstatStale) return; var a=document.activeElement, typing=a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName); if(document.hidden||(!typing&&Date.now()-rstatLastAct>300000)) location.reload(); }
+document.addEventListener('visibilitychange',function(){ if(!document.hidden){ rstatLoad(); } else { rstatAutoReload(); } });
 setTimeout(function(){ rstatLoad(); setInterval(rstatLoad,120000); },300);
 function renderAsOf(){
   var ri=DATA.run_info||{}, txt='Last refreshed: '+(DATA.generated_at||'—');
