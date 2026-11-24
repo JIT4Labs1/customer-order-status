@@ -1763,25 +1763,65 @@ function loadAIS(){ if(aisLoading||AIS||aisFailed) return; aisLoading=true;
     .then(function(d){ AIS=d; aisLoading=false; if(mode==='ai') renderAiPanel(); }).catch(function(){ aisLoading=false; aisFailed=true; if(mode==='ai') renderAiPanel(); }); }
 function aisSpark(pts,c){ var v=(pts||[]).map(function(p){ return +p.value||0; }); if(v.length<2) return ''; var m=Math.max.apply(null,[1].concat(v));
   return '<svg viewBox="0 0 300 50" width="100%" height="50" preserveAspectRatio="none" style="display:block;margin-top:6px;"><polyline fill="none" stroke="'+c+'" stroke-width="2" points="'+v.map(function(x,i){ return (i/(v.length-1)*296+2).toFixed(1)+','+(46-x/m*42).toFixed(1); }).join(' ')+'"/></svg>'; }
+// Daily chart with axes for the AI Engines boxes: dates on the x axis, values on the y axis (a second y axis on the right
+// when a second series is given, e.g. clicks next to impressions), gridlines and a legend. Same code on desktop and mobile.
+function aisChart(pts,o){
+  o=o||{}; pts=(pts||[]).filter(function(p){ return p&&p.date; });
+  if(pts.length<2) return '<div style="font-size:12px;color:#7a8a99;margin-top:6px;">Chart appears once there are at least 2 days of data.</div>';
+  var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var W=o.w||520, H=o.h||200, L=46, R=o.bLabel?46:14, T=12, B=40, pw=W-L-R, ph=H-T-B, n=pts.length;
+  function nice(m){ if(m<=4) return 4; var e=Math.pow(10,Math.floor(Math.log(m)/Math.LN10)), f=m/e; return (f<=1?1:f<=2?2:f<=4?4:f<=5?5:10)*e; }
+  function fmt(v){ v=Math.round(v*100)/100; return v>=1000?(v/1000).toFixed(v>=10000?0:1).replace('.0','')+'k':String(Math.round(v)===v?v:v.toFixed(1)); }
+  function day(s){ var a=String(s).split('-'); return MON[(+a[1]||1)-1]+' '+(+a[2]||''); }
+  var va=pts.map(function(p){ return +p.a||0; }), ma=nice(Math.max.apply(null,va));
+  var vb=o.bLabel?pts.map(function(p){ return +p.b||0; }):[], mb=o.bLabel?nice(Math.max.apply(null,vb)):1;
+  function X(i){ return L+i/(n-1)*pw; } function Ya(v){ return T+ph-v/ma*ph; } function Yb(v){ return T+ph-v/mb*ph; }
+  var ac=o.ac||'#334fb4', bc=o.bc||'#d9822b', s='<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="'+(o.aLabel||'Daily values')+' by day" style="display:block;margin-top:6px;overflow:visible;">';
+  for(var k=0;k<=4;k++){ var y=(T+ph-k/4*ph).toFixed(1);
+    s+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y+'" y2="'+y+'" stroke="'+(k?'#e8edf2':'#b8c4d0')+'" stroke-width="1"/>';
+    s+='<text x="'+(L-6)+'" y="'+(+y+4)+'" text-anchor="end" font-size="11" fill="'+(o.bLabel?ac:'#6b7a89')+'">'+fmt(ma*k/4)+'</text>';
+    if(o.bLabel) s+='<text x="'+(W-R+6)+'" y="'+(+y+4)+'" font-size="11" fill="'+bc+'">'+fmt(mb*k/4)+'</text>'; }
+  s+='<line x1="'+L+'" x2="'+L+'" y1="'+T+'" y2="'+(T+ph)+'" stroke="#b8c4d0" stroke-width="1"/>';
+  var m=Math.min(n,W<420?4:6), seen={};
+  for(var j=0;j<m;j++){ var i=Math.round(j*(n-1)/(m-1)); if(seen[i]) continue; seen[i]=1;
+    s+='<line x1="'+X(i).toFixed(1)+'" x2="'+X(i).toFixed(1)+'" y1="'+(T+ph)+'" y2="'+(T+ph+4)+'" stroke="#b8c4d0"/>';
+    s+='<text x="'+X(i).toFixed(1)+'" y="'+(T+ph+16)+'" text-anchor="'+(i===0?'start':i===n-1?'end':'middle')+'" font-size="11" fill="#6b7a89">'+day(pts[i].date)+'</text>'; }
+  s+='<text x="'+(L+pw/2)+'" y="'+(H-4)+'" text-anchor="middle" font-size="10" fill="#8a97a8">Date (one point per day)</text>';
+  function line(v,Y,c){ var r='<polyline fill="none" stroke="'+c+'" stroke-width="2" stroke-linejoin="round" points="'+v.map(function(x,i){ return X(i).toFixed(1)+','+Y(x).toFixed(1); }).join(' ')+'"/>';
+    if(n<=31) r+=v.map(function(x,i){ return '<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(x).toFixed(1)+'" r="'+(n<=10?3:2)+'" fill="'+c+'"><title>'+day(pts[i].date)+': '+x+'</title></circle>'; }).join('');
+    return r; }
+  s+=line(va,Ya,ac); if(o.bLabel) s+=line(vb,Yb,bc); s+='</svg>';
+  function key(c,t){ return '<span style="white-space:nowrap;"><i style="display:inline-block;width:12px;height:3px;background:'+c+';vertical-align:middle;margin-right:5px;"></i>'+t+'</span>'; }
+  return s+'<div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#5a6b7b;margin-top:2px;">'+key(ac,(o.aLabel||'Value')+(o.bLabel?' (left axis)':''))+(o.bLabel?key(bc,o.bLabel+' (right axis)'):'')+'<span>'+day(pts[0].date)+' &ndash; '+day(pts[n-1].date)+' ('+n+' days)</span></div>';
+}
+// What each AI Engines box represents (shown under its title).
+var AIS_INFO={
+  google_ai:'How often Google&#39;s AI answers (the AI Overview at the top of the results, and AI Mode) showed a jit4labs.com page as a source. One impression = one AI answer that included your page. Google does not report clicks from AI answers separately. Captured daily from Google&#39;s report.',
+  bing_ai:'How many times Microsoft Copilot and Bing&#39;s AI summaries cited a jit4labs.com page in an answer. Avg cited pages = how many of your pages get cited on an average day. Grounding queries are the searches the AI ran before citing you. From Bing Webmaster Tools&#39; AI Performance report.',
+  google:'Regular Google search for jit4labs.com, with AI Overviews and AI Mode blended in (Google does not split them here). Impressions = times one of your pages appeared in the results; clicks = times someone clicked through to your site. From Google Search Console.',
+  bing:'Regular Bing search for jit4labs.com. Bing results also feed ChatGPT search and Copilot. Impressions = times one of your pages appeared in the results; clicks = visits to your site from Bing. From Bing Webmaster Tools.'
+};
+function aisInfo(k){ return AIS_INFO[k]?'<div style="font-size:12px;color:#4a5b70;background:#f4f7fa;border-radius:6px;padding:6px 8px;margin-top:6px;line-height:1.4;">'+AIS_INFO[k]+'</div>':''; }
 function aisWhen(t){ return t?new Date(t).toLocaleString('en-US',{timeZone:'America/Los_Angeles',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):''; }
 function aisShort(u){ u=String(u||''); var i=u.indexOf('jit4labs.com'); return i>=0?(u.slice(i+12)||'/'):u; }
 function aisRows(l,k,n){ return (l||[]).slice(0,n||8).map(function(x){ return '<div style="display:flex;justify-content:space-between;gap:10px;font-size:12px;margin-top:3px;"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+escapeHtml(k==='url'?aisShort(x.url):x[k])+'</span><b>'+(x.value==null?'':x.value)+(x.share!=null?' · '+escapeHtml(String(x.share))+'%':'')+'</b></div>'; }).join(''); }
 function aisBox(inner){ return '<div style="flex:1 1 340px;border:1px solid #e3e8ee;border-radius:10px;padding:12px 14px;background:#fff;">'+inner+'</div>'; }
-function aisAi(r,c){ if(!r||!r.captured) return aisBox('<b>'+escapeHtml((r&&r.label)||'')+'</b><div style="font-size:12px;color:#7a8a99;margin-top:4px;">No capture yet — the daily Mac task reads this report.</div>');
+function aisAi(r,c,key){ if(!r||!r.captured) return aisBox('<b>'+escapeHtml((r&&r.label)||'')+'</b>'+aisInfo(key)+'<div style="font-size:12px;color:#7a8a99;margin-top:4px;">No capture yet — the daily Mac task reads this report.</div>');
   var t=Object.keys(r.totals||{}).map(function(k){ return kpi(r.totals[k],escapeHtml(k.split('_').join(' '))); }).join('');
-  return aisBox('<b>'+escapeHtml(r.label)+'</b><div style="font-size:12px;color:#7a8a99;">'+escapeHtml(r.range||'')+' · captured '+escapeHtml(aisWhen(r.captured_at))+'</div>'+(t?'<div class="kpis" style="padding:6px 0 0;">'+t+'</div>':'')+aisSpark(r.daily,c)+
+  var mk=Object.keys(r.totals||{})[0]||'value', ml=mk.charAt(0).toUpperCase()+mk.slice(1).split('_').join(' ');
+  return aisBox('<b>'+escapeHtml(r.label)+'</b><div style="font-size:12px;color:#7a8a99;">'+escapeHtml(r.range||'')+' · captured '+escapeHtml(aisWhen(r.captured_at))+'</div>'+aisInfo(key)+(t?'<div class="kpis" style="padding:6px 0 0;">'+t+'</div>':'')+aisChart((r.daily||[]).map(function(p){ return {date:p.date,a:p.value}; }),{ac:c,aLabel:ml+' per day',w:560})+
     ((r.pages||[]).length?'<div style="font-size:12px;font-weight:700;color:#5a6b7b;margin-top:8px;">Top pages</div>'+aisRows(r.pages,'url'):'')+
     ((r.queries||[]).length?'<div style="font-size:12px;font-weight:700;color:#5a6b7b;margin-top:8px;">Grounding queries</div>'+aisRows(r.queries,'query'):'')+
     (r.note?'<div style="font-size:11px;color:#7a8a99;margin-top:6px;">'+escapeHtml(r.note)+'</div>':'')); }
-function aisSe(g,name,c){ if(!g) return ''; if(g.error) return aisBox('<b>'+name+'</b><div style="font-size:12px;color:#7a8a99;margin-top:4px;">'+escapeHtml(g.error)+'</div>');
-  return aisBox('<b>'+name+'</b><div style="font-size:12px;color:#7a8a99;">'+escapeHtml(g.window||'')+'</div><div class="kpis" style="padding:6px 0 0;">'+kpi((g.totals&&g.totals.clicks)||0,'Clicks')+kpi((g.totals&&g.totals.impressions)||0,'Impressions')+'</div>'+
-    aisSpark((g.daily||[]).map(function(d){ return {value:d.clicks}; }),c)+
+function aisSe(g,name,c,key){ if(!g) return ''; if(g.error) return aisBox('<b>'+name+'</b><div style="font-size:12px;color:#7a8a99;margin-top:4px;">'+escapeHtml(g.error)+'</div>');
+  return aisBox('<b>'+name+'</b><div style="font-size:12px;color:#7a8a99;">'+escapeHtml(g.window||'')+'</div>'+aisInfo(key)+'<div class="kpis" style="padding:6px 0 0;">'+kpi((g.totals&&g.totals.clicks)||0,'Clicks')+kpi((g.totals&&g.totals.impressions)||0,'Impressions')+'</div>'+
+    aisChart((g.daily||[]).map(function(d){ return {date:d.date,a:d.impressions,b:d.clicks}; }),{ac:c,aLabel:'Impressions per day',bLabel:'Clicks per day',w:560})+
     ((g.queries||[]).length?'<div style="font-size:12px;font-weight:700;color:#5a6b7b;margin-top:8px;">Top queries (impressions · clicks)</div>'+g.queries.slice(0,10).map(function(q){ return '<div style="display:flex;justify-content:space-between;gap:10px;font-size:12px;margin-top:3px;"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+escapeHtml(q.key)+'</span><b>'+q.impressions+' · '+q.clicks+'</b></div>'; }).join(''):'')+
     (g.note?'<div style="font-size:11px;color:#7a8a99;margin-top:6px;">'+escapeHtml(g.note)+'</div>':'')+(g.stale_note?'<div style="font-size:11px;color:#b45309;margin-top:4px;">'+escapeHtml(g.stale_note)+'</div>':'')); }
 function aisHtml(){ if(!AIS){ loadAIS(); return aisFailed?'':'<div class="empty" style="margin:10px 16px;">Loading AI search visibility…</div>'; }
   var R=AIS.ai_reports||{}, sec=function(t){ return '<div style="font-size:12px;font-weight:700;color:#5a6b7b;text-transform:uppercase;letter-spacing:.04em;margin:14px 16px 6px;">'+t+'</div>'; };
-  return sec('AI answers citing jit4labs.com')+'<div style="display:flex;gap:10px;flex-wrap:wrap;margin:0 16px;">'+aisAi(R.google_ai,'#334fb4')+aisAi(R.bing_ai,'#008080')+'</div>'+
-    sec('Search engines')+'<div style="display:flex;gap:10px;flex-wrap:wrap;margin:0 16px;">'+aisSe(AIS.google,'Google Search','#334fb4')+aisSe(AIS.bing,'Bing Search','#008080')+'</div>'+
+  return sec('AI answers citing jit4labs.com')+'<div style="display:flex;gap:10px;flex-wrap:wrap;margin:0 16px;">'+aisAi(R.google_ai,'#334fb4','google_ai')+aisAi(R.bing_ai,'#008080','bing_ai')+'</div>'+
+    sec('Search engines')+'<div style="display:flex;gap:10px;flex-wrap:wrap;margin:0 16px;">'+aisSe(AIS.google,'Google Search','#334fb4','google')+aisSe(AIS.bing,'Bing Search','#008080','bing')+'</div>'+
     '<div style="font-size:11px;color:#7a8a99;margin:6px 16px 0;">Search data as of '+escapeHtml(aisWhen(AIS.pulled_at))+'</div>'+sec('Visits from AI assistants'); }
 function renderAiPanel(){
   if(!CJ){ document.getElementById('panel').innerHTML='<div class="empty">Loading AI Engines data…</div>'; loadCJ(); return; }
