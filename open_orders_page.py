@@ -5277,7 +5277,7 @@ function renderYtdPanel(){
 function rstatLoad(){
   fetch('/api/refresh-status',{credentials:'same-origin',cache:'no-store'}).then(function(r){ return r.ok?r.json():null; }).then(function(d){
     var el=document.getElementById('rstat'), as=document.getElementById('asof'), sc=document.querySelector('.meta-scope'); if(!el) return;
-    if(!d||!d.slots){ el.innerHTML=''; if(as) as.style.display=''; if(sc) sc.style.display=''; return; }
+    if(!d||!d.slots){ el.innerHTML=(d&&d.error)?'<div style="color:#c0392b;font-size:12px;font-weight:700;">'+escapeHtml(/401|403/.test(d.error)?'Refreshes stopped: GitHub token rejected':'Refresh status unavailable: '+d.error)+'</div>':''; if(as) as.style.display=''; if(sc) sc.style.display=''; return; }
     var S={done:['&#10004;','#137333','Done'],finishing:['&#10004;','#7f8c8d','Finished, copying into the dashboard'],running:['&#9203;','#1a56b0','Running'],failed:['&#10006;','#c0392b','Failed'],missed:['&ndash;','#b54708','Did not run'],tbd:['TBD','#8a97a8','Not run yet']};
     function cell(x){ var s=S[x.status]||S.tbd, tip=s[2]+(x.started?' · started '+x.started:'')+(x.finished?' · finished '+x.finished:''); return '<td title="'+escapeHtml(tip)+'" style="text-align:center;color:'+s[1]+';font-weight:700;">'+(x.url?'<a href="'+escapeHtml(x.url)+'" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">'+s[0]+'</a>':s[0])+'</td>'; }
     var ad=d.adhoc||[], adOk=ad.filter(function(a){ return a.status==='done'||a.status==='finishing'; }).length, adRun=ad.filter(function(a){ return a.status==='running'; }).length;
