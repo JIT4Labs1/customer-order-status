@@ -122,7 +122,9 @@ def main():
             for m in d.get("value", []):
                 subj = m.get("subject") or ""
                 if src == "zoho" and not re.search(r"invoice", subj, re.I): continue
-                if src == "quickbooks" and not re.search(r"new payment request from (?!jit4you)", subj, re.I): continue
+                # Allora's QuickBooks emails: "New payment request from Allora Biotech LLC - invoice 1841" (until Nov 19, 2026)
+                # and "Invoice 1870 from Allora Biotech" (since Nov 20, 2026). Never our own outgoing JIT4You invoices.
+                if src == "quickbooks" and not re.search(r"new payment request from (?!jit4you)|^\s*(?:fw:\s*)?invoice\s+\S+\s+from\s+(?!jit4you)", subj, re.I): continue
                 scanned += 1
                 a = http("%s/users/%s/messages/%s/attachments?$select=id,name,contentType,size" % (G, MAILBOX, urllib.parse.quote(m["id"], safe="")), headers=H)
                 for at in a.get("value", []):
