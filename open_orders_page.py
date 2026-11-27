@@ -4143,7 +4143,10 @@ function mailOpen(subject,html,label,opt){
     '<div style="font-size:12px;color:#008080;font-weight:600;margin-top:6px;">&#9998; Click inside the message to edit it before sending.</div><iframe id="mailFrame" style="width:100%;height:340px;border:1px solid #e3e7ee;border-radius:6px;margin:8px 0;"></iframe>'+
     '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><button id="mailBtnSend" class="mode-btn" style="margin:0;background:#008080;color:#fff;" onclick="mailGo(&quot;send&quot;)">&#9993; Send now</button>'+
     '<button id="mailBtnDraft" class="mode-btn" style="margin:0;" onclick="mailGo(&quot;draft&quot;)">Save as draft</button>'+
-    '<button class="mode-btn" style="margin:0;" onclick="mailClose()">Cancel</button><span id="mailStatus" style="font-size:12px;color:#137333;"></span></div></div>';
+    '<button class="mode-btn" style="margin:0;" onclick="mailClose()">Cancel</button><span id="mailStatus" style="font-size:12px;color:#137333;"></span></div>'+
+    (mailOnWorker?'<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid #eef1f4;"><b style="font-size:13px;">&#128339; Schedule:</b><input id="mailAt" type="datetime-local" style="padding:5px 8px;border:1px solid #cfd8e3;border-radius:6px;">'+
+      '<button id="mailBtnSched" class="mode-btn" style="margin:0;" onclick="mailGo(&quot;schedule&quot;)">Schedule send</button><span style="font-size:11px;color:#7f8c8d;">Your local time. Outlook holds it in the Outbox of customersupport@jit4you.com and sends it then.</span></div>':'')+
+    '</div>';
   document.body.appendChild(d);
   edOn('mailFrame',html); if(opt.to){ document.getElementById('mailTo').value=opt.to; } else if(!opt.vendor) mailPrefill(label);
 }
@@ -4157,15 +4160,19 @@ function mailGo(mode){
   var to=document.getElementById('mailTo').value.trim(), cc=document.getElementById('mailCc').value.trim(), subj=document.getElementById('mailSubj').value.trim(), pin=(document.getElementById('mailPin')||{value:''}).value;
   var re=/^[^ @,;]+@[^ @,;]+[.][^ @,;]+$/, list=(to+','+cc).split(/[,;]+/);
   for(var i=0;i<list.length;i++){ var a=list[i].trim(); if(a&&!re.test(a)){ mailStatus('Not a valid email address: '+a,true); return; } }
+  var sendAt='';
+  if(mode==='schedule'){ var atv=(document.getElementById('mailAt')||{value:''}).value; if(!atv){ mailStatus('Pick the date and time to send.',true); return; }
+    var atd=new Date(atv); if(isNaN(atd)||atd.getTime()<Date.now()+60000){ mailStatus('Pick a time in the future.',true); return; }
+    sendAt=atd.toISOString(); mode='send'; }
   if(mode==='send'&&!to){ mailStatus('Enter at least one To address.',true); return; }
   if(!subj){ mailStatus('Subject is empty.',true); return; }
   if(!pin&&!mailOnWorker){ mailStatus('Enter the send PIN.',true); return; }
   if(!mailOnWorker&&(!BTN||!BTN.token)){ mailStatus('Not configured on this copy of the page.',true); return; }
-  if(mode==='send'&&!confirm('Send this email NOW from customersupport@jit4you.com to:'+String.fromCharCode(10)+to+(cc?String.fromCharCode(10)+'Cc: '+cc:'')+String.fromCharCode(10)+String.fromCharCode(10)+'Subject: '+subj)) return;
+  if(mode==='send'&&!confirm((sendAt?'Schedule this email for '+new Date(sendAt).toLocaleString()+' from customersupport@jit4you.com to:':'Send this email NOW from customersupport@jit4you.com to:')+String.fromCharCode(10)+to+(cc?String.fromCharCode(10)+'Cc: '+cc:'')+String.fromCharCode(10)+String.fromCharCode(10)+'Subject: '+subj)) return;
   mailPinMem=pin;
   if(mailOnWorker){ var w1=document.getElementById('mailBtnSend'), w2=document.getElementById('mailBtnDraft'); w1.disabled=true; w2.disabled=true; mailStatus(mode==='send'?'Sending...':'Saving draft...');
-    fetch('/api/mail/send',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({mode:mode,to:to,cc:cc,subject:subj,html:edHtml('mailFrame',mailCtx.html),label:mailCtx.label||'',customer:mailCtx.vendor?'':(mailCtx.label||''),kind:mailCtx.vendor?'vendor':'customer',source:'desktop'})})
-    .then(function(r){ return r.json().catch(function(){return {};}).then(function(j){ if(!r.ok||j.error) throw new Error(j.error||('HTTP '+r.status)); mailStatus(mode==='send'?'Sent from customersupport@jit4you.com. Closing...':'Draft saved in the customersupport Drafts folder.'); if(mode==='send'&&mailCtx&&mailCtx.onSent){ try{ mailCtx.onSent(); }catch(x){} } if(mode==='send'){ setTimeout(mailClose,4000); setTimeout(function(){ ESENT=null; esLoad(); },3000); } }); })
+    fetch('/api/mail/send',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({mode:mode,sendAt:sendAt||undefined,to:to,cc:cc,subject:subj,html:edHtml('mailFrame',mailCtx.html),label:mailCtx.label||'',customer:mailCtx.vendor?'':(mailCtx.label||''),kind:mailCtx.vendor?'vendor':'customer',source:'desktop'})})
+    .then(function(r){ return r.json().catch(function(){return {};}).then(function(j){ if(!r.ok||j.error) throw new Error(j.error||('HTTP '+r.status)); mailStatus(mode==='send'?(j.scheduled_for?'Scheduled for '+new Date(j.scheduled_for).toLocaleString()+' from customersupport@jit4you.com. Closing...':'Sent from customersupport@jit4you.com. Closing...'):'Draft saved in the customersupport Drafts folder.'); if(mode==='send'&&mailCtx&&mailCtx.onSent){ try{ mailCtx.onSent(); }catch(x){} } if(mode==='send'){ setTimeout(mailClose,4000); setTimeout(function(){ ESENT=null; esLoad(); },3000); } }); })
     .catch(function(e){ mailStatus('Failed: '+e.message,true); }).finally(function(){ w1.disabled=false; w2.disabled=false; }); return; }
   var id=Date.now().toString(36)+Math.random().toString(36).slice(2,8);
   var b1=document.getElementById('mailBtnSend'), b2=document.getElementById('mailBtnDraft'); b1.disabled=true; b2.disabled=true; mailStatus('Submitting...');
