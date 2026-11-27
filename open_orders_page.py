@@ -1442,34 +1442,77 @@ function fdaSearch(v){ fdaQ=v; fdaLim=100; fdaDraw(); }
 function fdaMore(){ fdaLim+=100; fdaDraw(); }
 function fdaFd(t){ return t?new Date(t).toLocaleString('en-US',{timeZone:'America/Los_Angeles',month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}):''; }
 // ── QuickBooks P&L tab: QuickBooks' Profit and Loss report (qb-pnl.json, refreshed by the Cloudflare app) ──
-var QBP=null, qbpBusy=false, qbpErr='', qbpView='ytd';
+var QBP=null, qbpBusy=false, qbpErr='', qbpView='ytd', qbpPieView='ytd';
 function qbpLoad(){ if(qbpBusy) return; qbpBusy=true; qbpErr='';
   fetch('qb-pnl.json?t='+Date.now(),{cache:'no-store'}).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
     .then(function(d){ QBP=d; qbpBusy=false; if(mode==='qbp') renderQbpPanel(); })
     .catch(function(e){ qbpBusy=false; qbpErr=(e&&e.message)||String(e); if(mode==='qbp') renderQbpPanel(); }); }
 function qbpAmt(v){ if(v==null) return ''; var n=Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); return (v<0?'-$':'$')+n; }
+// Periods: a month index, 'ytd' (QuickBooks' Total column) or 'closed' (January through last month: the months already closed).
+function qbpLast(){ return (QBP.cols||[]).length-1; }
+function qbpClosedLabel(){ var c=QBP.cols||[], l=qbpLast(); if(l<2) return ''; var a=String(c[0]).split(' ')[0], b=String(c[l-2]); return a+' '+String.fromCharCode(8211)+' '+b+' (closed months)'; }
+function qbpLabel(p){ return p==='ytd'?'Year to date':(p==='closed'?qbpClosedLabel():(QBP.cols||[])[+p]); }
+function qbpVal(x,p){ var v=x.v||[], l=qbpLast();
+  if(p==='ytd') return v[l]; if(p!=='closed') return v[+p];
+  var s=0, any=false; for(var i=0;i<=l-2;i++){ if(v[i]!=null){ s+=v[i]; any=true; } } return any?Math.round(s*100)/100:null; }
+function qbpPeriodOpts(cur, withViews){ var l=qbpLast(), o='';
+  if(withViews) o+='<option value="ytd"'+(cur==='ytd'?' selected':'')+'>Year to date + closed months</option>';
+  else o+='<option value="ytd"'+(cur==='ytd'?' selected':'')+'>Year to date</option>';
+  if(l>=2) o+='<option value="closed"'+(cur==='closed'?' selected':'')+'>'+escapeHtml(qbpClosedLabel())+'</option>';
+  if(withViews) o+='<option value="all"'+(cur==='all'?' selected':'')+'>All months side by side</option>';
+  for(var m=l-1;m>=0;m--) o+='<option value="'+m+'"'+(cur===String(m)?' selected':'')+'>'+escapeHtml((QBP.cols||[])[m])+'</option>';
+  return o; }
+// Pie: Total Income, Total Cost of Goods Sold and the main expense categories (top 6, the rest grouped).
+function qbpPie(p){
+  var rows=QBP.rows||[], sl=[], find=function(re){ for(var i=0;i<rows.length;i++) if(rows[i].d===0&&rows[i].k==='total'&&re.test(rows[i].label)) return rows[i]; return null; };
+  var inc=find(/^Total Income$/i), cogs=find(/^Total Cost of Goods Sold$/i);
+  if(inc) sl.push({n:'Total income',v:qbpVal(inc,p)});
+  if(cogs) sl.push({n:'Total cost of goods sold',v:qbpVal(cogs,p)});
+  var ex=[], inExp=false, inOth=false;
+  for(var i=0;i<rows.length;i++){ var x=rows[i];
+    if(x.d===0&&x.k==='head'){ inExp=/^Expenses$/i.test(x.label); inOth=/^Other Expenses?$/i.test(x.label); continue; }
+    if(x.d===0){ inExp=false; inOth=false; continue; }
+    if((inExp||inOth)&&x.d===1&&(x.k==='total'||x.k==='row')) ex.push({n:String(x.label).replace(/^Total +/,''),v:qbpVal(x,p)}); }
+  ex=ex.filter(function(e){ return (e.v||0)>0; }).sort(function(a,b){ return b.v-a.v; });
+  var top=ex.slice(0,6), rest=ex.slice(6).reduce(function(a,e){ return a+e.v; },0);
+  sl=sl.concat(top); if(rest>0) sl.push({n:'Other expenses',v:rest});
+  sl=sl.filter(function(e){ return (e.v||0)>0; });
+  var tot=sl.reduce(function(a,e){ return a+e.v; },0); if(!tot) return '<div style="color:#7a8a99;font-size:13px;">Nothing to chart for this period.</div>';
+  var C=['#1F4E79','#c0392b','#e67e22','#16a085','#8e44ad','#2980b9','#d4ac0d','#7f8c8d','#27ae60'], R=120, cx=130, cy=130, a0=-Math.PI/2, svg='', lg='';
+  for(var k=0;k<sl.length;k++){ var f=sl[k].v/tot, a1=a0+f*2*Math.PI, col=C[k%C.length];
+    if(sl.length===1) svg+='<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="'+col+'"></circle>';
+    else svg+='<path d="M'+cx+' '+cy+' L'+(cx+R*Math.cos(a0)).toFixed(2)+' '+(cy+R*Math.sin(a0)).toFixed(2)+' A'+R+' '+R+' 0 '+(f>0.5?1:0)+' 1 '+(cx+R*Math.cos(a1)).toFixed(2)+' '+(cy+R*Math.sin(a1)).toFixed(2)+' Z" fill="'+col+'" stroke="#fff" stroke-width="1.5"><title>'+escapeHtml(sl[k].n+': '+qbpAmt(sl[k].v)+' ('+(f*100).toFixed(1)+'%)')+'</title></path>';
+    lg+='<tr><td style="padding:4px 8px;"><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:'+col+';vertical-align:middle;"></span></td><td style="padding:4px 8px;">'+escapeHtml(sl[k].n)+'</td><td style="padding:4px 8px;text-align:right;white-space:nowrap;">'+qbpAmt(sl[k].v)+'</td><td style="padding:4px 8px;text-align:right;color:#4a5b70;">'+(f*100).toFixed(1)+'%</td></tr>';
+    a0=a1; }
+  return '<div style="display:flex;gap:28px;align-items:center;flex-wrap:wrap;"><svg width="260" height="260" viewBox="0 0 260 260">'+svg+'</svg><table style="border-collapse:collapse;font-size:13px;">'+lg+'</table></div>'+
+    '<div style="font-size:11px;color:#7a8a99;margin-top:6px;">Slices are shares of the amounts shown (income, cost of goods and the largest expense categories; smaller categories grouped as Other expenses).</div>';
+}
 function renderQbpPanel(){
   var P=document.getElementById('panel');
   if(!QBP){ P.innerHTML=qbpErr?'<div class="empty">Could not load the QuickBooks P&amp;L: '+escapeHtml(qbpErr)+'</div>':'<div class="empty">Loading the QuickBooks P&amp;L&hellip;</div>'; if(!qbpErr) qbpLoad(); return; }
-  var cols=QBP.cols||[], last=cols.length-1, show=[];
-  if(qbpView==='ytd') show=[last]; else if(qbpView==='all'){ for(var i=0;i<cols.length;i++) show.push(i); } else show=[+qbpView];
-  var opt='<option value="ytd"'+(qbpView==='ytd'?' selected':'')+'>Year to date</option><option value="all"'+(qbpView==='all'?' selected':'')+'>All months side by side</option>';
-  for(var m=last-1;m>=0;m--) opt+='<option value="'+m+'"'+(qbpView===String(m)?' selected':'')+'>'+escapeHtml(cols[m])+'</option>';
+  var l=qbpLast(), show=[];
+  if(qbpView==='ytd'){ if(l>=2) show.push('closed'); show.push('ytd'); }
+  else if(qbpView==='all'){ for(var i=0;i<l;i++) show.push(String(i)); if(l>=2) show.push('closed'); show.push('ytd'); }
+  else show=[qbpView];
   var th='padding:9px 10px;background:#1b2b45;color:#fff;font-weight:700;text-align:right;font-size:12.5px;white-space:nowrap;';
+  var sel='padding:5px 10px;font-size:13px;border:1px solid #cdd9e6;border-radius:6px;';
   var h='<div style="padding:14px 16px;">'+
     '<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px;"><h2 style="margin:0;">QuickBooks P&amp;L</h2>'+
-    '<select onchange="qbpView=this.value;renderQbpPanel()" style="padding:5px 10px;font-size:13px;border:1px solid #cdd9e6;border-radius:6px;">'+opt+'</select></div>'+
-    '<div style="font-size:12px;color:#4a5b70;margin-bottom:12px;">Profit and Loss exactly as QuickBooks reports it &middot; '+escapeHtml(QBP.basis||'')+' basis &middot; '+escapeHtml(QBP.start||'')+' to '+escapeHtml(QBP.end||'')+' &middot; read from QuickBooks '+escapeHtml(new Date(QBP.at).toLocaleString())+'</div>'+
-    '<div style="overflow-x:auto;"><table style="border-collapse:collapse;font-size:13px;min-width:'+(show.length>2?'1100px':'560px')+';background:#fff;"><thead><tr><th style="'+th+'text-align:left;">&nbsp;</th>';
-  for(var k=0;k<show.length;k++) h+='<th style="'+th+'">'+escapeHtml(qbpView==='ytd'?'Year to date':cols[show[k]])+'</th>';
+    '<select onchange="qbpView=this.value;renderQbpPanel()" style="'+sel+'">'+qbpPeriodOpts(qbpView,true)+'</select></div>'+
+    '<div style="font-size:12px;color:#4a5b70;margin-bottom:12px;">Profit and Loss exactly as QuickBooks reports it &middot; '+escapeHtml(QBP.basis||'')+' basis &middot; '+escapeHtml(QBP.start||'')+' to '+escapeHtml(QBP.end||'')+' &middot; read from QuickBooks '+escapeHtml(new Date(QBP.at).toLocaleString())+(l>=2?' &middot; closed months = January through last month, the months already closed in QuickBooks':'')+'</div>'+
+    '<div style="overflow-x:auto;"><table style="border-collapse:collapse;font-size:13px;min-width:'+(show.length>3?'1200px':'640px')+';background:#fff;"><thead><tr><th style="'+th+'text-align:left;">&nbsp;</th>';
+  for(var k=0;k<show.length;k++) h+='<th style="'+th+(show[k]==='closed'?'background:#2f6f4f;':'')+'">'+escapeHtml(qbpLabel(show[k]))+'</th>';
   h+='</tr></thead><tbody>';
   var rows=QBP.rows||[];
   for(var r=0;r<rows.length;r++){ var x=rows[r], pad=12+x.d*18, sum=x.k==='summary', tot=x.k==='total', hd=x.k==='head';
     var st='padding:6px 10px;border-bottom:1px solid #eef1f4;'+(sum?'font-weight:700;background:#f3f6f9;border-top:2px solid #2c3e50;':tot?'font-weight:700;border-top:1px solid #9aa7b4;':hd?'font-weight:600;':'');
     h+='<tr><td style="'+st+'padding-left:'+pad+'px;text-align:left;">'+escapeHtml(x.label)+'</td>';
-    for(var k2=0;k2<show.length;k2++){ var v=(x.v||[])[show[k2]]; h+='<td style="'+st+'text-align:right;white-space:nowrap;'+(v<0?'color:#c62828;':'')+'">'+qbpAmt(v)+'</td>'; }
+    for(var k2=0;k2<show.length;k2++){ var v=qbpVal(x,show[k2]); h+='<td style="'+st+'text-align:right;white-space:nowrap;'+(v<0?'color:#c62828;':'')+(show[k2]==='closed'?'background:#f2f8f4;':'')+'">'+qbpAmt(v)+'</td>'; }
     h+='</tr>'; }
-  h+='</tbody></table></div></div>';
+  h+='</tbody></table></div>'+
+    '<div style="margin-top:22px;padding:14px 16px;border:1px solid #e3e7ee;border-radius:8px;background:#fff;max-width:900px;">'+
+    '<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;"><b style="font-size:15px;color:#1F4E79;">Where the money goes</b>'+
+    '<select onchange="qbpPieView=this.value;renderQbpPanel()" style="'+sel+'">'+qbpPeriodOpts(qbpPieView,false)+'</select></div>'+qbpPie(qbpPieView)+'</div></div>';
   P.innerHTML=h;
 }
 function renderFdaPanel(){
