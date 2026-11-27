@@ -3073,7 +3073,16 @@ function gadsBrand(r){ if(r.brands&&r.brands.length){ var b=r.brands.map(functio
 var gadsOpen={}, gadsRowNames=[];
 function gadsToggle(i){ var n=gadsRowNames[i]; gadsOpen[n]=!gadsOpen[n]; renderGadsPanel(); }
 function gadsLanding(r){
-  if(r.platform==='Bing') return '<div style="color:#7f8c8d;">Landing pages for Bing ads appear here once auto-tagging with UTM tags is turned on in Microsoft Advertising (Google Analytics can then tell which visits came from this campaign).</div>';
+  var cur=null, _iv=(GADS&&GADS.intervals)||[]; for(var _k=0;_k<_iv.length;_k++){ if(_iv[_k].id===gadsInterval){ cur=_iv[_k]; break; } }
+  if(r.platform==='Bing'){
+    var bs=r.brands||[], ti=0, tc=0, tk=0; for(var q=0;q<bs.length;q++){ ti+=bs[q].impressions; tc+=bs[q].cost; tk+=bs[q].clicks; }
+    var bh='<div style="font-weight:600;margin-bottom:4px;">Brands advertised by this campaign ('+escapeHtml((cur&&cur.label)||'')+')</div>';
+    if(!bs.length) bh+='<div style="color:#7f8c8d;">No product impressions in this window.</div>';
+    else { bh+='<table style="border-collapse:collapse;font-size:12px;min-width:520px;"><thead><tr><th style="text-align:left;padding:3px 10px 3px 0;color:#5a6b7b;">Brand</th><th style="text-align:right;padding:3px 10px;color:#5a6b7b;">Impressions</th><th style="text-align:right;padding:3px 10px;color:#5a6b7b;">Share</th><th style="text-align:right;padding:3px 10px;color:#5a6b7b;">Clicks</th><th style="text-align:right;padding:3px 0;color:#5a6b7b;">Spend</th></tr></thead><tbody>';
+      for(var q2=0;q2<bs.length;q2++){ var x=bs[q2]; bh+='<tr><td style="padding:3px 10px 3px 0;border-top:1px solid #eef1f4;">'+escapeHtml(x.brand)+'</td><td style="text-align:right;padding:3px 10px;border-top:1px solid #eef1f4;">'+Number(x.impressions).toLocaleString()+'</td><td style="text-align:right;padding:3px 10px;border-top:1px solid #eef1f4;">'+(ti?(x.impressions/ti*100).toFixed(1)+'%':'—')+'</td><td style="text-align:right;padding:3px 10px;border-top:1px solid #eef1f4;">'+Number(x.clicks).toLocaleString()+'</td><td style="text-align:right;padding:3px 0;border-top:1px solid #eef1f4;">'+money2(x.cost)+'</td></tr>'; }
+      bh+='<tr><td style="padding:3px 10px 3px 0;border-top:1px solid #cfd8e3;font-weight:600;">Total</td><td style="text-align:right;padding:3px 10px;border-top:1px solid #cfd8e3;font-weight:600;">'+ti.toLocaleString()+'</td><td style="border-top:1px solid #cfd8e3;"></td><td style="text-align:right;padding:3px 10px;border-top:1px solid #cfd8e3;font-weight:600;">'+tk.toLocaleString()+'</td><td style="text-align:right;padding:3px 0;border-top:1px solid #cfd8e3;font-weight:600;">'+money2(tc)+'</td></tr></tbody></table>'; }
+    return bh+'<div style="color:#7f8c8d;font-size:11px;margin-top:6px;">From Microsoft&#39;s product report: only brands whose products were shown. Landing pages for Bing ads appear once auto-tagging with UTM tags is on in Microsoft Advertising.</div>';
+  }
   var j=(GADS.journey||{})[gadsInterval], c=null, cs=(j&&j.campaigns)||[];
   for(var i=0;i<cs.length;i++){ if(cs[i].campaign===r.name){ c=cs[i]; break; } }
   if(!c||!(c.landing_pages||[]).length) return '<div style="color:#7f8c8d;">No landing-page visits recorded for this campaign in this window.</div>';
