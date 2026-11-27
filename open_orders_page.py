@@ -3868,7 +3868,7 @@ function soEtaRemote(){
 function soEtaLoad(){
   return soEtaRemote().catch(function(){ return {sha:null,data:{}}; }).then(function(x){
     SOETA=soEtaMerge(soEtaLocal(),x.data); soEtaLsSet();
-    if(mode==='cust' && typeof DATA!=='undefined' && DATA && DATA.customers) renderPanel();
+    if((mode==='cust'||mode==='vendor') && typeof DATA!=='undefined' && DATA && DATA.customers) renderPanel();
   });
 }
 function soEtaSave(){
@@ -4227,7 +4227,8 @@ function soShopOf(so){ return (SO_SHOP&&SO_SHOP[String(so||'').toUpperCase()])||
 function renderVendorPanel(){
   soShopLoad();
   var v=(DATA.vendors||[])[vactive];
-  if(v) (v.rows||[]).forEach(function(r){ r.shopify_order=soShopOf(r.so_num); });
+  // ETA set by hand on Customer Open SO's (so-eta.json, same SO + SKU) replaces the PO ETA here.
+  if(v) (v.rows||[]).forEach(function(r){ r.shopify_order=soShopOf(r.so_num); if(r._eta0===undefined) r._eta0=r.eta; var me=soEtaGet(r); r.eta=me||r._eta0; r.eta_manual=!!me; });
   if(!v){ document.getElementById('panel').innerHTML='<div class="empty">No open vendor orders.</div>'; return; }
   // Group this vendor's rows by customer.
   var groups={}, order=[], rows=(v.rows||[]);
@@ -4272,7 +4273,7 @@ function renderVendorPanel(){
         '<td class="c">'+fmtQty(r2.delivered_qty)+'</td>'+
         '<td class="c open">'+fmtQty(r2.open_qty)+'</td>'+
         '<td>'+poCell(r2.pending_pos, true)+'</td>'+
-        '<td class="c" style="font-weight:600;color:'+etaColor(r2.eta)+'">'+fmtDate(r2.eta)+'</td>'+
+        '<td class="c" style="font-weight:600;color:'+etaColor(r2.eta)+'"'+(r2.eta_manual?' title="ETA set on Customer Open SO&#39;s"':'')+'>'+fmtDate(r2.eta)+(r2.eta_manual?' <span style="color:#1F4E79;font-size:10px;">&#9998;</span>':'')+'</td>'+
         invCells(r2)+
         '</tr>';
     }
