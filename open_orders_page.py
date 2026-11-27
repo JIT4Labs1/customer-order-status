@@ -3061,7 +3061,7 @@ var GADS=null, gadsInterval='this_year', gadsLoading=false;
 // Sortable main table on the Google Ads tab (independent of the customer/vendor sortState).
 var gadsSort={key:null, dir:1};
 // Online Ads: "Active campaigns only" = enabled in Google Ads, or had clicks or spend in the last 7 days (GA4 doesn't report a live status for every campaign).
-var gadsActiveOnly=false;
+var gadsActiveOnly=true;   // default: show only active campaigns each time the page opens
 function gadsRecentSet(){ var m={}, ivs=(GADS&&GADS.intervals)||[]; for(var i=0;i<ivs.length;i++){ if(ivs[i].id!=='last_7_days') continue; var cs=ivs[i].campaigns||[]; for(var j=0;j<cs.length;j++){ if((cs[j].cost||0)>0||(cs[j].clicks||0)>0) m[cs[j].name]=1; } } return m; }
 function gadsIsActive(r,rec){ if(r.status_source==='api'||r.platform==='Bing') return r.status==='enabled'; return r.status==='enabled'||!!rec[r.name]; }
 function gadsMsadsLine(){ var m=(GADS&&GADS.msads)||{}; if(m.error) return 'Microsoft Ads (Bing): could not refresh ('+escapeHtml(m.error)+')'; if(m.connected) return 'Microsoft Ads (Bing) account: '+escapeHtml(m.account_id||''); return 'Microsoft Ads (Bing): not connected yet'; }
