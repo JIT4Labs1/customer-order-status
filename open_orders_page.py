@@ -2768,9 +2768,18 @@ function spnlParseCSV(text){ var rows=[],i=0,n=text.length,field='',row=[],inq=f
     field+=ch; i++; }
   if(field.length||row.length){ row.push(field); rows.push(row); }
   return rows; }
+// Also keep the uploaded UPS bill in the Cloudflare app, so the P&L report (section 7) can use the real UPS cost of CONMED shipments.
+var spnlSaveMsg='';
+function spnlSaveCsv(txt, name){
+  spnlSaveMsg='Saving to the app&hellip;'; try{ renderSpnlPanel(); }catch(e){}
+  fetch('/api/ups-billing?name='+encodeURIComponent(name||''),{method:'POST',headers:{'Content-Type':'text/csv'},body:txt})
+    .then(function(r){ return r.json(); })
+    .then(function(d){ spnlSaveMsg=d.error?('<span style="color:#c62828;">Not saved: '+escapeHtml(d.error)+'</span>'):('Saved to the app: '+d.added_rows+' lines'+(d.replaced_invoices?' ('+d.replaced_invoices+' UPS invoice'+(d.replaced_invoices===1?'':'s')+' replaced)':'')+'. Bills on file now cover '+(d.covers?escapeHtml(d.covers[0]+' to '+d.covers[1]):'?')+'. The P&amp;L report picks it up on the next refresh.'); try{ renderSpnlPanel(); }catch(e){} })
+    .catch(function(e){ spnlSaveMsg='<span style="color:#c62828;">Not saved to the app: '+escapeHtml(e.message)+'</span>'; try{ renderSpnlPanel(); }catch(e2){} });
+}
 function spnlTriggerUpload(){ var el=document.getElementById('spnlFile'); if(el) el.click(); }
 function spnlOnFile(input){ var f=input&&input.files&&input.files[0]; if(!f) return; var rd=new FileReader();
-  rd.onload=function(e){ try{ spnlApplyCsv(String(e.target.result||''), f.name); }catch(err){ alert('Could not parse CSV: '+err.message); } input.value=''; };
+  rd.onload=function(e){ var txt=String(e.target.result||''); try{ spnlApplyCsv(txt, f.name); }catch(err){ alert('Could not parse CSV: '+err.message); } input.value=''; spnlSaveCsv(txt, f.name); };
   rd.readAsText(f); }
 function spnlClearUpload(){ spnlUpRows=null; spnlUpName=''; spnlUpUnatt=0; spnlUpUnattCat={}; spnlUpMatched=0; spnlUpUnmatched=0; renderTabs(); renderSpnlPanel(); }
 function spnlApplyCsv(text, fname){
@@ -3042,8 +3051,8 @@ function renderSpnlPanel(){
   for(var v=0;v<SPNL_IVS.length;v++){ var on=(spnlInterval===SPNL_IVS[v][0]);
     ivb+='<button onclick="spnlSetIntervalIdx('+v+')" class="mode-btn'+(on?' active':'')+'" style="padding:5px 12px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;">'+escapeHtml(SPNL_IVS[v][1])+'</button>'; }
   ivb+='<span style="margin-left:14px;"></span><input type="file" id="spnlFile" accept=".csv,text/csv" style="display:none;" onchange="spnlOnFile(this)">'+
-    '<button onclick="spnlTriggerUpload()" class="mode-btn" style="padding:5px 12px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;" title="Upload a UPS Billing Center CSV and re-match it in your browser (nothing leaves this page)">⬆ Upload UPS Billing CSV</button>'+
-    (spnlUpRows?(' <span style="font-size:12px;color:#20603a;">using <b>'+escapeHtml(spnlUpName)+'</b> ('+spnlUpMatched+' matched'+(spnlUpUnmatched?', '+spnlUpUnmatched+' unmatched':'')+') <a onclick="spnlClearUpload()" style="cursor:pointer;color:#1F4E79;">clear</a></span>'):'');
+    '<button onclick="spnlTriggerUpload()" class="mode-btn" style="padding:5px 12px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;" title="Upload a UPS Billing Center CSV: re-matched here and saved to the app for the P&amp;L report (CONMED shipping cost)">⬆ Upload UPS Billing CSV</button>'+
+    (spnlUpRows?(' <span style="font-size:12px;color:#20603a;">using <b>'+escapeHtml(spnlUpName)+'</b> ('+spnlUpMatched+' matched'+(spnlUpUnmatched?', '+spnlUpUnmatched+' unmatched':'')+') <a onclick="spnlClearUpload()" style="cursor:pointer;color:#1F4E79;">clear</a></span>'):'')+(spnlSaveMsg?' <span style="font-size:12px;color:#4a5b70;">'+spnlSaveMsg+'</span>':'');
   var nEmail=spnlEmailList().length;  // excludes accepted discrepancies
   ivb+='<span style="margin-left:14px;"></span><button onclick="spnlEmailOpen()" class="mode-btn"'+(nEmail?'':' disabled')+' style="padding:5px 12px;border-radius:6px;border:1px solid #cdd9e6;font-size:12px;'+(nEmail?'':'opacity:.5;')+'" title="Generate a discrepancy alert email to Conmed for a flagged line">✉ Discrepancy email'+(nEmail?' ('+nEmail+')':'')+'</button>';
   var uatt = spnlUpRows? spnlUpUnatt : (SPNL.unattributed_total||0);
@@ -3660,7 +3669,7 @@ function pnlShipFill(){
     if(x.orders&&x.orders.length){ r.setAttribute('data-shop',x.orders.join(', ')); if(c('sp-shop')) c('sp-shop').innerHTML=escapeHtml(x.orders.join(', ')); }
     var cost=(x.cost==null)?null:x.cost, chg=x.charge||0, pl=(cost==null)?null:(chg-cost);
     r.setAttribute('data-scost',cost==null?'':cost); r.setAttribute('data-schg',chg); r.setAttribute('data-spnl',pl==null?'':pl.toFixed(2));
-    if(c('sp-cost')) c('sp-cost').innerHTML=cost==null?dash:payMoney(cost)+((x.cost_src||[]).indexOf('checkout')>=0?' <span title="Shipping the customer paid at checkout (Shopify Paid card); no label bought in Shopify" style="color:#4a5b70;">&#8224;</span>':'')+(x.cost_known===false?' <span title="Some of this SO&#39;s Shopify orders have no label bought in Shopify" style="color:#b26a00;">*</span>':'');
+    if(c('sp-cost')) c('sp-cost').innerHTML=cost==null?dash:payMoney(cost)+((x.cost_src||[]).indexOf('ups')>=0?' <span title="'+escapeHtml('CONMED shipment: real UPS cost from the UPS bill, matched by PO '+(x.ups_pos||[]).join(', '))+'" style="color:#7b3fa0;font-weight:700;">&#8225;</span>':'')+((x.cost_src||[]).indexOf('checkout')>=0?' <span title="Shipping the customer paid at checkout (Shopify Paid card); no label bought in Shopify" style="color:#4a5b70;">&#8224;</span>':'')+(x.cost_known===false?' <span title="Some of this SO&#39;s Shopify orders have no label bought in Shopify" style="color:#b26a00;">*</span>':'');
     if(c('sp-chg')) c('sp-chg').innerHTML=(chg||(x.invoices&&x.invoices.length))?'<span title="'+escapeHtml('QuickBooks invoices: '+(x.invoices||[]).join(', '))+'">'+payMoney(chg)+'</span>':dash;
     if(c('sp-pnl')) c('sp-pnl').innerHTML=pl==null?dash:'<span style="font-weight:600;color:'+(pl<0?'#c62828':'#1b7a3d')+';">'+payMoney(pl)+'</span>';
   }
