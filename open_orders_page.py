@@ -1031,6 +1031,7 @@ def build_html(page_data, embeds=None):
       <button class="mode-btn" data-mode="spnl" onclick="setMode('spnl')">Shipments P&amp;L</button>
       <button class="mode-btn" data-mode="inv" onclick="setMode('inv')">Invoice Check</button>
       <button class="mode-btn" data-mode="pay" onclick="setMode('pay')">A/R &amp; A/P</button>
+      <button class="mode-btn" data-mode="qbp" onclick="setMode('qbp')">QuickBooks P&amp;L</button>
     </div>
   </div>
   <div class="mode-group mode-group-ops">
@@ -1194,7 +1195,7 @@ function kpi(v,l,style){ return '<div class="kpi"'+(style?' style="'+style+'"':'
 
 function renderTabs(){
   var tabsEl=document.getElementById('tabs');
-  var fullWidth=(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay' || mode==='vspend' || mode==='cprices' || mode==='inv' || mode==='iopp' || mode==='deliv' || mode==='fda' || mode==='cj' || mode==='ai');
+  var fullWidth=(mode==='sku' || mode==='pnl' || mode==='gads' || mode==='li' || mode==='wt' || mode==='pay' || mode==='vspend' || mode==='cprices' || mode==='inv' || mode==='iopp' || mode==='deliv' || mode==='fda' || mode==='cj' || mode==='ai' || mode==='qbp');
   // Left-align: when a view has no left sidebar, collapse the side column so content aligns left (not centered).
   var sidecol=document.querySelector('.sidecol'); if(sidecol) sidecol.style.display = fullWidth ? 'none' : '';
   var pw=document.querySelector('.panel-wrap'); if(pw) pw.style.marginLeft = fullWidth ? '0' : '';
@@ -1435,6 +1436,37 @@ function fdaSet(k,v){ if(k==='a') fdaArea=v; else if(k==='v') fdaView=v; fdaLim=
 function fdaSearch(v){ fdaQ=v; fdaLim=100; fdaDraw(); }
 function fdaMore(){ fdaLim+=100; fdaDraw(); }
 function fdaFd(t){ return t?new Date(t).toLocaleString('en-US',{timeZone:'America/Los_Angeles',month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}):''; }
+// ── QuickBooks P&L tab: QuickBooks' Profit and Loss report (qb-pnl.json, refreshed by the Cloudflare app) ──
+var QBP=null, qbpBusy=false, qbpErr='', qbpView='ytd';
+function qbpLoad(){ if(qbpBusy) return; qbpBusy=true; qbpErr='';
+  fetch('qb-pnl.json?t='+Date.now(),{cache:'no-store'}).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(d){ QBP=d; qbpBusy=false; if(mode==='qbp') renderQbpPanel(); })
+    .catch(function(e){ qbpBusy=false; qbpErr=(e&&e.message)||String(e); if(mode==='qbp') renderQbpPanel(); }); }
+function qbpAmt(v){ if(v==null) return ''; var n=Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); return (v<0?'-$':'$')+n; }
+function renderQbpPanel(){
+  var P=document.getElementById('panel');
+  if(!QBP){ P.innerHTML=qbpErr?'<div class="empty">Could not load the QuickBooks P&amp;L: '+escapeHtml(qbpErr)+'</div>':'<div class="empty">Loading the QuickBooks P&amp;L&hellip;</div>'; if(!qbpErr) qbpLoad(); return; }
+  var cols=QBP.cols||[], last=cols.length-1, show=[];
+  if(qbpView==='ytd') show=[last]; else if(qbpView==='all'){ for(var i=0;i<cols.length;i++) show.push(i); } else show=[+qbpView];
+  var opt='<option value="ytd"'+(qbpView==='ytd'?' selected':'')+'>Year to date</option><option value="all"'+(qbpView==='all'?' selected':'')+'>All months side by side</option>';
+  for(var m=last-1;m>=0;m--) opt+='<option value="'+m+'"'+(qbpView===String(m)?' selected':'')+'>'+escapeHtml(cols[m])+'</option>';
+  var th='padding:7px 10px;border-bottom:2px solid #2c3e50;text-align:right;font-size:12px;color:#2c3e50;white-space:nowrap;';
+  var h='<div style="padding:14px 16px;">'+
+    '<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px;"><h2 style="margin:0;">QuickBooks P&amp;L</h2>'+
+    '<select onchange="qbpView=this.value;renderQbpPanel()" style="padding:5px 10px;font-size:13px;border:1px solid #cdd9e6;border-radius:6px;">'+opt+'</select></div>'+
+    '<div style="font-size:12px;color:#4a5b70;margin-bottom:12px;">Profit and Loss exactly as QuickBooks reports it &middot; '+escapeHtml(QBP.basis||'')+' basis &middot; '+escapeHtml(QBP.start||'')+' to '+escapeHtml(QBP.end||'')+' &middot; read from QuickBooks '+escapeHtml(new Date(QBP.at).toLocaleString())+'</div>'+
+    '<div style="overflow-x:auto;"><table style="border-collapse:collapse;font-size:13px;min-width:'+(show.length>2?'1100px':'560px')+';background:#fff;"><thead><tr><th style="'+th+'text-align:left;">&nbsp;</th>';
+  for(var k=0;k<show.length;k++) h+='<th style="'+th+'">'+escapeHtml(qbpView==='ytd'?'Year to date':cols[show[k]])+'</th>';
+  h+='</tr></thead><tbody>';
+  var rows=QBP.rows||[];
+  for(var r=0;r<rows.length;r++){ var x=rows[r], pad=12+x.d*18, sum=x.k==='summary', tot=x.k==='total', hd=x.k==='head';
+    var st='padding:6px 10px;border-bottom:1px solid #eef1f4;'+(sum?'font-weight:700;background:#f3f6f9;border-top:2px solid #2c3e50;':tot?'font-weight:700;border-top:1px solid #9aa7b4;':hd?'font-weight:600;':'');
+    h+='<tr><td style="'+st+'padding-left:'+pad+'px;text-align:left;">'+escapeHtml(x.label)+'</td>';
+    for(var k2=0;k2<show.length;k2++){ var v=(x.v||[])[show[k2]]; h+='<td style="'+st+'text-align:right;white-space:nowrap;'+(v<0?'color:#c62828;':'')+'">'+qbpAmt(v)+'</td>'; }
+    h+='</tr>'; }
+  h+='</tbody></table></div></div>';
+  P.innerHTML=h;
+}
 function renderFdaPanel(){
   var P=document.getElementById('panel');
   if(!FDA){ if(fdaErr){ P.innerHTML='<div class="empty">Could not load the FDA list: '+escapeHtml(fdaErr)+' <a href="#" onclick="fdaErr=&quot;&quot;;fdaLoad();renderFdaPanel();return false;">Try again</a></div>'; return; }
@@ -1509,6 +1541,7 @@ function renderPanel(){
   else if(mode==='ship') renderShipPanel();
   else if(mode==='deliv') renderDelivPanel();
   else if(mode==='fda') renderFdaPanel();
+  else if(mode==='qbp') renderQbpPanel();
   else if(mode==='spnl') renderSpnlPanel();
   else if(mode==='pay') renderPayPanel();
   else if(mode==='inv') renderInvPanel();
