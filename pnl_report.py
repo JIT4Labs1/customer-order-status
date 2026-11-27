@@ -557,6 +557,15 @@ def build_pnl(vt):
     # ── SECTION 7: Detailed Report (current month, NET) ──────────────────────
     H.append('<h3 style="color:#2c3e50;">7. Detailed Report</h3>')
     qbp = _load_qb_payments()
+    # Vtiger SO -> Shopify order(s), from the "Vtiger SO: SOnnn" tags (_ship_so_tags.json: order -> SO). The page refreshes it from ship-pnl.json.
+    so2shop = {}
+    try:
+        import os as _os
+        for _o, _so in (json.load(open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "_ship_so_tags.json"))) or {}).items():
+            _k = str(_so).strip().upper()
+            so2shop[_k] = ", ".join(sorted(set((so2shop.get(_k, "") + "," + _o).strip(",").split(",")), key=lambda x: int("0" + "".join(c for c in x if c.isdigit()))))
+    except Exception:
+        so2shop = {}
 
     from datetime import date as _date
 
@@ -613,56 +622,48 @@ def build_pnl(vt):
         H.append('<div class="pnl-detail-mo" data-mo="%d" style="display:%s;">' % (m, disp))
         # Clickable, sortable headers. pnlDetSort() (global, in open_orders_page.py) reads
         # data-key/data-type off the <th> and the matching data-* off each row.
-        det_cols = [("cust", "Customer", "s", thl), ("so", "SO #", "s", thl),
+        det_cols = [("cust", "Customer", "s", thl), ("shop", "Shopify order", "s", thl), ("so", "SO #", "s", thl),
                     ("created", "Created", "s", thl), ("net", "SO Amount", "n", th),
                     ("cost", "PO Total", "n", th), ("pnl", "P&amp;L", "n", th),
-                    ("margin", "Margin", "n", th), ("qb", "QB Payment", "n", thg),
-                    ("netdep", "Net deposit", "n", thg)]
+                    ("margin", "Margin", "n", th), ("scost", "Shipping cost", "n", thg),
+                    ("schg", "Shipping charge", "n", thg), ("spnl", "Shipping P&amp;L", "n", thg)]
         hdr = "".join(
             '<th class="pnl-det-th" data-key="%s" data-type="%s" onclick="pnlDetSort(this)" '
             'style="%scursor:pointer;user-select:none;white-space:nowrap;" title="Click to sort">'
             '%s<span class="pnl-det-caret"></span></th>' % (k, t, stl, lbl)
             for (k, lbl, t, stl) in det_cols)
         H.append('<table style="%s"><thead><tr>%s</tr></thead><tbody>' % (tbl, hdr))
-        dr = dc = dqb = dnet = 0.0
+        dr = dc = 0.0
+        dash = '<span style="color:#c0cad4;">&mdash;</span>'
         for s in msos:
             pnl = s["net"] - s["po_total"]; dr += s["net"]; dc += s["po_total"]
             created = datetime.strptime(str(s["created"])[:10], "%Y-%m-%d").strftime("%-m/%-d/%Y") if s["created"] else ""
-            rec = _qb_for(s)
-            paid = 0.0; netdep = 0.0
-            if rec is not None:
-                paid = float(rec.get("paid", 0) or 0); dqb += paid
-                qbcell = _money(paid) if paid > 0 else '<span style="color:#c62828;">%s</span>' % _money(0)
-                netdep = round(paid * (1.0 - NET_FEE_RATE), 2); dnet += netdep
-                netcell = _money(netdep) if paid > 0 else '<span style="color:#c62828;">%s</span>' % _money(0)
-            else:
-                qbcell = '<span style="color:#c0cad4;">&mdash;</span>'; qb_note = True
-                netcell = '<span style="color:#c0cad4;">&mdash;</span>'
             idlflag = "1" if s["industry"].strip().lower() == "independent diagnostic lab" else "0"
             _marg = (pnl / s["net"] * 100.0) if s["net"] else 0.0
-            H.append('<tr class="pnl-det-row" data-cust="%s" data-idl="%s" data-net="%.2f" data-cost="%.2f" data-qb="%.2f" data-netdep="%.2f"'
-                     ' data-so="%s" data-created="%s" data-pnl="%.2f" data-margin="%.4f">'
-                     '<td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td>'
+            shop = so2shop.get(str(s["no"]).upper(), "")
+            # Shipping cost / charge / P&L are filled in by the page from ship-pnl.json (Shopify labels + QuickBooks invoices).
+            H.append('<tr class="pnl-det-row" data-cust="%s" data-idl="%s" data-net="%.2f" data-cost="%.2f" data-shop="%s"'
+                     ' data-so="%s" data-created="%s" data-pnl="%.2f" data-margin="%.4f" data-scost="" data-schg="" data-spnl="">'
+                     '<td style="%s">%s</td><td class="sp-shop" style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td>'
                      '<td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td>'
-                     '<td style="%s">%s</td><td style="%s">%s</td></tr>'
-                     % (_esc(s["customer"]), idlflag, s["net"], s["po_total"], paid, netdep,
+                     '<td class="sp-cost" style="%s">%s</td><td class="sp-chg" style="%s">%s</td><td class="sp-pnl" style="%s">%s</td></tr>'
+                     % (_esc(s["customer"]), idlflag, s["net"], s["po_total"], _esc(shop),
                         _esc(s["no"]), str(s["created"])[:10], pnl, _marg,
-                        tdl, _esc(s["customer"]), tdl, _esc(s["no"]), tdl, created,
+                        tdl, _esc(s["customer"]), tdl, _esc(shop) or dash, tdl, _esc(s["no"]), tdl, created,
                         td, _money(s["net"]), td, _money(s["po_total"]), td, _money(pnl), td, _pct(pnl, s["net"]),
-                        tdg, qbcell, tdg, netcell))
+                        tdg, dash, tdg, dash, tdg, dash))
         if not msos:
-            H.append('<tr><td colspan="9" style="%spadding:14px;color:#7a8a99;">No sales orders in %s %d.</td></tr>' % (tdl, MONTHS[m - 1], Y))
-        H.append('<tr class="pnl-det-total"><td colspan="3" style="%s">Total</td>'
+            H.append('<tr><td colspan="11" style="%spadding:14px;color:#7a8a99;">No sales orders in %s %d.</td></tr>' % (tdl, MONTHS[m - 1], Y))
+        H.append('<tr class="pnl-det-total"><td colspan="4" style="%s">Total</td>'
                  '<td class="t-net" style="%s">%s</td><td class="t-cost" style="%s">%s</td><td class="t-pnl" style="%s">%s</td><td class="t-margin" style="%s">%s</td>'
-                 '<td class="t-qb" style="%s">%s</td><td class="t-netdep" style="%s">%s</td></tr></tbody></table>'
+                 '<td class="t-scost" style="%s">&mdash;</td><td class="t-schg" style="%s">&mdash;</td><td class="t-spnl" style="%s">&mdash;</td></tr></tbody></table>'
                  % (btl, bt, _money(dr), bt, _money(dc), bt, _money(dr - dc), bt, _pct(dr - dc, dr),
-                    btg, _money(dqb), btg, _money(dnet)))
+                    btg, btg, btg))
         H.append('</div>')
-    H.append('<div style="font-size:11px;color:#888;margin-bottom:8px;">Green columns are from QuickBooks (matched by '
-             'Customer + created date). QB Payment = amount received on the matching QuickBooks invoice. '
-             'Net deposit = QB Payment minus processing fees (%.1f%%). '
-             '&mdash; = no matching QB invoice%s. SO Amount is net of shipping &amp; tax.</div>'
-             % (NET_FEE_RATE * 100, " (cache may need a refresh)" if qb_note else ""))
+    H.append('<div style="font-size:11px;color:#888;margin-bottom:8px;">Green columns: <b>Shipping cost</b> = the shipping labels bought '
+             'in Shopify for the SO&#39;s Shopify order(s) (voided labels taken off). <b>Shipping charge</b> = the Shipping lines on every '
+             'QuickBooks invoice of that order, plus invoices listed on the SO in Vtiger. <b>Shipping P&amp;L</b> = charge minus cost. '
+             '&mdash; = no Shopify order, or no label bought in Shopify. SO Amount is net of shipping &amp; tax.</div>')
 
     H.append('</div>')
     return "".join(H)

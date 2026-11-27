@@ -3642,6 +3642,29 @@ function renderPnlPanel(){
     : '<div class="empty">P&amp;L report will appear after the next refresh.</div>';
   try{ pnlCmApply(); }catch(e){}
   try{ pnlDetApply(); }catch(e){}
+  try{ pnlShipLoad(); }catch(e){}
+}
+// Section 7 shipping columns: Shopify label cost vs QuickBooks shipping charge per SO (ship-pnl.json, built by the Cloudflare app).
+var PNL_SHIP=null;
+function pnlShipLoad(){
+  if(PNL_SHIP){ pnlShipFill(); return; }
+  fetch('ship-pnl.json?t='+Date.now(),{cache:'no-store'}).then(function(r){ return r.ok?r.json():null; }).then(function(d){ if(d&&d.by_so){ PNL_SHIP=d; pnlShipFill(); } }).catch(function(){});
+}
+function pnlShipFill(){
+  var B=PNL_SHIP.by_so||{}, rows=document.querySelectorAll('tr.pnl-det-row');
+  var dash='<span style="color:#c0cad4;">&mdash;</span>';
+  for(var i=0;i<rows.length;i++){
+    var r=rows[i], x=B[(r.getAttribute('data-so')||'').toUpperCase()];
+    var c=function(cl){ return r.querySelector('.'+cl); };
+    if(!x){ continue; }
+    if(x.orders&&x.orders.length){ r.setAttribute('data-shop',x.orders.join(', ')); if(c('sp-shop')) c('sp-shop').innerHTML=escapeHtml(x.orders.join(', ')); }
+    var cost=(x.cost==null)?null:x.cost, chg=x.charge||0, pl=(cost==null)?null:(chg-cost);
+    r.setAttribute('data-scost',cost==null?'':cost); r.setAttribute('data-schg',chg); r.setAttribute('data-spnl',pl==null?'':pl.toFixed(2));
+    if(c('sp-cost')) c('sp-cost').innerHTML=cost==null?dash:payMoney(cost)+(x.cost_known===false?' <span title="Some of this SO&#39;s Shopify orders have no label bought in Shopify" style="color:#b26a00;">*</span>':'');
+    if(c('sp-chg')) c('sp-chg').innerHTML=(chg||(x.invoices&&x.invoices.length))?'<span title="'+escapeHtml('QuickBooks invoices: '+(x.invoices||[]).join(', '))+'">'+payMoney(chg)+'</span>':dash;
+    if(c('sp-pnl')) c('sp-pnl').innerHTML=pl==null?dash:'<span style="font-weight:600;color:'+(pl<0?'#c62828':'#1b7a3d')+';">'+payMoney(pl)+'</span>';
+  }
+  try{ pnlDetApply(); }catch(e){}
 }
 // Sections 4 & 5 month filter: toggle the per-month blocks.
 function pnlCmApply(){
@@ -3697,21 +3720,21 @@ function pnlDetApply(){
     blocks[i].style.display=show?'':'none';
     if(!show) continue;
     var rows=blocks[i].querySelectorAll('tr.pnl-det-row');
-    var net=0,cost=0,qb=0,nd=0,vis=0;
+    var net=0,cost=0,sc=0,sh=0,sp=0,vis=0;
     for(var r=0;r<rows.length;r++){
       var rc=rows[r].getAttribute('data-cust'), idl=(rows[r].getAttribute('data-idl')==='1');
       var ok=(cv==='__ALL__')||(cv==='__IDL__'&&idl)||(rc===cv);
       rows[r].style.display=ok?'':'none';
-      if(ok){ vis++; net+=parseFloat(rows[r].getAttribute('data-net'))||0; cost+=parseFloat(rows[r].getAttribute('data-cost'))||0; qb+=parseFloat(rows[r].getAttribute('data-qb'))||0; nd+=parseFloat(rows[r].getAttribute('data-netdep'))||0; }
+      if(ok){ vis++; net+=parseFloat(rows[r].getAttribute('data-net'))||0; cost+=parseFloat(rows[r].getAttribute('data-cost'))||0; sc+=parseFloat(rows[r].getAttribute('data-scost'))||0; sh+=parseFloat(rows[r].getAttribute('data-schg'))||0; sp+=parseFloat(rows[r].getAttribute('data-spnl'))||0; }
     }
     var tot=blocks[i].querySelector('tr.pnl-det-total');
     if(tot){ var pnl=net-cost, mg=(net!==0?(pnl/net*100):0);
       function _set(cl,v){ var c=tot.querySelector('.'+cl); if(c) c.innerHTML=v; }
       _set('t-net',payMoney(net)); _set('t-cost',payMoney(cost)); _set('t-pnl',payMoney(pnl));
-      _set('t-margin',(net!==0?mg.toFixed(1)+'%':'—')); _set('t-qb',payMoney(qb)); _set('t-netdep',payMoney(nd)); }
+      _set('t-margin',(net!==0?mg.toFixed(1)+'%':'—')); if(PNL_SHIP){ _set('t-scost',payMoney(sc)); _set('t-schg',payMoney(sh)); _set('t-spnl','<span style="color:'+(sp<0?'#c62828':'#1b7a3d')+';">'+payMoney(sp)+'</span>'); } }
     var em=blocks[i].querySelector('tr.pnl-det-filterempty'); if(em) em.parentNode.removeChild(em);
     if(vis===0 && tot){ var tr=document.createElement('tr'); tr.className='pnl-det-filterempty';
-      tr.innerHTML='<td colspan="9" style="padding:12px;color:#7a8a99;">No sales orders match this customer filter for the selected month.</td>';
+      tr.innerHTML='<td colspan="11" style="padding:12px;color:#7a8a99;">No sales orders match this customer filter for the selected month.</td>';
       tot.parentNode.insertBefore(tr, tot); }
   }
 }
