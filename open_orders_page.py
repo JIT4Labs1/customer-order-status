@@ -1449,6 +1449,7 @@ function renderFdaPanel(){
     '<select style="padding:7px 8px;border:1px solid #cfd8e3;border-radius:6px;font-size:13px;max-width:340px;" onchange="fdaSet(&quot;a&quot;,this.value)"><option value="">All categories ('+AR.length+')</option>'+AR.map(function(a){ return '<option value="'+escapeHtml(a)+'"'+(a===fdaArea?' selected':'')+'>'+escapeHtml(a)+' ('+am[a]+')</option>'; }).join('')+'</select></div>'+
     fdaOursBox()+'<div id="fdaVerdict"></div><div id="fdaSum" style="font-size:12px;color:#4a5b70;margin:6px 0;"></div><div id="fdaList"></div>';
   P.innerHTML=h; fdaDraw(); }
+function fdaLinks(x){ return (x.links||[]).map(function(l){ return '<div style="margin-top:4px;"><a href="'+escapeHtml(l.url)+'" target="_blank" rel="noopener" style="font-weight:600;">'+escapeHtml(l.text)+' &#8599;</a></div>'; }).join(''); }
 function fdaOursBox(){
   var O=FDA.ours; if(!O) return '';
   var seen={}, it=(O.items||[]).filter(function(x){ var k=x.sku+'|'+x.list+'|'+x.device; if(seen[k]) return false; seen[k]=1; return true; });
@@ -1456,12 +1457,12 @@ function fdaOursBox(){
   var hd='<div style="font-weight:700;margin-bottom:6px;">Items we sell on Shopify with an FDA notice'+(it.length?' ('+it.length+')':'')+'</div>';
   if(!it.length) return '<div style="background:#e6f4ea;border:1px solid #a8d5b5;color:#137333;border-radius:8px;padding:10px 14px;margin:4px 0 10px;">'+hd+'<div style="font-size:12px;">None of our '+n+' active Shopify SKUs is on the FDA discontinuance or shortage list.</div></div>';
   return '<div style="background:#fff8e6;border:1px solid #f3d18a;border-radius:8px;padding:10px 14px;margin:4px 0 10px;max-width:1100px;">'+hd+
-    '<table style="width:100%;border-collapse:collapse;font-size:13px;"><tr style="text-align:left;color:#4a5b70;font-size:12px;"><th style="padding:4px 6px;">SKU</th><th style="padding:4px 6px;">Our product</th><th style="padding:4px 6px;">FDA list</th><th style="padding:4px 6px;">FDA date</th><th style="padding:4px 6px;">Manufacturer / device</th><th style="padding:4px 6px;">Reason</th></tr>'+
+    '<table style="width:100%;border-collapse:collapse;font-size:13px;"><tr style="text-align:left;color:#4a5b70;font-size:12px;"><th style="padding:4px 6px;">SKU</th><th style="padding:4px 6px;">Our product</th><th style="padding:4px 6px;">FDA list</th><th style="padding:4px 6px;">FDA date</th><th style="padding:4px 6px;">Manufacturer / device</th><th style="padding:4px 6px;">Reason</th><th style="padding:4px 6px;">FDA notice</th></tr>'+
     it.map(function(x){ var sh=x.list==='shortage';
       return '<tr style="border-top:1px solid #f3e2b8;"><td style="padding:5px 6px;"><a href="#" title="Show in the table below" onclick="var q=document.getElementById(&quot;fdaQ&quot;);q.value=&quot;'+escapeHtml(x.sku)+'&quot;;fdaSearch(q.value);return false;" style="font-weight:700;">'+escapeHtml(x.sku)+'</a></td>'+
         '<td style="padding:5px 6px;"><a href="https://jit4labs.com/products/'+escapeHtml(x.handle)+'" target="_blank" rel="noopener">'+escapeHtml(x.product)+'</a></td>'+
         '<td style="padding:5px 6px;"><span style="background:'+(sh?'#fff3bf;color:#8a5a00':'#fde8e8;color:#9b1c1c')+';border-radius:10px;padding:2px 8px;font-size:12px;font-weight:600;">'+(sh?'Shortage':'Discontinued')+'</span></td>'+
-        '<td style="padding:5px 6px;white-space:nowrap;">'+escapeHtml(x.date||'')+'</td><td style="padding:5px 6px;">'+escapeHtml(x.manufacturer||'')+' &middot; '+escapeHtml(x.device||'')+'</td><td style="padding:5px 6px;">'+escapeHtml(x.reason||'')+'</td></tr>'; }).join('')+
+        '<td style="padding:5px 6px;white-space:nowrap;">'+escapeHtml(x.date||'')+'</td><td style="padding:5px 6px;">'+escapeHtml(x.manufacturer||'')+' &middot; '+escapeHtml(x.device||'')+'</td><td style="padding:5px 6px;">'+escapeHtml(x.reason||'')+'</td><td style="padding:5px 6px;">'+(x.notice_url?'<a href="'+escapeHtml(x.notice_url)+'" target="_blank" rel="noopener" style="font-weight:600;">'+(x.notice_own?escapeHtml(x.notice_text):'Not posted separately. See the '+escapeHtml(x.notice_text))+' &#8599;</a>':'')+'</td></tr>'; }).join('')+
     '</table><div style="font-size:11px;color:#4a5b70;margin-top:6px;">Checked '+n+' active Shopify SKUs against both FDA lists. Click a SKU to see its FDA row below.</div></div>'; }
 function fdaHi(txt,nq){ var e=escapeHtml(txt); if(!nq) return e; return fdaNorm(txt).indexOf(nq)>=0?'<mark style="background:#fff3bf;padding:0 2px;border-radius:3px;">'+e+'</mark>':e; }
 function fdaDraw(){
@@ -1479,7 +1480,7 @@ function fdaDraw(){
   var h='<table class="tbl" style="width:100%;"><thead><tr>';
   if(fdaView==='short'){
     h+='<th>Date</th><th>Category</th><th>Product code</th><th>Availability / duration</th><th>Additional information</th><th>Reason</th></tr></thead><tbody>';
-    L.slice(0,fdaLim).forEach(function(x){ h+='<tr><td style="white-space:nowrap;vertical-align:top;">'+escapeHtml(x.date)+'</td><td style="vertical-align:top;font-size:12px;">'+escapeHtml(x.category)+'</td><td style="vertical-align:top;"><b>'+escapeHtml(x.code)+'</b><div style="font-size:11px;color:#7f8c8d;">'+escapeHtml(x.code_desc)+'</div></td><td style="vertical-align:top;font-size:12px;">'+escapeHtml(x.availability)+'</td><td style="vertical-align:top;font-size:12px;">'+fdaHi(x.info,nq.length>=3?nq:'')+'</td><td style="vertical-align:top;font-size:12px;">'+escapeHtml(x.reason)+'</td></tr>'; });
+    L.slice(0,fdaLim).forEach(function(x){ h+='<tr><td style="white-space:nowrap;vertical-align:top;">'+escapeHtml(x.date)+'</td><td style="vertical-align:top;font-size:12px;">'+escapeHtml(x.category)+'</td><td style="vertical-align:top;"><b>'+escapeHtml(x.code)+'</b><div style="font-size:11px;color:#7f8c8d;">'+escapeHtml(x.code_desc)+'</div></td><td style="vertical-align:top;font-size:12px;">'+escapeHtml(x.availability)+'</td><td style="vertical-align:top;font-size:12px;">'+fdaHi(x.info,nq.length>=3?nq:'')+fdaLinks(x)+'</td><td style="vertical-align:top;font-size:12px;">'+escapeHtml(x.reason)+'</td></tr>'; });
   } else {
     h+='<th>Date posted</th><th>Manufacturer</th><th>Device trade name</th><th>Catalog / model #</th><th>Product code</th><th>Category</th><th>Reason</th></tr></thead><tbody>';
     L.slice(0,fdaLim).forEach(function(x){ var q3=nq.length>=3?nq:'';
