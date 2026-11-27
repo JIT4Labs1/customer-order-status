@@ -3063,7 +3063,7 @@ var gadsSort={key:null, dir:1};
 // Online Ads: "Active campaigns only" = enabled in Google Ads, or had clicks or spend in the last 7 days (GA4 doesn't report a live status for every campaign).
 var gadsActiveOnly=false;
 function gadsRecentSet(){ var m={}, ivs=(GADS&&GADS.intervals)||[]; for(var i=0;i<ivs.length;i++){ if(ivs[i].id!=='last_7_days') continue; var cs=ivs[i].campaigns||[]; for(var j=0;j<cs.length;j++){ if((cs[j].cost||0)>0||(cs[j].clicks||0)>0) m[cs[j].name]=1; } } return m; }
-function gadsIsActive(r,rec){ return r.status==='enabled'||!!rec[r.name]; }
+function gadsIsActive(r,rec){ if(r.status_source==='api'||r.platform==='Bing') return r.status==='enabled'; return r.status==='enabled'||!!rec[r.name]; }
 function gadsMsadsLine(){ var m=(GADS&&GADS.msads)||{}; if(m.error) return 'Microsoft Ads (Bing): could not refresh ('+escapeHtml(m.error)+')'; if(m.connected) return 'Microsoft Ads (Bing) account: '+escapeHtml(m.account_id||''); return 'Microsoft Ads (Bing): not connected yet'; }
 // Brand: from the campaign name (Google), or the product brands Microsoft reports for a Bing Shopping campaign.
 var GADS_BRANDS=[[/virovac/i,'ViroVac'],[/beckman/i,'Beckman Coulter'],[/siemens/i,'Siemens'],[/abbott/i,'Abbott'],[/roche/i,'Roche'],[/generallab|general/i,'General lab reagents']];
@@ -3132,7 +3132,7 @@ function renderGadsPanel(){
     body+='<tr>'+
       '<td class="item-name"><button onclick="gadsToggle('+_ri+')" title="Show the pages visitors landed on first" style="border:1px solid #cfd8e3;background:#fff;border-radius:4px;width:20px;height:20px;line-height:16px;padding:0;margin-right:6px;cursor:pointer;font-weight:700;color:#1f3a5f;">'+(_op?'&minus;':'+')+'</button><span style="display:inline-block;font-size:10px;font-weight:700;color:'+(r.platform==='Bing'?'#00796b':'#1a73e8')+';background:'+(r.platform==='Bing'?'#e0f2f1':'#e8f0fe')+';border-radius:8px;padding:0 6px;margin-right:6px;vertical-align:middle;">'+escapeHtml(r.platform||'Google')+'</span>'+escapeHtml(r.name)+'</td>'+
       '<td style="white-space:nowrap;">'+escapeHtml(r.brand)+'</td>'+
-      '<td><span class="status" title="'+(r.status_source==='inferred'?'Inferred from spend: running = clicks or spend in the last 7 days. Google&#39;s live status for this campaign isn&#39;t available.':'Status from the ad platform')+'" style="background:'+sc[0]+';color:'+sc[1]+'">'+escapeHtml(st)+'</span></td>'+
+      '<td><span class="status" title="'+(r.status_source==='inferred'?'Inferred from spend: running = clicks or spend in the last 7 days. Google&#39;s live status for this campaign isn&#39;t available.':'Live status from '+(r.platform==='Bing'?'Microsoft Ads':'Google Ads')+(r.serving&&r.serving!==r.status?' &middot; serving: '+escapeHtml(r.serving):''))+'" style="background:'+sc[0]+';color:'+sc[1]+'">'+escapeHtml(st)+'</span>'+(r.serving&&r.serving!==st&&r.serving!=='paused'?'<div style="font-size:11px;color:#7f8c8d;">'+escapeHtml(r.serving)+'</div>':'')+'</td>'+
       '<td>'+escapeHtml(r.type)+'</td>'+
       '<td'+(r.start_source==='first_activity'?' title="First day with ad impressions"':'')+'>'+fmtDate(r.start_date)+(r.start_source==='first_activity'?'<span style="color:#7f8c8d;">*</span>':'')+'</td>'+
       '<td class="c">'+Number(r.clicks).toLocaleString()+'</td>'+
@@ -3158,7 +3158,7 @@ function renderGadsPanel(){
     '<div><h2>Online Ads — Campaign Performance</h2><div class="sub">Google Ads account: '+escapeHtml(GADS.account||'')+' &middot; '+gadsMsadsLine()+' &middot; data pulled '+escapeHtml(GADS.pulled_at||'')+' &middot; '+escapeHtml(GADS.currency||'USD')+'</div></div>'+
     '<div style="font-size:13px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">Time interval: '+sel+
     '<button class="refresh-btn" onclick="gadsRefresh()" title="Reload the latest Google Ads / GA4 snapshot (separate from the Vtiger Refresh)"><span class="lbl">↻ Refresh Google Ads</span></button></div></div></div>'+
-    '<div style="margin:0 0 8px;font-size:13px;"><label style="cursor:pointer;"><input type="checkbox" onchange="gadsSetActive(this)"'+(gadsActiveOnly?' checked':'')+'> Active campaigns only &middot; '+_nAct+' of '+_all.length+'</label> <span style="color:#7f8c8d;font-size:12px;">(enabled, or had clicks or spend in the last 7 days) &middot; * start date = first day with ad impressions</span></div>'+
+    '<div style="margin:0 0 8px;font-size:13px;"><label style="cursor:pointer;"><input type="checkbox" onchange="gadsSetActive(this)"'+(gadsActiveOnly?' checked':'')+'> Active campaigns only &middot; '+_nAct+' of '+_all.length+'</label> <span style="color:#7f8c8d;font-size:12px;">(enabled in Google Ads or Microsoft Ads) &middot; status and start dates are live from each platform</span></div>'+
     '<div class="matrix-wrap"><table class="matrix"><thead><tr>'+ gadsHeadHtml() +
     '</tr></thead><tbody>'+body+'</tbody></table></div>'+ gadsChartHtml()+gadsJourneyHtml();
   gadsChartRedraw();
