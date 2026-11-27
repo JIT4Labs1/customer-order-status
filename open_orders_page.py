@@ -3674,7 +3674,19 @@ function pnlShipFill(){
     if(c('sp-chg')) c('sp-chg').innerHTML=(chg||(x.invoices&&x.invoices.length))?'<span title="'+escapeHtml(x.charge_src==='checkout'?'Paid by the customer at Shopify checkout (no QuickBooks invoice linked)':x.charge_src==='vtiger'?'Shipping line on the Vtiger SO (before Shopify)':'QuickBooks invoices: '+(x.invoices||[]).join(', '))+'">'+payMoney(chg)+'</span>':dash;
     if(c('sp-pnl')) c('sp-pnl').innerHTML=pl==null?dash:'<span style="font-weight:600;color:'+(pl<0?'#c62828':'#1b7a3d')+';">'+payMoney(pl)+'</span>';
   }
+  try{ pnlCurShipFill(); }catch(e){}
   try{ pnlDetApply(); }catch(e){}
+}
+// Box under table 1: this month's shipping P&L, same rows and numbers as section 7 (all customers).
+function pnlCurShipFill(){
+  var box=document.getElementById('pnlCurBox'), el=document.getElementById('pnlCurShip'); if(!box||!el) return;
+  var blk=document.querySelector('.pnl-detail-mo[data-mo="'+box.getAttribute('data-mo')+'"]'); if(!blk) return;
+  var rows=blk.querySelectorAll('tr.pnl-det-row'), c=0, h=0, n=0, miss=0;
+  for(var i=0;i<rows.length;i++){ var p=rows[i].getAttribute('data-spnl');
+    if(p===''||p==null){ if(parseFloat(rows[i].getAttribute('data-schg'))) miss++; continue; }
+    n++; c+=parseFloat(rows[i].getAttribute('data-scost'))||0; h+=parseFloat(rows[i].getAttribute('data-schg'))||0; }
+  var pl=h-c;
+  el.style.color=''; el.innerHTML='<b style="color:'+(pl<0?'#c62828':'#1b7a3d')+';">'+payMoney(pl)+'</b> <span style="color:#4a5b70;">= '+payMoney(h)+' charged &minus; '+payMoney(c)+' cost, '+n+' order'+(n===1?'':'s')+(miss?'; '+miss+' order'+(miss===1?'':'s')+' with no shipping cost or no UPS invoice not counted':'')+'</span>';
 }
 // Sections 4 & 5 month filter: toggle the per-month blocks.
 function pnlCmApply(){

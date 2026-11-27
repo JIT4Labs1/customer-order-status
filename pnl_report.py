@@ -330,6 +330,22 @@ def build_pnl(vt):
              'ordered in that month. The Total row counts each organization once for the year, so it '
              'is not the sum of the column.</div>')
 
+    # Current month box: shipping P&L (same numbers as section 7, filled in by the page from ship-pnl.json)
+    # and expected credit card fees: 3.3% of the month's SO revenue except Mercedes and LabX, plus 1.2% of Mercedes + LabX.
+    cm_sos = [s for s in main_sos if s["month"] == cur_month]
+    _low = lambda s: (s.get("customer") or "").lower()
+    ml = [s for s in cm_sos if "mercedes" in _low(s) or "labx" in _low(s).replace(" ", "")]
+    ml_rev = sum(s["net"] for s in ml)
+    oth_rev = sum(s["net"] for s in cm_sos) - ml_rev
+    cc_fee = oth_rev * 0.033 + ml_rev * 0.012
+    H.append('<div id="pnlCurBox" data-mo="%d" style="background:#eef4fb;border-left:4px solid #1F4E79;padding:12px 16px;margin:0 0 18px 0;max-width:920px;font-size:13px;line-height:1.6;">'
+             '<div style="font-weight:bold;color:#1F4E79;margin-bottom:4px;">%s %d so far</div>'
+             '<div><b>Shipping P&amp;L:</b> <span id="pnlCurShip" style="color:#7a8a99;">loading&hellip;</span></div>'
+             '<div><b>Expected credit card fees:</b> <b style="color:#c62828;">%s</b> '
+             '<span style="color:#4a5b70;">= %s SO revenue without Mercedes &amp; LabX &times; 3.3%% (%s) + %s Mercedes &amp; LabX &times; 1.2%% (%s)</span></div>'
+             '</div>'
+             % (cur_month, MONTHS[cur_month - 1], Y, _money(cc_fee), _money(oth_rev), _money(oth_rev * 0.033), _money(ml_rev), _money(ml_rev * 0.012)))
+
     # ── SECTION 2: New IDL Customers ─────────────────────────────────────────
     H.append('<h3 style="color:#2c3e50;">2. New IDL Customers — First Order in %d</h3>' % Y)
     ytd_net_by_acct = defaultdict(float)
@@ -377,42 +393,6 @@ def build_pnl(vt):
              'industry = "Independent Diagnostic Lab" whose earliest Sales Order across all-time history falls in the '
              'current calendar year. <b>Cumulative YTD</b> is the sum of that customer\'s %d Sales Order amounts '
              '(net of shipping &amp; tax).</div>' % Y)
-
-    # ── SECTION 3: Note (Draft PO + Shipping Income + CC Fees) ────────────────
-    H.append('<div style="background:#fff8e1;border-left:4px solid #ffc107;padding:14px 16px;margin:0 0 18px 0;max-width:920px;">')
-    # Part A — Draft PO table
-    H.append('<div style="font-weight:bold;margin-bottom:6px;">SOs excluded due to single Draft PO (gross amounts):</div>')
-    if not draft_sos:
-        H.append('<div style="font-style:italic;color:#888;margin-bottom:8px;">None.</div>')
-    else:
-        H.append('<table style="%sbackground:#fff;"><thead><tr><th style="%s">Customer</th><th style="%s">SO #</th>'
-                 '<th style="%s">SO Amount</th><th style="%s">PO Total</th><th style="%s">P&amp;L</th>'
-                 '<th style="%s">Margin</th></tr></thead><tbody>' % (tbl, thl, thl, th, th, th, th))
-        dg = dp = 0.0
-        for s in sorted(draft_sos, key=lambda x: x["customer"].lower()):
-            pnl = s["gross"] - s["po_total"]
-            dg += s["gross"]; dp += s["po_total"]
-            H.append('<tr><td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td>'
-                     '<td style="%s">%s</td><td style="%s">%s</td><td style="%s">%s</td></tr>'
-                     % (tdl, _esc(s["customer"]), tdl, _esc(s["no"]), td, _money(s["gross"]),
-                        td, _money(s["po_total"]), td, _money(pnl), td, _pct(pnl, s["gross"])))
-        H.append('<tr><td colspan="2" style="%s">Total</td><td style="%s">%s</td><td style="%s">%s</td>'
-                 '<td style="%s">%s</td><td style="%s">%s</td></tr>'
-                 % (btl, bt, _money(dg), bt, _money(dp), bt, _money(dg - dp), bt, _pct(dg - dp, dg)))
-        H.append('</tbody></table>')
-    # Part B — Shipping income (current month only)
-    cur_ship = sum(s["ship"] for s in cur_sos)
-    H.append('<div style="background:#e8f5e9;border-left:4px solid #4caf50;padding:10px 14px;margin:10px 0;">'
-             '<b>Shipping Income (current month):</b> %s &nbsp;·&nbsp; '
-             'Estimated additional income (30%%): <b style="color:#2e7d32;">%s</b></div>'
-             % (_money(cur_ship), _money(cur_ship * 0.30)))
-    # Part C — Expected CC fees (gross basis, exclude Online Reseller)
-    cc_base = sum(s["gross"] for s in cur_sos if s["industry"].strip().lower() != "online reseller")
-    H.append('<div style="background:#fce4ec;border-left:4px solid #e91e63;padding:10px 14px;margin:10px 0 0 0;">'
-             '<b style="color:#880e4f;">Expected CC Fees (gross basis, includes shipping):</b> '
-             'Base %s &nbsp;·&nbsp; Fee (3%%): <b style="color:#c62828;">%s</b></div>'
-             % (_money(cc_base), _money(cc_base * 0.03)))
-    H.append('</div>')
 
     # Helpers producing the Section 4 / Section 5 tables for a given month's SOs.
     def _industry_table(sos):
