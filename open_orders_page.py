@@ -1055,7 +1055,6 @@ def build_html(page_data, embeds=None):
       <button class="mode-btn" data-mode="cj" onclick="setMode('cj')">Customer Journey</button>
       <button class="mode-btn" data-mode="ai" onclick="setMode('ai')">AI Engines</button>
       <button class="mode-btn" data-mode="gads" onclick="setMode('gads')">Online Ads</button>
-      <button class="mode-btn" data-mode="li" onclick="setMode('li')">LinkedIn</button>
     </div>
   </div>
 </div>
