@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-11-26 05:02:39 PM PST",
+  "generated_at": "2026-11-26 07:22:00 PM PST",
   "run_info": {
     "mode": "Incremental",
-    "label": "5:00 PM",
-    "completed_at": "2026-11-26 05:02:39 PM PST"
+    "label": "7:20 PM",
+    "completed_at": "2026-11-26 07:22:00 PM PST"
   },
   "totals": {
     "customers": 8,
     "open_sos": 14,
-    "open_items": 41,
+    "open_items": 40,
     "vendors": 3,
     "high_demand_skus": 6,
     "open_pos": 20
@@ -515,7 +515,7 @@
     {
       "name": "Prime Diagnostics",
       "open_sos": 1,
-      "open_items": 4,
+      "open_items": 3,
       "vendors": [
         "ALDX HOLDING CORPORATION",
         "Allora Biotech LLC"
@@ -523,23 +523,7 @@
       "rows": [
         {
           "so_num": "SO640",
-          "so_status": "Approved",
-          "order_date": "2026-11-16",
-          "product": "Beckman Coulter B36868 DxH Series Cleaner, 500mL",
-          "sku": "B36868",
-          "vendor": "ALDX HOLDING CORPORATION",
-          "list_price": 149.9,
-          "ordered_qty": 2.0,
-          "delivered_qty": 0,
-          "open_qty": 2.0,
-          "so_total_lines": 4,
-          "pending_pos": "PO1018",
-          "eta": "",
-          "cust_po": ""
-        },
-        {
-          "so_num": "SO640",
-          "so_status": "Approved",
+          "so_status": "Partially delivered",
           "order_date": "2026-11-16",
           "product": "Beckman Coulter OSR6116 Olympus Cholesterol Reagent",
           "sku": "OSR6116",
@@ -555,7 +539,7 @@
         },
         {
           "so_num": "SO640",
-          "so_status": "Approved",
+          "so_status": "Partially delivered",
           "order_date": "2026-11-16",
           "product": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
           "sku": "OSR6137",
@@ -571,7 +555,7 @@
         },
         {
           "so_num": "SO640",
-          "so_status": "Approved",
+          "so_status": "Partially delivered",
           "order_date": "2026-11-16",
           "product": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
           "sku": "OSR6178",
@@ -762,7 +746,7 @@
   "vendors": [
     {
       "name": "ALDX HOLDING CORPORATION",
-      "open_items": 13,
+      "open_items": 12,
       "customers": [
         "LabX Diagnostic Systems",
         "Mercedes Scientific",
@@ -827,20 +811,7 @@
         {
           "customer": "Prime Diagnostics",
           "so_num": "SO640",
-          "so_status": "Approved",
-          "order_date": "2026-11-16",
-          "product": "Beckman Coulter B36868 DxH Series Cleaner, 500mL",
-          "sku": "B36868",
-          "ordered_qty": 2.0,
-          "delivered_qty": 0,
-          "open_qty": 2.0,
-          "pending_pos": "PO1018",
-          "eta": ""
-        },
-        {
-          "customer": "Prime Diagnostics",
-          "so_num": "SO640",
-          "so_status": "Approved",
+          "so_status": "Partially delivered",
           "order_date": "2026-11-16",
           "product": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
           "sku": "OSR6137",
@@ -943,8 +914,8 @@
         }
       ],
       "email": "Riad@aldxholding.com",
-      "email_subject": "JIT4You \u2014 Your Open Purchase Orders (13 open items) \u2014 please advise delivery",
-      "email_doc": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>Email draft \u2014 ALDX HOLDING CORPORATION</title></head><body style=\"margin:0;background:#eef1f5;font-family:Arial,sans-serif;\"><div style=\"background:#0D2B45;color:#fff;padding:14px 20px;\"><div style=\"font-size:13px;margin-bottom:3px;\"><b>To:</b> Riad@aldxholding.com</div><div style=\"font-size:13px;margin-bottom:10px;\"><b>Subject:</b> JIT4You \u2014 Your Open Purchase Orders (13 open items) \u2014 please advise delivery</div><button id=\"cp\" style=\"padding:7px 14px;border:none;border-radius:5px;background:#008080;color:#fff;font-weight:700;cursor:pointer;\">Copy formatted email</button><a href=\"mailto:Riad@aldxholding.com?subject=JIT4You%20\u2014%20Your%20Open%20Purchase%20Orders%20(13%20open%20items)%20\u2014%20please%20advise%20delivery\" style=\"color:#7fd4d4;margin-left:14px;font-size:13px;\">Open blank email to customer</a><div style=\"margin-top:8px;font-size:12px;opacity:.9;\">Click <b>Copy formatted email</b>, then in Outlook paste with <b>Ctrl/Cmd+V</b> (it pastes the rendered email, not code). This only creates the draft \u2014 you send it.</div></div><div style=\"padding:20px;\"><div id=\"emailbody\" style=\"max-width:760px;margin:0 auto;background:#fff;\"><div style=\"font-family:Arial,Helvetica,sans-serif;color:#101E3E;max-width:840px;margin:0 auto;background:#fff;\"><div style=\"background:#fff;padding:18px 24px;border-bottom:3px solid #008080;\"><div style=\"font-family:'Open Sans',Arial,sans-serif;font-size:24px;font-weight:800;letter-spacing:.4px;\"><span style=\"color:#101E3E;\">JIT4</span><span style=\"color:#008080;\">Labs</span></div></div><div style=\"padding:22px 24px;font-size:14px;line-height:1.6;\"><p>Hi Karen,</p><p>Find enclosed the list of open POs with previously provided ETA.</p><table cellspacing=\"0\" cellpadding=\"0\" style=\"border-collapse:collapse;width:100%;max-width:800px;background:#fff;font-family:Arial,sans-serif;\"><thead><tr style=\"background:#0D2B45;\"><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Order Date</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Product</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Customer</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Ordered</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Delivered</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Open</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">ETA</th></tr></thead><tbody><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1029</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR61154 Olympus Ammonia Reagent R1 and Standard (AMMON)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman coulter 33540 Reagent, Access, Estradiol (REF)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1018</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-16</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter B36868 DxH Series Cleaner, 500mL</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Prime Diagnostics</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-16</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Prime Diagnostics</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1026</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-17</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33805 Access Total T4 Calibrator (S0-S5)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Radiance Diagnostics</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-17</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter AUH1018 Na+/K+ Selectivity Check Solution</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Radiance Diagnostics</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-17</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman coulter AUH1014 ISE Low Standard Solution 4x100mL</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Radiance Diagnostics</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-17</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman coulter AUH1015 ISE High Standard Solution 4x100mL</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Radiance Diagnostics</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-17</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman coulter ODC0019 Calibrator, Olympus, Bicarbonate (REF)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Radiance Diagnostics</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-17</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Bio-Rad 694 Liquid Assayed Multiqual, Level 1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Radiance Diagnostics</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-17</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Bio-Rad 696 Liquid Assayed Multiqual, Level 3</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Radiance Diagnostics</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1033</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-19</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter AUH1012 ISE Mid Standard</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">OM Diagnostic Laboratories</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1038</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-20</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter A48618 Access SHBG Sex Hormone-Binding Globulin</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">LabX Diagnostic Systems</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr></tbody></table><p style=\"margin-top:18px;\">Thank you,<br>JIT4You</p><p style=\"font-size:12px;color:#008080;\"><a href=\"mailto:CustomerSupport@jit4you.com\" style=\"color:#008080;text-decoration:none;\">CustomerSupport@jit4you.com</a> &nbsp;&middot;&nbsp; (949) 396-9194</p></div></div></div></div><script>(function(){var b=document.getElementById(\"cp\"),body=document.getElementById(\"emailbody\");function ok(){b.textContent=\"Copied \\u2713 \\u2014 paste into Outlook\";}function fail(){b.textContent=\"Select the email and press Ctrl/Cmd+C\";}function selCopy(){var r=document.createRange();r.selectNode(body);var s=window.getSelection();s.removeAllRanges();s.addRange(r);try{var done=document.execCommand(\"copy\");s.removeAllRanges();done?ok():fail();}catch(e){fail();}}b.addEventListener(\"click\",function(){var html=body.innerHTML;if(window.ClipboardItem&&navigator.clipboard&&navigator.clipboard.write){try{var item=new ClipboardItem({\"text/html\":new Blob([html],{type:\"text/html\"}),\"text/plain\":new Blob([body.innerText],{type:\"text/plain\"})});navigator.clipboard.write([item]).then(ok,selCopy);}catch(e){selCopy();}}else{selCopy();}});})();</script></body></html>"
+      "email_subject": "JIT4You \u2014 Your Open Purchase Orders (12 open items) \u2014 please advise delivery",
+      "email_doc": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>Email draft \u2014 ALDX HOLDING CORPORATION</title></head><body style=\"margin:0;background:#eef1f5;font-family:Arial,sans-serif;\"><div style=\"background:#0D2B45;color:#fff;padding:14px 20px;\"><div style=\"font-size:13px;margin-bottom:3px;\"><b>To:</b> Riad@aldxholding.com</div><div style=\"font-size:13px;margin-bottom:10px;\"><b>Subject:</b> JIT4You \u2014 Your Open Purchase Orders (12 open items) \u2014 please advise delivery</div><button id=\"cp\" style=\"padding:7px 14px;border:none;border-radius:5px;background:#008080;color:#fff;font-weight:700;cursor:pointer;\">Copy formatted email</button><a href=\"mailto:Riad@aldxholding.com?subject=JIT4You%20\u2014%20Your%20Open%20Purchase%20Orders%20(12%20open%20items)%20\u2014%20please%20advise%20delivery\" style=\"color:#7fd4d4;margin-left:14px;font-size:13px;\">Open blank email to customer</a><div style=\"margin-top:8px;font-size:12px;opacity:.9;\">Click <b>Copy formatted email</b>, then in Outlook paste with <b>Ctrl/Cmd+V</b> (it pastes the rendered email, not code). This only creates the draft \u2014 you send it.</div></div><div style=\"padding:20px;\"><div id=\"emailbody\" style=\"max-width:760px;margin:0 auto;background:#fff;\"><div style=\"font-family:Arial,Helvetica,sans-serif;color:#101E3E;max-width:840px;margin:0 auto;background:#fff;\"><div style=\"background:#fff;padding:18px 24px;border-bottom:3px solid #008080;\"><div style=\"font-family:'Open Sans',Arial,sans-serif;font-size:24px;font-weight:800;letter-spacing:.4px;\"><span style=\"color:#101E3E;\">JIT4</span><span style=\"color:#008080;\">Labs</span></div></div><div style=\"padding:22px 24px;font-size:14px;line-height:1.6;\"><p>Hi Karen,</p><p>Find enclosed the list of open POs with previously provided ETA.</p><table cellspacing=\"0\" cellpadding=\"0\" style=\"border-collapse:collapse;width:100%;max-width:800px;background:#fff;font-family:Arial,sans-serif;\"><thead><tr style=\"background:#0D2B45;\"><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Order Date</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Product</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;\">Customer</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Ordered</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Delivered</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">Open</th><th style=\"padding:8px 10px;border:1px solid #0D2B45;color:#fff;text-align:left;font-size:12px;font-weight:700;text-align:center;\">ETA</th></tr></thead><tbody><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1029</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR61154 Olympus Ammonia Reagent R1 and Standard (AMMON)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-07-23</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman coulter 33540 Reagent, Access, Estradiol (REF)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Mercedes Scientific</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1018</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-16</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Prime Diagnostics</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1026</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-17</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter 33805 Access Total T4 Calibrator (S0-S5)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Radiance Diagnostics</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-17</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter AUH1018 Na+/K+ Selectivity Check Solution</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Radiance Diagnostics</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">2</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-17</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman coulter AUH1014 ISE Low Standard Solution 4x100mL</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Radiance Diagnostics</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-17</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman coulter AUH1015 ISE High Standard Solution 4x100mL</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Radiance Diagnostics</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-17</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman coulter ODC0019 Calibrator, Olympus, Bicarbonate (REF)</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Radiance Diagnostics</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-17</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Bio-Rad 694 Liquid Assayed Multiqual, Level 1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Radiance Diagnostics</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-17</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Bio-Rad 696 Liquid Assayed Multiqual, Level 3</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Radiance Diagnostics</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1033</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-19</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter AUH1012 ISE Mid Standard</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">OM Diagnostic Laboratories</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr><tr><td colspan=\"7\" style=\"padding:7px 10px;border:1px solid #1F4E79;background:#e8eef4;color:#1F4E79;font-weight:700;font-size:12px;\">PO PO1038</td></tr><tr><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;white-space:nowrap;\">2026-11-20</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">Beckman Coulter A48618 Access SHBG Sex Hormone-Binding Globulin</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;\">LabX Diagnostic Systems</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;\">0</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;font-weight:700;color:#c0392b;\">1</td><td style=\"padding:7px 10px;border:1px solid #d8dee4;font-size:12px;text-align:center;white-space:nowrap;\">&mdash;</td></tr></tbody></table><p style=\"margin-top:18px;\">Thank you,<br>JIT4You</p><p style=\"font-size:12px;color:#008080;\"><a href=\"mailto:CustomerSupport@jit4you.com\" style=\"color:#008080;text-decoration:none;\">CustomerSupport@jit4you.com</a> &nbsp;&middot;&nbsp; (949) 396-9194</p></div></div></div></div><script>(function(){var b=document.getElementById(\"cp\"),body=document.getElementById(\"emailbody\");function ok(){b.textContent=\"Copied \\u2713 \\u2014 paste into Outlook\";}function fail(){b.textContent=\"Select the email and press Ctrl/Cmd+C\";}function selCopy(){var r=document.createRange();r.selectNode(body);var s=window.getSelection();s.removeAllRanges();s.addRange(r);try{var done=document.execCommand(\"copy\");s.removeAllRanges();done?ok():fail();}catch(e){fail();}}b.addEventListener(\"click\",function(){var html=body.innerHTML;if(window.ClipboardItem&&navigator.clipboard&&navigator.clipboard.write){try{var item=new ClipboardItem({\"text/html\":new Blob([html],{type:\"text/html\"}),\"text/plain\":new Blob([body.innerText],{type:\"text/plain\"})});navigator.clipboard.write([item]).then(ok,selCopy);}catch(e){selCopy();}}else{selCopy();}});})();</script></body></html>"
     },
     {
       "name": "Allora Biotech LLC",
@@ -1171,7 +1142,7 @@
         {
           "customer": "Prime Diagnostics",
           "so_num": "SO640",
-          "so_status": "Approved",
+          "so_status": "Partially delivered",
           "order_date": "2026-11-16",
           "product": "Beckman Coulter OSR6116 Olympus Cholesterol Reagent",
           "sku": "OSR6116",
@@ -1184,7 +1155,7 @@
         {
           "customer": "Prime Diagnostics",
           "so_num": "SO640",
-          "so_status": "Approved",
+          "so_status": "Partially delivered",
           "order_date": "2026-11-16",
           "product": "Beckman Coulter OSR6178 Olympus Creatinine Reagent",
           "sku": "OSR6178",
@@ -1583,7 +1554,7 @@
     "PO982": "mailto:debbie@pmaservices.com?subject=PO982%20ETA%3F&body=Hi%20Debbie%2C%0A%0AFollowing%20up%20on%20PO%20PO982.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%2033805%20Access%20Total%20T4%20Calibrator%20%28S0-S5%29%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20coulter%20ODC0019%20Calibrator%2C%20Olympus%2C%20Bicarbonate%20%28REF%29%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO986": "mailto:Arthur@allorabiotech.com?subject=PO986%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO986.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%2098201%20Access%20BNP%20OC%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO1004": "mailto:Arthur@allorabiotech.com?subject=PO1004%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO1004.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR6199%20C-reactive%20Protein%20High%20sensitive%20CRP%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
-    "PO1018": "mailto:Riad@aldxholding.com?subject=PO1018%20ETA%3F&body=Hi%20Karen%2C%0A%0AFollowing%20up%20on%20PO%20PO1018.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR6137%20Olympus%20Bicarbonate%20Reagent%2C%204%20x%20580%20Tests%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20B36868%20DxH%20Series%20Cleaner%2C%20500mL%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
+    "PO1018": "mailto:Riad@aldxholding.com?subject=PO1018%20ETA%3F&body=Hi%20Karen%2C%0A%0AFollowing%20up%20on%20PO%20PO1018.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR6137%20Olympus%20Bicarbonate%20Reagent%2C%204%20x%20580%20Tests%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO1019": "mailto:Arthur@allorabiotech.com?subject=PO1019%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO1019.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20OSR6116%20Olympus%20Cholesterol%20Reagent%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20OSR6178%20Olympus%20Creatinine%20Reagent%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO1021": "mailto:Arthur@allorabiotech.com?subject=PO1021%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO1021.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20A48617%20Access%20SHBG%20Reagent%2C%20100%20Determinations%20%E2%80%94%205%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
     "PO1025": "mailto:Arthur@allorabiotech.com?subject=PO1025%20ETA%3F&body=Hi%20Arthur%2C%0A%0AFollowing%20up%20on%20PO%20PO1025.%20Could%20you%20please%20share%20an%20update%20on%20the%20open%20items%20below%3F%0A%0A-%20Beckman%20Coulter%20B24838%20Access%2025%20OH%20Vitamin%20D%20Reagent%2C%20100%20Determinations%20%E2%80%94%206%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20A98033%20Access%20Folate%20Calibrator%20%E2%80%94%201%20open%2C%20ETA%3A%20NO%20ETA%0A-%20Beckman%20Coulter%20OSR6137%20Olympus%20Bicarbonate%20Reagent%2C%204%20x%20580%20Tests%20%E2%80%94%202%20open%2C%20ETA%3A%20NO%20ETA%0A%0AThank%20you%2C%0AAmir",
@@ -22839,7 +22810,7 @@
   },
   "customer_prices": {
     "year": 2026,
-    "generated_at": "2026-11-26 05:06 PM PT",
+    "generated_at": "2026-11-26 07:24 PM PT",
     "customers": [
       {
         "account_id": "3x100924",
@@ -32118,7 +32089,7 @@
           {
             "so_num": "SO640",
             "date": "2026-11-16",
-            "status": "Approved",
+            "status": "Partially delivered",
             "items": [
               {
                 "sku": "OSR6137",
@@ -32145,7 +32116,7 @@
                 "sku": "B36868",
                 "product": "Beckman Coulter B36868 DxH Series Cleaner, 500mL",
                 "unit_price": 149.9,
-                "cogs": 0.0,
+                "cogs": 89.93,
                 "qty": 2.0
               }
             ]
@@ -34304,7 +34275,7 @@
       "Beckman Coulter B36868 DxH Series Cleaner, 500mL",
       "",
       "",
-      "",
+      89.93,
       ""
     ],
     "33415": [
@@ -36708,6 +36679,12 @@
       601.38,
       70.0,
       153.36,
+      ""
+    ],
+    "B36868": [
+      "",
+      "",
+      89.93,
       ""
     ],
     "33415": [
@@ -48342,22 +48319,6 @@
         }
       }
     },
-    "PO1018": {
-      "vendor": "ALDX HOLDING CORPORATION",
-      "status": "Sent",
-      "skus": {
-        "OSR6137": {
-          "product": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
-          "unit": 219.59,
-          "qty": 1.0
-        },
-        "B36868": {
-          "product": "Beckman Coulter B36868 DxH Series Cleaner, 500mL",
-          "unit": 89.93,
-          "qty": 2.0
-        }
-      }
-    },
     "PO1019": {
       "vendor": "Allora Biotech LLC",
       "status": "Sent",
@@ -48967,6 +48928,22 @@
           "qty": 4.0
         }
       }
+    },
+    "PO1018": {
+      "vendor": "ALDX HOLDING CORPORATION",
+      "status": "Partially received",
+      "skus": {
+        "OSR6137": {
+          "product": "Beckman Coulter OSR6137 Olympus Bicarbonate Reagent, 4 x 580 Tests",
+          "unit": 219.59,
+          "qty": 1.0
+        },
+        "B36868": {
+          "product": "Beckman Coulter B36868 DxH Series Cleaner, 500mL",
+          "unit": 89.93,
+          "qty": 2.0
+        }
+      }
     }
   },
   "paid_inventory": [
@@ -49010,7 +48987,7 @@
     }
   ],
   "vendor_spend": {
-    "generated_at": "2026-11-27 01:07:20 AM",
+    "generated_at": "2026-11-27 03:25:50 AM",
     "year": "2026",
     "vendors": [
       "Allora",
@@ -53322,7 +53299,7 @@
   },
   "ytd_demand": {
     "year": 2026,
-    "generated_at": "2026-11-26 05:07:23 PM PST",
+    "generated_at": "2026-11-26 07:25:53 PM PST",
     "months": [
       "Jan",
       "Feb",
