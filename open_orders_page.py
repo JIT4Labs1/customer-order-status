@@ -3065,8 +3065,24 @@ var gadsActiveOnly=false;
 function gadsRecentSet(){ var m={}, ivs=(GADS&&GADS.intervals)||[]; for(var i=0;i<ivs.length;i++){ if(ivs[i].id!=='last_7_days') continue; var cs=ivs[i].campaigns||[]; for(var j=0;j<cs.length;j++){ if((cs[j].cost||0)>0||(cs[j].clicks||0)>0) m[cs[j].name]=1; } } return m; }
 function gadsIsActive(r,rec){ return r.status==='enabled'||!!rec[r.name]; }
 function gadsMsadsLine(){ var m=(GADS&&GADS.msads)||{}; if(m.error) return 'Microsoft Ads (Bing): could not refresh ('+escapeHtml(m.error)+')'; if(m.connected) return 'Microsoft Ads (Bing) account: '+escapeHtml(m.account_id||''); return 'Microsoft Ads (Bing): not connected yet'; }
+// Brand: from the campaign name (Google), or the product brands Microsoft reports for a Bing Shopping campaign.
+var GADS_BRANDS=[[/virovac/i,'ViroVac'],[/beckman/i,'Beckman Coulter'],[/siemens/i,'Siemens'],[/abbott/i,'Abbott'],[/roche/i,'Roche'],[/generallab|general/i,'General lab reagents']];
+function gadsBrand(r){ if(r.brands&&r.brands.length){ var b=r.brands.map(function(x){ return x.brand; }); return b.slice(0,3).join(', ')+(b.length>3?' +'+(b.length-3):''); }
+  for(var i=0;i<GADS_BRANDS.length;i++){ if(GADS_BRANDS[i][0].test(r.name||'')) return GADS_BRANDS[i][1]; } return 'Multiple'; }
+// "+" next to a campaign: the pages its ad visitors landed on first, with visits per page (GA4, selected time window).
+var gadsOpen={}, gadsRowNames=[];
+function gadsToggle(i){ var n=gadsRowNames[i]; gadsOpen[n]=!gadsOpen[n]; renderGadsPanel(); }
+function gadsLanding(r){
+  if(r.platform==='Bing') return '<div style="color:#7f8c8d;">Landing pages for Bing ads appear here once auto-tagging with UTM tags is turned on in Microsoft Advertising (Google Analytics can then tell which visits came from this campaign).</div>';
+  var j=(GADS.journey||{})[gadsInterval], c=null, cs=(j&&j.campaigns)||[];
+  for(var i=0;i<cs.length;i++){ if(cs[i].campaign===r.name){ c=cs[i]; break; } }
+  if(!c||!(c.landing_pages||[]).length) return '<div style="color:#7f8c8d;">No landing-page visits recorded for this campaign in this window.</div>';
+  var h='<table style="border-collapse:collapse;font-size:12px;min-width:420px;"><thead><tr><th style="text-align:left;padding:3px 10px 3px 0;color:#5a6b7b;">First page (landing page)</th><th style="text-align:right;padding:3px 0;color:#5a6b7b;">Visits from ad clicks</th></tr></thead><tbody>';
+  for(var k=0;k<c.landing_pages.length;k++){ var l=c.landing_pages[k]; h+='<tr><td style="padding:3px 10px 3px 0;border-top:1px solid #eef1f4;"><a href="https://jit4labs.com'+escapeHtml(l.path)+'" target="_blank" rel="noopener">'+escapeHtml(l.path)+'</a></td><td style="text-align:right;padding:3px 0;border-top:1px solid #eef1f4;">'+Number(l.sessions).toLocaleString()+'</td></tr>'; }
+  return h+'</tbody></table><div style="color:#7f8c8d;font-size:11px;margin-top:4px;">Visits counted by Google Analytics; one ad click usually starts one visit, so totals can differ slightly from Google Ads clicks.</div>';
+}
 function gadsSetActive(el){ gadsActiveOnly=!!el.checked; renderGadsPanel(); }
-var GADS_COLS=[{k:'name',t:'str',lbl:'Campaign',c:false},{k:'status',t:'str',lbl:'Status',c:false},
+var GADS_COLS=[{k:'name',t:'str',lbl:'Campaign',c:false},{k:'brand',t:'str',lbl:'Brand',c:false},{k:'status',t:'str',lbl:'Status',c:false},
   {k:'type',t:'str',lbl:'Type',c:false},{k:'start_date',t:'str',lbl:'Started',c:false},
   {k:'clicks',t:'num',lbl:'Clicks',c:true},{k:'impressions',t:'num',lbl:'Impr.',c:true},
   {k:'ctr',t:'num',lbl:'CTR',c:true},{k:'cpc',t:'num',lbl:'Avg CPC',c:true},
@@ -3099,6 +3115,8 @@ function renderGadsPanel(){
   sel+='</select>';
   var _rec=gadsRecentSet(), _all=(cur?cur.campaigns:[]), _nAct=0; for(var _a=0;_a<_all.length;_a++){ if(gadsIsActive(_all[_a],_rec)) _nAct++; }
   var rows=_all.filter(function(r){ return !gadsActiveOnly||gadsIsActive(r,_rec); }), tc=0,ti=0,tcost=0,tconv=0,tval=0,tpv=0,tatc=0,tpur=0, body='';
+  for(var _b=0;_b<rows.length;_b++){ rows[_b]=Object.assign({},rows[_b],{brand:gadsBrand(rows[_b])}); }
+  gadsRowNames=[];
   if(gadsSort.key){
     var _gc=null; for(var gi=0;gi<GADS_COLS.length;gi++){ if(GADS_COLS[gi].k===gadsSort.key){ _gc=GADS_COLS[gi]; break; } }
     var _gt=_gc?_gc.t:'str';
@@ -3109,12 +3127,14 @@ function renderGadsPanel(){
   for(var k=0;k<rows.length;k++){ var r=rows[k];
     tc+=r.clicks; ti+=r.impressions; tcost+=r.cost; tconv+=r.conversions; tval+=r.conv_value;
     tpv+=r.page_views||0; tatc+=r.add_to_cart||0; tpur+=r.purchases||0;
-    var st=r.status, sc = st==='enabled'?['#d4edda','#155724']:(st==='paused'?['#fff3cd','#856404']:['#eee','#666']);
+    var st=r.status, sc = (st==='enabled'||st==='running')?['#d4edda','#155724']:(st==='paused'?['#fff3cd','#856404']:['#eee','#666']);
+    var _ri=gadsRowNames.length; gadsRowNames.push(r.name); var _op=!!gadsOpen[r.name];
     body+='<tr>'+
-      '<td class="item-name"><span style="display:inline-block;font-size:10px;font-weight:700;color:'+(r.platform==='Bing'?'#00796b':'#1a73e8')+';background:'+(r.platform==='Bing'?'#e0f2f1':'#e8f0fe')+';border-radius:8px;padding:0 6px;margin-right:6px;vertical-align:middle;">'+escapeHtml(r.platform||'Google')+'</span>'+escapeHtml(r.name)+'</td>'+
-      '<td><span class="status" style="background:'+sc[0]+';color:'+sc[1]+'">'+escapeHtml(st)+'</span></td>'+
+      '<td class="item-name"><button onclick="gadsToggle('+_ri+')" title="Show the pages visitors landed on first" style="border:1px solid #cfd8e3;background:#fff;border-radius:4px;width:20px;height:20px;line-height:16px;padding:0;margin-right:6px;cursor:pointer;font-weight:700;color:#1f3a5f;">'+(_op?'&minus;':'+')+'</button><span style="display:inline-block;font-size:10px;font-weight:700;color:'+(r.platform==='Bing'?'#00796b':'#1a73e8')+';background:'+(r.platform==='Bing'?'#e0f2f1':'#e8f0fe')+';border-radius:8px;padding:0 6px;margin-right:6px;vertical-align:middle;">'+escapeHtml(r.platform||'Google')+'</span>'+escapeHtml(r.name)+'</td>'+
+      '<td style="white-space:nowrap;">'+escapeHtml(r.brand)+'</td>'+
+      '<td><span class="status" title="'+(r.status_source==='inferred'?'Inferred from spend: running = clicks or spend in the last 7 days. Google&#39;s live status for this campaign isn&#39;t available.':'Status from the ad platform')+'" style="background:'+sc[0]+';color:'+sc[1]+'">'+escapeHtml(st)+'</span></td>'+
       '<td>'+escapeHtml(r.type)+'</td>'+
-      '<td>'+fmtDate(r.start_date)+'</td>'+
+      '<td'+(r.start_source==='first_activity'?' title="First day with ad impressions"':'')+'>'+fmtDate(r.start_date)+(r.start_source==='first_activity'?'<span style="color:#7f8c8d;">*</span>':'')+'</td>'+
       '<td class="c">'+Number(r.clicks).toLocaleString()+'</td>'+
       '<td class="c">'+Number(r.impressions).toLocaleString()+'</td>'+
       '<td class="c">'+(r.ctr*100).toFixed(2)+'%</td>'+
@@ -3125,10 +3145,10 @@ function renderGadsPanel(){
       '<td class="c open">'+Number(r.purchases||0).toLocaleString()+'</td>'+
       '<td class="c">'+money0(r.conv_value)+'</td>'+
       '<td class="c">'+(r.roas?Number(r.roas).toFixed(1)+'x':'—')+'</td>'+
-      '</tr>';
+      '</tr>'+(_op?'<tr><td colspan="15" style="background:#f8fafc;padding:8px 14px 10px 40px;">'+gadsLanding(r)+'</td></tr>':'');
   }
   var tctr=ti?(tc/ti*100).toFixed(2)+'%':'—', tcpc=tc?money2(tcost/tc):'—', troas=tcost?(tval/tcost).toFixed(1)+'x':'—';
-  body+='<tr class="so-group"><td>Total ('+escapeHtml(cur?cur.label:'')+')</td><td></td><td></td><td></td>'+
+  body+='<tr class="so-group"><td>Total ('+escapeHtml(cur?cur.label:'')+')</td><td></td><td></td><td></td><td></td>'+
     '<td class="c">'+tc.toLocaleString()+'</td><td class="c">'+ti.toLocaleString()+'</td><td class="c">'+tctr+'</td>'+
     '<td class="c">'+tcpc+'</td><td class="c open">'+money2(tcost)+'</td>'+
     '<td class="c">'+tpv.toLocaleString()+'</td><td class="c">'+tatc.toLocaleString()+'</td><td class="c open">'+tpur.toLocaleString()+'</td>'+
@@ -3138,7 +3158,7 @@ function renderGadsPanel(){
     '<div><h2>Online Ads — Campaign Performance</h2><div class="sub">Google Ads account: '+escapeHtml(GADS.account||'')+' &middot; '+gadsMsadsLine()+' &middot; data pulled '+escapeHtml(GADS.pulled_at||'')+' &middot; '+escapeHtml(GADS.currency||'USD')+'</div></div>'+
     '<div style="font-size:13px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">Time interval: '+sel+
     '<button class="refresh-btn" onclick="gadsRefresh()" title="Reload the latest Google Ads / GA4 snapshot (separate from the Vtiger Refresh)"><span class="lbl">↻ Refresh Google Ads</span></button></div></div></div>'+
-    '<div style="margin:0 0 8px;font-size:13px;"><label style="cursor:pointer;"><input type="checkbox" onchange="gadsSetActive(this)"'+(gadsActiveOnly?' checked':'')+'> Active campaigns only &middot; '+_nAct+' of '+_all.length+'</label> <span style="color:#7f8c8d;font-size:12px;">(enabled, or had clicks or spend in the last 7 days)</span></div>'+
+    '<div style="margin:0 0 8px;font-size:13px;"><label style="cursor:pointer;"><input type="checkbox" onchange="gadsSetActive(this)"'+(gadsActiveOnly?' checked':'')+'> Active campaigns only &middot; '+_nAct+' of '+_all.length+'</label> <span style="color:#7f8c8d;font-size:12px;">(enabled, or had clicks or spend in the last 7 days) &middot; * start date = first day with ad impressions</span></div>'+
     '<div class="matrix-wrap"><table class="matrix"><thead><tr>'+ gadsHeadHtml() +
     '</tr></thead><tbody>'+body+'</tbody></table></div>'+ gadsChartHtml()+gadsJourneyHtml();
   gadsChartRedraw();
