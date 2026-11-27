@@ -1455,7 +1455,7 @@ function renderQbpPanel(){
   if(qbpView==='ytd') show=[last]; else if(qbpView==='all'){ for(var i=0;i<cols.length;i++) show.push(i); } else show=[+qbpView];
   var opt='<option value="ytd"'+(qbpView==='ytd'?' selected':'')+'>Year to date</option><option value="all"'+(qbpView==='all'?' selected':'')+'>All months side by side</option>';
   for(var m=last-1;m>=0;m--) opt+='<option value="'+m+'"'+(qbpView===String(m)?' selected':'')+'>'+escapeHtml(cols[m])+'</option>';
-  var th='padding:7px 10px;border-bottom:2px solid #2c3e50;text-align:right;font-size:12px;color:#2c3e50;white-space:nowrap;';
+  var th='padding:9px 10px;background:#1b2b45;color:#fff;font-weight:700;text-align:right;font-size:12.5px;white-space:nowrap;';
   var h='<div style="padding:14px 16px;">'+
     '<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px;"><h2 style="margin:0;">QuickBooks P&amp;L</h2>'+
     '<select onchange="qbpView=this.value;renderQbpPanel()" style="padding:5px 10px;font-size:13px;border:1px solid #cdd9e6;border-radius:6px;">'+opt+'</select></div>'+
