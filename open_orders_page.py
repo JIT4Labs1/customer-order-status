@@ -4844,6 +4844,7 @@ function arRenderAP(){
 }
 
 function setMode(m){
+  if(m==='gads'&&typeof mode!=='undefined'&&mode!=='gads') gadsActiveOnly=true;   // Online Ads opens with Active campaigns only checked
   if(mode===m) return;
   mode=m; sortState={key:null, dir:1};
   var btns=document.querySelectorAll('.mode-btn');
