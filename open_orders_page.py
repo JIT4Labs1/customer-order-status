@@ -3064,6 +3064,7 @@ var gadsSort={key:null, dir:1};
 var gadsActiveOnly=false;
 function gadsRecentSet(){ var m={}, ivs=(GADS&&GADS.intervals)||[]; for(var i=0;i<ivs.length;i++){ if(ivs[i].id!=='last_7_days') continue; var cs=ivs[i].campaigns||[]; for(var j=0;j<cs.length;j++){ if((cs[j].cost||0)>0||(cs[j].clicks||0)>0) m[cs[j].name]=1; } } return m; }
 function gadsIsActive(r,rec){ return r.status==='enabled'||!!rec[r.name]; }
+function gadsMsadsLine(){ var m=(GADS&&GADS.msads)||{}; if(m.error) return 'Microsoft Ads (Bing): could not refresh ('+escapeHtml(m.error)+')'; if(m.connected) return 'Microsoft Ads (Bing) account: '+escapeHtml(m.account_id||''); return 'Microsoft Ads (Bing): not connected yet'; }
 function gadsSetActive(el){ gadsActiveOnly=!!el.checked; renderGadsPanel(); }
 var GADS_COLS=[{k:'name',t:'str',lbl:'Campaign',c:false},{k:'status',t:'str',lbl:'Status',c:false},
   {k:'type',t:'str',lbl:'Type',c:false},{k:'start_date',t:'str',lbl:'Started',c:false},
@@ -3110,7 +3111,7 @@ function renderGadsPanel(){
     tpv+=r.page_views||0; tatc+=r.add_to_cart||0; tpur+=r.purchases||0;
     var st=r.status, sc = st==='enabled'?['#d4edda','#155724']:(st==='paused'?['#fff3cd','#856404']:['#eee','#666']);
     body+='<tr>'+
-      '<td class="item-name"><span style="display:inline-block;font-size:10px;font-weight:700;color:#1a73e8;background:#e8f0fe;border-radius:8px;padding:0 6px;margin-right:6px;vertical-align:middle;">'+escapeHtml(r.platform||'Google')+'</span>'+escapeHtml(r.name)+'</td>'+
+      '<td class="item-name"><span style="display:inline-block;font-size:10px;font-weight:700;color:'+(r.platform==='Bing'?'#00796b':'#1a73e8')+';background:'+(r.platform==='Bing'?'#e0f2f1':'#e8f0fe')+';border-radius:8px;padding:0 6px;margin-right:6px;vertical-align:middle;">'+escapeHtml(r.platform||'Google')+'</span>'+escapeHtml(r.name)+'</td>'+
       '<td><span class="status" style="background:'+sc[0]+';color:'+sc[1]+'">'+escapeHtml(st)+'</span></td>'+
       '<td>'+escapeHtml(r.type)+'</td>'+
       '<td>'+fmtDate(r.start_date)+'</td>'+
@@ -3134,7 +3135,7 @@ function renderGadsPanel(){
     '<td class="c">'+money0(tval)+'</td><td class="c">'+troas+'</td></tr>';
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">'+
-    '<div><h2>Online Ads — Campaign Performance</h2><div class="sub">Google Ads account: '+escapeHtml(GADS.account||'')+' &middot; Microsoft Ads (Bing): not connected yet &middot; data pulled '+escapeHtml(GADS.pulled_at||'')+' &middot; '+escapeHtml(GADS.currency||'USD')+'</div></div>'+
+    '<div><h2>Online Ads — Campaign Performance</h2><div class="sub">Google Ads account: '+escapeHtml(GADS.account||'')+' &middot; '+gadsMsadsLine()+' &middot; data pulled '+escapeHtml(GADS.pulled_at||'')+' &middot; '+escapeHtml(GADS.currency||'USD')+'</div></div>'+
     '<div style="font-size:13px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">Time interval: '+sel+
     '<button class="refresh-btn" onclick="gadsRefresh()" title="Reload the latest Google Ads / GA4 snapshot (separate from the Vtiger Refresh)"><span class="lbl">↻ Refresh Google Ads</span></button></div></div></div>'+
     '<div style="margin:0 0 8px;font-size:13px;"><label style="cursor:pointer;"><input type="checkbox" onchange="gadsSetActive(this)"'+(gadsActiveOnly?' checked':'')+'> Active campaigns only &middot; '+_nAct+' of '+_all.length+'</label> <span style="color:#7f8c8d;font-size:12px;">(enabled, or had clicks or spend in the last 7 days)</span></div>'+
