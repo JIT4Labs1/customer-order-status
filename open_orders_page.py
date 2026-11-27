@@ -4968,6 +4968,8 @@ function setMode(m){
     btns[i].className = 'mode-btn'+extra+(dm===m?' active':'');
   }
   renderTabs(); renderPanel();
+  // Customer Open SO's / Open Vendor POs: bring the whole table into view (no scrolling down past the header and KPIs).
+  if(m==='cust'||m==='vendor'){ setTimeout(function(){ var el=document.querySelector('.layout'); if(el) window.scrollTo({top:Math.max(0,el.getBoundingClientRect().top+window.scrollY-8),behavior:'smooth'}); },50); }
 }
 
 // ── High-Demand SKUs matrix (Product × Customer) ──────────────────────────────
