@@ -663,7 +663,7 @@ def build_pnl(vt):
     H.append('<div style="font-size:11px;color:#888;margin-bottom:8px;">Green columns: <b>Shipping cost</b> = the shipping labels bought '
              'in Shopify for the SO&#39;s Shopify order(s) (voided labels taken off); when no label was bought in Shopify, the shipping the '
              'customer paid at checkout (Shopify &quot;Paid&quot; card, marked &#8224;). CONMED orders use the real UPS cost from the UPS bill uploaded '
-             'on the Shipments P&amp;L tab, matched by our PO # in Reference Number 1 (marked &#8225;). <b>Shipping charge</b> = the Shipping lines on every '
+             'on the Shipments P&amp;L tab, matched by our PO # in Reference Number 1 (marked &#8225;); a CONMED order not on the UPS bill shows $0.00 (not found) and no shipping P&amp;L. <b>Shipping charge</b> = the Shipping lines on every '
              'QuickBooks invoice of that order, plus invoices listed on the SO in Vtiger; with no invoice linked, the shipping the customer paid at '
              'Shopify checkout, or (before Shopify) the SO&#39;s Shipping line in Vtiger. <b>Shipping P&amp;L</b> = charge minus cost. '
              '&mdash; = no Shopify order, or no shipping cost in Shopify. SO Amount is net of shipping &amp; tax.</div>')
