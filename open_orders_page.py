@@ -3666,10 +3666,11 @@ function pnlShipFill(){
     var r=rows[i], x=B[(r.getAttribute('data-so')||'').toUpperCase()];
     var c=function(cl){ return r.querySelector('.'+cl); };
     if(!x){ continue; }
+    r.setAttribute('data-conmed', x.conmed?'1':'0');
     if(x.orders&&x.orders.length){ r.setAttribute('data-shop',x.orders.join(', ')); if(c('sp-shop')) c('sp-shop').innerHTML=escapeHtml(x.orders.join(', ')); }
     var cost=(x.cost==null)?null:x.cost, chg=x.charge||0, pl=(cost==null||x.ups_not_found)?null:(chg-cost);
     r.setAttribute('data-scost',cost==null?'':cost); r.setAttribute('data-schg',chg); r.setAttribute('data-spnl',pl==null?'':pl.toFixed(2));
-    if(c('sp-cost')) c('sp-cost').innerHTML=cost==null?dash:x.ups_not_found?payMoney(cost)+' <span title="CONMED order: no UPS charge on the uploaded UPS bills for PO '+escapeHtml((x.conmed_pos||[]).join(', ')||'(none tagged)')+'" style="color:#b26a00;font-weight:600;">(not found)</span>':payMoney(cost)+((x.cost_src||[]).indexOf('ups')>=0?' <span title="'+escapeHtml('CONMED shipment: real UPS cost from the UPS bill, matched by PO '+(x.ups_pos||[]).join(', '))+'" style="color:#7b3fa0;font-weight:700;">&#8225;</span>':'')+((x.cost_src||[]).indexOf('checkout')>=0?' <span title="Shipping the customer paid at checkout (Shopify Paid card); no label bought in Shopify" style="color:#4a5b70;">&#8224;</span>':'')+(x.cost_known===false?' <span title="Some of this SO&#39;s Shopify orders have no label bought in Shopify" style="color:#b26a00;">*</span>':'');
+    if(c('sp-cost')) c('sp-cost').innerHTML=cost==null?dash:x.ups_not_found?(cost?payMoney(cost)+' + ':'')+'<span title="CONMED order: no UPS charge on the uploaded UPS bills for PO '+escapeHtml((x.conmed_pos||[]).join(', ')||'(none tagged)')+'" style="color:#b26a00;font-weight:600;">No UPS invoice</span>':payMoney(cost)+((x.cost_src||[]).indexOf('ups')>=0?' <span title="'+escapeHtml('CONMED shipment: real UPS cost from the UPS bill, matched by PO '+(x.ups_pos||[]).join(', '))+'" style="color:#7b3fa0;font-weight:700;">&#8225;</span>':'')+((x.cost_src||[]).indexOf('checkout')>=0?' <span title="Shipping the customer paid at checkout (Shopify Paid card); no label bought in Shopify" style="color:#4a5b70;">&#8224;</span>':'')+(x.cost_known===false?' <span title="Some of this SO&#39;s Shopify orders have no label bought in Shopify" style="color:#b26a00;">*</span>':'');
     if(c('sp-chg')) c('sp-chg').innerHTML=(chg||(x.invoices&&x.invoices.length))?'<span title="'+escapeHtml(x.charge_src==='checkout'?'Paid by the customer at Shopify checkout (no QuickBooks invoice linked)':x.charge_src==='vtiger'?'Shipping line on the Vtiger SO (before Shopify)':'QuickBooks invoices: '+(x.invoices||[]).join(', '))+'">'+payMoney(chg)+'</span>':dash;
     if(c('sp-pnl')) c('sp-pnl').innerHTML=pl==null?dash:'<span style="font-weight:600;color:'+(pl<0?'#c62828':'#1b7a3d')+';">'+payMoney(pl)+'</span>';
   }
@@ -3722,7 +3723,7 @@ function pnlDetSort(th){
 }
 function pnlDetApply(){
   var mo=document.getElementById('pnlDetMonth'); var cu=document.getElementById('pnlDetCust');
-  if(!mo) return; var mv=mo.value, cv=cu?cu.value:'__ALL__';
+  if(!mo) return; var mv=mo.value, cv=cu?cu.value:'__ALL__'; var srcEl=document.getElementById('pnlDetSrc'), sv=srcEl?srcEl.value:'__ALL__';
   var blocks=document.querySelectorAll('.pnl-detail-mo');
   for(var i=0;i<blocks.length;i++){
     var show=(blocks[i].getAttribute('data-mo')===mv);
@@ -3732,7 +3733,8 @@ function pnlDetApply(){
     var net=0,cost=0,sc=0,sh=0,sp=0,vis=0;
     for(var r=0;r<rows.length;r++){
       var rc=rows[r].getAttribute('data-cust'), idl=(rows[r].getAttribute('data-idl')==='1');
-      var ok=(cv==='__ALL__')||(cv==='__IDL__'&&idl)||(rc===cv);
+      var cm=(rows[r].getAttribute('data-conmed')==='1');
+      var ok=((cv==='__ALL__')||(cv==='__IDL__'&&idl)||(rc===cv)) && (sv==='__ALL__'||(sv==='conmed'&&cm)||(sv==='idl'&&idl&&!cm));
       rows[r].style.display=ok?'':'none';
       if(ok){ vis++; net+=parseFloat(rows[r].getAttribute('data-net'))||0; cost+=parseFloat(rows[r].getAttribute('data-cost'))||0; sc+=parseFloat(rows[r].getAttribute('data-scost'))||0; sh+=parseFloat(rows[r].getAttribute('data-schg'))||0; sp+=parseFloat(rows[r].getAttribute('data-spnl'))||0; }
     }

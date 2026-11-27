@@ -607,6 +607,10 @@ def build_pnl(vt):
     sel += '<option value="__IDL__">Independent Diagnostic Lab — all</option>'
     for c in idl_customers:
         sel += '<option value="%s">%s</option>' % (_esc(c), _esc(c))
+    sel += '</select></span>'
+    # Shipping source: CONMED orders (shipped by CONMED on our UPS account) vs our Independent Diagnostic Lab orders.
+    sel += '<span>Shipping source: <select id="pnlDetSrc" onchange="pnlDetApply()" style="%s">' % ss
+    sel += '<option value="__ALL__">All orders</option><option value="conmed">CONMED orders</option><option value="idl">Independent lab orders</option>'
     sel += '</select></span></div>'
     H.append(sel)
 
@@ -663,7 +667,7 @@ def build_pnl(vt):
     H.append('<div style="font-size:11px;color:#888;margin-bottom:8px;">Green columns: <b>Shipping cost</b> = the shipping labels bought '
              'in Shopify for the SO&#39;s Shopify order(s) (voided labels taken off); when no label was bought in Shopify, the shipping the '
              'customer paid at checkout (Shopify &quot;Paid&quot; card, marked &#8224;). CONMED orders use the real UPS cost from the UPS bill uploaded '
-             'on the Shipments P&amp;L tab, matched by our PO # in Reference Number 1 (marked &#8225;); a CONMED order not on the UPS bill shows $0.00 (not found) and no shipping P&amp;L. <b>Shipping charge</b> = the Shipping lines on every '
+             'on the Shipments P&amp;L tab, matched by our PO # in Reference Number 1 (marked &#8225;); a CONMED order not on the UPS bill shows <b>No UPS invoice</b> and no shipping P&amp;L. <b>Shipping source</b> filter: CONMED orders = SOs with CONMED items or CONMED POs; Independent lab orders = Independent Diagnostic Lab customers&#39; other orders. <b>Shipping charge</b> = the Shipping lines on every '
              'QuickBooks invoice of that order, plus invoices listed on the SO in Vtiger; with no invoice linked, the shipping the customer paid at '
              'Shopify checkout, or (before Shopify) the SO&#39;s Shipping line in Vtiger. <b>Shipping P&amp;L</b> = charge minus cost. '
              '&mdash; = no Shopify order, or no shipping cost in Shopify. SO Amount is net of shipping &amp; tax.</div>')
