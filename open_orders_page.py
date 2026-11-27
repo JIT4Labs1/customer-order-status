@@ -3660,7 +3660,7 @@ function pnlShipFill(){
     if(x.orders&&x.orders.length){ r.setAttribute('data-shop',x.orders.join(', ')); if(c('sp-shop')) c('sp-shop').innerHTML=escapeHtml(x.orders.join(', ')); }
     var cost=(x.cost==null)?null:x.cost, chg=x.charge||0, pl=(cost==null)?null:(chg-cost);
     r.setAttribute('data-scost',cost==null?'':cost); r.setAttribute('data-schg',chg); r.setAttribute('data-spnl',pl==null?'':pl.toFixed(2));
-    if(c('sp-cost')) c('sp-cost').innerHTML=cost==null?dash:payMoney(cost)+(x.cost_known===false?' <span title="Some of this SO&#39;s Shopify orders have no label bought in Shopify" style="color:#b26a00;">*</span>':'');
+    if(c('sp-cost')) c('sp-cost').innerHTML=cost==null?dash:payMoney(cost)+((x.cost_src||[]).indexOf('checkout')>=0?' <span title="Shipping the customer paid at checkout (Shopify Paid card); no label bought in Shopify" style="color:#4a5b70;">&#8224;</span>':'')+(x.cost_known===false?' <span title="Some of this SO&#39;s Shopify orders have no label bought in Shopify" style="color:#b26a00;">*</span>':'');
     if(c('sp-chg')) c('sp-chg').innerHTML=(chg||(x.invoices&&x.invoices.length))?'<span title="'+escapeHtml('QuickBooks invoices: '+(x.invoices||[]).join(', '))+'">'+payMoney(chg)+'</span>':dash;
     if(c('sp-pnl')) c('sp-pnl').innerHTML=pl==null?dash:'<span style="font-weight:600;color:'+(pl<0?'#c62828':'#1b7a3d')+';">'+payMoney(pl)+'</span>';
   }
