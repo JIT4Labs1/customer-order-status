@@ -1484,7 +1484,7 @@ function qbpPie(p){
     else svg+='<path d="M'+cx+' '+cy+' L'+(cx+R*Math.cos(a0)).toFixed(2)+' '+(cy+R*Math.sin(a0)).toFixed(2)+' A'+R+' '+R+' 0 '+(f>0.5?1:0)+' 1 '+(cx+R*Math.cos(a1)).toFixed(2)+' '+(cy+R*Math.sin(a1)).toFixed(2)+' Z" fill="'+col+'" stroke="#fff" stroke-width="1.5"><title>'+escapeHtml(sl[k].n+': '+qbpAmt(sl[k].v)+' ('+(f*100).toFixed(1)+'%)')+'</title></path>';
     lg+='<tr><td style="padding:4px 8px;"><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:'+col+';vertical-align:middle;"></span></td><td style="padding:4px 8px;">'+escapeHtml(sl[k].n)+'</td><td style="padding:4px 8px;text-align:right;white-space:nowrap;">'+qbpAmt(sl[k].v)+'</td><td style="padding:4px 8px;text-align:right;color:#4a5b70;">'+(f*100).toFixed(1)+'%</td></tr>';
     a0=a1; }
-  return '<div style="display:flex;gap:28px;align-items:center;flex-wrap:wrap;"><svg width="260" height="260" viewBox="0 0 260 260">'+svg+'</svg><table style="border-collapse:collapse;font-size:13px;">'+lg+'</table></div>'+
+  return '<div style="display:flex;gap:28px;align-items:center;flex-wrap:wrap;"><svg width="260" height="260" viewBox="0 0 260 260">'+svg+'</svg><table style="border-collapse:collapse;font-size:13px;width:auto;min-width:0;">'+lg+'</table></div>'+
     '<div style="font-size:11px;color:#7a8a99;margin-top:6px;">Slices are shares of the amounts shown (income, cost of goods and the largest expense categories; smaller categories grouped as Other expenses).</div>';
 }
 function renderQbpPanel(){
