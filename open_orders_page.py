@@ -1054,7 +1054,7 @@ def build_html(page_data, embeds=None):
       <button class="mode-btn" data-mode="wt" onclick="setMode('wt')">Website Traffic</button>
       <button class="mode-btn" data-mode="cj" onclick="setMode('cj')">Customer Journey</button>
       <button class="mode-btn" data-mode="ai" onclick="setMode('ai')">AI Engines</button>
-      <button class="mode-btn" data-mode="gads" onclick="setMode('gads')">Google Ads</button>
+      <button class="mode-btn" data-mode="gads" onclick="setMode('gads')">Online Ads</button>
       <button class="mode-btn" data-mode="li" onclick="setMode('li')">LinkedIn</button>
     </div>
   </div>
@@ -3060,6 +3060,11 @@ function renderSpnlPanel(){
 var GADS=null, gadsInterval='this_year', gadsLoading=false;
 // Sortable main table on the Google Ads tab (independent of the customer/vendor sortState).
 var gadsSort={key:null, dir:1};
+// Online Ads: "Active campaigns only" = enabled in Google Ads, or had clicks or spend in the last 7 days (GA4 doesn't report a live status for every campaign).
+var gadsActiveOnly=false;
+function gadsRecentSet(){ var m={}, ivs=(GADS&&GADS.intervals)||[]; for(var i=0;i<ivs.length;i++){ if(ivs[i].id!=='last_7_days') continue; var cs=ivs[i].campaigns||[]; for(var j=0;j<cs.length;j++){ if((cs[j].cost||0)>0||(cs[j].clicks||0)>0) m[cs[j].name]=1; } } return m; }
+function gadsIsActive(r,rec){ return r.status==='enabled'||!!rec[r.name]; }
+function gadsSetActive(el){ gadsActiveOnly=!!el.checked; renderGadsPanel(); }
 var GADS_COLS=[{k:'name',t:'str',lbl:'Campaign',c:false},{k:'status',t:'str',lbl:'Status',c:false},
   {k:'type',t:'str',lbl:'Type',c:false},{k:'start_date',t:'str',lbl:'Started',c:false},
   {k:'clicks',t:'num',lbl:'Clicks',c:true},{k:'impressions',t:'num',lbl:'Impr.',c:true},
@@ -3091,7 +3096,8 @@ function renderGadsPanel(){
   var sel='<select onchange="gadsSetInterval(this.value)" style="padding:7px 10px;border:1px solid #cdd9e6;border-radius:6px;font-size:13px;font-family:inherit;">';
   for(var j=0;j<ivs.length;j++){ sel+='<option value="'+escapeHtml(ivs[j].id)+'"'+(ivs[j].id===gadsInterval?' selected':'')+'>'+escapeHtml(ivs[j].label)+'</option>'; }
   sel+='</select>';
-  var rows=(cur?cur.campaigns:[]).slice(), tc=0,ti=0,tcost=0,tconv=0,tval=0,tpv=0,tatc=0,tpur=0, body='';
+  var _rec=gadsRecentSet(), _all=(cur?cur.campaigns:[]), _nAct=0; for(var _a=0;_a<_all.length;_a++){ if(gadsIsActive(_all[_a],_rec)) _nAct++; }
+  var rows=_all.filter(function(r){ return !gadsActiveOnly||gadsIsActive(r,_rec); }), tc=0,ti=0,tcost=0,tconv=0,tval=0,tpv=0,tatc=0,tpur=0, body='';
   if(gadsSort.key){
     var _gc=null; for(var gi=0;gi<GADS_COLS.length;gi++){ if(GADS_COLS[gi].k===gadsSort.key){ _gc=GADS_COLS[gi]; break; } }
     var _gt=_gc?_gc.t:'str';
@@ -3104,7 +3110,7 @@ function renderGadsPanel(){
     tpv+=r.page_views||0; tatc+=r.add_to_cart||0; tpur+=r.purchases||0;
     var st=r.status, sc = st==='enabled'?['#d4edda','#155724']:(st==='paused'?['#fff3cd','#856404']:['#eee','#666']);
     body+='<tr>'+
-      '<td class="item-name">'+escapeHtml(r.name)+'</td>'+
+      '<td class="item-name"><span style="display:inline-block;font-size:10px;font-weight:700;color:#1a73e8;background:#e8f0fe;border-radius:8px;padding:0 6px;margin-right:6px;vertical-align:middle;">'+escapeHtml(r.platform||'Google')+'</span>'+escapeHtml(r.name)+'</td>'+
       '<td><span class="status" style="background:'+sc[0]+';color:'+sc[1]+'">'+escapeHtml(st)+'</span></td>'+
       '<td>'+escapeHtml(r.type)+'</td>'+
       '<td>'+fmtDate(r.start_date)+'</td>'+
@@ -3128,9 +3134,10 @@ function renderGadsPanel(){
     '<td class="c">'+money0(tval)+'</td><td class="c">'+troas+'</td></tr>';
   document.getElementById('panel').innerHTML =
     '<div class="panel-head"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">'+
-    '<div><h2>Google Ads — Campaign Performance</h2><div class="sub">Account: '+escapeHtml(GADS.account||'')+' &middot; data pulled '+escapeHtml(GADS.pulled_at||'')+' &middot; '+escapeHtml(GADS.currency||'USD')+'</div></div>'+
+    '<div><h2>Online Ads — Campaign Performance</h2><div class="sub">Google Ads account: '+escapeHtml(GADS.account||'')+' &middot; Microsoft Ads (Bing): not connected yet &middot; data pulled '+escapeHtml(GADS.pulled_at||'')+' &middot; '+escapeHtml(GADS.currency||'USD')+'</div></div>'+
     '<div style="font-size:13px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">Time interval: '+sel+
     '<button class="refresh-btn" onclick="gadsRefresh()" title="Reload the latest Google Ads / GA4 snapshot (separate from the Vtiger Refresh)"><span class="lbl">↻ Refresh Google Ads</span></button></div></div></div>'+
+    '<div style="margin:0 0 8px;font-size:13px;"><label style="cursor:pointer;"><input type="checkbox" onchange="gadsSetActive(this)"'+(gadsActiveOnly?' checked':'')+'> Active campaigns only &middot; '+_nAct+' of '+_all.length+'</label> <span style="color:#7f8c8d;font-size:12px;">(enabled, or had clicks or spend in the last 7 days)</span></div>'+
     '<div class="matrix-wrap"><table class="matrix"><thead><tr>'+ gadsHeadHtml() +
     '</tr></thead><tbody>'+body+'</tbody></table></div>'+ gadsChartHtml()+gadsJourneyHtml();
   gadsChartRedraw();
