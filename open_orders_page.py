@@ -1128,8 +1128,13 @@ function ioppInvVendors(){
     if(!k || seen[k]) continue;
     seen[k]=1; out.push(v);
   }
+  // PMA INV always shows, right after Allora INV, even before a PMA inventory file is uploaded.
+  if(!out.some(function(v){ return /^PMA/.test(ioppVenNorm(v)); })) out.push('PMA Services');
+  var rank=function(v){ var n=ioppVenNorm(v); return /^ALLORA/.test(n)?0:(/^PMA/.test(n)?1:2); };
+  out=out.map(function(v,i){ return {v:v,i:i}; }).sort(function(a,b){ return (rank(a.v)-rank(b.v))||(a.i-b.i); }).map(function(x){ return x.v; });
   return out;
 }
+function ioppHasFile(vendorName){ var fs=(IOPP&&IOPP.files)||[], vn=ioppVenNorm(vendorName); for(var i=0;i<fs.length;i++) if(ioppVenNorm(fs[i].vendor)===vn) return true; return false; }
 function colsVendorDyn(){
   var cols=COLS_VENDOR.slice(), vs=ioppInvVendors();
   for(var i=0;i<vs.length;i++){
@@ -5778,6 +5783,7 @@ function ioppQtyVen(sku, vendorName){
 // A per-vendor inventory cell ("PMA INV" / "Allora INV") in Open Vendor POs.
 // Positive stock flashes green with the summed quantity; nothing in stock is a red ✗.
 function fopVenCell(r, vendorName){
+  if(!ioppHasFile(vendorName)) return '<span style="color:#9aa7b4;" title="'+escapeHtml('No '+vendorName+' inventory file yet. Upload one on the Inventory Opportunities tab.')+'">&mdash;</span>';
   var sku=r&&r.sku, q=ioppQtyVen(sku, vendorName);
   if(q<=0){
     return '<span class="fop-x" title="'+escapeHtml(vendorName+' has no stock of '+(sku||'this SKU'))+'">&#10007;</span>';
